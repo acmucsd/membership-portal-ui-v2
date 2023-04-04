@@ -1,6 +1,6 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
-import { showToast } from '@/lib';
+import { config, showToast } from '@/lib';
 import { AuthManager } from '@/lib/managers';
 import type { SendPasswordResetEmailRequest } from '@/lib/types/apiRequests';
 import { getMessagesFromError } from '@/lib/utils';
@@ -22,10 +22,10 @@ const ForgotPassword: NextPage = () => {
   const onSubmit: SubmitHandler<SendPasswordResetEmailRequest> = ({
     email,
   }: SendPasswordResetEmailRequest) => {
-    AuthManager.sendPasswordResetEmailRequest({
+    AuthManager.sendPasswordResetEmail({
       email,
       onSuccessCallback: () => {
-        router.push('/');
+        router.push(config.loginRoute);
         showToast('Success! Check your email shortly', `Email has been sent to ${email}`);
       },
       onFailCallback: error => {
@@ -35,7 +35,7 @@ const ForgotPassword: NextPage = () => {
   };
 
   return (
-    <VerticalForm>
+    <VerticalForm onEnterPress={handleSubmit(onSubmit)}>
       <SignInTitle text="Forgot Password" />
       <SignInFormItem
         icon={<AiOutlineMail />}

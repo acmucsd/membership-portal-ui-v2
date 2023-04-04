@@ -1,62 +1,8 @@
-import type { Url } from '@/lib/types';
-
 const env = process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
 
-export interface ConfigType {
-  acmApi: {
-    baseUrl: Url;
-    endpoints: {
-      user: {
-        user: '/user';
-        activity: '/user/activity';
-        profilepicture: '/user/picture';
-      };
-      activity: '/activity';
-      auth: {
-        register: '/auth/registration';
-        login: '/auth/login';
-        verification: '/auth/verification';
-        resetPassword: '/auth/passwordReset';
-        emailVerification: '/auth/emailVerification';
-        emailModification: '/auth/emailModification';
-      };
-      admin: {
-        attendance: '/admin/attendance';
-        bonus: '/admin/bonus';
-        emails: '/admin/email';
-      };
-      event: {
-        event: '/event';
-        past: '/event/past';
-        future: '/event/future';
-        picture: '/event/picture';
-      };
-      attendance: '/attendance';
-      leaderboard: '/leaderboard';
-      store: {
-        collection: '/merch/collection';
-        item: '/merch/item';
-        itemPicture: '/merch/item/picture';
-        option: '/merch/option';
-        verification: '/merch/order/verification';
-        order: '/merch/order';
-        orders: '/merch/orders';
-        pickup: {
-          future: '/merch/order/pickup/future';
-          past: '/merch/order/pickup/past';
-          single: '/merch/order/pickup';
-        };
-      };
-    };
-  };
-  homeRoute: '/portal/';
-  isDevelopment: boolean;
-  marketingWebhookUrl: string;
-}
-
-const config: ConfigType = {
-  acmApi: {
+const config = {
+  api: {
     baseUrl: process.env.NEXT_PUBLIC_ACM_API_URL || 'https://testing.api.acmucsd.com/api/v2',
     endpoints: {
       user: {
@@ -102,9 +48,9 @@ const config: ConfigType = {
       },
     },
   },
-  homeRoute: '/portal/',
+  homeRoute: '/',
+  loginRoute: '/login',
   isDevelopment,
-  marketingWebhookUrl: process.env.NEXT_PUBLIC_MARKETING_WEBHOOK_URL ?? '',
 };
 
 export default config;

@@ -1,4 +1,4 @@
-import { MerchItemOptionMetadata, Uuid } from '.';
+import { MerchItemOptionMetadata, UUID } from '.';
 import {
   ActivityScope,
   ActivityType,
@@ -99,7 +99,7 @@ export interface VerifyAuthTokenResponse extends ApiResponse {
 // EVENT
 
 export interface PublicEvent {
-  uuid: Uuid;
+  uuid: UUID;
   organization: string;
   committee: string;
   thumbnail: string;
@@ -155,7 +155,7 @@ export interface GetLeaderboardResponse extends ApiResponse {
 // MERCH STORE
 
 export interface PublicMerchCollection {
-  uuid: Uuid;
+  uuid: UUID;
   title: string;
   themeColorHex?: string;
   description: string;
@@ -164,7 +164,7 @@ export interface PublicMerchCollection {
 }
 
 export interface PublicMerchItem {
-  uuid: Uuid;
+  uuid: UUID;
   itemName: string;
   collection?: PublicMerchCollection;
   picture: string;
@@ -182,14 +182,14 @@ export interface PublicMerchItemWithPurchaseLimits extends PublicMerchItem {
 }
 
 export interface PublicCartMerchItem {
-  uuid: Uuid;
+  uuid: UUID;
   itemName: string;
   picture: string;
   description: string;
 }
 
 export interface PublicMerchItemOption {
-  uuid: Uuid;
+  uuid: UUID;
   price: number;
   quantity: number;
   discountPercentage: number;
@@ -197,7 +197,7 @@ export interface PublicMerchItemOption {
 }
 
 export interface PublicOrderMerchItemOption {
-  uuid: Uuid;
+  uuid: UUID;
   price: number;
   discountPercentage: number;
   metadata: MerchItemOptionMetadata;
@@ -205,7 +205,7 @@ export interface PublicOrderMerchItemOption {
 }
 
 export interface PublicOrderItem {
-  uuid: Uuid;
+  uuid: UUID;
   option: PublicOrderMerchItemOption;
   salePriceAtPurchase: number;
   discountPercentageAtPurchase: number;
@@ -215,7 +215,7 @@ export interface PublicOrderItem {
 }
 
 export interface PublicOrder {
-  uuid: Uuid;
+  uuid: UUID;
   user: PublicProfile;
   totalCost: number;
   status: string;
@@ -303,7 +303,7 @@ export interface PublicActivity {
 }
 
 export interface PublicProfile {
-  uuid: Uuid;
+  uuid: UUID;
   handle: string;
   firstName: string;
   lastName: string;
@@ -322,7 +322,7 @@ export interface PrivateProfile extends PublicProfile {
 }
 
 export interface PublicFeedback {
-  uuid: Uuid;
+  uuid: UUID;
   user: PublicProfile;
   title: string;
   description: string;
@@ -368,7 +368,7 @@ export interface UpdateFeedbackStatusResponse extends ApiResponse {
 }
 
 export interface PublicOrderPickupEvent {
-  uuid: Uuid;
+  uuid: UUID;
   title: string;
   start: Date;
   end: Date;
@@ -405,8 +405,8 @@ export interface CompleteOrderPickupEventResponse extends ApiResponse {
 export interface CancelAllPendingOrdersResponse extends ApiResponse {}
 
 export interface PublicResume {
-  uuid: Uuid;
-  user: Uuid;
+  uuid: UUID;
+  user: UUID;
   isResumeVisible: boolean;
   url: string;
   lastUpdated: Date;

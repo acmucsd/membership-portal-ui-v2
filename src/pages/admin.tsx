@@ -1,15 +1,11 @@
+import { config } from '@/lib';
 import { EventManager } from '@/lib/managers';
 import { CookieService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 
-// interface AdminPageProps {
-//   user: PrivateProfile;
-//   events: PublicEvent[];
-// }
-
-const AdminPage = () => {
+const AdminPage: NextPage = () => {
   return (
     <div>
       <h1>Portal Admin Page</h1>
@@ -25,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (!userCookie) {
     return {
       redirect: {
-        destination: '/',
+        destination: config.loginRoute,
         permanent: false,
       },
     };
@@ -38,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (!token) {
     return {
       redirect: {
-        destination: '/',
+        destination: config.loginRoute,
         permanent: false,
       },
     };

@@ -15,7 +15,7 @@ const VerticalForm = (props: PropsWithChildren<VerticalFormProps>) => {
       className={styleModule.verticalForm}
       onKeyDown={e => {
         if (e.key === 'Enter') {
-          if (onEnterPress) onEnterPress();
+          onEnterPress?.();
         }
       }}
       role="presentation"

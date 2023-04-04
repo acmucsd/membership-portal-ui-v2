@@ -1,11 +1,7 @@
 /* eslint-disable no-unused-vars */
-export type Url = string;
-export type Uuid = string;
+export type URL = string;
+export type UUID = string;
 export type FillInLater = any;
-
-export type UuidQuery = {
-  uuid: Uuid;
-};
 
 export type APIHandlerProps = {
   onSuccessCallback?: (data?: any) => void;

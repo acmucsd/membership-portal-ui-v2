@@ -5,6 +5,11 @@ import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 
 export default class AccountManager {
+  /**
+   * Handle request to get current user's full profile
+   * @param data Request paramaters object
+   * @returns Full user profile
+   */
   static async getCurrentUser(data: AuthAPIHandlerProps): Promise<PrivateProfile | undefined> {
     const { token, onSuccessCallback, onFailCallback } = data;
 

@@ -1,18 +1,18 @@
-import protectPage from '@/lib/hoc/protectPage';
+import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import { GetServerSideProps } from 'next';
 
-const PortalLeaderboardPage = () => {
+const LeaderboardPage = () => {
   return <h1>Portal Leaderboard Page</h1>;
 };
 
-export default PortalLeaderboardPage;
+export default LeaderboardPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => ({
   props: {},
 });
 
-export const getServerSideProps = protectPage(
+export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.allUserTypes()
 );

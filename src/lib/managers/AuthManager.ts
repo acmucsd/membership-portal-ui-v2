@@ -5,6 +5,10 @@ import { LoginRequest, SendPasswordResetEmailRequest } from '@/lib/types/apiRequ
 import { CookieType } from '@/lib/types/enums';
 
 export default class AuthManager {
+  /**
+   * Handle login with user data, set cookies correctly, and provide callbacks
+   * @param data Login form data
+   */
   static async login(data: LoginRequest & APIHandlerProps): Promise<void> {
     const { email, password, onSuccessCallback, onFailCallback } = data;
 
@@ -21,13 +25,17 @@ export default class AuthManager {
     }
   }
 
-  static async sendPasswordResetEmailRequest(
+  /**
+   * Handle password reset request and provide callback
+   * @param data Reset request data
+   */
+  static async sendPasswordResetEmail(
     data: SendPasswordResetEmailRequest & APIHandlerProps
   ): Promise<void> {
     const { email, onSuccessCallback, onFailCallback } = data;
 
     try {
-      await AuthAPI.sendPasswordResetEmailRequest(email);
+      await AuthAPI.sendPasswordResetEmail(email);
       onSuccessCallback?.();
     } catch (e: any) {
       onFailCallback?.(e.response.data.error);

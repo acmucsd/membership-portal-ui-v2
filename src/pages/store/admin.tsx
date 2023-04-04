@@ -1,4 +1,4 @@
-import protectPage from '@/lib/hoc/protectPage';
+import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import type { GetServerSideProps } from 'next';
 
@@ -12,7 +12,7 @@ const getServerSidePropsFunc: GetServerSideProps = async () => ({
   props: {},
 });
 
-export const getServerSideProps = protectPage(
+export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.allUserTypes()
 );

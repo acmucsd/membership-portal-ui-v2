@@ -17,32 +17,32 @@ import styles from './style.module.scss';
 const navItems = {
   portal: [
     {
-      route: '/portal',
+      route: '/',
       title: 'Dashboard',
       image: <DashboardIcon />,
     },
     {
-      route: '/portal/leaderboard',
+      route: '/leaderboard',
       title: 'Leaderboard',
       image: <LeaderboardIcon />,
     },
     {
-      route: '/portal/profile',
+      route: '/profile',
       title: 'Profile',
       image: <ProfileIcon />,
     },
     {
-      route: '/portal/about',
+      route: '/about',
       title: 'Explore ACM',
       image: <ACMIcon />,
     },
     {
-      route: '/portal/discord',
+      route: '/discord',
       title: 'Discord',
       image: <DiscordIcon />,
     },
     {
-      route: '/portal/admin',
+      route: '/admin',
       title: 'Admin',
       image: <SettingIcon />,
     },

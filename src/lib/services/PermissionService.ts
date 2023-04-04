@@ -1,6 +1,9 @@
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { UserAccessType } from '@/lib/types/enums';
 
+/**
+ * Wrapper class to manage permissions by helping setting restrictions and validating permissions across the application
+ */
 export default class PermissionService {
   static canEditMerchItems(user: PrivateProfile) {
     const validAccess = [UserAccessType.ADMIN, UserAccessType.MERCH_STORE_MANAGER];

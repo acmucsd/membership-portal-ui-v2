@@ -1,5 +1,10 @@
 import { CustomErrorBody, ValidatorError } from '@/lib/types/apiResponses';
 
+/**
+ * Get next `num` years from today in a number array to generate dropdown options for future selections
+ * @param num of year entries to generate
+ * @returns array of the next `num` years
+ */
 export const getNextNYears = (num: number) => {
   const currentYear = new Date().getFullYear();
   return Array.from({ length: num }, (_, i) => i + currentYear);

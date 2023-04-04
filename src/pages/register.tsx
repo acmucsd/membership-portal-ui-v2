@@ -37,6 +37,7 @@ const RegisterPage: NextPage = () => {
       style={{
         gap: '4px',
       }}
+      onEnterPress={handleSubmit(onSubmit)}
     >
       <SignInTitle text="Become a Member" />
       <SignInFormItem

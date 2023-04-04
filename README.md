@@ -186,18 +186,18 @@ default, you must have the VSCode setting `"editor.formatOnSave": true` enabled.
 - `/public`: Our public folder stores all static assets which will be hosted on the website domain
   and accessible to any users directly. E.g. `public/pic.jpg` would be viewable to any user at
   `localhost:3000/pic.jpg`
-  - `/assets`: Our assets folder stores all static images which are necessary for our
-    application. By storing them statically, we don't have to include them in our JavaScript
-    application bundle and can identify images with relative paths such as
-    `<img src='/assets/icons/acm-icon.svg'>` and make them accessible to any users directly. E.g.
-    `public/pic.jpg` would be viewable to any user at `localhost:3000/pic.jpg`
+  - `/assets`: Our assets folder stores all static images which are necessary for our application.
+    By storing them statically, we don't have to include them in our JavaScript application bundle
+    and can identify images with relative paths such as `<img src='/assets/icons/acm-icon.svg'>` and
+    make them accessible to any users directly. E.g. `public/pic.jpg` would be viewable to any user
+    at `localhost:3000/pic.jpg`
 - `/src`: Our source folder is where all client-side code for our application is stored.
 
   - `/pages`: The pages folder is a Next.js feature which allows us to take advantage of a built-in
-    routing tool that comes with the framework. When we visit a page
-    `localhost:3000/portal/leaderboard`, the data that is rendered is the component that returns
-    from `pages/portal/leaderboard.tsx`. The only components that live in this folder are those that
-    have a 1:1 correspondance to a certain route on our application's sitemap.
+    routing tool that comes with the framework. When we visit a page `localhost:3000/leaderboard`,
+    the data that is rendered is the component that returns from `pages/leaderboard.tsx`. The only
+    components that live in this folder are those that have a 1:1 correspondance to a certain route
+    on our application's sitemap.
   - `/styles`: The styles folder is where we define any top-level SCSS stylesheets. This includes
     those used globally across the application to function properly and styles used directly in
     top-level page components. Individual component-level styles will be defined in a folder
@@ -230,7 +230,7 @@ default, you must have the VSCode setting `"editor.formatOnSave": true` enabled.
     - `/types`: The types folder stores all reusable type declarations. This includes API request
       body types and API response types for every endpoint on the ACM Portal API and any other API
       services. It also details sets of options such as account access types for the application
-      state and generic alias types such as `Uuid` and `Url` used to better signify string values.
+      state and generic alias types such as `UUID` and `URL` used to better signify string values.
       If you are working in development, we still recommend adds types to as many values as you can.
       Rather than leaving values untyped, feel free to use the `any` alias type `FillInLater` to
       bypass TypeScript security and validation checks. However, any merged pull requests must

@@ -1,4 +1,4 @@
-import { Uuid } from '.';
+import { UUID } from '.';
 import { FeedbackStatus, FeedbackType } from './enums';
 
 // REQUEST TYPES
@@ -109,7 +109,7 @@ export interface CreateBonusRequest {
 
 export interface SubmitAttendanceForUsersRequest {
   users: string[];
-  event: Uuid;
+  event: UUID;
   asStaff?: boolean;
 }
 
@@ -135,6 +135,9 @@ export interface Event extends OptionalEventProperties {
   pointValue: number;
 }
 
+export interface GetEventRequest {
+  event: UUID;
+}
 export interface CreateEventRequest {
   event: Event;
 }
@@ -183,7 +186,7 @@ export interface CreateMerchItemOptionRequest {
 
 export interface PlaceMerchOrderRequest {
   order: MerchItemOptionAndQuantity[];
-  pickupEvent: Uuid;
+  pickupEvent: UUID;
 }
 
 export interface VerifyMerchOrderRequest {
@@ -195,7 +198,7 @@ export interface FulfillMerchOrderRequest {
 }
 
 export interface RescheduleOrderPickupRequest {
-  pickupEvent: Uuid;
+  pickupEvent: UUID;
 }
 
 export interface MerchCollection {
@@ -250,7 +253,7 @@ export interface MerchItemEdit extends Partial<CommonMerchItemProperties> {
 }
 
 export interface MerchOrderEdit {
-  pickupEvent: Uuid;
+  pickupEvent: UUID;
 }
 
 export interface OrderItemFulfillmentUpdate {

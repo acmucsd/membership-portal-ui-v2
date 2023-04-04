@@ -1,11 +1,11 @@
-import type { Url } from '@/lib/types';
+import type { URL } from '@/lib/types';
 import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
 import styles from './style.module.scss';
 
 interface LinkInterface {
   type: 'link';
-  href: Url;
+  href: URL;
   text: string | ReactNode;
 }
 

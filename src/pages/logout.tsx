@@ -1,9 +1,13 @@
+import { config } from '@/lib';
 import { CookieService } from '@/lib/services';
 import { CookieType } from '@/lib/types/enums';
 import type { GetServerSideProps } from 'next';
 
+/**
+ * `/logout` route to handle logout by ensuring user cookie is cleared and redirecting to login screen without rendering a page
+ */
 const LogoutPage = () => {
-  return <h1>Logout</h1>;
+  return null;
 };
 
 export default LogoutPage;
@@ -13,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   return {
     redirect: {
-      destination: '/',
+      destination: config.loginRoute,
       permanent: true,
     },
   };

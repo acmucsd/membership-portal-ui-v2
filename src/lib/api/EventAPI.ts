@@ -1,5 +1,5 @@
 import { config } from '@/lib';
-import { Uuid } from '@/lib/types';
+import { UUID } from '@/lib/types';
 import {
   GetAllEventsResponse,
   GetFutureEventsResponse,
@@ -10,13 +10,13 @@ import axios from 'axios';
 
 export default class EventAPI {
   /**
-   * Get single event by uuid
-   * @param uuid Search query
+   * Get a single event by UUID
+   * @param uuid Search query uuid
    * @param token Bearer token
    * @returns Event info
    */
-  static async getEvent(uuid: Uuid, token: string): Promise<PublicEvent> {
-    const requestUrl = `${config.acmApi.baseUrl}${config.acmApi.endpoints.event.event}/${uuid}`;
+  static async getEvent(uuid: UUID, token: string): Promise<PublicEvent> {
+    const requestUrl = `${config.api.baseUrl}${config.api.endpoints.event.event}/${uuid}`;
 
     const response = await axios.get<GetOneEventResponse>(requestUrl, {
       headers: {
@@ -33,7 +33,7 @@ export default class EventAPI {
    * @returns List of event info
    */
   static async getAllFutureEvents(token: string): Promise<PublicEvent[]> {
-    const requestUrl = `${config.acmApi.baseUrl}${config.acmApi.endpoints.event.future}`;
+    const requestUrl = `${config.api.baseUrl}${config.api.endpoints.event.future}`;
 
     const response = await axios.get<GetFutureEventsResponse>(requestUrl, {
       headers: {
@@ -50,7 +50,7 @@ export default class EventAPI {
    * @returns List of event info
    */
   static async getAllPastEvents(token: string): Promise<PublicEvent[]> {
-    const requestUrl = `${config.acmApi.baseUrl}${config.acmApi.endpoints.event.past}`;
+    const requestUrl = `${config.api.baseUrl}${config.api.endpoints.event.past}`;
 
     const response = await axios.get<GetFutureEventsResponse>(requestUrl, {
       headers: {
@@ -67,7 +67,7 @@ export default class EventAPI {
    * @returns List of event info
    */
   static async getAllEvents(token: string): Promise<PublicEvent[]> {
-    const requestUrl = `${config.acmApi.baseUrl}${config.acmApi.endpoints.event.event}`;
+    const requestUrl = `${config.api.baseUrl}${config.api.endpoints.event.event}`;
 
     const response = await axios.get<GetAllEventsResponse>(requestUrl, {
       headers: {
