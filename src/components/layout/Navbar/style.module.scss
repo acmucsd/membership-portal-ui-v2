@@ -1,0 +1,60 @@
+@use 'src/styles/vars.scss' as vars;
+
+.navMenu {
+  background-color: var(--theme-surface-2);
+  border-right: 1px solid var(--theme-accent-line-1-transparent);
+  color: var(--theme-text-on-surface-2);
+  display: flex;
+  flex-flow: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  width: 14rem;
+
+  :last-child {
+    margin-top: auto;
+  }
+
+  .navSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .sectionHeader {
+      color: var(--theme-text-on-surface-1);
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 30px;
+    }
+
+    .navItems {
+      display: flex;
+      flex-flow: column;
+      gap: 1rem;
+      margin-left: 0.5rem;
+
+      .navLink {
+        color: var(--theme-text-on-background-1);
+        display: flex;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+        gap: 0.75rem;
+        line-height: 23px;
+
+        svg {
+          height: 24px;
+          width: 24px;
+
+          path {
+            fill: var(--theme-text-on-background-1);
+          }
+        }
+
+        &.active {
+          color: var(--theme-primary-2);
+        }
+      }
+    }
+  }
+}

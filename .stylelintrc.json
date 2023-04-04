@@ -1,0 +1,19 @@
+{
+  "extends": "stylelint-config-sass-guidelines",
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "order/order": ["custom-properties", "declarations"],
+    "max-nesting-depth": null,
+    "selector-max-compound-selectors": null,
+    "function-parentheses-space-inside": null,
+    "order/properties-alphabetical-order": true,
+    "font-family-no-missing-generic-family-keyword": [
+      true,
+      {
+        "ignoreFontFamilies": ["Nunito", "Roboto"]
+      }
+    ],
+    "selector-class-pattern": "^[a-z][a-zA-Z0-9]+$",
+    "unit-allowed-list": ["px", "rem", "em", "%", "vh", "vw", "fr", "s", "deg"]
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "airbnb",
+    "prettier",
+    "next",
+    "next/core-web-vitals"
+  ],
+  "plugins": [
+    "prettier",
+    "node",
+    "@typescript-eslint",
+    "import",
+    "jsdoc"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "no-unused-vars": "warn",
+    "no-console": "warn",
+    "func-names": "off",
+    "no-process-exit": "off",
+    "object-shorthand": "off",
+    "class-methods-use-this": "off",
+    "arrow-body-style": "off",
+    "react/jsx-props-no-spreading": "off",
+    "import/extensions": "off",
+    "no-shadow": "off",
+    "react/require-default-props": "off",
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": [
+          "Link"
+        ],
+        "specialLink": [
+          "to"
+        ]
+      }
+    ],
+    "react/jsx-filename-extension": [
+      2,
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    ],
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": [
+          "arrow-function",
+          "function-declaration"
+        ],
+        "unnamedComponents": "arrow-function"
+      }
+    ]
+  },
+  "ignorePatterns": "src/**/*.d.ts"
+}

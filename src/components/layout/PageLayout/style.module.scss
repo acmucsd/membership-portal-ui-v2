@@ -1,0 +1,15 @@
+@use 'src/styles/vars.scss' as vars;
+
+.oneColumn {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: vars.$header-height;
+  min-height: vars.$min-content-height;
+}
+
+.twoColumn {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  margin-top: vars.$header-height;
+  min-height: vars.$min-content-height;
+}

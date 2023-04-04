@@ -1,0 +1,11 @@
+@use 'src/styles/vars.scss' as vars;
+
+.verticalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: calc(vars.$min-content-height - 4rem);
+  justify-content: center;
+  margin: 0 auto;
+  width: 300px;
+}

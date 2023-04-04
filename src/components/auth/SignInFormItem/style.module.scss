@@ -1,0 +1,57 @@
+@use 'src/styles/vars.scss' as vars;
+
+.formItem {
+  .formInput {
+    border-bottom: 1px solid var(--theme-text-on-background-1);
+    display: grid;
+    grid-template-columns: 2.25rem 1fr;
+    // height: 1.5rem;
+    width: 100%;
+
+    .iconContainer {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    .inputField {
+      background-color: transparent;
+      border: 0;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.75rem;
+      margin: 0;
+      padding: 2px;
+    }
+
+    .selectField {
+      align-items: center;
+      appearance: none;
+      background-color: var(--theme-background);
+      border: 0;
+      border-radius: 0.25em;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1em;
+      line-height: 1.75rem;
+      margin: 0;
+      outline: none;
+      padding: 2px;
+      transition: 0.3s ease;
+      width: 100%;
+
+      &::-ms-expand {
+        display: none;
+      }
+    }
+  }
+
+  .formError {
+    color: vars.$danger-1;
+    font-size: 14px;
+    font-weight: 500;
+    height: 18px;
+    line-height: 18px;
+    margin: 4px 0;
+  }
+}

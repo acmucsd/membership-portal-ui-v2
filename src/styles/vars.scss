@@ -1,0 +1,245 @@
+/*
+ * Colors pulled from updated Figma file design system
+*/
+$wainbow: linear-gradient(
+  270deg,
+  #e981a0 0%,
+  #f9a857 20%,
+  #80ce1c 40%,
+  #51c0c0 60%,
+  #62b0ff 80%,
+  #816dff 100%
+);
+
+$success-1: #56c561;
+$success-2: #00ae11;
+
+$danger-1: #ef626c;
+
+$disabled: #979797;
+
+/*
+ * Light Mode
+ */
+$light-primary-1: #bed9e6;
+$light-primary-2: #62b0ff;
+$light-primary-3: #2c72c6;
+$light-primary-4: #22acea;
+$light-primary-5: #0659bc;
+$light-primary-6: rgba(6, 89, 188, 0.2);
+
+$light-gold: #fce183;
+$light-silver: #c0dae0;
+$light-bronze: #eecb97;
+
+$light-background: #fff;
+
+$light-surface-1: #f4f4f4;
+$light-surface-2: #f8f8f8;
+
+$light-accent-line-1: #2e3036;
+$light-accent-line-2: #e4e4e4;
+
+$light-accent-line-1-transparent: rgba(46, 48, 54, 0.5);
+$light-accent-line-2-transparent: rgba(228, 228, 228, 0.5);
+
+$light-text-on-background-1: #2e3036;
+$light-text-on-background-2: #525252;
+$light-text-on-background-3: #979797;
+
+$light-text-on-surface-1: #2e3036;
+$light-text-on-surface-2: #c4c4c4;
+
+/*
+ * Dark Mode
+ */
+$dark-primary-1: #bed9e6;
+$dark-primary-2: #70c0e7;
+$dark-primary-3: #6cb5fd;
+$dark-primary-4: #3dbeff;
+$dark-primary-5: #0659bc;
+$dark-primary-6: #97c8f8;
+
+$dark-gold: #ccb76b;
+$dark-silver: #95a7ac;
+$dark-bronze: #c3a77d;
+
+$dark-background: #37393e;
+
+$dark-surface-1: #525252;
+$dark-surface-2: #2e3036;
+
+$dark-accent-line-1: #000;
+$dark-accent-line-2: #e4e4e4;
+
+$dark-accent-line-1-transparent: rgba(0, 0, 0, 0.5);
+$dark-accent-line-2-transparent: rgba(228, 228, 228, 0.5);
+
+$dark-text-on-background-1: #fff;
+$dark-text-on-background-2: #fff;
+$dark-text-on-background-3: #fff;
+
+$dark-text-on-surface-1: #fff;
+$dark-text-on-surface-2: #fff;
+
+/* 
+ * Communities
+*/
+// Hack
+$orange-1: #fff2e6;
+$orange-2: #ffe4c9;
+$orange-3: #ffd2a4;
+$orange-4: #ffbf7e;
+$orange-5: #f9a857;
+
+// Cyber
+$cyan-1: #edfcfc;
+$cyan-2: #b9f4f4;
+$cyan-3: #92e7e7;
+$cyan-4: #68dede;
+$cyan-5: #51c0c0;
+
+// Design
+$pink-1: #fff0f4;
+$pink-2: #ffd4e1;
+$pink-3: #ffb4ca;
+$pink-4: #ff94b4;
+
+// Innovate
+$purple-1: #f2f0ff;
+$purple-2: #cdc4ff;
+$purple-3: #a799ff;
+$purple-4: #816dff;
+
+// AI
+$scarlet-1: #fff0f0;
+$scarlet-2: #ffc5c5;
+$scarlet-3: #ff9a9a;
+$scarlet-4: #ff6f6f;
+
+// Media Query Standard Breakpoints
+$breakpoint-sm: 425px; //
+$breakpoint-md: 768px; // Use this breakpoint for most mobile-first CSS designs
+$breakpoint-lg: 1024px;
+
+/*
+ * Pixel variable values
+*/
+$header-height: 4.25rem;
+$min-content-height: calc(100vh - $header-height);
+/*
+
+ * Not sure if we need everything below, might delete later
+*/
+
+$red: #ef626c;
+$green-100: #56c561;
+$green-200: #00ae11;
+
+$white: #fff;
+
+$gray-100: #fafafa;
+$gray-200: #f4f4f4;
+$gray-300: #f8f8f8;
+$gray-400: #e4e4e4;
+$gray-500: #c4c4c4;
+$gray-600: #979797;
+$gray-700: #525252;
+$gray-800: #37393e;
+$gray-900: #2e3036;
+
+$black: #000000d9;
+
+/*
+ * Pixel variable values
+*/
+
+// Font Sizes
+$general-heading-1: 2.5rem;
+$general-heading-2: 2rem;
+$general-heading-2-3: 1.75rem;
+$general-heading-3: 1.5rem;
+$general-heading-3-4: 1.25rem;
+$general-heading-4: 1rem;
+$general-body: 1.125rem;
+
+$card-heading-1: 1.5rem;
+$card-heading-2: 1rem;
+$card-heading-3: 0.875rem;
+$card-body: 0.75rem;
+$card-title-px: 48px;
+$card-input-box-px: 16px;
+$card-submit-px: 20px;
+
+$error-size: 0.75rem;
+
+$list-number: 1.25rem;
+$list-heading: 0.9375rem;
+$list-body: 0.75rem;
+$list-caption: 0.375rem;
+
+$nav-heading: 1.75rem;
+$nav-body: 1.125rem;
+$nav-caption: 0.875rem;
+
+$sign-in-heading: 1.25rem;
+$sign-in-paragraph: 0.75rem;
+
+$page-heading: 1.75rem;
+$page-heading-large: 2rem;
+
+$table-text: 1.125rem;
+
+$timeframe-text: 1rem;
+
+$total-text: 1.5rem;
+
+$input-text: 1.125rem;
+$input-text-small: 1rem;
+$input-text-medium: 1.25rem;
+$input-text-large: 1.5rem;
+
+$form-label: 1.25rem;
+$form-label-small: 1rem;
+$form-area-box: 1rem;
+
+$item-heading-1: 1.75rem;
+$item-heading-2: 1.125rem;
+$item-option-text: 1.25rem;
+
+// Component Sizes
+$db-card-width: 400px;
+$db-card-height: 200px;
+
+$event-width: 288px;
+$event-height: 280px;
+$event-extended-height: 400px;
+$event-img-height: 140px;
+
+$leaderboard-card-width: 270px;
+$leaderboard-card-height: 220px;
+$leaderboard-item-width: 80%;
+$leaderboard-item-height: 70px;
+
+$nav-drop-width: 200px;
+$nav-header-height: 90px;
+
+$sign-in-width: 440px;
+$sign-in-height: 560px;
+$register-height: 760px;
+$password-height: 324px;
+$reset-height: 450px;
+$button-height: 40px;
+$button-height-2: 37px;
+$button-width: 260px;
+$form-dropdown-width: 80px;
+
+$profile-input-width: 300px;
+$profile-input-height: 49px;
+$text-input-height: 150px;
+$major-width: 234px;
+$year-width: 149px;
+$save-button-width: 226px;
+$discard-button-width: 104px;
+$link-button-width: 200px;
+$button-height: 49px;
