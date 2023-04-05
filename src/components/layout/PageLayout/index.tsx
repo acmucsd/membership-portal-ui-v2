@@ -1,4 +1,4 @@
-import PageHeader from '@/components/layout/Navbar';
+import Navbar from '@/components/layout/Navbar';
 
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { PropsWithChildren } from 'react';
@@ -10,7 +10,7 @@ interface LayoutProps {
 
 const PageLayout = ({ user, children }: PropsWithChildren<LayoutProps>) => (
   <>
-    <PageHeader user={user} />
+    <Navbar user={user} />
     <main className={styles.content}>{children}</main>
   </>
 );

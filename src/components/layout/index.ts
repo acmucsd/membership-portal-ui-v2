@@ -1,5 +1,5 @@
 import DarkModeToggle from '@/components/layout/DarkModeToggle';
-import PageHeader from '@/components/layout/Navbar';
+import Navbar from '@/components/layout/Navbar';
 import PageLayout from '@/components/layout/PageLayout';
 
-export { DarkModeToggle, PageHeader, PageLayout };
+export { DarkModeToggle, Navbar, PageLayout };
