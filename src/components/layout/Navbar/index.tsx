@@ -1,137 +1,67 @@
-import Link from 'next/link';
-import { useRouter, withRouter } from 'next/router';
-
-import ACMIcon from '@/public/assets/icons/acm-icon.svg';
-import DashboardIcon from '@/public/assets/icons/dashboard-icon.svg';
-import DiscordIcon from '@/public/assets/icons/discord-icon.svg';
-import FeedbackIcon from '@/public/assets/icons/feedback-icon.svg';
-import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
-import OrdersIcon from '@/public/assets/icons/orders-icon.svg';
+import DarkModeToggle from '@/components/layout/DarkModeToggle';
+import { config } from '@/lib';
+import { PrivateProfile } from '@/lib/types/apiResponses';
 import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
-import SettingIcon from '@/public/assets/icons/setting-icon.svg';
 import ShopIcon from '@/public/assets/icons/shop-icon.svg';
-import SignOutIcon from '@/public/assets/icons/sign-out-icon.svg';
-
+import Image from 'next/image';
+import Link from 'next/link';
+import { memo } from 'react';
 import styles from './style.module.scss';
 
-const navItems = {
-  portal: [
-    {
-      route: '/',
-      title: 'Dashboard',
-      image: <DashboardIcon />,
-    },
-    {
-      route: '/leaderboard',
-      title: 'Leaderboard',
-      image: <LeaderboardIcon />,
-    },
-    {
-      route: '/profile',
-      title: 'Profile',
-      image: <ProfileIcon />,
-    },
-    {
-      route: '/about',
-      title: 'Explore ACM',
-      image: <ACMIcon />,
-    },
-    {
-      route: '/discord',
-      title: 'Discord',
-      image: <DiscordIcon />,
-    },
-    {
-      route: '/admin',
-      title: 'Admin',
-      image: <SettingIcon />,
-    },
-  ],
-  store: [
-    {
-      route: '/store',
-      title: 'Shop',
-      image: <ShopIcon />,
-    },
-    {
-      route: '/store/orders',
-      title: 'Orders',
-      image: <OrdersIcon />,
-    },
-    {
-      route: '/store/admin',
-      title: 'Admin',
-      image: <SettingIcon />,
-    },
-  ],
-  footer: [
-    {
-      route: 'https://www.acmurl.com/portal-feedback',
-      title: 'Feedback',
-      image: <FeedbackIcon />,
-    },
-    {
-      route: '/logout',
-      title: 'Sign Out',
-      image: <SignOutIcon />,
-    },
-  ],
-};
-
-const Navbar = () => {
-  const router = useRouter();
+interface NavbarProps {
+  user: PrivateProfile;
+}
+const Navbar = ({ user }: NavbarProps) => {
+  if (!user)
+    return (
+      <header className={styles.header}>
+        <div className={styles.content}>
+          <Link href={config.homeRoute} className={styles.navLeft}>
+            <Image
+              src="/assets/acm-logos/general/light-mode.png"
+              alt="ACM General Logo"
+              width={48}
+              height={48}
+            />
+            <span className={styles.headerTitle}>Membership Portal</span>
+          </Link>
+          <DarkModeToggle />
+        </div>
+        <hr className={styles.wainbow} />
+      </header>
+    );
 
   return (
-    <nav className={styles.navMenu}>
-      <section className={styles.navSection}>
-        <h2 className={styles.sectionHeader}>Portal</h2>
-        <div className={styles.navItems}>
-          {navItems.portal.map(({ route, title, image }) => (
-            <Link href={route} passHref key={`${title}}`}>
-              <a
-                href="replace"
-                className={`${styles.navLink} ${router.route === route ? styles.active : ''}`}
-              >
-                {image}
-                <span>{title}</span>
-              </a>
-            </Link>
-          ))}
-        </div>
-      </section>
-      <section className={styles.navSection}>
-        <h2 className={styles.sectionHeader}>Store</h2>
-        <div className={styles.navItems}>
-          {navItems.store.map(({ route, title, image }) => (
-            <Link href={route} passHref key={`${title}}`}>
-              <a
-                href="replace"
-                className={`${styles.navLink} ${router.route === route ? styles.active : ''}`}
-              >
-                {image}
-                <span>{title}</span>
-              </a>
-            </Link>
-          ))}
-        </div>
-      </section>
-      <section className={styles.navSection}>
-        <div className={styles.navItems}>
-          {navItems.footer.map(({ route, title, image }) => (
-            <Link href={route} passHref key={`${title}}`}>
-              <a
-                href="replace"
-                className={`${styles.navLink} ${router.route === route ? styles.active : ''}`}
-              >
-                {image}
-                <span>{title}</span>
-              </a>
-            </Link>
-          ))}
-        </div>
-      </section>
-    </nav>
+    <header className={styles.header}>
+      <div className={styles.content}>
+        <Link href={config.homeRoute} className={styles.icon}>
+          <Image
+            src="/assets/acm-logos/general/light-mode.png"
+            alt="ACM General Logo"
+            width={48}
+            height={48}
+          />
+        </Link>
+        <nav className={styles.portalLinks}>
+          <Link href="/">Events</Link>
+          <p>·</p>
+          <Link href="/leaderboard">Leaderboard</Link>
+          <span>·</span>
+          <Link href="/about">About ACM</Link>
+        </nav>
+        <nav className={styles.iconLinks}>
+          <DarkModeToggle />
+          <Link href="/store" className={styles.iconLink}>
+            <ShopIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
+          </Link>
+          <Link href="/profile" className={styles.iconLink}>
+            <ProfileIcon color="var(--theme-text-on-background-1)" />
+          </Link>
+        </nav>
+      </div>
+      <hr className={styles.wainbow} />
+    </header>
   );
 };
 
-export default withRouter(Navbar);
+export default memo(Navbar);

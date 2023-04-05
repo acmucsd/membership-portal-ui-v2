@@ -14,7 +14,7 @@ body {
 }
 
 main {
-  height: vars.$min-content-height;
+  min-height: vars.$min-content-height;
 }
 
 a img {
