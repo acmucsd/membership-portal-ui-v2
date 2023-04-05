@@ -44,7 +44,9 @@ const Navbar = ({ user }: NavbarProps) => {
         </Link>
         <nav className={styles.portalLinks}>
           <Link href="/">Events</Link>
+          <p>·</p>
           <Link href="/leaderboard">Leaderboard</Link>
+          <span>·</span>
           <Link href="/about">About ACM</Link>
         </nav>
         <nav className={styles.iconLinks}>
