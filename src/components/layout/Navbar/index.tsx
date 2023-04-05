@@ -1,6 +1,8 @@
 import DarkModeToggle from '@/components/layout/DarkModeToggle';
 import { config } from '@/lib';
 import { PrivateProfile } from '@/lib/types/apiResponses';
+import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
+import ShopIcon from '@/public/assets/icons/shop-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { memo } from 'react';
@@ -52,9 +54,11 @@ const Navbar = ({ user }: NavbarProps) => {
         <nav className={styles.iconLinks}>
           <DarkModeToggle />
           <Link href="/store">
-            <img src="profile-icon.svg" alt="" />
+            <ShopIcon color="var(--theme-text-on-background-1)" />
           </Link>
-          <Link href="/profile">profile</Link>
+          <Link href="/profile">
+            <ProfileIcon color="var(--theme-text-on-background-1)" />
+          </Link>
         </nav>
       </div>
       <hr className={styles.wainbow} />
