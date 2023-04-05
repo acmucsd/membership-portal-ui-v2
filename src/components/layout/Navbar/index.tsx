@@ -16,16 +16,14 @@ const Navbar = ({ user }: NavbarProps) => {
     return (
       <header className={styles.header}>
         <div className={styles.content}>
-          <Link href={config.homeRoute} passHref>
-            <a href="replace" className={styles.navLeft}>
-              <Image
-                src="/assets/acm-logos/general/light-mode.png"
-                alt="ACM General Logo"
-                width={48}
-                height={48}
-              />
-              <span className={styles.headerTitle}>Membership Portal</span>
-            </a>
+          <Link href={config.homeRoute} className={styles.navLeft}>
+            <Image
+              src="/assets/acm-logos/general/light-mode.png"
+              alt="ACM General Logo"
+              width={48}
+              height={48}
+            />
+            <span className={styles.headerTitle}>Membership Portal</span>
           </Link>
           <DarkModeToggle />
         </div>
@@ -36,15 +34,13 @@ const Navbar = ({ user }: NavbarProps) => {
   return (
     <header className={styles.header}>
       <div className={styles.content}>
-        <Link href={config.homeRoute} passHref>
-          <a href="replace" className={styles.icon}>
-            <Image
-              src="/assets/acm-logos/general/light-mode.png"
-              alt="ACM General Logo"
-              width={48}
-              height={48}
-            />
-          </a>
+        <Link href={config.homeRoute} className={styles.icon}>
+          <Image
+            src="/assets/acm-logos/general/light-mode.png"
+            alt="ACM General Logo"
+            width={48}
+            height={48}
+          />
         </Link>
         <nav className={styles.portalLinks}>
           <Link href="/">Events</Link>
@@ -53,10 +49,10 @@ const Navbar = ({ user }: NavbarProps) => {
         </nav>
         <nav className={styles.iconLinks}>
           <DarkModeToggle />
-          <Link href="/store">
-            <ShopIcon color="var(--theme-text-on-background-1)" />
+          <Link href="/store" className={styles.iconLink}>
+            <ShopIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
           </Link>
-          <Link href="/profile">
+          <Link href="/profile" className={styles.iconLink}>
             <ProfileIcon color="var(--theme-text-on-background-1)" />
           </Link>
         </nav>

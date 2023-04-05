@@ -3,6 +3,7 @@ export type Styles = {
   header: string;
   headerTitle: string;
   icon: string;
+  iconLink: string;
   iconLinks: string;
   navLeft: string;
   portalLinks: string;

@@ -56,8 +56,8 @@
       gap: 3rem;
       padding-right: 2rem;
 
-      a {
-        height: fit-content;
+      .iconLink {
+        cursor: pointer;
       }
     }
   }

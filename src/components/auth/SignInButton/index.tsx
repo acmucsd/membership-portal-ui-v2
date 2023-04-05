@@ -28,10 +28,8 @@ const SignInButton = (props: SignInButtonProps) => {
   if (type === 'link') {
     const { href } = props;
     return (
-      <Link href={href} passHref>
-        <a href="replace" style={style} className={styles[display]}>
-          {text}
-        </a>
+      <Link href={href} style={style} className={styles[display]}>
+        {text}
       </Link>
     );
   }
