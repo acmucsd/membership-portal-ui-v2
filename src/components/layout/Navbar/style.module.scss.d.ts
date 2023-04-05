@@ -1,10 +1,12 @@
 export type Styles = {
-  active: string;
-  navItems: string;
-  navLink: string;
-  navMenu: string;
-  navSection: string;
-  sectionHeader: string;
+  content: string;
+  header: string;
+  headerTitle: string;
+  icon: string;
+  iconLinks: string;
+  navLeft: string;
+  portalLinks: string;
+  wainbow: string;
 };
 
 export type ClassNames = keyof Styles;

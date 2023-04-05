@@ -1,60 +1,82 @@
 @use 'src/styles/vars.scss' as vars;
 
-.navMenu {
-  background-color: var(--theme-surface-2);
-  border-right: 1px solid var(--theme-accent-line-1-transparent);
-  color: var(--theme-text-on-surface-2);
-  display: flex;
-  flex-flow: column;
-  gap: 1.5rem;
-  padding: 2rem;
-  width: 14rem;
+.header {
+  height: vars.$header-height;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 999;
 
-  :last-child {
-    margin-top: auto;
-  }
-
-  .navSection {
+  .content {
+    align-items: center;
+    background-color: var(--theme-background);
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    height: 4rem;
+    padding: 0 1rem;
+    width: 100%;
 
-    .sectionHeader {
-      color: var(--theme-text-on-surface-1);
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 30px;
-    }
-
-    .navItems {
+    .navLeft {
+      align-items: center;
+      cursor: pointer;
       display: flex;
-      flex-flow: column;
-      gap: 1rem;
-      margin-left: 0.5rem;
+      gap: 1.25rem;
+      height: 100%;
+      justify-content: center;
+      margin-right: auto;
+      width: fit-content;
 
-      .navLink {
+      .headerTitle {
         color: var(--theme-text-on-background-1);
-        display: flex;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 500;
-        gap: 0.75rem;
-        line-height: 23px;
-
-        svg {
-          height: 24px;
-          width: 24px;
-
-          path {
-            fill: var(--theme-text-on-background-1);
-          }
-        }
-
-        &.active {
-          color: var(--theme-primary-2);
-        }
+        font-size: 1.5rem;
+        font-weight: 700;
+        vertical-align: middle;
       }
     }
+
+    .icon {
+      cursor: pointer;
+      height: 3rem;
+      margin-right: 1rem;
+      width: 3rem;
+    }
+
+    .portalLinks {
+      display: flex;
+      font-size: 16px;
+      font-weight: 700;
+      gap: 1.5rem;
+      line-height: 24px;
+      margin-right: auto;
+    }
+
+    .iconLinks {
+      align-items: center;
+      display: flex;
+      gap: 3rem;
+
+      a {
+        height: fit-content;
+      }
+    }
+  }
+
+  .wainbow {
+    background: -webkit-gradient(
+      linear,
+      right top,
+      left top,
+      from(#e981a0),
+      color-stop(18.75%, #f9a857),
+      color-stop(36.98%, #80ce1c),
+      color-stop(55.73%, #51c0c0),
+      color-stop(75%, #62b0ff),
+      to(#816dff)
+    );
+    background: vars.$wainbow;
+    height: 0.25rem;
+    position: absolute;
+    top: 4rem;
+    width: 100vw;
   }
 }

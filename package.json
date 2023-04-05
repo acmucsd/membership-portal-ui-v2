@@ -14,8 +14,8 @@
     "lint:css": "stylelint \"**/*.scss\"",
     "lint": "yarn lint:js && yarn lint:css",
     "lint:fix": "yarn prettier && eslint --fix \"src/**/*.+(js|jsx|ts|tsx)\" && stylelint --fix \"**/*.scss\"",
-    "type-css": "yarn typed-scss-modules src/ --exportType default --watch --listDifferent",
-    "dev": "yarn type-css & yarn lint && next dev",
+    "type-css": "yarn typed-scss-modules src/ --exportType default",
+    "dev": "yarn type-css --watch --listDifferent & yarn lint && next dev",
     "build": "next build",
     "start": "next start",
     "prod": "yarn type-css && yarn lint && next build && next start"
