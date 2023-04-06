@@ -1,14 +1,20 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
 import data from '@/lib/constants/majors.json';
-import { getNextNYears } from '@/lib/utils';
+import { AuthManager } from '@/lib/managers';
+import showToast from '@/lib/showToast';
+import { UserRegistration } from '@/lib/types/apiRequests';
+import { PrivateProfile } from '@/lib/types/apiResponses';
+import { getMessagesFromError, getNextNYears } from '@/lib/utils';
 import type { NextPage } from 'next';
-import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BsPerson } from 'react-icons/bs';
 import { IoBookOutline } from 'react-icons/io5';
 import { SlGraduation } from 'react-icons/sl';
 import { VscLock } from 'react-icons/vsc';
+import isEmail from 'validator/lib/isEmail';
 
 interface RegisterFormValues {
   firstName: string;
@@ -17,7 +23,7 @@ interface RegisterFormValues {
   password: string;
   confirmPassword: string;
   major: string;
-  gradYear: number;
+  graduationYear: number;
 }
 
 const RegisterPage: NextPage = () => {
@@ -28,8 +34,18 @@ const RegisterPage: NextPage = () => {
     formState: { errors },
   } = useForm<RegisterFormValues>();
 
-  const onSubmit = () => {
-    // TODO: Register onSubmit handler
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<UserRegistration> = (userRegistration: UserRegistration) => {
+    AuthManager.register({
+      ...userRegistration,
+      onSuccessCallback: (user: PrivateProfile) => {
+        router.push(`/check-email?email=${encodeURIComponent(user.email)}`);
+      },
+      onFailCallback: error => {
+        showToast('Error with registration!', getMessagesFromError(error)[0]);
+      },
+    });
   };
 
   return (
@@ -71,6 +87,7 @@ const RegisterPage: NextPage = () => {
         error={errors.email}
         formRegister={register('email', {
           required: 'Required',
+          validate: str => isEmail(str) || 'Invalid email address',
         })}
       />
       <SignInFormItem
@@ -83,7 +100,7 @@ const RegisterPage: NextPage = () => {
         formRegister={register('password', {
           validate: value => {
             if (!value) return 'Required';
-            if (value.length < 8) return 'Password must be at least 8 characters';
+            if (value.length <= 8) return 'Password must be longer than 8 characters';
             return true;
           },
         })}
@@ -98,7 +115,7 @@ const RegisterPage: NextPage = () => {
         formRegister={register('confirmPassword', {
           validate: value => {
             if (!value) return 'Required';
-            if (value.length < 8) return 'Password must be at least 8 characters';
+            if (value.length <= 8) return 'Password must be longer than 8 characters';
             const password = getValues('password');
             if (value !== password) return 'Passwords Must Match';
             return true;
@@ -120,8 +137,8 @@ const RegisterPage: NextPage = () => {
         element="select"
         options={getNextNYears(6)}
         placeholder="Graduation Year"
-        error={errors.gradYear}
-        formRegister={register('gradYear', {
+        error={errors.graduationYear}
+        formRegister={register('graduationYear', {
           valueAsNumber: true,
         })}
       />
