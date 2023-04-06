@@ -1,11 +1,10 @@
 import config from '@/lib/config';
 import { CookieService } from '@/lib/services';
+import { URL } from '@/lib/types';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, UserAccessType } from '@/lib/types/enums';
 import * as _ from 'lodash';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-
-// TODO: We will need a third argument to specify where to send them if they don't have access later so the admin pages can send regular members back to the home page instead of login
 
 /**
  * Redirects to login if user is not logged in and allowed to see the specified page
@@ -15,7 +14,8 @@ import { GetServerSideProps, GetServerSidePropsContext } from 'next';
  */
 export default function withAccessType(
   gssp: GetServerSideProps,
-  validAccessTypes: UserAccessType[]
+  validAccessTypes: UserAccessType[],
+  redirectTo?: URL
 ): GetServerSideProps {
   // Generate a new getServerSideProps function by taking the return value of the original function and appending the user prop onto it if the user cookie exists, otherwise force user to login page
   const modified: GetServerSideProps = async (context: GetServerSidePropsContext) => {
@@ -26,9 +26,13 @@ export default function withAccessType(
     // Save current URL so user can return here after logging in
     const currentUrl = encodeURIComponent(req.url ?? '/');
 
+    const baseRoute = redirectTo ?? config.loginRoute;
+    const destinationRoute =
+      baseRoute === config.loginRoute ? `${baseRoute}?destination=${currentUrl}` : baseRoute;
+
     const safeRedirectToLogin = {
       redirect: {
-        destination: `${config.loginRoute}?destination=${currentUrl}`,
+        destination: destinationRoute,
         permanent: false,
       },
     };
