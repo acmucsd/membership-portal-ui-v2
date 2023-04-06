@@ -1,7 +1,7 @@
 import { AuthAPI, UserAPI } from '@/lib/api';
 import { CookieService } from '@/lib/services';
 import { APIHandlerProps } from '@/lib/types';
-import {
+import type {
   LoginRequest,
   SendPasswordResetEmailRequest,
   UserRegistration,
