@@ -24,7 +24,7 @@ export default function withAccessType(
     const originalReturnValue = await gssp(context);
 
     // Save current URL so user can return here after logging in
-    const currentUrl = encodeURIComponent(req.url ?? '/');
+    const currentUrl = encodeURIComponent(req.url ?? config.homeRoute);
 
     const baseRoute = redirectTo ?? config.loginRoute;
     const destinationRoute =
@@ -39,9 +39,10 @@ export default function withAccessType(
 
     // Get user cookie
     const userCookie = CookieService.getServerCookie(CookieType.USER, { req, res });
+    const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
     // If cookie is misisng, we are not logged in so don't show the current page
-    if (!userCookie) {
+    if (!userCookie || !token) {
       if (currentUrl === config.homeRoute) {
         return {
           redirect: {
