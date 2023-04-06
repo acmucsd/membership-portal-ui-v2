@@ -36,7 +36,6 @@ const RegisterPage: NextPage = () => {
 
   const onSubmit: SubmitHandler<UserRegistration> = (userRegistration: UserRegistration) => {
     // TODO: Register onSubmit handler
-    console.log(userRegistration);
     AuthManager.register({
       ...userRegistration,
       onSuccessCallback: () => {
@@ -44,7 +43,6 @@ const RegisterPage: NextPage = () => {
         router.push('/login');
       },
       onFailCallback: error => {
-        console.log(getMessagesFromError(error));
         showToast('Error with email!', getMessagesFromError(error)[0]);
       },
     });
