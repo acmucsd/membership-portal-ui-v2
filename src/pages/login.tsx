@@ -2,8 +2,10 @@ import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { AuthManager } from '@/lib/managers';
+import { CookieService } from '@/lib/services';
 import { URL } from '@/lib/types';
 import { LoginRequest } from '@/lib/types/apiRequests';
+import { CookieType } from '@/lib/types/enums';
 import { getMessagesFromError } from '@/lib/utils';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -13,10 +15,10 @@ import { VscLock } from 'react-icons/vsc';
 import isEmail from 'validator/lib/isEmail';
 
 interface LoginProps {
-  redirect: URL;
+  destination: URL;
 }
 
-const LoginPage: NextPage<LoginProps> = ({ redirect }) => {
+const LoginPage: NextPage<LoginProps> = ({ destination }) => {
   const router = useRouter();
 
   const {
@@ -29,7 +31,7 @@ const LoginPage: NextPage<LoginProps> = ({ redirect }) => {
     AuthManager.login({
       email,
       password,
-      onSuccessCallback: () => router.push(redirect),
+      onSuccessCallback: () => router.push(destination),
       onFailCallback: error => {
         showToast('Unable to login', getMessagesFromError(error)[0]);
       },
@@ -81,11 +83,23 @@ const LoginPage: NextPage<LoginProps> = ({ redirect }) => {
 
 export default LoginPage;
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  // TODO: If user cookie exists, go to home page, if there is a query param for the page to jump to, go there instead immediately or when successfully logged in
+export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
+  const user = CookieService.getServerCookie(CookieType.USER, { req, res });
+  const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+
+  const route = query?.destination ? decodeURIComponent(query?.destination as string) : null;
+  if (user && authToken) {
+    return {
+      redirect: {
+        destination: route || config.homeRoute,
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
-      redirect: config.homeRoute,
+      destination: route || config.homeRoute,
     },
   };
 };

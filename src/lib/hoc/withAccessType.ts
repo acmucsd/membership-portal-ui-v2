@@ -1,11 +1,10 @@
 import config from '@/lib/config';
 import { CookieService } from '@/lib/services';
+import { URL } from '@/lib/types';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, UserAccessType } from '@/lib/types/enums';
 import * as _ from 'lodash';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-
-// TODO: We will need a third argument to specify where to send them if they don't have access later so the admin pages can send regular members back to the home page instead of login
 
 /**
  * Redirects to login if user is not logged in and allowed to see the specified page
@@ -15,27 +14,45 @@ import { GetServerSideProps, GetServerSidePropsContext } from 'next';
  */
 export default function withAccessType(
   gssp: GetServerSideProps,
-  validAccessTypes: UserAccessType[]
+  validAccessTypes: UserAccessType[],
+  redirectTo?: URL
 ): GetServerSideProps {
   // Generate a new getServerSideProps function by taking the return value of the original function and appending the user prop onto it if the user cookie exists, otherwise force user to login page
   const modified: GetServerSideProps = async (context: GetServerSidePropsContext) => {
     // Initialize variables
     const { req, res } = context;
-
     const originalReturnValue = await gssp(context);
-    // TODO: Save current URL so user can return here after logging in
+
+    // Save current URL so user can return here after logging in
+    const currentUrl = encodeURIComponent(req.url ?? config.homeRoute);
+
+    const baseRoute = redirectTo ?? config.loginRoute;
+    const destinationRoute =
+      baseRoute === config.loginRoute ? `${baseRoute}?destination=${currentUrl}` : baseRoute;
+
     const safeRedirectToLogin = {
       redirect: {
-        destination: `${config.loginRoute}?redirect=`,
+        destination: destinationRoute,
         permanent: false,
       },
     };
 
     // Get user cookie
     const userCookie = CookieService.getServerCookie(CookieType.USER, { req, res });
+    const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
     // If cookie is misisng, we are not logged in so don't show the current page
-    if (!userCookie) return safeRedirectToLogin;
+    if (!userCookie || !token) {
+      if (currentUrl === config.homeRoute) {
+        return {
+          redirect: {
+            destination: currentUrl,
+            permanent: false,
+          },
+        };
+      }
+      return safeRedirectToLogin;
+    }
 
     // Once we have the cookie, read the user data
     const user: PrivateProfile = JSON.parse(userCookie);
