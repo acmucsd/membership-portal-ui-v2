@@ -14,7 +14,6 @@ const config = {
       auth: {
         register: '/auth/registration',
         login: '/auth/login',
-        verification: '/auth/verification',
         resetPassword: '/auth/passwordReset',
         emailVerification: '/auth/emailVerification',
         emailModification: '/auth/emailModification',

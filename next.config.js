@@ -7,7 +7,7 @@ const nextConfig = {
     domains: ['acmucsd.s3.us-west-1.amazonaws.com'],
   },
   poweredByHeader: false,
-  trailingSlash: true,
+  trailingSlash: false,
   basePath: '',
   reactStrictMode: true,
   swcMinify: true,

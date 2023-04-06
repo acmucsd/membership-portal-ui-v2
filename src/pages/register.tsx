@@ -13,6 +13,7 @@ import { BsPerson } from 'react-icons/bs';
 import { IoBookOutline } from 'react-icons/io5';
 import { SlGraduation } from 'react-icons/sl';
 import { VscLock } from 'react-icons/vsc';
+import isEmail from 'validator/lib/isEmail';
 
 interface RegisterFormValues {
   firstName: string;
@@ -35,12 +36,11 @@ const RegisterPage: NextPage = () => {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<UserRegistration> = (userRegistration: UserRegistration) => {
-    // TODO: Register onSubmit handler
     AuthManager.register({
       ...userRegistration,
       onSuccessCallback: () => {
         showToast('Successfully registered account!');
-        router.push('/login');
+        router.push(`/check-email?email=${encodeURIComponent(userRegistration.email)}`);
       },
       onFailCallback: error => {
         showToast('Error with registration!', getMessagesFromError(error)[0]);
@@ -87,6 +87,7 @@ const RegisterPage: NextPage = () => {
         error={errors.email}
         formRegister={register('email', {
           required: 'Required',
+          validate: str => isEmail(str) || 'Invalid email address',
         })}
       />
       <SignInFormItem
@@ -99,7 +100,7 @@ const RegisterPage: NextPage = () => {
         formRegister={register('password', {
           validate: value => {
             if (!value) return 'Required';
-            if (value.length < 8) return 'Password must be at least 8 characters';
+            if (value.length <= 8) return 'Password must be longer than 8 characters';
             return true;
           },
         })}
@@ -114,7 +115,7 @@ const RegisterPage: NextPage = () => {
         formRegister={register('confirmPassword', {
           validate: value => {
             if (!value) return 'Required';
-            if (value.length < 8) return 'Password must be at least 8 characters';
+            if (value.length <= 8) return 'Password must be longer than 8 characters';
             const password = getValues('password');
             if (value !== password) return 'Passwords Must Match';
             return true;
