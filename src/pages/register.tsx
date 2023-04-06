@@ -4,6 +4,7 @@ import data from '@/lib/constants/majors.json';
 import { AuthManager } from '@/lib/managers';
 import showToast from '@/lib/showToast';
 import { UserRegistration } from '@/lib/types/apiRequests';
+import { PrivateProfile } from '@/lib/types/apiResponses';
 import { getMessagesFromError, getNextNYears } from '@/lib/utils';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -38,9 +39,8 @@ const RegisterPage: NextPage = () => {
   const onSubmit: SubmitHandler<UserRegistration> = (userRegistration: UserRegistration) => {
     AuthManager.register({
       ...userRegistration,
-      onSuccessCallback: () => {
-        showToast('Successfully registered account!');
-        router.push(`/check-email?email=${encodeURIComponent(userRegistration.email)}`);
+      onSuccessCallback: (user: PrivateProfile) => {
+        router.push(`/check-email?email=${encodeURIComponent(user.email)}`);
       },
       onFailCallback: error => {
         showToast('Error with registration!', getMessagesFromError(error)[0]);
