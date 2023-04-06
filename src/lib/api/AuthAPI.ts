@@ -1,6 +1,12 @@
 import { config } from '@/lib';
-import { LoginRequest } from '@/lib/types/apiRequests';
-import { LoginResponse, SendPasswordResetEmailResponse } from '@/lib/types/apiResponses';
+import { LoginRequest, UserRegistration } from '@/lib/types/apiRequests';
+import type {
+  LoginResponse,
+  PrivateProfile,
+  RegistrationResponse,
+  SendPasswordResetEmailResponse,
+  VerifyEmailResponse,
+} from '@/lib/types/apiResponses';
 
 import axios from 'axios';
 
@@ -19,6 +25,19 @@ export default class AuthAPI {
   }
 
   /**
+   * Make a register request to create a new user
+   * @param data UserRegistration info (email, name, major, etc.)
+   * @returns PrivateProfile containing user information on successful creation
+   */
+  static async register(user: UserRegistration): Promise<PrivateProfile> {
+    const requestUrl = `${config.api.baseUrl}${config.api.endpoints.auth.register}`;
+
+    const response = await axios.post<RegistrationResponse>(requestUrl, { user: user });
+
+    return response.data.user;
+  }
+
+  /**
    * Send a password reset email request to the server for the given email
    * @param {string} email The email address to send the password reset email to
    */
@@ -26,5 +45,15 @@ export default class AuthAPI {
     const requestUrl = `${config.api.baseUrl}${config.api.endpoints.auth.resetPassword}/${email}`;
 
     await axios.get<SendPasswordResetEmailResponse>(requestUrl);
+  }
+
+  /**
+   * Verifies account email by access code to enable full account access
+   * @param accessCode The access code provided to the user via the link on the email.
+   */
+  static async verifyEmail(accessCode: string): Promise<void> {
+    const requestUrl = `${config.api.baseUrl}${config.api.endpoints.auth.emailVerification}/${accessCode}`;
+
+    await axios.post<VerifyEmailResponse>(requestUrl);
   }
 }
