@@ -43,7 +43,7 @@ const RegisterPage: NextPage = () => {
         router.push('/login');
       },
       onFailCallback: error => {
-        showToast('Error with email!', getMessagesFromError(error)[0]);
+        showToast('Error with registration!', getMessagesFromError(error)[0]);
       },
     });
   };
