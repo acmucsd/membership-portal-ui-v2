@@ -21,12 +21,14 @@ export default function withAccessType(
   const modified: GetServerSideProps = async (context: GetServerSidePropsContext) => {
     // Initialize variables
     const { req, res } = context;
-
     const originalReturnValue = await gssp(context);
-    // TODO: Save current URL so user can return here after logging in
+
+    // Save current URL so user can return here after logging in
+    const currentUrl = encodeURIComponent(req.url ?? '/');
+
     const safeRedirectToLogin = {
       redirect: {
-        destination: `${config.loginRoute}?redirect=`,
+        destination: `${config.loginRoute}?destination=${currentUrl}`,
         permanent: false,
       },
     };
@@ -35,7 +37,17 @@ export default function withAccessType(
     const userCookie = CookieService.getServerCookie(CookieType.USER, { req, res });
 
     // If cookie is misisng, we are not logged in so don't show the current page
-    if (!userCookie) return safeRedirectToLogin;
+    if (!userCookie) {
+      if (currentUrl === config.homeRoute) {
+        return {
+          redirect: {
+            destination: currentUrl,
+            permanent: false,
+          },
+        };
+      }
+      return safeRedirectToLogin;
+    }
 
     // Once we have the cookie, read the user data
     const user: PrivateProfile = JSON.parse(userCookie);
