@@ -1,9 +1,13 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
 import data from '@/lib/constants/majors.json';
-import { getNextNYears } from '@/lib/utils';
+import { AuthManager } from '@/lib/managers';
+import showToast from '@/lib/showToast';
+import { UserRegistration } from '@/lib/types/apiRequests';
+import { getMessagesFromError, getNextNYears } from '@/lib/utils';
 import type { NextPage } from 'next';
-import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BsPerson } from 'react-icons/bs';
 import { IoBookOutline } from 'react-icons/io5';
@@ -17,7 +21,7 @@ interface RegisterFormValues {
   password: string;
   confirmPassword: string;
   major: string;
-  gradYear: number;
+  graduationYear: number;
 }
 
 const RegisterPage: NextPage = () => {
@@ -28,8 +32,22 @@ const RegisterPage: NextPage = () => {
     formState: { errors },
   } = useForm<RegisterFormValues>();
 
-  const onSubmit = () => {
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<UserRegistration> = (userRegistration: UserRegistration) => {
     // TODO: Register onSubmit handler
+    console.log(userRegistration);
+    AuthManager.register({
+      ...userRegistration,
+      onSuccessCallback: () => {
+        showToast('Successfully registered account!');
+        router.push('/login');
+      },
+      onFailCallback: error => {
+        console.log(getMessagesFromError(error));
+        showToast('Error with email!', getMessagesFromError(error)[0]);
+      },
+    });
   };
 
   return (
@@ -120,8 +138,8 @@ const RegisterPage: NextPage = () => {
         element="select"
         options={getNextNYears(6)}
         placeholder="Graduation Year"
-        error={errors.gradYear}
-        formRegister={register('gradYear', {
+        error={errors.graduationYear}
+        formRegister={register('graduationYear', {
           valueAsNumber: true,
         })}
       />

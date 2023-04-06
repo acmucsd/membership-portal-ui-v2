@@ -1,7 +1,11 @@
 import { AuthAPI, UserAPI } from '@/lib/api';
 import { CookieService } from '@/lib/services';
 import { APIHandlerProps } from '@/lib/types';
-import { LoginRequest, SendPasswordResetEmailRequest } from '@/lib/types/apiRequests';
+import {
+  LoginRequest,
+  SendPasswordResetEmailRequest,
+  UserRegistration,
+} from '@/lib/types/apiRequests';
 import { CookieType } from '@/lib/types/enums';
 
 export default class AuthManager {
@@ -19,6 +23,16 @@ export default class AuthManager {
       const user = await UserAPI.getCurrentUser(token);
       CookieService.setClientCookie(CookieType.USER, JSON.stringify(user));
 
+      onSuccessCallback?.(user);
+    } catch (e: any) {
+      onFailCallback?.(e.response.data.error);
+    }
+  }
+
+  static async register(data: UserRegistration & APIHandlerProps): Promise<void> {
+    const { onSuccessCallback, onFailCallback, ...userRegistration } = data;
+    try {
+      const user = await AuthAPI.register(userRegistration);
       onSuccessCallback?.(user);
     } catch (e: any) {
       onFailCallback?.(e.response.data.error);

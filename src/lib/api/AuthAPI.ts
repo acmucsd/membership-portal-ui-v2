@@ -1,6 +1,11 @@
 import { config } from '@/lib';
-import { LoginRequest } from '@/lib/types/apiRequests';
-import { LoginResponse, SendPasswordResetEmailResponse } from '@/lib/types/apiResponses';
+import { LoginRequest, UserRegistration } from '@/lib/types/apiRequests';
+import {
+  LoginResponse,
+  PrivateProfile,
+  RegistrationResponse,
+  SendPasswordResetEmailResponse,
+} from '@/lib/types/apiResponses';
 
 import axios from 'axios';
 
@@ -16,6 +21,19 @@ export default class AuthAPI {
     const response = await axios.post<LoginResponse>(requestUrl, data);
 
     return response.data.token;
+  }
+
+  /**
+   * Make a register request to create a new user
+   * @param data UserRegistration info (email, name, major, etc.)
+   * @returns PrivateProfile containing user information on successful creation
+   */
+  static async register(user: UserRegistration): Promise<PrivateProfile> {
+    const requestUrl = `${config.api.baseUrl}${config.api.endpoints.auth.register}`;
+
+    const response = await axios.post<RegistrationResponse>(requestUrl, { user: user });
+
+    return response.data.user;
   }
 
   /**
