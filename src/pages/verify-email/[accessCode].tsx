@@ -60,8 +60,6 @@ export default VerifyEmail;
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const code = params?.accessCode as string;
 
-  console.log({ code });
-
   try {
     await AuthAPI.verifyEmail(code);
 
