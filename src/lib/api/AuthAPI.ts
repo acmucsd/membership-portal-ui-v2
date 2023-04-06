@@ -1,6 +1,6 @@
 import { config } from '@/lib';
 import { LoginRequest, UserRegistration } from '@/lib/types/apiRequests';
-import {
+import type {
   LoginResponse,
   PrivateProfile,
   RegistrationResponse,
