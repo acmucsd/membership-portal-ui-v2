@@ -37,7 +37,7 @@ const SignInFormItem = (props: SignInFormProps) => {
             type={type}
             placeholder={placeholder}
             style={{
-              height: inputHeight,
+              lineHeight: inputHeight,
             }}
             {...formRegister}
           />
