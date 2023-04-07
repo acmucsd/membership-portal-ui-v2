@@ -14,6 +14,7 @@ export default LogoutPage;
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   CookieService.deleteServerCookie(CookieType.USER, { req, res });
+  CookieService.deleteServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   return {
     redirect: {

@@ -41,6 +41,10 @@ export interface RegistrationRequest {
   user: UserRegistration;
 }
 
+export interface VerifyAccountRequest {
+  accessCode: string;
+}
+
 // USER
 
 export interface Feedback {
