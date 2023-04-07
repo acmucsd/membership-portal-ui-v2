@@ -4,7 +4,8 @@
     "airbnb",
     "prettier",
     "next",
-    "next/core-web-vitals"
+    "next/core-web-vitals",
+    "plugin:cypress/recommended"
   ],
   "plugins": [
     "prettier",
