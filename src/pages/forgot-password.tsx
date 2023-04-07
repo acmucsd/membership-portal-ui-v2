@@ -19,9 +19,7 @@ const ForgotPassword: NextPage = () => {
     formState: { errors },
   } = useForm<SendPasswordResetEmailRequest>();
 
-  const onSubmit: SubmitHandler<SendPasswordResetEmailRequest> = ({
-    email,
-  }: SendPasswordResetEmailRequest) => {
+  const onSubmit: SubmitHandler<SendPasswordResetEmailRequest> = ({ email }) => {
     AuthManager.sendPasswordResetEmail({
       email,
       onSuccessCallback: () => {

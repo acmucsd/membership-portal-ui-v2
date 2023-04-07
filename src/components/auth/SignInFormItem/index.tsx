@@ -17,12 +17,13 @@ interface FormItemProps {
   placeholder: string;
   formRegister: UseFormRegisterReturn;
   error: any;
+  inputHeight?: string;
 }
 
 type SignInFormProps = FormItemProps & (InputTypeProps | SelectTypeProps);
 
 const SignInFormItem = (props: SignInFormProps) => {
-  const { icon, placeholder, formRegister, element, error } = props;
+  const { icon, placeholder, formRegister, element, error, inputHeight } = props;
 
   if (element === 'input') {
     const { type } = props;
@@ -35,6 +36,9 @@ const SignInFormItem = (props: SignInFormProps) => {
             required
             type={type}
             placeholder={placeholder}
+            style={{
+              height: inputHeight,
+            }}
             {...formRegister}
           />
         </div>
@@ -50,7 +54,13 @@ const SignInFormItem = (props: SignInFormProps) => {
       <div className={styles.formItem}>
         <div className={styles.formInput}>
           <div className={styles.iconContainer}>{icon}</div>
-          <select {...formRegister} className={styles.selectField}>
+          <select
+            {...formRegister}
+            className={styles.selectField}
+            style={{
+              lineHeight: inputHeight,
+            }}
+          >
             {options.map(value => (
               <option key={value}>{value}</option>
             ))}

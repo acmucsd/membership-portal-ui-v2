@@ -1,9 +1,10 @@
 import { config } from '@/lib';
-import { LoginRequest, UserRegistration } from '@/lib/types/apiRequests';
-import type {
+import { LoginRequest, PasswordResetRequest, UserRegistration } from '@/lib/types/apiRequests';
+import {
   LoginResponse,
   PrivateProfile,
   RegistrationResponse,
+  ResetPasswordResponse,
   SendPasswordResetEmailResponse,
   VerifyEmailResponse,
 } from '@/lib/types/apiResponses';
@@ -55,5 +56,15 @@ export default class AuthAPI {
     const requestUrl = `${config.api.baseUrl}${config.api.endpoints.auth.emailVerification}/${accessCode}`;
 
     await axios.post<VerifyEmailResponse>(requestUrl);
+  }
+
+  /**
+   * Resets password for account by accessCode to new password provided
+   * @param data Request data of the user object with new password and access code
+   */
+  static async resetPassword(data: PasswordResetRequest): Promise<void> {
+    const requestUrl = `${config.api.baseUrl}${config.api.endpoints.auth.resetPassword}/${data.user.code}`;
+
+    await axios.post<ResetPasswordResponse>(requestUrl, data);
   }
 }

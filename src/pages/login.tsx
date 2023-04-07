@@ -27,7 +27,7 @@ const LoginPage: NextPage<LoginProps> = ({ destination }) => {
     formState: { errors },
   } = useForm<LoginRequest>();
 
-  const onSubmit: SubmitHandler<LoginRequest> = ({ email, password }: LoginRequest) => {
+  const onSubmit: SubmitHandler<LoginRequest> = ({ email, password }) => {
     AuthManager.login({
       email,
       password,
