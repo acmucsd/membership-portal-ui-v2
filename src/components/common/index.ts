@@ -1,4 +1,2 @@
-import Button from '@/components/common/Button';
-import VerticalForm from '@/components/common/VerticalForm';
-
-export { VerticalForm, Button };
+export { default as Button } from './Button';
+export { default as VerticalForm } from './VerticalForm';

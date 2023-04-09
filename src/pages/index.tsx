@@ -1,6 +1,6 @@
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
-import { PrivateProfile } from '@/lib/types/apiResponses';
+import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { GetServerSideProps } from 'next';
 
 interface HomePageProps {

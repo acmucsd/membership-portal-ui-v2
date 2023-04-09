@@ -1,7 +1,7 @@
 import { config } from '@/lib';
 import { EventManager } from '@/lib/managers';
 import { CookieService } from '@/lib/services';
-import { PrivateProfile } from '@/lib/types/apiResponses';
+import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { GetServerSideProps, NextPage } from 'next';
 

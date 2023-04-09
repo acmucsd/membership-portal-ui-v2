@@ -1,6 +1,5 @@
 import Navbar from '@/components/layout/Navbar';
-
-import { PrivateProfile } from '@/lib/types/apiResponses';
+import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { PropsWithChildren } from 'react';
 import styles from './style.module.scss';
 

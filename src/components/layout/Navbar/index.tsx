@@ -1,11 +1,11 @@
-import DarkModeToggle from '@/components/layout/DarkModeToggle';
 import { config } from '@/lib';
-import { PrivateProfile } from '@/lib/types/apiResponses';
+import type { PrivateProfile } from '@/lib/types/apiResponses';
 import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
 import ShopIcon from '@/public/assets/icons/shop-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { memo } from 'react';
+import DarkModeToggle from '../DarkModeToggle';
 import styles from './style.module.scss';
 
 interface NavbarProps {

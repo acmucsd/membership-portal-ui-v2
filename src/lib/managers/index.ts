@@ -1,5 +1,5 @@
-import AccountManager from '@/lib/managers/AccountManager';
-import AuthManager from '@/lib/managers/AuthManager';
-import EventManager from '@/lib/managers/EventManager';
+import * as AccountManager from './AccountManager';
+import * as AuthManager from './AuthManager';
+import * as EventManager from './EventManager';
 
-export { AuthManager, AccountManager, EventManager };
+export { AccountManager, AuthManager, EventManager };

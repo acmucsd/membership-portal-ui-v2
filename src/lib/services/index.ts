@@ -1,4 +1,5 @@
-import CookieService from '@/lib/services/CookieService';
-import PermissionService from '@/lib/services/PermissionService';
+import * as CookieService from './CookieService';
+import * as PermissionService from './PermissionService';
+import * as ValidationService from './ValidationService';
 
-export { CookieService, PermissionService };
+export { CookieService, PermissionService, ValidationService };

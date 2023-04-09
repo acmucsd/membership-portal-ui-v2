@@ -1,5 +1,5 @@
-import AuthAPI from '@/lib/api/AuthAPI';
-import EventAPI from '@/lib/api/EventAPI';
-import UserAPI from '@/lib/api/UserAPI';
+import * as AuthAPI from './AuthAPI';
+import * as EventAPI from './EventAPI';
+import * as UserAPI from './UserAPI';
 
 export { AuthAPI, EventAPI, UserAPI };

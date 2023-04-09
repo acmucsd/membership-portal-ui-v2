@@ -1,11 +1,11 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
+import { showToast } from '@/lib';
 import data from '@/lib/constants/majors.json';
 import { AuthManager } from '@/lib/managers';
-import ValidationService from '@/lib/services/ValidationService';
-import showToast from '@/lib/showToast';
-import { UserRegistration } from '@/lib/types/apiRequests';
-import { PrivateProfile } from '@/lib/types/apiResponses';
+import { ValidationService } from '@/lib/services';
+import type { UserRegistration } from '@/lib/types/apiRequests';
+import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { getMessagesFromError, getNextNYears } from '@/lib/utils';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';

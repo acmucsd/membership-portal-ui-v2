@@ -22,23 +22,23 @@ const validationError = (msg: string): ValidationResponse => ({
 });
 
 /**
- * Wrapper class to handle all logic for validating common input data field types
+ * Wrapper functions to handle all logic for validating common input data field types
  */
-export default class ValidationService {
-  public static isValidPassword(password: string): ValidationResponse {
-    if (!password) return validationError('Required');
-    if (password.length <= 8) return validationError('Password must be longer than 8 characters');
-    return success;
-  }
+export const isValidPassword = (password: string): ValidationResponse => {
+  if (!password) return validationError('Required');
+  if (password.length <= 8) return validationError('Password must be longer than 8 characters');
+  return success;
+};
 
-  public static isMatchingPassword(password: string, comparePassword: string): ValidationResponse {
-    if (password !== comparePassword) return validationError('Passwords Must Match');
-    return success;
-  }
-
-  public static isValidEmail(email: string): ValidationResponse {
-    if (!email) return validationError('Required');
-    if (!isEmail(email)) return validationError('Invalid email address');
-    return success;
-  }
-}
+export const isMatchingPassword = (
+  password: string,
+  comparePassword: string
+): ValidationResponse => {
+  if (password !== comparePassword) return validationError('Passwords Must Match');
+  return success;
+};
+export const isValidEmail = (email: string): ValidationResponse => {
+  if (!email) return validationError('Required');
+  if (!isEmail(email)) return validationError('Invalid email address');
+  return success;
+};
