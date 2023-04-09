@@ -10,5 +10,4 @@ jobs:
           APPROVALS: 1
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ADD_LABEL: 'PR: Good to Merge'
-          REMOVE_LABEL: |
-            "PR: Needs Review"
+          REMOVE_LABEL: 'PR: Needs Review'
