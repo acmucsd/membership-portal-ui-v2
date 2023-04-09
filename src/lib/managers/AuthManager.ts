@@ -3,6 +3,7 @@ import { CookieService } from '@/lib/services';
 import { APIHandlerProps } from '@/lib/types';
 import type {
   LoginRequest,
+  PasswordResetRequest,
   SendPasswordResetEmailRequest,
   UserRegistration,
 } from '@/lib/types/apiRequests';
@@ -29,6 +30,10 @@ export default class AuthManager {
     }
   }
 
+  /**
+   * Registers a new user account and provides callback
+   * @param data
+   */
   static async register(data: UserRegistration & APIHandlerProps): Promise<void> {
     const { onSuccessCallback, onFailCallback, ...userRegistration } = data;
     try {
@@ -50,6 +55,21 @@ export default class AuthManager {
 
     try {
       await AuthAPI.sendPasswordResetEmail(email);
+      onSuccessCallback?.();
+    } catch (e: any) {
+      onFailCallback?.(e.response.data.error);
+    }
+  }
+
+  /**
+   * Resets the account's password to the given value and provides callback
+   * @param data
+   */
+  static async resetPassword(data: PasswordResetRequest & APIHandlerProps): Promise<void> {
+    const { user, onSuccessCallback, onFailCallback } = data;
+
+    try {
+      await AuthAPI.resetPassword({ user });
       onSuccessCallback?.();
     } catch (e: any) {
       onFailCallback?.(e.response.data.error);
