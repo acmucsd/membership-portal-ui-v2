@@ -36,7 +36,7 @@ const RegisterPage: NextPage = () => {
 
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<UserRegistration> = (userRegistration: UserRegistration) => {
+  const onSubmit: SubmitHandler<UserRegistration> = userRegistration => {
     AuthManager.register({
       ...userRegistration,
       onSuccessCallback: (user: PrivateProfile) => {
@@ -66,6 +66,7 @@ const RegisterPage: NextPage = () => {
         formRegister={register('firstName', {
           required: 'Required',
         })}
+        inputHeight="1.5rem"
       />
       <SignInFormItem
         icon={<BsPerson />}
@@ -77,6 +78,7 @@ const RegisterPage: NextPage = () => {
         formRegister={register('lastName', {
           required: 'Required',
         })}
+        inputHeight="1.5rem"
       />
       <SignInFormItem
         icon={<AiOutlineMail />}
@@ -89,6 +91,7 @@ const RegisterPage: NextPage = () => {
           required: 'Required',
           validate: str => isEmail(str) || 'Invalid email address',
         })}
+        inputHeight="1.5rem"
       />
       <SignInFormItem
         icon={<VscLock />}
@@ -104,6 +107,7 @@ const RegisterPage: NextPage = () => {
             return true;
           },
         })}
+        inputHeight="1.5rem"
       />
       <SignInFormItem
         icon={<VscLock />}
@@ -121,6 +125,7 @@ const RegisterPage: NextPage = () => {
             return true;
           },
         })}
+        inputHeight="1.5rem"
       />
       <SignInFormItem
         icon={<IoBookOutline />}
@@ -130,6 +135,7 @@ const RegisterPage: NextPage = () => {
         placeholder="Major"
         error={errors.major}
         formRegister={register('major')}
+        inputHeight="1.25rem"
       />
       <SignInFormItem
         icon={<SlGraduation />}
@@ -141,6 +147,7 @@ const RegisterPage: NextPage = () => {
         formRegister={register('graduationYear', {
           valueAsNumber: true,
         })}
+        inputHeight="1.25rem"
       />
       <SignInButton
         type="button"
