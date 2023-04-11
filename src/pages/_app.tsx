@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { PageLayout } from '@/components/layout';
 import { CookieService } from '@/lib/services';
-import { PrivateProfile } from '@/lib/types/apiResponses';
+import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { NextPageContext } from 'next';
 import { ThemeProvider } from 'next-themes';

@@ -1,7 +1,7 @@
-import config from '@/lib/config';
+import { config } from '@/lib';
 import { CookieService } from '@/lib/services';
 import { URL } from '@/lib/types';
-import { PrivateProfile } from '@/lib/types/apiResponses';
+import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, UserAccessType } from '@/lib/types/enums';
 import * as _ from 'lodash';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';

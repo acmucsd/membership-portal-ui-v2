@@ -1,5 +1,2 @@
-import DarkModeToggle from '@/components/layout/DarkModeToggle';
-import Navbar from '@/components/layout/Navbar';
-import PageLayout from '@/components/layout/PageLayout';
-
-export { DarkModeToggle, Navbar, PageLayout };
+// eslint-disable-next-line import/prefer-default-export
+export { default as PageLayout } from './PageLayout';

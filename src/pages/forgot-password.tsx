@@ -2,7 +2,7 @@ import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { AuthManager } from '@/lib/managers';
-import ValidationService from '@/lib/services/ValidationService';
+import { ValidationService } from '@/lib/services';
 import type { SendPasswordResetEmailRequest } from '@/lib/types/apiRequests';
 import { getMessagesFromError } from '@/lib/utils';
 import type { NextPage } from 'next';

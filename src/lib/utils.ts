@@ -1,4 +1,4 @@
-import { CustomErrorBody, ValidatorError } from '@/lib/types/apiResponses';
+import type { CustomErrorBody, ValidatorError } from '@/lib/types/apiResponses';
 
 /**
  * Get next `num` years from today in a number array to generate dropdown options for future selections
