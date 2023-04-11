@@ -2,6 +2,7 @@ import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { AuthManager } from '@/lib/managers';
+import ValidationService from '@/lib/services/ValidationService';
 import { getMessagesFromError } from '@/lib/utils';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
@@ -51,14 +52,12 @@ const ResetPasswordPage = ({ code }: ResetPasswordProps) => {
         icon={<VscLock />}
         type="password"
         element="input"
-        name="password"
+        name="newPassword"
         placeholder="Password"
         formRegister={register('newPassword', {
-          required: 'Required',
-          validate: value => {
-            if (!value) return 'Required';
-            if (value.length <= 8) return 'Password must be longer than 8 characters';
-            return true;
+          validate: newPassword => {
+            const validation = ValidationService.isValidPassword(newPassword);
+            return validation.valid || validation.error;
           },
         })}
         error={errors.newPassword}
@@ -71,12 +70,14 @@ const ResetPasswordPage = ({ code }: ResetPasswordProps) => {
         placeholder="Confirm Password"
         formRegister={register('confirmPassword', {
           required: 'Required',
-          validate: value => {
-            if (!value) return 'Required';
-            if (value.length <= 8) return 'Password must be longer than 8 characters';
-            const newPassword = getValues('newPassword');
-            if (value !== newPassword) return 'Passwords Must Match';
-            return true;
+          validate: confirmPassword => {
+            const validPassword = ValidationService.isValidPassword(confirmPassword);
+            const matchingPassword = ValidationService.isMatchingPassword(
+              confirmPassword,
+              getValues('newPassword')
+            );
+            if (!validPassword.valid) return validPassword.error;
+            return matchingPassword.valid || matchingPassword.error;
           },
         })}
         error={errors.confirmPassword}

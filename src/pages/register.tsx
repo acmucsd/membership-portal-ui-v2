@@ -2,6 +2,7 @@ import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
 import data from '@/lib/constants/majors.json';
 import { AuthManager } from '@/lib/managers';
+import ValidationService from '@/lib/services/ValidationService';
 import showToast from '@/lib/showToast';
 import { UserRegistration } from '@/lib/types/apiRequests';
 import { PrivateProfile } from '@/lib/types/apiResponses';
@@ -14,7 +15,6 @@ import { BsPerson } from 'react-icons/bs';
 import { IoBookOutline } from 'react-icons/io5';
 import { SlGraduation } from 'react-icons/sl';
 import { VscLock } from 'react-icons/vsc';
-import isEmail from 'validator/lib/isEmail';
 
 interface RegisterFormValues {
   firstName: string;
@@ -88,8 +88,10 @@ const RegisterPage: NextPage = () => {
         placeholder="UCSD Email"
         error={errors.email}
         formRegister={register('email', {
-          required: 'Required',
-          validate: str => isEmail(str) || 'Invalid email address',
+          validate: email => {
+            const validation = ValidationService.isValidEmail(email);
+            return validation.valid || validation.error;
+          },
         })}
         inputHeight="1.5rem"
       />
@@ -101,10 +103,9 @@ const RegisterPage: NextPage = () => {
         placeholder="Password"
         error={errors.password}
         formRegister={register('password', {
-          validate: value => {
-            if (!value) return 'Required';
-            if (value.length <= 8) return 'Password must be longer than 8 characters';
-            return true;
+          validate: password => {
+            const validation = ValidationService.isValidPassword(password);
+            return validation.valid || validation.error;
           },
         })}
         inputHeight="1.5rem"
@@ -117,12 +118,14 @@ const RegisterPage: NextPage = () => {
         placeholder="Confirm Password"
         error={errors.confirmPassword}
         formRegister={register('confirmPassword', {
-          validate: value => {
-            if (!value) return 'Required';
-            if (value.length <= 8) return 'Password must be longer than 8 characters';
-            const password = getValues('password');
-            if (value !== password) return 'Passwords Must Match';
-            return true;
+          validate: confirmPassword => {
+            const validPassword = ValidationService.isValidPassword(confirmPassword);
+            const matchingPassword = ValidationService.isMatchingPassword(
+              confirmPassword,
+              getValues('password')
+            );
+            if (!validPassword.valid) return validPassword.error;
+            return matchingPassword.valid || matchingPassword.error;
           },
         })}
         inputHeight="1.5rem"

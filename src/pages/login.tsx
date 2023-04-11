@@ -3,6 +3,7 @@ import { VerticalForm } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { AuthManager } from '@/lib/managers';
 import { CookieService } from '@/lib/services';
+import ValidationService from '@/lib/services/ValidationService';
 import { URL } from '@/lib/types';
 import { LoginRequest } from '@/lib/types/apiRequests';
 import { CookieType } from '@/lib/types/enums';
@@ -12,7 +13,6 @@ import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineMail } from 'react-icons/ai';
 import { VscLock } from 'react-icons/vsc';
-import isEmail from 'validator/lib/isEmail';
 
 interface LoginProps {
   destination: URL;
@@ -48,8 +48,10 @@ const LoginPage: NextPage<LoginProps> = ({ destination }) => {
         type="email"
         placeholder="Email (user@ucsd.edu)"
         formRegister={register('email', {
-          required: 'Required',
-          validate: str => isEmail(str) || 'Invalid email address',
+          validate: email => {
+            const validation = ValidationService.isValidEmail(email);
+            return validation.valid || validation.error;
+          },
         })}
         error={errors.email}
       />
