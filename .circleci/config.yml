@@ -13,7 +13,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          command: yarn dev
+          command: next dev
           name: Start server
       - run:
           command: yarn test
@@ -22,6 +22,8 @@ jobs:
     executor: node/default
     steps:
       - checkout
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
           command: yarn lint
 workflows:
