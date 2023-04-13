@@ -23,6 +23,9 @@ jobs:
             wget --retry-connrefused --waitretry=1 --read-timeout=20 -t 10 http://localhost:3000
       # Run cypress tests
       - run:
+        name: Get Cypress
+        command: cypress install
+      - run:
           name: Running E2E tests
           command: yarn test
       # Save the test results to circleci to be used for insights
@@ -36,9 +39,6 @@ jobs:
       - store_artifacts:
           name: Save screenshots
           path: cypress/screenshots
-      - run:
-          command: yarn test
-          name: Run all tests
   lint:
     executor: node/default
     steps:
