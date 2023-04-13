@@ -1,5 +1,3 @@
-import * as AuthAPI from './AuthAPI';
-import * as EventAPI from './EventAPI';
-import * as UserAPI from './UserAPI';
-
-export { AuthAPI, EventAPI, UserAPI };
+export * as AuthAPI from './AuthAPI';
+export * as EventAPI from './EventAPI';
+export * as UserAPI from './UserAPI';
