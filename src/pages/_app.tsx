@@ -11,14 +11,13 @@ import { CookieType } from '@/lib/types/enums';
 import { NextPageContext } from 'next';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
-// eslint-disable-next-line camelcase
-import { DM_Sans } from 'next/font/google';
+import { DM_Sans as DMSans } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
 
 interface InitialPropInterface {
   user: PrivateProfile;
 }
-const dmSans = DM_Sans({ subsets: ['latin'], weight: ['400', '500', '700'] });
+const dmSans = DMSans({ subsets: ['latin'], weight: ['400', '500', '700'] });
 
 export default function MyApp({ Component, pageProps }: AppProps<InitialPropInterface>) {
   return (
