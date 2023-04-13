@@ -4,7 +4,7 @@ version: 2.1
 orbs:
   node: circleci/node@5.1.0
 jobs:
-  build_and_test:
+  test:
     executor: node/default
     docker:
       - image: cimg/node:18.1.0
@@ -15,6 +15,27 @@ jobs:
       - run:
           command: yarn run next dev
           name: Start server
+          background: true
+      # Wait for the server to be running before you start tests
+      - run:
+          shell: /bin/sh
+          command: |
+            wget --retry-connrefused --waitretry=1 --read-timeout=20 -t 10 http://localhost:3000
+      # Run cypress tests
+      - run:
+          name: Running E2E tests
+          command: yarn test
+      # Save the test results to circleci to be used for insights
+      - store_test_results:
+          path: cypress/results
+      # Store the videos in artifacts for debugging
+      - store_artifacts:
+          name: Save videos
+          path: cypress/videos
+      # Store the screenshots in artifacts for debugging
+      - store_artifacts:
+          name: Save screenshots
+          path: cypress/screenshots
       - run:
           command: yarn test
           name: Run all tests
@@ -31,7 +52,7 @@ workflows:
   test_and_deploy:
     jobs:
       - lint
-      - build_and_test
+      - test
 # orbs:
 #   cypress: cypress-io/cypress@3
 # jobs:
