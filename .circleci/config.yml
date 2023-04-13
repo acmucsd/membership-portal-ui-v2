@@ -1,35 +1,64 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-version: 2
+# https://circleci.com/docs/language-javascript/
+
+version: 2.1
+orbs:
+  node: circleci/node@5.1.0
 jobs:
-  lint:
+  build_and_test:
+    executor: node/default
     docker:
       - image: cimg/node:18.1.0
     steps:
       - checkout
-      - restore_cache:
-          key: package-cache-{{checksum "package.json"}}
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
-          command: yarn install
-      - save_cache:
-          key: package-cache-{{checksum "package.json"}}
-          paths:
-            - node_modules
+          command: yarn dev
+          name: Start server
       - run:
-          command: yarn run lint
-
+          command: yarn test
+          name: Run all tests
+  lint:
+    executor: node/default
+    steps:
+      - checkout
+      - run:
+          command: yarn lint
 workflows:
-  version: 2
-  weekly_rebase:
-    jobs:
-      - lint:
-          filters:
-            tags:
-              only: /^(v\d*\.\d*\.\d*)(?:-(\w*\d*))?/
-            branches:
-              ignore: /.*/
-
+  version: 2.1
   test_and_deploy:
     jobs:
       - lint
+      - build_and_test
+# orbs:
+#   cypress: cypress-io/cypress@3
+# jobs:
+#   lint:
+#     docker:
+#       - image: cimg/node:18.1.0
+#     steps:
+#       - checkout
+#       - restore_cache:
+#           key: package-cache-{{checksum "package.json"}}
+#       - run:
+#           command: yarn install
+#       - save_cache:
+#           key: package-cache-{{checksum "package.json"}}
+#           paths:
+#             - node_modules
+#       - run:
+#           command: yarn run lint
+
+# workflows:
+#   version: 2
+#   weekly_rebase:
+#     jobs:
+#       - lint:
+#           filters:
+#             tags:
+#               only: /^(v\d*\.\d*\.\d*)(?:-(\w*\d*))?/
+#             branches:
+#               ignore: /.*/
+#   test_and_deploy:
+#     jobs:
+#       - lint
