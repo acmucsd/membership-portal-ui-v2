@@ -1,5 +1,6 @@
 import { config } from '@/lib';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
+import LightModeLogo from '@/public/assets/acm-logos/general/light-mode.png';
 import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
 import ShopIcon from '@/public/assets/icons/shop-icon.svg';
 import Image from 'next/image';
@@ -17,12 +18,7 @@ const Navbar = ({ user }: NavbarProps) => {
       <header className={styles.header}>
         <div className={styles.content}>
           <Link href={config.homeRoute} className={styles.navLeft}>
-            <Image
-              src="/assets/acm-logos/general/light-mode.png"
-              alt="ACM General Logo"
-              width={48}
-              height={48}
-            />
+            <Image src={LightModeLogo} alt="ACM General Logo" width={48} height={48} />
             <span className={styles.headerTitle}>Membership Portal</span>
           </Link>
           <DarkModeToggle />
@@ -35,12 +31,7 @@ const Navbar = ({ user }: NavbarProps) => {
     <header className={styles.header}>
       <div className={styles.content}>
         <Link href={config.homeRoute} className={styles.icon}>
-          <Image
-            src="/assets/acm-logos/general/light-mode.png"
-            alt="ACM General Logo"
-            width={48}
-            height={48}
-          />
+          <Image src={LightModeLogo} alt="ACM General Logo" width={48} height={48} />
         </Link>
         <nav className={styles.portalLinks}>
           <Link href="/">Events</Link>
