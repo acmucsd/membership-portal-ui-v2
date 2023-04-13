@@ -11,19 +11,29 @@ import { CookieType } from '@/lib/types/enums';
 import { NextPageContext } from 'next';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
+import { DM_Sans as DMSans } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
 
 interface InitialPropInterface {
   user: PrivateProfile;
 }
+const dmSans = DMSans({ subsets: ['latin'], weight: ['400', '500', '700'] });
+
 export default function MyApp({ Component, pageProps }: AppProps<InitialPropInterface>) {
   return (
-    <ThemeProvider>
-      <ToastContainer />
-      <PageLayout user={pageProps?.user}>
-        <Component {...pageProps} />
-      </PageLayout>
-    </ThemeProvider>
+    <>
+      <style jsx global>{`
+        * {
+          font-family: ${dmSans.style.fontFamily}, sans-serif;
+        }
+      `}</style>
+      <ThemeProvider>
+        <ToastContainer />
+        <PageLayout user={pageProps?.user}>
+          <Component {...pageProps} />
+        </PageLayout>
+      </ThemeProvider>
+    </>
   );
 }
 
