@@ -1,3 +1,4 @@
+import { SEO } from '@/components/common';
 import Navbar from '@/components/layout/Navbar';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { PropsWithChildren } from 'react';
@@ -9,6 +10,7 @@ interface LayoutProps {
 
 const PageLayout = ({ user, children }: PropsWithChildren<LayoutProps>) => (
   <>
+    <SEO />
     <Navbar user={user} />
     <main className={styles.content}>{children}</main>
   </>
