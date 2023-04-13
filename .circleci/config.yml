@@ -13,7 +13,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          command: next dev
+          command: yarn run next dev
           name: Start server
       - run:
           command: yarn test
