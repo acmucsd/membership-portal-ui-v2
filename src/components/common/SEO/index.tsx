@@ -16,11 +16,11 @@ const SEO = () => {
       {/* link sharing data */}
 
       {/* page url to be used as permanent id */}
-      <meta property="og:url" content={`https://members.acmucsd.com`} />
+      <meta property="og:url" content="https://members.acmucsd.com" />
       {/* type of content */}
       <meta property="og:type" content="website" />
       {/* actual website title */}
-      <meta property="og:site_name" content={'ACM at UCSD'} />
+      <meta property="og:site_name" content="ACM at UCSD" />
       {/* title to display for the specific link being shared */}
       <meta property="og:title" content={TITLE} />
       {/* preview image */}
