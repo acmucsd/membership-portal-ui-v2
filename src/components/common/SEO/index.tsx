@@ -1,3 +1,4 @@
+import Logo from '@/public/assets/acm-logos/general/light-mode.png';
 import Head from 'next/head';
 
 const SEO = () => {
@@ -24,10 +25,7 @@ const SEO = () => {
       {/* title to display for the specific link being shared */}
       <meta property="og:title" content={TITLE} />
       {/* preview image */}
-      <meta
-        property="og:image"
-        content="https://cdn.discordapp.com/attachments/975657067031437332/1092620423281250335/Screenshot_2023-04-03_at_6.23.24_PM.jpg"
-      />
+      <meta property="og:image" content={Logo.src} />
       {/* preview description text */}
       <meta property="og:description" content={DESC} />
     </Head>
