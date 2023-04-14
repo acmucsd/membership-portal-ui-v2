@@ -8,6 +8,7 @@ import { PageLayout } from '@/components/layout';
 import { CookieService } from '@/lib/services';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import { Analytics } from '@vercel/analytics/react';
 import { NextPageContext } from 'next';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
@@ -17,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 interface InitialPropInterface {
   user: PrivateProfile;
 }
+
 const dmSans = DMSans({ subsets: ['latin'], weight: ['400', '500', '700'] });
 
 export default function MyApp({ Component, pageProps }: AppProps<InitialPropInterface>) {
@@ -27,6 +29,7 @@ export default function MyApp({ Component, pageProps }: AppProps<InitialPropInte
           font-family: ${dmSans.style.fontFamily}, sans-serif;
         }
       `}</style>
+      <Analytics />
       <ThemeProvider>
         <ToastContainer />
         <PageLayout user={pageProps?.user}>
