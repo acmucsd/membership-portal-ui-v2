@@ -3,7 +3,7 @@ import Head from 'next/head';
 const SEO = () => {
   const TITLE = 'ACM UCSD Membership Portal';
   const DESC =
-    'Join us. ACM at UCSD is an inclusive community of students passionate about technology. 1000+ UCSD members. 120+ annual events. 850+ cups of boba served.';
+    'Meet new friends, discover exciting events, and earn points for free ACM swag! Create an account today to find your community!';
 
   return (
     <Head>
