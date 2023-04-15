@@ -9,7 +9,11 @@ const DarkModeToggle = () => {
   useEffect(() => setToggled(theme === 'dark'), [theme]);
 
   return (
-    <Switch checked={toggled} onChange={() => setTheme(theme === 'light' ? 'dark' : 'light')} />
+    <Switch
+      checked={toggled}
+      onChange={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      inputProps={{ 'aria-label': 'theme' }}
+    />
   );
 };
 

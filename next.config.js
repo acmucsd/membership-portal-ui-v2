@@ -3,6 +3,10 @@ const nextConfig = {
   eslint: {
     dirs: ['.'],
   },
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
+  },
   images: {
     domains: ['acmucsd.s3.us-west-1.amazonaws.com'],
   },

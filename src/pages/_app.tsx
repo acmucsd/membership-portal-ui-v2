@@ -4,6 +4,7 @@ import '@/styles/themes.scss';
 import '@/styles/vars.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { SEO } from '@/components/common';
 import { PageLayout } from '@/components/layout';
 import { CookieService } from '@/lib/services';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
@@ -27,6 +28,7 @@ export default function MyApp({ Component, pageProps }: AppProps<InitialPropInte
           font-family: ${dmSans.style.fontFamily}, sans-serif;
         }
       `}</style>
+      <SEO />
       <ThemeProvider>
         <ToastContainer />
         <PageLayout user={pageProps?.user}>
