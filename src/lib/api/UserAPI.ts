@@ -4,8 +4,8 @@ import type {
   GetCurrentUserResponse,
   GetUserResponse,
   PrivateProfile,
+  PublicProfile,
 } from '@/lib/types/apiResponses';
-import { PublicProfile } from '@/lib/types/apiResponses';
 import axios from 'axios';
 
 /**

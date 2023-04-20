@@ -1,3 +1,4 @@
+import { config } from '@/lib';
 import { UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
@@ -27,7 +28,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
       },
     };
   } catch (err: any) {
-    return { redirect: { destination: '/', permanent: false } };
+    return { redirect: { destination: config.homeRoute, permanent: false } };
   }
 };
 
