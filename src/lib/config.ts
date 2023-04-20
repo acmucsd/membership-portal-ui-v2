@@ -9,6 +9,7 @@ const config = {
         user: '/user',
         activity: '/user/activity',
         profilepicture: '/user/picture',
+        handle: '/user/handle',
       },
       activity: '/activity',
       auth: {
