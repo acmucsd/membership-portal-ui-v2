@@ -301,3 +301,11 @@ export interface ResumePatches {
 export interface PatchResumeRequest {
   resume: ResumePatches;
 }
+
+export interface CreateDiscordEventRequest {
+  title: string;
+  start: Date;
+  end: Date;
+  description: string;
+  location: string;
+}

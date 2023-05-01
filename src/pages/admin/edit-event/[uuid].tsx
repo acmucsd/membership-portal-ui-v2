@@ -1,20 +1,38 @@
-import { config } from '@/lib';
+import { config, showToast } from '@/lib';
 import { EventAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
+import { AdminEventManager } from '@/lib/managers';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import type { GetServerSideProps } from 'next/types';
-import { useState } from 'react';
 
 interface EditEventProps {
   editEvent: PublicEvent;
 }
 
 const EditEvent = ({ editEvent }: EditEventProps) => {
-  const [eventWithChanges, setEventWithChanges] = useState(editEvent);
+  // const [eventWithChanges, setEventWithChanges] = useState(editEvent);
 
-  return <pre>{JSON.stringify(editEvent, null, 2)}</pre>;
+  const createDiscordEvent = () =>
+    AdminEventManager.createDiscordEvent({
+      ...editEvent,
+      onSuccessCallback: () => {
+        showToast('Successfully created event!', 'Check your server to confirm all details');
+      },
+      onFailCallback: e => {
+        showToast('error', e);
+      },
+    });
+
+  return (
+    <div>
+      <pre>{JSON.stringify(editEvent, null, 2)}</pre>
+      <button type="button" onClick={createDiscordEvent}>
+        Generate
+      </button>
+    </div>
+  );
 };
 
 export default EditEvent;

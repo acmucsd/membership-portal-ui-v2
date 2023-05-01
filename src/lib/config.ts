@@ -1,6 +1,8 @@
 const env = process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
 
+const USE_LOCAL_KLEFKI = false;
+
 const config = {
   api: {
     baseUrl: process.env.NEXT_PUBLIC_ACM_API_URL || 'https://testing.api.acmucsd.com/api/v2',
@@ -49,11 +51,16 @@ const config = {
     },
   },
   klefki: {
-    baseUrl: 'https://klefki.acmucsd.com/api/v1',
+    baseUrl: USE_LOCAL_KLEFKI
+      ? 'http://localhost:3000/api/v1'
+      : 'https://klefki.acmucsd.com/api/v1',
     key: process.env.NEXT_PUBLIC_TOTP_KEY ?? '',
     endpoints: {
       notion: {
         page: '/notion/page/',
+      },
+      discord: {
+        event: '/discord/event',
       },
     },
   },

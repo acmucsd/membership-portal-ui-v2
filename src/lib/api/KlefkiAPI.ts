@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { config } from '@/lib';
 import { URL } from '@/lib/types';
+import { CreateDiscordEventRequest } from '@/lib/types/apiRequests';
 import type { NotionEventDetails } from '@/lib/types/apiResponses';
 import axios from 'axios';
 import totp from 'totp-generator';
@@ -32,4 +33,15 @@ export const getNotionEventPage = async (pageUrl: URL): Promise<NotionEventDetai
   });
 
   return response.data;
+};
+
+export const createDiscordEvent = async (event: CreateDiscordEventRequest): Promise<void> => {
+  const { klefki } = config;
+  const requestUrl = `${klefki.baseUrl}${klefki.endpoints.discord.event}`;
+
+  await axios.post<void>(requestUrl, event, {
+    headers: {
+      Authorization: `Bearer ${generateToken(klefki.key)}`,
+    },
+  });
 };
