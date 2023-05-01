@@ -59,6 +59,7 @@ const config = {
   },
   homeRoute: '/',
   loginRoute: '/login',
+  admin: '/admin',
   isDevelopment,
 };
 

@@ -7,7 +7,7 @@ export const canEditMerchItems = (): UserAccessType[] => {
   return [UserAccessType.ADMIN, UserAccessType.MERCH_STORE_MANAGER];
 };
 
-export const canCreateEvent = (): UserAccessType[] => {
+export const canManageEvents = (): UserAccessType[] => {
   return [UserAccessType.ADMIN, UserAccessType.MARKETING];
 };
 
