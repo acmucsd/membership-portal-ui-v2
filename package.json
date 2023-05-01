@@ -28,6 +28,7 @@
     "@mui/material": "^5.11.6",
     "@next/env": "^13.2.4",
     "@svgr/webpack": "^6.5.1",
+    "@types/totp-generator": "^0.0.5",
     "axios": "^1.1.3",
     "axios-middleware": "^0.3.1",
     "cookies-next": "^2.1.1",
@@ -42,6 +43,7 @@
     "react-toastify": "^9.0.8",
     "sass": "^1.55.0",
     "sharp": "^0.31.3",
+    "totp-generator": "^0.0.14",
     "typescript": "^4.8.4",
     "validator": "^13.9.0"
   },

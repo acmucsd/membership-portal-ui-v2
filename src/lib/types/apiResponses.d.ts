@@ -415,3 +415,14 @@ export interface PublicResume {
 export interface PatchResumeResponse extends ApiResponse {
   resume: PublicResume;
 }
+
+export interface NotionEventDetails {
+  title: string;
+  organization: string[];
+  location: string;
+  description: string;
+  checkin: string;
+  start: string;
+  end: string;
+  acmurl: string;
+}

@@ -1631,6 +1631,11 @@
   resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.3.tgz#ff5e2f1902969d305225a047c8a0fd5c915cebef"
   integrity sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==
 
+"@types/totp-generator@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@types/totp-generator/-/totp-generator-0.0.5.tgz#5363c36b65a52ea33e2e6d7cf3a8172e759b224a"
+  integrity sha512-ryo6U5lfQg2/7pNQnpEXG49EPX7/cmRi/FX7sPBYO7QVJf0z6turM3km3w+98mpqlM4E+vkoOrN+gcjqCBmX0g==
+
 "@types/validator@^13.7.14":
   version "13.7.14"
   resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.7.14.tgz#5512aef43ba353ea2fe2d0d8c7ce71c75c2ad9e6"
@@ -4251,6 +4256,11 @@ jsprim@^2.0.2:
     json-schema "0.4.0"
     verror "1.10.0"
 
+jssha@^3.1.2:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/jssha/-/jssha-3.3.0.tgz#44b5531bcf55a12f4a388476c647a9a1cca92839"
+  integrity sha512-w9OtT4ALL+fbbwG3gw7erAO0jvS5nfvrukGPMWIAoea359B26ALXGpzy4YJSp9yGnpUvuvOw1nSjSoHDfWSr1w==
+
 "jsx-ast-utils@^2.4.1 || ^3.0.0", jsx-ast-utils@^3.3.3:
   version "3.3.3"
   resolved "https://registry.npmjs.org/jsx-ast-utils/-/jsx-ast-utils-3.3.3.tgz"
@@ -5856,6 +5866,13 @@ to-regex-range@^5.0.1:
   integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
   dependencies:
     is-number "^7.0.0"
+
+totp-generator@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/totp-generator/-/totp-generator-0.0.14.tgz#c136bcb4030f9cab5b10ecd82d15cd2d5518234a"
+  integrity sha512-vFZ8N2TdF4mCj8bUW460jI73LqS+JKccsZ8cttQSuXa3dkTmZo8q81Pq2yAuiPxCI5fPfUrfaKuU+7adjx5s4w==
+  dependencies:
+    jssha "^3.1.2"
 
 tough-cookie@~2.5.0:
   version "2.5.0"

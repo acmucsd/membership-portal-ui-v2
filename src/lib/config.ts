@@ -48,6 +48,15 @@ const config = {
       },
     },
   },
+  klefki: {
+    baseUrl: 'https://klefki.acmucsd.com/api/v1',
+    key: process.env.NEXT_PUBLIC_TOTP_KEY ?? '',
+    endpoints: {
+      notion: {
+        page: '/notion/page/',
+      },
+    },
+  },
   homeRoute: '/',
   loginRoute: '/login',
   isDevelopment,
