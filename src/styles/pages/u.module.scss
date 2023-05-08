@@ -1,0 +1,81 @@
+@use 'src/styles/vars.scss' as vars;
+
+.profilePage {
+  margin: auto;
+  max-width: 960px;
+  position: relative;
+  width: 70%;
+
+  .cardWrapper {
+    padding: 5rem 0 0;
+    position: relative;
+  
+    .banner {
+      background-color: vars.$pink-2;
+      border-radius: 0.5rem;
+      height: 10rem;
+      overflow: visible;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+    
+    .profileCard {
+      background-color: var(--theme-background);
+      border-radius: 0.25rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+      display: flex;
+      margin: 0 2rem;
+      padding: 1rem 2rem;
+      position: relative;
+      z-index: 1;
+  
+      h1 {
+        font-size: vars.$card-heading-1;
+      }
+  
+      h2 {
+        font-size: vars.$card-heading-2;
+        font-weight: 500;
+        margin-top: 1rem;
+      }
+  
+      h3 {
+        font-size: vars.$card-heading-3;
+        font-weight: 200;
+        margin-top: 0.5rem;
+      }
+      
+      .cardHalf {
+        flex-grow: 1;
+      }
+  
+      .profilePic {
+        border-radius: 4rem;
+        height: 8rem;
+        width: 8rem;
+      }
+  
+      .iconBox {
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+  
+  .about {
+    border: 2px solid var(--theme-primary-1);
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    padding: 1rem;
+  
+    h1 {
+      font-size: vars.$card-heading-1;
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  .horizontal {
+    display: flex;
+  }  
+}
