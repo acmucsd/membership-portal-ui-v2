@@ -1,4 +1,6 @@
 export type Styles = {
+  mobileNavItem: string | undefined;
+  mobile: boolean;
   content: string;
   header: string;
   headerTitle: string;
@@ -8,6 +10,13 @@ export type Styles = {
   navLeft: string;
   portalLinks: string;
   wainbow: string;
+  mobileNav: string;
+  open: string;
+  navItem: string;
+  toggleIcon: string;
+  bar1: string;
+  bar2: string;
+  hidden: string;
 };
 
 export type ClassNames = keyof Styles;

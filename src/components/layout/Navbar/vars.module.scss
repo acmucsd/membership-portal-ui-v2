@@ -1,0 +1,8 @@
+/* stylelint-disable property-no-unknown */
+@use 'src/styles/vars.scss' as vars;
+
+:export {
+  breakpointLg: vars.$breakpoint-lg;
+  breakpointMd: vars.$breakpoint-md;
+  breakpointSm: vars.$breakpoint-sm;
+}
