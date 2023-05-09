@@ -1,0 +1,129 @@
+@use 'src/styles/vars.scss' as vars;
+
+//am I doing this correctly?
+
+.leaderboardCard {
+  &.first {
+    background-color: var(--theme-gold);
+
+    &:hover .cardRight {
+      background-color: var(--theme-gold-hover);
+    }
+  }
+
+  &.second {
+    background-color: var(--theme-silver);
+
+    &:hover .cardRight {
+      background-color: var(--theme-silver-hover);
+    }
+  }
+
+  &.third {
+    background-color: var(--theme-bronze);
+
+    &:hover .cardRight {
+      background-color: var(--theme-bronze-hover);
+    }
+  }
+
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;
+  height: vars.$leaderboard-card-height;
+  padding: 8px;
+  width: vars.$leaderboard-card-width;
+
+  .cardLeft {
+    color: rgba(46, 48, 54, 0.3);
+    display: grid;
+    font-size: 80px;
+
+    font-weight: 500;
+    height: 100%;
+    line-height: 104px;
+    place-items: center;
+    width: 89px;
+  }
+
+  .cardRight {
+    align-items: center;
+    background-color: var(--theme-background);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    padding: 16px 32px;
+    width: 165px;
+
+    .cardText {
+      color: var(--theme-text-on-background-1);
+      /* Desktop/H6/Medium */
+
+      //font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+    }
+
+    .profileImage {
+      border: 1px solid #000;
+      border-radius: 50%;
+      height: 80px;
+      object-fit: cover;
+      width: 80px;
+    }
+  }
+}
+
+/*
+.position {
+  color: rgba(46, 48, 54, 0.3);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 80px;
+  font-style: normal;
+  font-weight: 500;
+  height: 104px;
+  line-height: 104px;
+  width: 26px;
+}
+
+.cardProfile {
+  align-items: center;
+  align-self: stretch;
+  //is there a way to account for dark mode? like conditional css
+
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+
+   Inside auto layout 
+
+  flex: none;
+  flex-direction: column;
+  flex-grow: 0;
+  gap: 8px;
+  height: 204px;
+  justify-content: space-between;
+  order: 1;
+  padding: 16px 32px;
+
+  width: 165px;
+}
+
+img {
+  background: url('image.png');
+
+  border: 1px solid #2e3036;
+  border-radius: 100px;
+  box-sizing: border-box;
+
+  flex: none;
+  flex-grow: 0;
+  height: 78px;
+  order: 0;
+
+  width: 78px;
+}
+*/
