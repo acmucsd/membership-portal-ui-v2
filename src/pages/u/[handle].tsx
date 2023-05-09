@@ -5,7 +5,7 @@ import { CookieService, PermissionService } from '@/lib/services';
 import type { PublicProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import defaultProfilePicture from '@/public/assets/profile-pics/adorable0.png';
-import styles from '@/styles/pages/u.module.scss';
+import styles from '@/styles/pages/user-profile.module.scss';
 import Image from 'next/image';
 import type { GetServerSideProps } from 'next/types';
 
@@ -14,7 +14,6 @@ interface UserProfilePageProps {
 }
 
 const UserProfilePage = ({ user }: UserProfilePageProps) => {
-  // return <pre>{JSON.stringify(user, null, 2)}</pre>;
   return (
     <div className={styles.profilePage}>
       <div className={styles.cardWrapper}>
@@ -22,11 +21,13 @@ const UserProfilePage = ({ user }: UserProfilePageProps) => {
         <div className={styles.profileCard}>
           <div className={styles.cardHalf}>
             <div className={styles.horizontal}>
-              <Image
-                src={user.profilePicture ?? defaultProfilePicture}
-                alt="Profile Picture"
-                className={styles.profilePic}
-              />
+              <div className={styles.profilePic}>
+                <Image
+                  src={user.profilePicture ?? defaultProfilePicture}
+                  alt="Profile Picture"
+                  fill
+                />
+              </div>
               <div style={{ marginLeft: '1rem' }}>
                 <h1>{`${user.firstName} ${user.lastName}`}</h1>
                 <h3>@{user.handle}</h3>
@@ -45,7 +46,7 @@ const UserProfilePage = ({ user }: UserProfilePageProps) => {
 
       <div className={styles.about}>
         <h1>About me</h1>
-        <p>{user.bio ?? <i>Nothing here...</i>}</p>
+        <p>{'' || <i>Nothing here...</i>}</p>
       </div>
     </div>
   );
