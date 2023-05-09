@@ -4,7 +4,7 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PublicProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import defaultProfilePicture from '@/public/assets/profile-pics/adorable0.png';
+import { getDefaultAvatarSrc } from '@/lib/utils';
 import styles from '@/styles/pages/user-profile.module.scss';
 import Image from 'next/image';
 import type { GetServerSideProps } from 'next/types';
@@ -23,7 +23,7 @@ const UserProfilePage = ({ user }: UserProfilePageProps) => {
             <div className={styles.horizontal}>
               <div className={styles.profilePic}>
                 <Image
-                  src={user.profilePicture ?? defaultProfilePicture}
+                  src={user.profilePicture ?? getDefaultAvatarSrc()}
                   alt="Profile Picture"
                   fill
                 />

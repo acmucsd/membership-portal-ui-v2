@@ -27,3 +27,15 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
 
   return errBody.errors.map(err => getAllErrMessages(err)).flat();
 };
+
+/**
+ * Get a random default avatar
+ * @returns string path to an avatar .png, suitable for use as src for a Next Image component
+ */
+export const getDefaultAvatarSrc = (): string => {
+  const PROFILE_PIC_PATH = '/assets/profile-pics/';
+  const NUM_PROFILE_PICS = 9;
+
+  const i = Math.floor(Math.random() * NUM_PROFILE_PICS);
+  return `${PROFILE_PIC_PATH}adorable${i}.png`;
+};
