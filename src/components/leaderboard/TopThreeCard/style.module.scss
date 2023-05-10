@@ -3,7 +3,7 @@
 //am I doing this correctly?
 
 .leaderboardCard {
-  &.first {
+  &[data-position='first'] {
     background-color: var(--theme-gold);
 
     &:hover .cardRight {
@@ -11,7 +11,7 @@
     }
   }
 
-  &.second {
+  &[data-position='second'] {
     background-color: var(--theme-silver);
 
     &:hover .cardRight {
@@ -19,7 +19,7 @@
     }
   }
 
-  &.third {
+  &[data-position='third'] {
     background-color: var(--theme-bronze);
 
     &:hover .cardRight {
@@ -35,7 +35,7 @@
   width: vars.$leaderboard-card-width;
 
   .cardLeft {
-    color: rgba(46, 48, 54, 0.3);
+    color: vars.$leaderboard-position-text;
     display: grid;
     font-size: 80px;
 
