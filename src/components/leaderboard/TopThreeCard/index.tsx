@@ -1,5 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
-import styles from '@/components/leaderboard/TopThreeCard/style.module.scss';
+import Image from 'next/image';
+import styles from './style.module.scss';
 
 interface UserCardProps {
   position: 1 | 2 | 3;
@@ -16,10 +16,13 @@ const TopUserCard = ({ position, rank, name, points, image }: UserCardProps) => 
     <div className={styles.leaderboardCard} data-position={positionNames[position - 1]}>
       <div className={styles.cardLeft}>{position}</div>
       <div className={styles.cardRight}>
-        {
-          // eslint-disable-next- @next/next/no-img-element
-        }
-        <img className={styles.profileImage} src={image} alt="User Profile Pic" />
+        <Image
+          className={styles.profileImage}
+          src={image}
+          alt="User Profile Pic"
+          width={80}
+          height={80}
+        />
         <span className={styles.cardText}>{trimName}</span>
         <span className={styles.cardText}>{rank}</span>
         <span className={styles.cardText}>{points} points</span>
