@@ -145,8 +145,8 @@
       width: 40px;
 
       &.open {
-        transform: rotate(-45deg) translateY(-10px);
-        transform-origin: top right;
+        transform: rotate(45deg) translateY(-10px);
+        transform-origin: top left;
       }
     }
 
@@ -161,8 +161,8 @@
       width: 24px;
 
       &.open {
-        transform: rotate(45deg) translateY(10px);
-        transform-origin: bottom right;
+        transform: rotate(-45deg) translateY(10px);
+        transform-origin: bottom left;
         width: 40px;
       }
     }
