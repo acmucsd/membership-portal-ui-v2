@@ -1,4 +1,5 @@
 import { config } from '@/lib';
+import { useWindowSize } from '@/lib/hooks/useWindowSize';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import LightModeLogo from '@/public/assets/acm-logos/general/light-mode.png';
 import ACMIcon from '@/public/assets/icons/acm-icon.svg';
@@ -9,7 +10,6 @@ import ShopIcon from '@/public/assets/icons/shop-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { memo, useEffect, useState } from 'react';
-import { useWindowSize } from '../../../lib/utils';
 import DarkModeToggle from '../DarkModeToggle';
 import styles from './style.module.scss';
 import vars from './vars.module.scss';
