@@ -1,22 +1,21 @@
 export type Styles = {
-  mobileNavItem: string | undefined;
-  mobile: boolean;
+  bar1: string;
+  bar2: string;
   content: string;
   header: string;
   headerTitle: string;
+  hidden: string;
   icon: string;
   iconLink: string;
   iconLinks: string;
-  navLeft: string;
-  portalLinks: string;
-  wainbow: string;
+  mobile: string;
   mobileNav: string;
+  mobileNavItem: string;
+  navLeft: string;
   open: string;
-  navItem: string;
+  portalLinks: string;
   toggleIcon: string;
-  bar1: string;
-  bar2: string;
-  hidden: string;
+  wainbow: string;
 };
 
 export type ClassNames = keyof Styles;

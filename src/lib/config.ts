@@ -47,6 +47,9 @@ const config = {
       },
     },
   },
+  cssVars: {
+    breakpointMd: 768,
+  },
   homeRoute: '/',
   loginRoute: '/login',
   isDevelopment,

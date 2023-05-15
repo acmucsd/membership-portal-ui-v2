@@ -12,7 +12,6 @@ import Link from 'next/link';
 import { memo, useEffect, useState } from 'react';
 import DarkModeToggle from '../DarkModeToggle';
 import styles from './style.module.scss';
-import vars from './vars.module.scss';
 
 interface NavbarProps {
   user: PrivateProfile;
@@ -26,7 +25,7 @@ const Navbar = ({ user }: NavbarProps) => {
 
   // Switch to mobile less than breakpointMd
   useEffect(() => {
-    setMobile((size.width || 0) <= parseInt(vars.breakpointMd || '768', 10));
+    setMobile((size.width || 0) <= config.cssVars.breakpointMd);
   }, [size]);
 
   // If they go back to desktop size, don't keep the menu open
