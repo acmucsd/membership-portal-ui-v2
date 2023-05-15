@@ -1,3 +1,4 @@
+import { trimName } from '@/lib/utils';
 import Image from 'next/image';
 import styles from './style.module.scss';
 
@@ -11,7 +12,6 @@ interface UserCardProps {
 const positionNames = ['first', 'second', 'third'];
 
 const TopUserCard = ({ position, rank, name, points, image }: UserCardProps) => {
-  const trimName = name.length >= 25 ? `${name.substring(0, 24)}...` : name;
   return (
     <div className={styles.leaderboardCard} data-position={positionNames[position - 1]}>
       <div className={styles.cardLeft}>{position}</div>
@@ -23,7 +23,7 @@ const TopUserCard = ({ position, rank, name, points, image }: UserCardProps) => 
           width={80}
           height={80}
         />
-        <span className={styles.cardText}>{trimName}</span>
+        <span className={styles.cardText}>{trimName(name, 25)}</span>
         <span className={styles.cardText}>{rank}</span>
         <span className={styles.cardText}>{points} points</span>
       </div>
