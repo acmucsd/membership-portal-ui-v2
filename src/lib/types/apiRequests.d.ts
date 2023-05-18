@@ -134,8 +134,8 @@ export interface Event extends OptionalEventProperties {
   title: string;
   description: string;
   location: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   attendanceCode: string;
   pointValue: number;
 }
@@ -143,8 +143,17 @@ export interface Event extends OptionalEventProperties {
 export interface GetEventRequest {
   event: UUID;
 }
+
+export interface DeleteEventRequest {
+  event: UUID;
+}
+
 export interface CreateEventRequest {
   event: Event;
+}
+
+export interface UploadEventImageRequest {
+  cover: File;
 }
 
 export interface PatchEventRequest {
@@ -304,8 +313,8 @@ export interface PatchResumeRequest {
 
 export interface CreateDiscordEventRequest {
   title: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   description: string;
   location: string;
 }

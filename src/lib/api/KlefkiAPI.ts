@@ -1,8 +1,7 @@
-/* eslint-disable import/prefer-default-export */
 import { config } from '@/lib';
 import { URL } from '@/lib/types';
 import { CreateDiscordEventRequest } from '@/lib/types/apiRequests';
-import type { NotionEventDetails } from '@/lib/types/apiResponses';
+import type { NotionEventDetails, NotionEventPreview } from '@/lib/types/apiResponses';
 import axios from 'axios';
 import totp from 'totp-generator';
 
@@ -44,4 +43,19 @@ export const createDiscordEvent = async (event: CreateDiscordEventRequest): Prom
       Authorization: `Bearer ${generateToken(klefki.key)}`,
     },
   });
+};
+
+export const getFutureEventsPreview = async (): Promise<NotionEventPreview[]> => {
+  const { klefki } = config;
+  const requestUrl = `${klefki.baseUrl}${klefki.endpoints.notion.events}`;
+
+  const response = await axios.get<NotionEventPreview[]>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${generateToken(klefki.key)}`,
+    },
+  });
+
+  return response.data.sort(
+    (a, b) => new Date(a.date.start).getTime() - new Date(b.date.start).getTime()
+  );
 };

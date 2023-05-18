@@ -1,7 +1,9 @@
+import Cat from '@/public/assets/graphics/cat404.png';
+
 const env = process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
 
-const USE_LOCAL_KLEFKI = false;
+const USE_LOCAL_KLEFKI = true;
 
 const config = {
   api: {
@@ -58,6 +60,7 @@ const config = {
     endpoints: {
       notion: {
         page: '/notion/page/',
+        events: '/notion/events/upcoming',
       },
       discord: {
         event: '/discord/event',
@@ -67,7 +70,11 @@ const config = {
   homeRoute: '/',
   loginRoute: '/login',
   admin: '/admin',
+  defaultEventImage: Cat,
   isDevelopment,
+  file: {
+    MAX_EVENT_COVER_SIZE_KB: isDevelopment ? 256 : 2048,
+  },
 };
 
 export default config;

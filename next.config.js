@@ -8,7 +8,10 @@ const nextConfig = {
     defaultLocale: 'en',
   },
   images: {
-    domains: ['acmucsd.s3.us-west-1.amazonaws.com'],
+    domains: [
+      'acmucsd.s3.us-west-1.amazonaws.com',
+      'acmucsd-membership-portal.s3.us-west-1.amazonaws.com',
+    ],
   },
   poweredByHeader: false,
   trailingSlash: false,

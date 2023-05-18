@@ -1,4 +1,4 @@
-import { MerchItemOptionMetadata, UUID } from '.';
+import { MerchItemOptionMetadata, URL, UUID } from '.';
 import {
   ActivityScope,
   ActivityType,
@@ -108,8 +108,8 @@ export interface PublicEvent {
   description: string;
   location: string;
   eventLink: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   attendanceCode?: string;
   pointValue: number;
   requiresStaff: boolean;
@@ -425,4 +425,13 @@ export interface NotionEventDetails {
   start: string;
   end: string;
   acmurl: string;
+}
+
+export interface NotionEventPreview {
+  title: string;
+  date: {
+    start: string;
+    end: string;
+  };
+  url: URL;
 }
