@@ -1,5 +1,5 @@
 import { EventAPI } from '@/lib/api';
-import type { AuthAPIHandlerProps } from '@/lib/types';
+import type { APIHandlerProps, AuthAPIHandlerProps } from '@/lib/types';
 import type { GetEventRequest } from '@/lib/types/apiRequests';
 import type { PublicEvent } from '@/lib/types/apiResponses';
 
@@ -29,13 +29,11 @@ export const getEvent = async (
  * @param data Request parameters object
  * @returns Array of all lifetime events
  */
-export const getAllEvents = async (
-  data: AuthAPIHandlerProps
-): Promise<PublicEvent[] | undefined> => {
-  const { token, onSuccessCallback, onFailCallback } = data;
+export const getAllEvents = async (data: APIHandlerProps): Promise<PublicEvent[] | undefined> => {
+  const { onSuccessCallback, onFailCallback } = data;
 
   try {
-    const eventArray = await EventAPI.getAllEvents(token);
+    const eventArray = await EventAPI.getAllEvents();
 
     onSuccessCallback?.(eventArray);
     return eventArray;

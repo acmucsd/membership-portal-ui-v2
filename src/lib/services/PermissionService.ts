@@ -1,15 +1,17 @@
-import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { UserAccessType } from '@/lib/types/enums';
 
 /**
  * Wrapper class to manage permissions by helping setting restrictions and validating permissions across the application
  */
-export const canEditMerchItems = (user: PrivateProfile) => {
-  const validAccess = [UserAccessType.ADMIN, UserAccessType.MERCH_STORE_MANAGER];
-  return validAccess.includes(user.accessType);
+export const canEditMerchItems = (): UserAccessType[] => {
+  return [UserAccessType.ADMIN, UserAccessType.MERCH_STORE_MANAGER];
 };
 
-export const canViewAdminPage = () => {
+export const canManageEvents = (): UserAccessType[] => {
+  return [UserAccessType.ADMIN, UserAccessType.MARKETING];
+};
+
+export const canViewAdminPage = (): UserAccessType[] => {
   return [
     UserAccessType.ADMIN,
     UserAccessType.MARKETING,

@@ -1,5 +1,9 @@
+import Cat from '@/public/assets/graphics/cat404.png';
+
 const env = process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
+
+const USE_LOCAL_KLEFKI = false;
 
 const config = {
   api: {
@@ -48,9 +52,29 @@ const config = {
       },
     },
   },
+  klefki: {
+    baseUrl: USE_LOCAL_KLEFKI
+      ? 'http://localhost:3000/api/v1'
+      : 'https://klefki.acmucsd.com/api/v1',
+    key: process.env.NEXT_PUBLIC_TOTP_KEY ?? '',
+    endpoints: {
+      notion: {
+        page: '/notion/page/',
+        events: '/notion/events/upcoming',
+      },
+      discord: {
+        event: '/discord/event',
+      },
+    },
+  },
   homeRoute: '/',
   loginRoute: '/login',
+  admin: '/admin',
+  defaultEventImage: Cat,
   isDevelopment,
+  file: {
+    MAX_EVENT_COVER_SIZE_KB: isDevelopment ? 256 : 2048,
+  },
 };
 
 export default config;

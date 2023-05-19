@@ -2,11 +2,15 @@ import { config } from '@/lib';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import { GetServerSideProps, NextPage } from 'next';
+import Link from 'next/link';
 
 const AdminPage: NextPage = () => {
   return (
     <div>
       <h1>Portal Admin Page</h1>
+      <Link href="/admin/event">Manage Events</Link>
+      <br />
+      <Link href="/admin/event/create">Create Event</Link>
     </div>
   );
 };

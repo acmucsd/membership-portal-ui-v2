@@ -1,7 +1,9 @@
 import { config } from '@/lib';
+import { PermissionService } from '@/lib/services';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import LightModeLogo from '@/public/assets/acm-logos/general/light-mode.png';
 import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
+import SettingsIcon from '@/public/assets/icons/setting-icon.svg';
 import ShopIcon from '@/public/assets/icons/shop-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -27,6 +29,8 @@ const Navbar = ({ user }: NavbarProps) => {
       </header>
     );
 
+  const isAdmin = PermissionService.canViewAdminPage().includes(user.accessType);
+
   return (
     <header className={styles.header}>
       <div className={styles.content}>
@@ -42,6 +46,11 @@ const Navbar = ({ user }: NavbarProps) => {
         </nav>
         <nav className={styles.iconLinks}>
           <DarkModeToggle />
+          {isAdmin ? (
+            <Link href="/admin" className={styles.iconLink}>
+              <SettingsIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
+            </Link>
+          ) : null}
           <Link href="/store" className={styles.iconLink}>
             <ShopIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
           </Link>

@@ -27,3 +27,8 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
 
   return errBody.errors.map(err => getAllErrMessages(err)).flat();
 };
+
+export const copy = async (text: string): Promise<void> => {
+  if (window === undefined) return;
+  await window.navigator.clipboard.writeText(text);
+};
