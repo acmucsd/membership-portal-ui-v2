@@ -3,7 +3,7 @@ import Cat from '@/public/assets/graphics/cat404.png';
 const env = process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
 
-const USE_LOCAL_KLEFKI = true;
+const USE_LOCAL_KLEFKI = false;
 
 const config = {
   api: {
