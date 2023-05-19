@@ -1,7 +1,5 @@
 @use 'src/styles/vars.scss' as vars;
 
-//am I doing this correctly?
-
 .leaderboardCard {
   &[data-position='first'] {
     background-color: var(--theme-gold);
@@ -59,9 +57,7 @@
 
     .cardText {
       color: var(--theme-text-on-background-1);
-      /* Desktop/H6/Medium */
 
-      //font-family: 'DM Sans', sans-serif;
       font-size: 14px;
       font-weight: 500;
       line-height: 20px;
@@ -74,54 +70,3 @@
     }
   }
 }
-
-/*
-.position {
-  color: rgba(46, 48, 54, 0.3);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 80px;
-  font-style: normal;
-  font-weight: 500;
-  height: 104px;
-  line-height: 104px;
-  width: 26px;
-}
-
-.cardProfile {
-  align-items: center;
-  align-self: stretch;
-  //is there a way to account for dark mode? like conditional css
-
-  background: #fff;
-  border-radius: 8px;
-  display: flex;
-
-   Inside auto layout 
-
-  flex: none;
-  flex-direction: column;
-  flex-grow: 0;
-  gap: 8px;
-  height: 204px;
-  justify-content: space-between;
-  order: 1;
-  padding: 16px 32px;
-
-  width: 165px;
-}
-
-img {
-  background: url('image.png');
-
-  border: 1px solid #2e3036;
-  border-radius: 100px;
-  box-sizing: border-box;
-
-  flex: none;
-  flex-grow: 0;
-  height: 78px;
-  order: 0;
-
-  width: 78px;
-}
-*/

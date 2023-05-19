@@ -1,4 +1,4 @@
-import TopUserCard from '@/components/leaderboard/TopThreeCard';
+import { TopUserCard } from '@/components/leaderboard';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import { GetServerSideProps } from 'next';

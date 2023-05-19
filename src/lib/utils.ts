@@ -31,5 +31,5 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
 // function to trim strings too long to fit on component
 // returns truncated string of desired length with ...
 export const trimName = (name: string, len: number) => {
-  return name.length >= len ? `${name.substring(0, 24)}...` : name;
+  return name.length >= len ? `${name.substring(0, len - 1)}...` : name;
 };
