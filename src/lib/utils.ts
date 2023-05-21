@@ -54,7 +54,10 @@ export const getProfilePicture = (user: PublicProfile): URL => {
   return path;
 };
 
-// TODO: Define all ranks
+// TODO: Define all ranks and logic for this
 export const getUserRank = (user: PublicProfile): string => {
-  return 'Polynomial Pita';
+  const ranks = ['Polynomial Pita', 'Factorial Flatbread'];
+  const index = user.points % 2;
+
+  return ranks[index] ?? '';
 };
