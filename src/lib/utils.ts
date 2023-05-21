@@ -1,4 +1,6 @@
-import type { CustomErrorBody, ValidatorError } from '@/lib/types/apiResponses';
+import defaultProfilePictures from '@/lib/constants/profilePictures';
+import { URL } from '@/lib/types';
+import type { CustomErrorBody, PublicProfile, ValidatorError } from '@/lib/types/apiResponses';
 
 /**
  * Get next `num` years from today in a number array to generate dropdown options for future selections
@@ -39,4 +41,20 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
  */
 export const trim = (text: string, len: number) => {
   return text.length > len ? `${text.substring(0, len - 3)}...` : text;
+};
+
+// TODO: Generate images consistently per user with a evenly random distribution
+export const getProfilePicture = (user: PublicProfile): URL => {
+  if (user.profilePicture) return user.profilePicture;
+
+  const NUM_IMAGES = defaultProfilePictures.length;
+  const index = Math.floor(Math.random() * NUM_IMAGES);
+  const path = defaultProfilePictures[index]?.src ?? '';
+
+  return path;
+};
+
+// TODO: Define all ranks
+export const getUserRank = (user: PublicProfile): string => {
+  return 'Polynomial Pita';
 };

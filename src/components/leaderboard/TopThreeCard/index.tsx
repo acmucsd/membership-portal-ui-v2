@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from './style.module.scss';
 
 interface UserCardProps {
-  position: 1 | 2 | 3;
+  position: number;
   rank: string;
   name: string;
   points: number;

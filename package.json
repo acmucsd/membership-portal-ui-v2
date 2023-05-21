@@ -14,11 +14,11 @@
     "lint:css": "stylelint \"**/*.scss\"",
     "lint": "yarn lint:js && yarn lint:css",
     "lint:fix": "yarn prettier && eslint --fix \"src/**/*.+(js|jsx|ts|tsx)\" && stylelint --fix \"**/*.scss\"",
-    "type-css": "yarn typed-scss-modules src/ --exportType default",
+    "type-css": "yarn typed-scss-modules src/ --exportType default --logLevel silent --watch",
     "dev": "yarn type-css & yarn lint && next dev",
     "build": "next build",
     "start": "next start",
-    "prod": "yarn type-css && yarn lint && next build && next start",
+    "prod": "next build && next start",
     "test": "yarn cypress run",
     "test:ui": "yarn cypress open"
   },
