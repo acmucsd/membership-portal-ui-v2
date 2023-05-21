@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Button } from '@/components/common';
 import { showToast } from '@/lib';
 import { AdminEventManager } from '@/lib/managers';

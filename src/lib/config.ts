@@ -3,8 +3,6 @@ import Cat from '@/public/assets/graphics/cat404.png';
 const env = process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
 
-const USE_LOCAL_KLEFKI = false;
-
 const config = {
   api: {
     baseUrl: process.env.NEXT_PUBLIC_ACM_API_URL || 'https://testing.api.acmucsd.com/api/v2',
@@ -53,9 +51,7 @@ const config = {
     },
   },
   klefki: {
-    baseUrl: USE_LOCAL_KLEFKI
-      ? 'http://localhost:3000/api/v1'
-      : 'https://klefki.acmucsd.com/api/v1',
+    baseUrl: process.env.NEXT_PUBLIC_KLEFKI_API_URL ?? '',
     key: process.env.NEXT_PUBLIC_TOTP_KEY ?? '',
     endpoints: {
       notion: {

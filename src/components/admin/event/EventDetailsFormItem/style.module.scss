@@ -23,6 +23,10 @@
     &:focus {
       border: 1px solid var(--theme-primary-2);
     }
+
+    &:hover {
+      border: 1px solid var(--theme-text-on-background-1);
+    }
   }
 
   textarea {
