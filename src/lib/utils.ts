@@ -27,3 +27,16 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
 
   return errBody.errors.map(err => getAllErrMessages(err)).flat();
 };
+
+// function to trim strings too long to fit on component
+// returns truncated string of desired length with ...
+
+/**
+ * Function to trim given text to max character length
+ * @param text String text input
+ * @param len Maximum length
+ * @returns Formatted text
+ */
+export const trim = (text: string, len: number) => {
+  return text.length > len ? `${text.substring(0, len - 3)}...` : text;
+};
