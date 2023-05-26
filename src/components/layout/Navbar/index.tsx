@@ -20,18 +20,18 @@ const Navbar = ({ user }: NavbarProps) => {
   const size = useWindowSize();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobile, setMobile] = useState(false);
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const [isMobile, setIsMobile] = useState(false);
+  const toggleMenu = () => setMenuOpen(() => !menuOpen);
 
   // Switch to mobile less than breakpointMd
   useEffect(() => {
-    setMobile((size.width || 0) <= config.cssVars.breakpointMd);
+    setIsMobile((size.width || 0) <= config.cssVars.breakpointMd);
   }, [size]);
 
   // If they go back to desktop size, don't keep the menu open
   useEffect(() => {
-    if (!mobile) setMenuOpen(false);
-  }, [mobile]);
+    if (!isMobile) setMenuOpen(false);
+  }, [isMobile]);
 
   if (!user)
     return (
@@ -53,24 +53,24 @@ const Navbar = ({ user }: NavbarProps) => {
         {/* Mobile Navbar Toggle */}
         <button
           type="button"
-          className={`${styles.toggleIcon} ${!mobile && styles.hidden}`}
+          className={`${styles.toggleIcon} ${!isMobile && styles.hidden}`}
           onClick={toggleMenu}
         >
           <div className={`${styles.bar1} ${menuOpen && styles.open}`} />
           <div className={`${styles.bar2} ${menuOpen && styles.open}`} />
         </button>
-        <Link href={config.homeRoute} className={`${styles.icon} ${mobile && styles.mobile}`}>
+        <Link href={config.homeRoute} className={`${styles.icon} ${isMobile && styles.mobile}`}>
           <Image src={LightModeLogo} alt="ACM General Logo" width={48} height={48} />
         </Link>
         {/* Desktop Nav Links */}
-        <nav className={`${styles.portalLinks} ${mobile && styles.hidden}`}>
+        <nav className={`${styles.portalLinks} ${isMobile && styles.hidden}`}>
           <Link href="/">Events</Link>
           <p>·</p>
           <Link href="/leaderboard">Leaderboard</Link>
           <span>·</span>
           <Link href="/about">About ACM</Link>
         </nav>
-        <nav className={`${styles.iconLinks} ${mobile && styles.hidden}`}>
+        <nav className={`${styles.iconLinks} ${isMobile && styles.hidden}`}>
           <DarkModeToggle />
           <Link href="/store" className={styles.iconLink}>
             <ShopIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
