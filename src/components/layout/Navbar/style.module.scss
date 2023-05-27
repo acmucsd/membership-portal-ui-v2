@@ -20,6 +20,7 @@
 
     .toggleIcon {
       background-color: inherit;
+      display: none;
       height: 20px;
       margin-right: auto;
       padding: 0;
@@ -58,10 +59,6 @@
           width: 40px;
         }
       }
-
-      &.hidden {
-        display: none;
-      }
     }
 
     .navLeft {
@@ -87,10 +84,6 @@
       height: 3rem;
       margin-right: 1rem;
       width: 3rem;
-
-      &.mobile {
-        margin-right: 0;
-      }
     }
 
     .portalLinks {
@@ -100,10 +93,6 @@
       gap: 1rem;
       line-height: 24px;
       margin-right: auto;
-
-      &.hidden {
-        display: none;
-      }
     }
 
     .iconLinks {
@@ -114,10 +103,6 @@
 
       .iconLink {
         cursor: pointer;
-      }
-
-      &.hidden {
-        display: none;
       }
     }
   }
@@ -156,5 +141,33 @@
     background: vars.$wainbow;
     height: 0.25rem;
     width: 100vw;
+  }
+}
+
+@media screen and (width <= vars.$breakpoint-md) {
+  .header {
+    .content {
+      .toggleIcon {
+        display: block;
+      }
+
+      .icon {
+        margin-right: 0;
+      }
+
+      .navLeft {
+        .headerTitle {
+          font-size: 1.25rem;
+        }
+      }
+
+      .portalLinks {
+        display: none;
+      }
+
+      .iconLinks {
+        display: none;
+      }
+    }
   }
 }
