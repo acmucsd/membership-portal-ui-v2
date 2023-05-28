@@ -57,7 +57,7 @@ const Navbar = ({ user }: NavbarProps) => {
         </Link>
         {/* Desktop Nav Links */}
         <nav className={styles.portalLinks}>
-          <Link href="/">Events</Link>
+          <Link href={config.homeRoute}>Events</Link>
           <p>·</p>
           <Link href="/leaderboard">Leaderboard</Link>
           <span>·</span>
@@ -75,8 +75,12 @@ const Navbar = ({ user }: NavbarProps) => {
       </div>
       {/* Mobile Menu Dropdown */}
       <div className={styles.mobileNav} data-open={menuOpen}>
-        <Link className={styles.mobileNavItem} onClick={() => setMenuOpen(false)} href="/">
-          <CalendarIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
+        <Link
+          className={styles.mobileNavItem}
+          onClick={() => setMenuOpen(false)}
+          href={config.homeRoute}
+        >
+          <CalendarIcon className={styles.iconLink} />
           Events
         </Link>
         <Link
@@ -84,19 +88,19 @@ const Navbar = ({ user }: NavbarProps) => {
           onClick={() => setMenuOpen(false)}
           href="/leaderboard"
         >
-          <LeaderboardIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
+          <LeaderboardIcon className={styles.iconLink} />
           Leaderboard
         </Link>
         <Link className={styles.mobileNavItem} onClick={() => setMenuOpen(false)} href="/profile">
-          <ProfileIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
+          <ProfileIcon className={styles.iconLink} />
           Profile
         </Link>
         <Link onClick={() => setMenuOpen(false)} className={styles.mobileNavItem} href="/store">
-          <ShopIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
+          <ShopIcon className={styles.iconLink} />
           Store
         </Link>
         <Link onClick={() => setMenuOpen(false)} className={styles.mobileNavItem} href="/about">
-          <ACMIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
+          <ACMIcon className={styles.iconLink} />
           About ACM
         </Link>
         <DarkModeToggle />{' '}
