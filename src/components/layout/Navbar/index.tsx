@@ -49,8 +49,8 @@ const Navbar = ({ user }: NavbarProps) => {
       <div className={styles.content}>
         {/* Mobile Navbar Toggle */}
         <button type="button" className={styles.toggleIcon} onClick={toggleMenu}>
-          <div className={`${styles.bar1} ${menuOpen && styles.open}`} />
-          <div className={`${styles.bar2} ${menuOpen && styles.open}`} />
+          <div className={styles.bar1} data-open={menuOpen} />
+          <div className={styles.bar2} data-open={menuOpen} />
         </button>
         <Link href={config.homeRoute} className={styles.icon}>
           <Image src={LightModeLogo} alt="ACM General Logo" width={48} height={48} />
@@ -74,7 +74,7 @@ const Navbar = ({ user }: NavbarProps) => {
         </nav>
       </div>
       {/* Mobile Menu Dropdown */}
-      <div className={`${styles.mobileNav} ${menuOpen && styles.open}`}>
+      <div className={styles.mobileNav} data-open={menuOpen}>
         <Link className={styles.mobileNavItem} onClick={() => setMenuOpen(false)} href="/">
           <CalendarIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
           Events

@@ -36,7 +36,7 @@
         transition: 0.3s ease-in-out transform, 0.3s ease-in-out transform-origin;
         width: 40px;
 
-        &.open {
+        &[data-open='true'] {
           transform: rotate(45deg) translateY(-10px);
           transform-origin: top left;
         }
@@ -53,7 +53,7 @@
           0.3s ease-in-out width;
         width: 24px;
 
-        &.open {
+        &[data-open='true'] {
           transform: rotate(-45deg) translateY(10px);
           transform-origin: bottom left;
           width: 40px;
@@ -123,7 +123,7 @@
     width: 100vw;
     z-index: -1;
 
-    &.open {
+    &[data-open='true'] {
       margin-top: 0;
       padding-bottom: 3rem;
     }

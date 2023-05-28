@@ -4,15 +4,12 @@ export type Styles = {
   content: string;
   header: string;
   headerTitle: string;
-  hidden: string;
   icon: string;
   iconLink: string;
   iconLinks: string;
-  mobile: string;
   mobileNav: string;
   mobileNavItem: string;
   navLeft: string;
-  open: string;
   portalLinks: string;
   toggleIcon: string;
   wainbow: string;
