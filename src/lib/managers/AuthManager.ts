@@ -14,11 +14,15 @@ import { CookieType } from '@/lib/types/enums';
  * @param data Login form data
  */
 export const login = async (data: LoginRequest & APIHandlerProps): Promise<void> => {
+  const COOKIE_EXPIRATION_LENGTH = 60 * 60 * 24 * 14; // 60 * 60 * 24 * 14 is 2 weeks in seconds
+
   const { email, password, onSuccessCallback, onFailCallback } = data;
 
   try {
     const token = await AuthAPI.login({ email, password });
-    CookieService.setClientCookie(CookieType.ACCESS_TOKEN, token);
+    CookieService.setClientCookie(CookieType.ACCESS_TOKEN, token, {
+      maxAge: COOKIE_EXPIRATION_LENGTH,
+    });
 
     const user = await UserAPI.getCurrentUser(token);
     CookieService.setClientCookie(CookieType.USER, JSON.stringify(user));
