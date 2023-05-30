@@ -1,4 +1,9 @@
 export type Styles = {
+  name: string;
+  points: string;
+  position: string;
+  profilePicture: string;
+  rank: string;
   row: string;
 };
 
