@@ -9,7 +9,7 @@ import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
 import ShopIcon from '@/public/assets/icons/shop-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
-import { memo, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import DarkModeToggle from '../DarkModeToggle';
 import styles from './style.module.scss';
 
@@ -20,7 +20,7 @@ const Navbar = ({ user }: NavbarProps) => {
   const size = useWindowSize();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const toggleMenu = () => setMenuOpen(() => !menuOpen);
+  const toggleMenu = useCallback(() => setMenuOpen(prevState => !prevState), []);
 
   // Switch to mobile less than breakpointMd
   const isMobile = (size.width ?? 0) <= config.cssVars.breakpointMd;
