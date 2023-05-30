@@ -1,0 +1,14 @@
+@use 'src/styles/vars.scss' as vars;
+
+.row {
+  align-items: center center;
+  background-color: var(--theme-surface-1);
+  display: grid;
+  grid-template-columns: 1fr 1fr 3fr 3fr 3fr;
+  justify-content: space-evenly;
+  padding: 2px;
+
+  &[data-style='odd'] {
+    background-color: var(--theme-background);
+  }
+}

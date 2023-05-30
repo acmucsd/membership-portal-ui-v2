@@ -1,8 +1,5 @@
 export type Styles = {
-  container: string;
-  header: string;
-  leaderboard: string;
-  topThreeContainer: string;
+  row: string;
 };
 
 export type ClassNames = keyof Styles;
