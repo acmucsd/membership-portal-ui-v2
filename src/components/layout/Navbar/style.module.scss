@@ -7,7 +7,7 @@
   position: fixed;
   right: 0;
   top: 0;
-  z-index: 10;
+  z-index: 999;
 
   .content {
     align-items: center;
@@ -25,6 +25,7 @@
       margin-right: auto;
       padding: 0;
       position: relative;
+      -webkit-tap-highlight-color: transparent;
       width: 40px;
 
       .bar1 {
@@ -131,10 +132,17 @@
 
     .mobileNavItem {
       align-items: center;
+      border-radius: 0.5rem;
       display: flex;
       gap: 0.5rem;
       padding: 0 0.5rem;
+      -webkit-tap-highlight-color: transparent;
       text-decoration: none;
+      white-space: nowrap;
+      // change background color when hover
+      &:hover {
+        background-color: var(--theme-surface-1);
+      }
     }
   }
 
