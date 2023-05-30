@@ -23,7 +23,7 @@ const LeaderboardPage = (props: LeaderboardProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Leaderboard</h1>
+        <h1 className={styles.heading}>Leaderboard</h1>
         <select name="timeOptions" id="timeOptions">
           <option>All Time</option>
         </select>

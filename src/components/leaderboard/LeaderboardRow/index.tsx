@@ -20,8 +20,10 @@ const LeaderboardRow = ({ position, rank, name, points, image }: LeaderboardRowP
         alt={`Profile picture for ${name}`}
         className={styles.profilePicture}
       />
-      <span className={styles.name}>{name}</span>
-      <span className={styles.rank}>{rank}</span>
+      <div className={styles.nameRank}>
+        <span className={styles.name}>{name}</span>
+        <span className={styles.rank}>{rank}</span>
+      </div>
       <span className={styles.points}>{points} points</span>
     </div>
   );

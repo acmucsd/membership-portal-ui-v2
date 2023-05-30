@@ -1,14 +1,14 @@
 @use 'src/styles/vars.scss' as vars;
 
 .row {
-  align-items: center center;
   align-items: center;
   background-color: var(--theme-surface-1);
-  display: flex;
+  display: grid;
   font-size: 15px;
   gap: 32px;
+  grid-template-columns: auto auto 2fr 1fr;
   height: 64px;
-  padding: 8px 32px;
+  padding: 0 32px;
 
   &[data-style='odd'] {
     background-color: var(--theme-background);
@@ -25,11 +25,10 @@
   border-radius: 50%;
 }
 
-.name,
-.rank,
-.points {
-  flex: 1 0 0;
-  text-align: center;
+.nameRank {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1fr 1fr;
 }
 
 .name,
@@ -40,8 +39,25 @@
 .rank {
   color: var(--theme-text-on-surface-1);
   opacity: 0.5;
+  text-align: center;
 }
 
 .points {
   text-align: right;
+}
+
+@media (max-width: 800px) {
+  .row {
+    grid-template-columns: auto auto 1fr auto;
+  }
+
+  .nameRank {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
+  .rank {
+    text-align: left;
+  }
 }
