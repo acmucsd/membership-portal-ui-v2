@@ -61,3 +61,14 @@
     text-align: left;
   }
 }
+
+@media (max-width: 450px) {
+  .row {
+    gap: 16px;
+    padding: 0 24px;
+  }
+
+  .position {
+    margin-right: -8px;
+  }
+}

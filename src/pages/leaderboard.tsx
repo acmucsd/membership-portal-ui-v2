@@ -1,5 +1,4 @@
-import { TopThreeCard } from '@/components/leaderboard';
-import LeaderboardRow from '@/components/leaderboard/LeaderboardRow';
+import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { LeaderboardAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
