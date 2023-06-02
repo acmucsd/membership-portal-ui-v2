@@ -17,6 +17,7 @@ const LeaderboardRow = ({ position, rank, name, points, image }: LeaderboardRowP
         src={image}
         width={36}
         height={36}
+        quality={10}
         alt={`Profile picture for ${name}`}
         className={styles.profilePicture}
       />
