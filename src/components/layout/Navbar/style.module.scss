@@ -114,31 +114,37 @@
     background-color: inherit;
     display: flex;
     flex-flow: column nowrap;
+    font-size: 20px;
+    font-weight: 700;
+    gap: 0.25rem;
     justify-content: center;
     line-height: 300%;
-    margin-top: -18rem;
+    margin-top: -20rem;
+
     padding: 0 1rem;
-    padding-bottom: 1rem;
     position: relative;
-    transition: margin-top 0.3s cubic-bezier(0, 0.4, 0.1, 1),
-      padding-bottom 0.3s cubic-bezier(0, 0.4, 0.1, 1); // fast-out-slow-in timing
+    transition: margin-top 0.3s cubic-bezier(0, 0.4, 0.1, 1); // fast-out-slow-in timing
     width: 100vw;
     z-index: -1;
 
     &[data-open='true'] {
       margin-top: 0;
-      padding-bottom: 3rem;
     }
 
     .mobileNavItem {
       align-items: center;
+
       border-radius: 0.5rem;
       display: flex;
-      gap: 0.5rem;
+      flex-grow: 1;
+
+      gap: 0.75rem;
+      height: 3rem;
       padding: 0 0.5rem;
       -webkit-tap-highlight-color: transparent;
       text-decoration: none;
       white-space: nowrap;
+      width: 100%;
 
       &:hover {
         background-color: var(--theme-surface-1);

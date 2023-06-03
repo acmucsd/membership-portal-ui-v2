@@ -103,7 +103,9 @@ const Navbar = ({ user }: NavbarProps) => {
           <ACMIcon className={styles.iconLink} />
           About ACM
         </Link>
-        <DarkModeToggle />{' '}
+        <div>
+          <DarkModeToggle />
+        </div>
       </div>
       <hr className={styles.wainbow} />
     </header>
