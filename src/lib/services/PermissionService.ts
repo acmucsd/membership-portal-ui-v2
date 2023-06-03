@@ -9,6 +9,15 @@ export const canEditMerchItems = (user: PrivateProfile) => {
   return validAccess.includes(user.accessType);
 };
 
+export const canViewAdminPage = () => {
+  return [
+    UserAccessType.ADMIN,
+    UserAccessType.MARKETING,
+    UserAccessType.MERCH_STORE_MANAGER,
+    UserAccessType.MERCH_STORE_DISTRIBUTOR,
+  ];
+};
+
 /**
  * @returns Array of all possible user access types
  */

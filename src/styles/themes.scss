@@ -14,8 +14,11 @@
   --theme-primary-5: #{vars.$light-primary-5}; // event card links, arrow hover
   --theme-primary-6: #{vars.$light-primary-6}; // event card borders
   --theme-gold: #{vars.$light-gold};
+  --theme-gold-hover: #{vars.$light-gold-hover};
   --theme-silver: #{vars.$light-silver};
+  --theme-silver-hover: #{vars.$light-silver-hover};
   --theme-bronze: #{vars.$light-bronze};
+  --theme-bronze-hover: #{vars.$light-bronze-hover};
 
   --theme-background: #{vars.$light-background};
 
@@ -49,8 +52,11 @@
   --theme-primary-5: #{vars.$dark-primary-5}; // event card links, arrow hover
   --theme-primary-6: #{vars.$dark-primary-6}; // event card borders
   --theme-gold: #{vars.$dark-gold};
+  --theme-gold-hover: #{vars.$dark-gold-hover};
   --theme-silver: #{vars.$dark-silver};
+  --theme-silver-hover: #{vars.$dark-silver-hover};
   --theme-bronze: #{vars.$dark-bronze};
+  --theme-bronze-hover: #{vars.$dark-bronze-hover};
 
   --theme-background: #{vars.$dark-background};
 

@@ -1,0 +1,72 @@
+@use 'src/styles/vars.scss' as vars;
+
+.leaderboardCard {
+  &[data-position='first'] {
+    background-color: var(--theme-gold);
+
+    &:hover .cardRight {
+      background-color: var(--theme-gold-hover);
+    }
+  }
+
+  &[data-position='second'] {
+    background-color: var(--theme-silver);
+
+    &:hover .cardRight {
+      background-color: var(--theme-silver-hover);
+    }
+  }
+
+  &[data-position='third'] {
+    background-color: var(--theme-bronze);
+
+    &:hover .cardRight {
+      background-color: var(--theme-bronze-hover);
+    }
+  }
+
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;
+  height: vars.$leaderboard-card-height;
+  padding: 8px;
+  width: vars.$leaderboard-card-width;
+
+  .cardLeft {
+    color: vars.$leaderboard-position-text;
+    display: grid;
+    font-size: 80px;
+
+    font-weight: 500;
+    height: 100%;
+    line-height: 104px;
+    place-items: center;
+    width: 89px;
+  }
+
+  .cardRight {
+    align-items: center;
+    background-color: var(--theme-background);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    padding: 16px 32px;
+    width: 165px;
+
+    .cardText {
+      color: var(--theme-text-on-background-1);
+
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+    }
+
+    .profileImage {
+      border: 1px solid #000;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+}
