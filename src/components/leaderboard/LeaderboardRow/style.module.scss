@@ -4,66 +4,60 @@
   align-items: center;
   background-color: var(--theme-surface-1);
   display: grid;
-  font-size: 15px;
-  gap: 32px;
+  font-size: 0.9375rem; // 15px per Figma
+  gap: 2rem;
   grid-template-columns: auto auto 2fr 1fr;
-  height: 64px;
-  padding: 0 32px;
+  height: 4rem;
+  padding: 0 2rem;
+
+  @media (max-width: vars.$breakpoint-md) {
+    gap: 1rem;
+    grid-template-columns: auto auto 1fr auto;
+    padding: 0 1.5rem;
+  }
 
   &[data-style='odd'] {
     background-color: var(--theme-background);
   }
-}
 
-.position {
-  font-size: 20px;
-  font-weight: bold;
-  width: 40px;
-}
+  .position {
+    font-size: 1.25rem;
+    font-weight: bold;
+    width: 2.5rem;
+  }
 
-.profilePicture {
-  border-radius: 50%;
-}
-
-.nameRank {
-  display: grid;
-  gap: 32px;
-  grid-template-columns: 1fr 1fr;
-}
-
-.name,
-.points {
-  font-weight: 500;
-}
-
-.rank {
-  color: var(--theme-text-on-surface-1);
-  opacity: 0.5;
-  text-align: center;
-}
-
-.points {
-  text-align: right;
-}
-
-@media (max-width: vars.$breakpoint-md) {
-  .row {
-    gap: 16px;
-    grid-template-columns: auto auto 1fr auto;
-    padding: 0 24px;
+  .profilePicture {
+    border-radius: 50%;
   }
 
   .nameRank {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+
+    @media (max-width: vars.$breakpoint-md) {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+    }
+
+    .name {
+      font-weight: 500;
+    }
+
+    .rank {
+      color: var(--theme-text-on-surface-1);
+      opacity: 0.5;
+      text-align: center;
+
+      @media (max-width: vars.$breakpoint-md) {
+        text-align: left;
+      }
+    }
   }
 
-  .position {
-    margin-right: -8px;
-  }
-
-  .rank {
-    text-align: left;
+  .points {
+    font-weight: 500;
+    text-align: right;
   }
 }
