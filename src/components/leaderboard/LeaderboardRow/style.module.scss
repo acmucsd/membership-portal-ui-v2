@@ -8,12 +8,13 @@
   gap: 2rem;
   grid-template-columns: auto auto 2fr 1fr;
   height: 4rem;
-  padding: 0 2rem;
+  padding-left: 0.5rem;
+  padding-right: 2rem;
 
   @media (max-width: vars.$breakpoint-md) {
     gap: 1rem;
     grid-template-columns: auto auto 1fr auto;
-    padding: 0 1.5rem;
+    padding-right: 1.5rem;
   }
 
   &[data-style='odd'] {
@@ -23,6 +24,7 @@
   .position {
     font-size: 1.25rem;
     font-weight: bold;
+    text-align: right;
     width: 2.5rem;
   }
 
