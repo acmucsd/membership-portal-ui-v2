@@ -7,7 +7,7 @@
   gap: 2rem;
   grid-template-columns: auto auto 2fr 1fr;
   min-height: 4rem;
-  padding-left: 0.5rem;
+  padding: 0.5rem;
   padding-right: 2rem;
 
   @media (max-width: vars.$breakpoint-md) {
