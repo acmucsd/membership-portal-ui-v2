@@ -1,4 +1,4 @@
-import { TopThreeCard } from '@/components/leaderboard';
+import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { LeaderboardAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
@@ -7,7 +7,6 @@ import { CookieType } from '@/lib/types/enums';
 import { getProfilePicture, getUserRank } from '@/lib/utils';
 import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
-import Image from 'next/image';
 
 interface LeaderboardProps {
   leaderboard: PublicProfile[];
@@ -23,7 +22,7 @@ const LeaderboardPage = (props: LeaderboardProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Leaderboard</h1>
+        <h1 className={styles.heading}>Leaderboard</h1>
         <select name="timeOptions" id="timeOptions">
           <option>All Time</option>
         </select>
@@ -43,19 +42,14 @@ const LeaderboardPage = (props: LeaderboardProps) => {
       <div className={styles.leaderboard}>
         {leaderboardRows.map((user, index) => {
           return (
-            <div
+            <LeaderboardRow
               key={user.uuid}
-              className={styles.row}
-              data-style={index % 2 === 0 ? 'even' : 'odd'}
-            >
-              <span>{index + 4}</span>
-              <Image src={getProfilePicture(user)} width={36} height={36} alt="User" />
-              <span>
-                {user.firstName} {user.lastName}
-              </span>
-              <span>{getUserRank(user)}</span>
-              <span>{user.points} points</span>
-            </div>
+              position={index + 4}
+              rank={getUserRank(user)}
+              name={`${user.firstName} ${user.lastName}`}
+              points={user.points}
+              image={getProfilePicture(user)}
+            />
           );
         })}
       </div>

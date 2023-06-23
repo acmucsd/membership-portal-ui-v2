@@ -1,8 +1,8 @@
 export type Styles = {
   container: string;
   header: string;
+  heading: string;
   leaderboard: string;
-  row: string;
   topThreeContainer: string;
 };
 
