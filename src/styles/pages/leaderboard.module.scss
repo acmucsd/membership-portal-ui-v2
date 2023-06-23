@@ -1,44 +1,38 @@
-@use 'src/styles/vars.scss' as vars;
-
 .container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   margin: 0 auto;
-  max-width: 60rem;
+  max-width: 960px;
 
   .header {
-    align-items: center;
     display: flex;
     justify-content: space-between;
-  }
-
-  .heading {
-    font-size: 1.5rem;
-    letter-spacing: 1%;
-    line-height: 2rem;
   }
 
   .topThreeContainer {
     display: flex;
-    flex-wrap: wrap;
     gap: 1rem;
     justify-content: space-between;
-
-    @media (max-width: vars.$breakpoint-lg) {
-      justify-content: center;
-    }
   }
 
   .leaderboard {
-    border-radius: 0.75rem;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
 
-    @media (max-width: vars.$breakpoint-sm) {
-      border-radius: 0;
-      margin: 0 -2rem;
+    .row {
+      align-items: center center;
+      background-color: var(--theme-surface-1);
+      display: grid;
+      grid-template-columns: 1fr 1fr 3fr 3fr 3fr;
+      justify-content: space-evenly;
+      padding: 2px;
+
+      &[data-style='odd'] {
+        background-color: var(--theme-background);
+      }
     }
   }
 }
