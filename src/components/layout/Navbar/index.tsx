@@ -9,7 +9,7 @@ import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
 import ShopIcon from '@/public/assets/icons/shop-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import DarkModeToggle from '../DarkModeToggle';
 import styles from './style.module.scss';
 
@@ -18,9 +18,24 @@ interface NavbarProps {
 }
 const Navbar = ({ user }: NavbarProps) => {
   const size = useWindowSize();
+  const headerRef = useRef<HTMLHeadElement>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleMenu = useCallback(() => setMenuOpen(prevState => !prevState), []);
+
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+      setMenuOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   // Switch to mobile less than breakpointMd
   const isMobile = (size.width ?? 0) <= config.cssVars.breakpointMd;
@@ -45,7 +60,7 @@ const Navbar = ({ user }: NavbarProps) => {
     );
 
   return (
-    <header className={styles.header}>
+    <header className={styles.header} ref={headerRef}>
       <div className={styles.content}>
         {/* Mobile Navbar Toggle */}
         <button type="button" className={styles.toggleIcon} onClick={toggleMenu}>
