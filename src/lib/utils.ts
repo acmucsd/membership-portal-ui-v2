@@ -43,12 +43,21 @@ export const trim = (text: string, len: number) => {
   return text.length > len ? `${text.substring(0, len - 3)}...` : text;
 };
 
-// TODO: Generate images consistently per user with a evenly random distribution
+/**
+ * Helper function to map each user to a numeric value deterministically
+ * TODO: Use the user's UUID to hash to a number since it will never change
+ * @param user
+ * @returns
+ */
+const hashUser = (user: PublicProfile) => {
+  return user.points;
+};
+
 export const getProfilePicture = (user: PublicProfile): URL => {
   if (user.profilePicture) return user.profilePicture;
 
   const NUM_IMAGES = defaultProfilePictures.length;
-  const index = Math.floor(Math.random() * NUM_IMAGES);
+  const index = hashUser(user) % NUM_IMAGES;
   const path = defaultProfilePictures[index]?.src ?? '';
 
   return path;
