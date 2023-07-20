@@ -1,0 +1,66 @@
+@use '../vars.scss' as vars;
+
+.logo {
+  height: 115;
+}
+
+.aboutpage {
+  background-color: vars(--theme-background);
+  color: vars(--theme-text-on-background-1);
+  font-size: --general-body;
+
+  .description {
+    margin-bottom: 50px;
+    margin-top: 50px;
+  }
+
+  .title {
+    align-items: center;
+    display: flex;
+
+    h1 {
+      color: vars(--theme-text-on-background-1);
+      font-size: vars(--general-heading-1);
+      margin: 0 0 0 20px;
+    }
+  }
+}
+
+.body {
+  @media only screen and (min-width: 700px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .socials {
+    padding: 2rem;
+
+    .description {
+      margin-bottom: 2rem;
+      margin-top: 0;
+    }
+
+    a {
+      color: vars(--theme-text-on-background-1);
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.7rem;
+
+      &:hover {
+        color: vars(--theme-primary-4);
+      }
+
+      .theme {
+        fill: currentColor;
+      }
+    }
+  }
+
+  .discordpreview {
+    @media only screen and (max-width: 700px) {
+      visibility: hidden;
+    }
+  }
+}
