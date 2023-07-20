@@ -1,6 +1,7 @@
 const env = process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
 
+// added about to save the description somewhere
 const config = {
   about: `With 100,000 members and 500+ chapters, the Association for Computing
           Machinery is the world's largest society for computing. Here at UC
