@@ -1,0 +1,19 @@
+@use 'src/styles/vars.scss' as vars;
+
+.navbar {
+  display: flex;
+
+  .back {
+    font-weight: bold;
+  }
+
+  .rightSide {
+    display: flex;
+    gap: 24px;
+    margin-left: auto;
+
+    .navlink {
+      font-weight: bold;
+    }
+  }
+}
