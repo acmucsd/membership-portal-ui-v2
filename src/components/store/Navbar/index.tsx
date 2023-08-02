@@ -3,10 +3,11 @@ import Link from 'next/link';
 import styles from './style.module.scss';
 
 interface NavbarProps {
+  balance: number;
   backUrl?: string;
 }
 
-const Navbar = ({ backUrl }: NavbarProps) => {
+const Navbar = ({ balance, backUrl }: NavbarProps) => {
   return (
     <nav className={styles.navbar}>
       {backUrl && (
@@ -19,7 +20,7 @@ const Navbar = ({ backUrl }: NavbarProps) => {
       )}
       <div className={styles.rightSide}>
         <span>
-          <strong>Balance:</strong> <Diamonds count={2000} />
+          <strong>Balance:</strong> <Diamonds count={balance} />
         </span>
         <Link href="/store/cart" className={styles.navlink}>
           Cart
