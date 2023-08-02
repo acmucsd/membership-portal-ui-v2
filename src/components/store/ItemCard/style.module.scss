@@ -1,11 +1,15 @@
 @use 'src/styles/vars.scss' as vars;
 
 .itemCard {
+  background-color: var(--theme-surface-1);
   border-radius: 0.625rem;
+  box-shadow: 0 4px 4px var(--theme-accent-line-1-transparent);
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  overflow: hidden;
   padding-bottom: 1rem;
+  width: 400px;
 
   .details {
     display: flex;
@@ -22,11 +26,18 @@
       font-size: 1rem;
 
       .diamond {
-        background-color: $light-primary-2;
+        background-color: var(--theme-primary-2);
         border-radius: 2px;
+        display: inline-block;
         height: 0.75em;
+        margin-left: 0.55rem;
+        margin-right: 0.7rem;
         transform: rotate(45deg);
         width: 0.75em;
+      }
+
+      .outOfStock {
+        color: #{vars.$danger-1};
       }
     }
   }

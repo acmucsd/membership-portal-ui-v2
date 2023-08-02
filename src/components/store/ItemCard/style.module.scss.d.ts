@@ -3,6 +3,7 @@ export type Styles = {
   details: string;
   diamond: string;
   itemCard: string;
+  outOfStock: string;
   title: string;
 };
 
