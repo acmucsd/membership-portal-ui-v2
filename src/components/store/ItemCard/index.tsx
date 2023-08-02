@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import styles from './style.module.scss';
 
 const numberFormat = new Intl.NumberFormat('en-US');
@@ -7,13 +8,17 @@ interface ItemCardProps {
   image: string;
   title: string;
   cost: number;
+  href?: string;
   inStock?: boolean;
 }
 
-const ItemCard = ({ image, title, cost, inStock = true }: ItemCardProps) => {
+const ItemCard = ({ image, title, cost, href, inStock = true }: ItemCardProps) => {
+  const Card = href ? Link : 'article';
   return (
-    <div className={styles.itemCard}>
-      <Image src={image} alt={title} width={400} height={400} />
+    <Card href={href ?? ''} className={styles.itemCard}>
+      <div className={styles.imageWrapper}>
+        <Image src={image} alt={title} fill />
+      </div>
       <div className={styles.details}>
         <p className={styles.title}>{title}</p>
         <p className={styles.cost}>
@@ -22,7 +27,7 @@ const ItemCard = ({ image, title, cost, inStock = true }: ItemCardProps) => {
           {!inStock && <span className={styles.outOfStock}>Out of stock</span>}
         </p>
       </div>
-    </div>
+    </Card>
   );
 };
 
