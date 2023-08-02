@@ -1,0 +1,11 @@
+@use 'src/styles/vars.scss' as vars;
+
+.diamond {
+  background-color: var(--theme-primary-2);
+  border-radius: 2px;
+  display: inline-block;
+  height: 0.75em;
+  margin-left: 0.55rem;
+  transform: rotate(45deg);
+  width: 0.75em;
+}

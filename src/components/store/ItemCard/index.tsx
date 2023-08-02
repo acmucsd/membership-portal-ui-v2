@@ -1,8 +1,7 @@
+import Diamonds from '@/components/store/Diamonds';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './style.module.scss';
-
-const numberFormat = new Intl.NumberFormat('en-US');
 
 interface ItemCardProps {
   image: string;
@@ -22,8 +21,7 @@ const ItemCard = ({ image, title, cost, href, inStock = true }: ItemCardProps) =
       <div className={styles.details}>
         <p className={styles.title}>{title}</p>
         <p className={styles.cost}>
-          {numberFormat.format(cost)}
-          <span className={styles.diamond} />
+          <Diamonds count={cost} />
           {!inStock && <span className={styles.outOfStock}>Out of stock</span>}
         </p>
       </div>

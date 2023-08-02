@@ -35,19 +35,9 @@
     .cost {
       font-size: 1rem;
 
-      .diamond {
-        background-color: var(--theme-primary-2);
-        border-radius: 2px;
-        display: inline-block;
-        height: 0.75em;
-        margin-left: 0.55rem;
-        margin-right: 0.7rem;
-        transform: rotate(45deg);
-        width: 0.75em;
-      }
-
       .outOfStock {
         color: #{vars.$danger-1};
+        margin-left: 0.7rem;
       }
     }
   }
