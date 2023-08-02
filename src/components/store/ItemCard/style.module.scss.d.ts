@@ -2,6 +2,7 @@ export type Styles = {
   cost: string;
   details: string;
   diamond: string;
+  imageWrapper: string;
   itemCard: string;
   outOfStock: string;
   title: string;
