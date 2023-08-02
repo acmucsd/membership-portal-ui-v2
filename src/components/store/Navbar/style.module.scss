@@ -1,10 +1,19 @@
 @use 'src/styles/vars.scss' as vars;
 
 .navbar {
+  align-items: center;
   display: flex;
+  height: 24px;
 
   .back {
+    align-items: center;
+    display: flex;
     font-weight: bold;
+    gap: 8px;
+
+    path {
+      fill: currentColor;
+    }
   }
 
   .rightSide {
