@@ -45,7 +45,7 @@
     background-color: var(--theme-background);
     border-radius: 0.625rem;
     max-width: 100%;
-    padding: 2rem;
+    padding: 1.5rem;
     transform: scale(0.95);
     transition: transform 0.2s;
 
@@ -53,7 +53,7 @@
       align-items: flex-start;
       display: flex;
       justify-content: space-between;
-      padding-bottom: 1rem;
+      padding: 0.5rem;
 
       h1 {
         flex: auto;
@@ -74,15 +74,17 @@
     .steps {
       display: flex;
       gap: 1rem;
-      overflow-x: auto;
-      overflow-y: hidden;
+      overflow: auto;
+      // HACK: It seems padding around .steps is necessary to get rid of
+      // spurious scrollbars on desktop Windows ¯\_(ツ)_/¯
+      padding: 0.5rem;
       scroll-behavior: smooth;
 
       @media (max-width: vars.$breakpoint-lg) {
         -ms-overflow-style: none;
         scroll-snap-type: x mandatory;
         scrollbar-width: none;
-        width: 18.75rem;
+        width: 19.75rem;
 
         &::-webkit-scrollbar {
           display: none; /* Safari and Chrome */
@@ -92,7 +94,7 @@
       .step {
         display: flex;
         flex-direction: column;
-        scroll-snap-align: start;
+        scroll-snap-align: center;
         text-align: center;
         width: 18.75rem;
 

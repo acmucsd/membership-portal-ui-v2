@@ -1,6 +1,5 @@
 import HeroDeco1 from '@/public/assets/graphics/store/hero-deco1.svg';
 import HeroDeco2 from '@/public/assets/graphics/store/hero-deco2.svg';
-import HeroHeading from '@/public/assets/graphics/store/hero-heading.svg';
 import HeroPhoto from '@/public/assets/graphics/store/hero-photo.jpg';
 import Image from 'next/image';
 import styles from './style.module.scss';
@@ -39,9 +38,7 @@ const Hero = ({ onHelp }: HeroProps) => {
       <div className={styles.right}>
         <HeroDeco1 className={styles.deco1} alt="Various decorative snowflakes" aria-hidden />
         <div className={styles.heroContent}>
-          <h1 className={styles.heading}>
-            <HeroHeading alt="The ACM Store" />
-          </h1>
+          <h1 className={styles.heading}>The ACM Store</h1>
           <p className={styles.description}>
             Shop the ACM Store for exclusive ACM merchandise including shirts, hoodies, pop sockets
             & more!
