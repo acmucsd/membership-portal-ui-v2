@@ -1,0 +1,83 @@
+@use 'src/styles/vars.scss' as vars;
+
+.modal {
+  align-items: center;
+  background-color: var(--theme-accent-line-1-transparent);
+  border: 0;
+  display: block;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  opacity: 0;
+  padding: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  transition: all 0.2s;
+  user-select: none;
+  visibility: hidden;
+  width: 100%;
+  z-index: 1000; // Just one above the header's 999
+
+  &[open] {
+    opacity: 1;
+    pointer-events: unset;
+    user-select: text;
+    visibility: visible;
+
+    .modalBody {
+      transform: none;
+    }
+  }
+
+  &:modal {
+    max-height: unset;
+    max-width: unset;
+  }
+
+  &::backdrop {
+    background: none;
+  }
+
+  .modalBody {
+    background-color: var(--theme-background);
+    border-radius: 0.625rem;
+    padding: 2rem;
+    transform: scale(0.95);
+    transition: transform 0.2s;
+
+    .header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 1rem;
+
+      h1 {
+        font-size: 1.75rem;
+        margin: 0;
+        margin-right: auto;
+      }
+
+      .close {
+        background: none;
+        display: flex;
+        padding: 0;
+      }
+    }
+
+    .steps {
+      display: flex;
+      gap: 1rem;
+
+      .step {
+        text-align: center;
+        width: 18.75rem;
+
+        p {
+          margin-top: 1rem;
+        }
+      }
+    }
+  }
+}

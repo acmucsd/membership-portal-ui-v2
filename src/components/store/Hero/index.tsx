@@ -20,7 +20,11 @@ const RainbowBars = ({ className }: RainbowBarsProps) => {
   );
 };
 
-const Hero = () => {
+interface HeroProps {
+  onHelp: () => void;
+}
+
+const Hero = ({ onHelp }: HeroProps) => {
   return (
     <div className={styles.hero}>
       <div className={styles.left}>
@@ -42,7 +46,7 @@ const Hero = () => {
             Shop the ACM Store for exclusive ACM merchandise including shirts, hoodies, pop sockets
             & more!
           </p>
-          <button type="button" className={styles.textButton}>
+          <button type="button" className={styles.textButton} onClick={onHelp}>
             How does the ACM Store work?
           </button>
         </div>
