@@ -11,6 +11,7 @@
   left: 0;
   opacity: 0;
   padding: 0;
+  padding: 2rem;
   pointer-events: none;
   position: fixed;
   top: 0;
@@ -43,25 +44,29 @@
   .modalBody {
     background-color: var(--theme-background);
     border-radius: 0.625rem;
+    max-width: 100%;
     padding: 2rem;
     transform: scale(0.95);
     transition: transform 0.2s;
 
     .header {
-      align-items: center;
+      align-items: flex-start;
       display: flex;
       justify-content: space-between;
       padding-bottom: 1rem;
 
       h1 {
+        flex: auto;
         font-size: 1.75rem;
         margin: 0;
         margin-right: auto;
+        width: 0;
       }
 
       .close {
         background: none;
         display: flex;
+        margin-left: 1rem;
         padding: 0;
       }
     }
@@ -69,13 +74,57 @@
     .steps {
       display: flex;
       gap: 1rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+
+      @media (max-width: vars.$breakpoint-lg) {
+        -ms-overflow-style: none;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        width: 18.75rem;
+
+        &::-webkit-scrollbar {
+          display: none; /* Safari and Chrome */
+        }
+      }
 
       .step {
+        display: flex;
+        flex-direction: column;
+        scroll-snap-align: start;
         text-align: center;
         width: 18.75rem;
 
         p {
           margin-top: 1rem;
+        }
+
+        .stepControls {
+          display: none;
+          justify-content: space-between;
+          margin-top: auto;
+
+          @media (max-width: vars.$breakpoint-lg) {
+            display: flex;
+          }
+
+          .stepControl {
+            background-color: var(--theme-surface-1);
+            border-radius: 50%;
+            display: block;
+            height: 1.875rem;
+            width: 1.875rem;
+
+            path {
+              stroke: vars.$disabled;
+            }
+
+            &:not(span) path {
+              fill: currentColor;
+              stroke: currentColor;
+            }
+          }
         }
       }
     }

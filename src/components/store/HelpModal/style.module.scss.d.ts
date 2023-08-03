@@ -4,6 +4,8 @@ export type Styles = {
   modal: string;
   modalBody: string;
   step: string;
+  stepControl: string;
+  stepControls: string;
   steps: string;
 };
 

@@ -2,9 +2,33 @@ import Step1 from '@/public/assets/graphics/store/step1.svg';
 import Step2 from '@/public/assets/graphics/store/step2.svg';
 import Step3 from '@/public/assets/graphics/store/step3.svg';
 import Step4 from '@/public/assets/graphics/store/step4.svg';
+import ArrowLeftIcon from '@/public/assets/icons/arrow-left.svg';
+import ArrowRightIcon from '@/public/assets/icons/arrow-right.svg';
 import CloseIcon from '@/public/assets/icons/close-icon.svg';
-import { useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import styles from './style.module.scss';
+
+interface StepProps {
+  step: number;
+  children?: ReactNode;
+}
+const Step = ({ step, children }: StepProps) => {
+  const Left = step > 1 ? 'a' : 'span';
+  const Right = step < 4 ? 'a' : 'span';
+  return (
+    <div className={styles.step} id={`step-${step}`}>
+      {children}
+      <div className={styles.stepControls}>
+        <Left className={styles.stepControl} href={`#step-${step - 1}`}>
+          <ArrowLeftIcon aria-label="Previous page" />
+        </Left>
+        <Right className={styles.stepControl} href={`#step-${step + 1}`}>
+          <ArrowRightIcon aria-label="Next page" />
+        </Right>
+      </div>
+    </div>
+  );
+};
 
 interface HelpModalProps {
   open: boolean;
@@ -39,7 +63,7 @@ const HelpModal = ({ open, onClose }: HelpModalProps) => {
       ref={ref}
       onClick={e => {
         if (e.target === e.currentTarget) {
-          onClose();
+          e.currentTarget.close();
         }
       }}
       onClose={onClose}
@@ -52,22 +76,22 @@ const HelpModal = ({ open, onClose }: HelpModalProps) => {
           </button>
         </div>
         <div className={styles.steps}>
-          <div className={styles.step}>
+          <Step step={1}>
             <Step1 aria-label="Raccoons sitting about on a picnic blanket." />
             <p>Attend events to get membership points!</p>
-          </div>
-          <div className={styles.step}>
+          </Step>
+          <Step step={2}>
             <Step2 aria-label="A raccoon with a laptop delighted by a pink hoodie." />
             <p>Spend your points here on items.</p>
-          </div>
-          <div className={styles.step}>
+          </Step>
+          <Step step={3}>
             <Step3 aria-label='A dropdown labelled "Pickup Date," then a shopper raccoon with a tote bag stops by at a table with a tablecloth and a stack of neatly folded hoodies, at which a helpful raccoon from ACM is stationed.' />
             <p>Select a pickup event for your order.</p>
-          </div>
-          <div className={styles.step}>
+          </Step>
+          <Step step={4}>
             <Step4 aria-label="A happy raccoon celebrates and dances with its new pink hoodie." />
             <p>Pick up your merch and show your ACM spirit! </p>
-          </div>
+          </Step>
         </div>
       </form>
     </dialog>
