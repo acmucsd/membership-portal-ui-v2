@@ -9,6 +9,62 @@
 
   .hero {
     display: flex;
+    position: relative;
+    z-index: 0;
+
+    .rainbowWrapper {
+      bottom: 0;
+      display: flex;
+      left: 0;
+      position: absolute;
+      z-index: -1;
+
+      .teal {
+        color: vars.$cyan-5;
+      }
+
+      .orange {
+        color: vars.$orange-5;
+      }
+
+      .red {
+        color: vars.$scarlet-4;
+      }
+
+      .pink {
+        color: vars.$pink-4;
+      }
+
+      .rainbow {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 24px;
+      }
+
+      .barsLeft,
+      .barsRight {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        position: absolute;
+        width: 100vw;
+
+        div {
+          background-color: currentColor;
+          height: 26px;
+        }
+      }
+
+      .barsLeft {
+        right: 100%;
+        top: 0;
+      }
+
+      .barsRight {
+        bottom: 0;
+        left: 100%;
+      }
+    }
 
     .left {
       .imageWrapper {

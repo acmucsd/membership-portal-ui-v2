@@ -1,4 +1,6 @@
 export type Styles = {
+  barsLeft: string;
+  barsRight: string;
   container: string;
   deco1: string;
   deco2: string;
@@ -8,7 +10,13 @@ export type Styles = {
   heroContent: string;
   imageWrapper: string;
   left: string;
+  orange: string;
+  pink: string;
+  rainbow: string;
+  rainbowWrapper: string;
+  red: string;
   right: string;
+  teal: string;
   textButton: string;
 };
 
