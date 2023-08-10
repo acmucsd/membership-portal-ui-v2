@@ -21,8 +21,8 @@
 }
 
 .body {
-  max-width: auto;
   margin: auto;
+  max-width: auto;
 
   @media only screen and (min-width: vars.$breakpoint-md) {
     display: grid;
@@ -52,8 +52,8 @@
 
   .discordpreview {
     border-radius: 10px;
-    width: 350px;
     overflow: hidden;
+    width: 350px;
 
     @media only screen and (max-width: vars.$breakpoint-md) {
       display: none;
