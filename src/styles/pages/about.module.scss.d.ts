@@ -1,12 +1,12 @@
 export type Styles = {
-  aboutpage: string;
   body: string;
+  container: string;
   description: string;
   discordpreview: string;
+  header: string;
   logo: string;
   socials: string;
   theme: string;
-  title: string;
 };
 
 export type ClassNames = keyof Styles;

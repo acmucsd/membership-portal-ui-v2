@@ -4,30 +4,27 @@
   height: 115;
 }
 
-.aboutpage {
-  background-color: vars(--theme-background);
-  color: vars(--theme-text-on-background-1);
-  font-size: --general-body;
+.container {
+  font-size: vars.$general-body;
+  margin: 0 auto;
+  max-width: 60rem;
+}
 
-  .description {
-    margin-bottom: 50px;
-    margin-top: 50px;
-  }
+.header {
+  align-items: center;
+  display: flex;
 
-  .title {
-    align-items: center;
-    display: flex;
-
-    h1 {
-      color: vars(--theme-text-on-background-1);
-      font-size: vars(--general-heading-1);
-      margin: 0 0 0 20px;
-    }
+  h1 {
+    font-size: vars.$general-heading-2;
+    margin-left: 1.25rem;
   }
 }
 
 .body {
-  @media only screen and (min-width: 700px) {
+  max-width: auto;
+  margin: auto;
+
+  @media only screen and (min-width: vars.$breakpoint-md) {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
@@ -42,15 +39,10 @@
 
     a {
       align-items: center;
-      color: vars(--theme-text-on-background-1);
       display: flex;
       flex-direction: row;
       gap: 0.5rem;
       margin-bottom: 0.7rem;
-
-      &:hover {
-        color: vars(--theme-primary-4);
-      }
 
       .theme {
         fill: currentColor;
@@ -59,8 +51,12 @@
   }
 
   .discordpreview {
-    @media only screen and (max-width: 700px) {
-      visibility: hidden;
+    border-radius: 10px;
+    width: 350px;
+    overflow: hidden;
+
+    @media only screen and (max-width: vars.$breakpoint-md) {
+      display: none;
     }
   }
 }
