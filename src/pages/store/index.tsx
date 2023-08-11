@@ -32,6 +32,11 @@ const StoreHomePage = ({ user: { credits } }: HomePageProps) => {
           cost={10}
           title="Critter"
         />
+        <ItemCard
+          image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/cf6ca1b7-cd3b-4da5-8d2b-28ea55084a06.png"
+          title="The Crewmate Collection"
+          description="Visors, space suits, and everything you need to stay unnoticed on a cold, starlit spaceship."
+        />
       </div>
     </>
   );
