@@ -1,4 +1,6 @@
 import Diamonds from '@/components/store/Diamonds';
+import { config } from '@/lib';
+import BackChevron from '@/public/assets/icons/back-chevron.svg';
 import Link from 'next/link';
 import styles from './style.module.scss';
 
@@ -12,9 +14,7 @@ const Navbar = ({ balance, backUrl }: NavbarProps) => {
     <nav className={styles.navbar}>
       {backUrl && (
         <Link href={backUrl} className={styles.back}>
-          <svg width="12" height="18" viewBox="0 0 12 18" aria-hidden="true">
-            <path d="M10.1911 18L0 9L10.1911 0L12 1.5975L3.61783 9L12 16.4025L10.1911 18Z" />
-          </svg>
+          <BackChevron aria-hidden="true" />
           Back
         </Link>
       )}
@@ -22,10 +22,10 @@ const Navbar = ({ balance, backUrl }: NavbarProps) => {
         <span>
           <strong>Balance:</strong> <Diamonds count={balance} />
         </span>
-        <Link href="/store/cart" className={styles.navlink}>
+        <Link href={config.cartRoute} className={styles.navlink}>
           Cart
         </Link>
-        <Link href="/store/orders" className={styles.navlink}>
+        <Link href={config.myOrdersRoute} className={styles.navlink}>
           My Orders
         </Link>
       </div>

@@ -50,6 +50,8 @@ const config = {
   },
   homeRoute: '/',
   loginRoute: '/login',
+  cartRoute: '/store/cart',
+  myOrdersRoute: '/store/orders',
   isDevelopment,
 };
 
