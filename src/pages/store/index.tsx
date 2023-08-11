@@ -11,7 +11,7 @@ const StoreHomePage = ({ user: { credits } }: HomePageProps) => {
   // TEMP, just to demo the components
   return (
     <>
-      <Navbar balance={credits} backUrl="/" />
+      <Navbar balance={credits} />
       <div
         style={{
           display: 'grid',

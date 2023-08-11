@@ -2,21 +2,24 @@ import Diamonds from '@/components/store/Diamonds';
 import { config } from '@/lib';
 import BackChevron from '@/public/assets/icons/back-chevron.svg';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styles from './style.module.scss';
 
 interface NavbarProps {
   balance: number;
-  backUrl?: string;
+  showBack?: boolean;
 }
 
-const Navbar = ({ balance, backUrl }: NavbarProps) => {
+const Navbar = ({ balance, showBack }: NavbarProps) => {
+  const router = useRouter();
+
   return (
     <nav className={styles.navbar}>
-      {backUrl && (
-        <Link href={backUrl} className={styles.back}>
+      {showBack && (
+        <button type="button" className={styles.back} onClick={() => router.back()}>
           <BackChevron aria-hidden="true" />
           Back
-        </Link>
+        </button>
       )}
       <div className={styles.rightSide}>
         <span>
