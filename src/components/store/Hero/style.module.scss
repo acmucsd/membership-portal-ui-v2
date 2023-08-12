@@ -1,27 +1,32 @@
 @use 'src/styles/vars.scss' as vars;
 
 .heroWrapper {
-  margin: 0 -2rem;
-  overflow: hidden;
+  margin: 2rem -2rem;
   position: relative;
   z-index: 0;
 
   .hero {
     display: flex;
     gap: 14rem;
+    height: calc(100vh - 10rem);
     margin: 0 auto;
+    max-height: 56rem;
     max-width: 81rem;
-    min-height: 53rem;
+    min-height: 36rem;
     padding: 0 2rem;
+    padding-bottom: 9rem;
 
     @media (max-width: vars.$breakpoint-lg) {
       align-items: center;
       flex-direction: column;
       gap: 0;
+      height: 30rem;
+      min-height: unset;
     }
 
     .left {
-      margin-top: 9.5rem;
+      align-items: center;
+      display: flex;
 
       @media (max-width: vars.$breakpoint-lg) {
         display: none;
@@ -62,17 +67,19 @@
     }
 
     .right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       margin-left: auto;
-      max-width: 34.75rem;
+      max-width: 36rem;
 
       @media (max-width: vars.$breakpoint-lg) {
         margin: 0;
       }
 
-      .deco1 {
-        margin-bottom: 4.75rem;
-        margin-left: -2.5rem;
-        margin-top: 2.5rem;
+      .deco1,
+      .deco2 {
+        flex: none;
         @media (max-width: vars.$breakpoint-lg) {
           display: none;
         }
@@ -124,12 +131,8 @@
       }
 
       .deco2 {
-        display: block;
-        margin-left: auto;
-        margin-top: 8rem;
-        @media (max-width: vars.$breakpoint-lg) {
-          display: none;
-        }
+        align-self: flex-end;
+        margin-top: -2rem;
       }
     }
   }
@@ -137,17 +140,21 @@
   .rainbowWrapper {
     bottom: 0;
     display: flex;
+    // The rainbow band sizes and spacing have a 13:7 ratio, which I'm
+    // expressing in terms of the font size (em) since the rainbow itself has no
+    // text. This makes it easier to resize the bands
+    font-size: 2px;
     left: 0;
+    overflow: hidden;
     position: absolute;
     right: 0;
     z-index: -1;
 
-    // @media (max-width: vars.$breakpoint-lg) {
-    //   left: 0;
-    //   margin-top: -10rem;
-    //   position: relative;
-    //   transform: rotate(-25.31deg) scale(0.3);
-    // }
+    @media (max-width: vars.$breakpoint-lg) {
+      bottom: 1rem;
+      font-size: 1px;
+      transform: rotate(-12deg);
+    }
 
     .teal {
       color: vars.$cyan-5;
@@ -171,12 +178,12 @@
       display: flex;
       flex: auto;
       flex-direction: column;
-      gap: 0.875rem;
+      gap: 7em;
       width: 100vw;
 
       div {
         background-color: currentColor;
-        height: 1.625rem;
+        height: 13em;
       }
     }
 
@@ -184,22 +191,37 @@
       align-self: flex-end;
     }
 
+    // Has the same width as the main content so I can position the rainbow bend
+    // part accordingly
     .rainbowContent {
       display: flex;
-      margin-left: -8rem;
+      // Shoves the rainbow bend off the screen a bit
+      margin-left: -10rem;
       max-width: 81rem;
       width: 100%;
+
+      @media (max-width: vars.$breakpoint-lg) {
+        margin-left: 0;
+        width: unset;
+      }
 
       .rainbow {
         fill: none;
         flex: none;
+        height: 273em;
         stroke: currentColor;
         stroke-width: 1.625rem;
+        width: 394.5em;
       }
 
       .barsRest {
         align-self: flex-end;
         flex: auto;
+
+        // Hide .barsRest so the bend can be centered on mobile
+        @media (max-width: vars.$breakpoint-lg) {
+          display: none;
+        }
       }
     }
   }

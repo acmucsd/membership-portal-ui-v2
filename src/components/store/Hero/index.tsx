@@ -57,6 +57,7 @@ const Hero = ({ onHelp }: HeroProps) => {
           <svg
             width="789"
             height="546"
+            viewBox="0 0 789 546"
             xmlns="http://www.w3.org/2000/svg"
             className={styles.rainbow}
           >
