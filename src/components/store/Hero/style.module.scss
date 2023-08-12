@@ -1,6 +1,6 @@
 @use 'src/styles/vars.scss' as vars;
 
-.heroWrapper {
+.wrapper {
   margin: 2rem -2rem;
   position: relative;
   z-index: 0;
@@ -133,95 +133,6 @@
       .deco2 {
         align-self: flex-end;
         margin-top: -2rem;
-      }
-    }
-  }
-
-  .rainbowWrapper {
-    bottom: 0;
-    display: flex;
-    // The rainbow band sizes and spacing have a 13:7 ratio, which I'm
-    // expressing in terms of the font size (em) since the rainbow itself has no
-    // text. This makes it easier to resize the bands
-    font-size: 2px;
-    left: 0;
-    overflow: hidden;
-    position: absolute;
-    right: 0;
-    z-index: -1;
-
-    @media (max-width: vars.$breakpoint-lg) {
-      bottom: 1rem;
-      font-size: 1px;
-      transform: rotate(-12deg);
-    }
-
-    .teal {
-      color: vars.$cyan-5;
-    }
-
-    .orange {
-      color: vars.$orange-5;
-    }
-
-    .red {
-      color: vars.$scarlet-4;
-    }
-
-    .pink {
-      color: vars.$pink-4;
-    }
-
-    .barsLeft,
-    .barsRight,
-    .barsRest {
-      display: flex;
-      flex: auto;
-      flex-direction: column;
-      gap: 7em;
-      width: 100vw;
-
-      div {
-        background-color: currentColor;
-        height: 13em;
-      }
-    }
-
-    .barsRight {
-      align-self: flex-end;
-    }
-
-    // Has the same width as the main content so I can position the rainbow bend
-    // part accordingly
-    .rainbowContent {
-      display: flex;
-      // Shoves the rainbow bend off the screen a bit
-      margin-left: -10rem;
-      max-width: 81rem;
-      width: 100%;
-
-      @media (max-width: vars.$breakpoint-lg) {
-        margin-left: 0;
-        width: unset;
-      }
-
-      .rainbow {
-        fill: none;
-        flex: none;
-        height: 273em;
-        stroke: currentColor;
-        stroke-width: 1.625rem;
-        width: 394.5em;
-      }
-
-      .barsRest {
-        align-self: flex-end;
-        flex: auto;
-
-        // Hide .barsRest so the bend can be centered on mobile
-        @media (max-width: vars.$breakpoint-lg) {
-          display: none;
-        }
       }
     }
   }
