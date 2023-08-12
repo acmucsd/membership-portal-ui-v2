@@ -9,14 +9,15 @@
 
   .hero {
     display: flex;
-    gap: 14rem;
+    gap: 12rem;
     height: calc(100vh - 10rem);
     margin: 0 auto;
     max-height: 56rem;
-    max-width: 81rem;
+    max-width: 85rem;
     min-height: 36rem;
     padding: 0 2rem;
     padding-bottom: 9rem;
+    width: 100%;
 
     @media (max-width: vars.$breakpoint-lg) {
       align-items: center;
@@ -74,7 +75,7 @@
       flex-direction: column;
       justify-content: space-between;
       margin-left: auto;
-      max-width: 36rem;
+      max-width: 34rem;
 
       @media (max-width: vars.$breakpoint-lg) {
         margin: 0;
