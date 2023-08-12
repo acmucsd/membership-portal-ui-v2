@@ -12,11 +12,14 @@ interface HomePageProps {
 const StoreHomePage = ({ user: { credits } }: HomePageProps) => {
   const [helpOpen, setHelpOpen] = useState(false);
   return (
-    <div className={styles.container}>
-      <Navbar balance={credits} />
+    <>
+      <div className={styles.container}>
+        <Navbar balance={credits} />
+      </div>
       <Hero onHelp={() => setHelpOpen(true)} />
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
-    </div>
+      <div className={styles.container} />
+    </>
   );
 };
 
