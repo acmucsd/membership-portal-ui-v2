@@ -11,7 +11,10 @@
 
   .back {
     align-items: center;
+    background: none;
+    color: var(--theme-text-on-background-1);
     display: flex;
+    font: inherit;
     font-weight: bold;
     gap: 8px;
 

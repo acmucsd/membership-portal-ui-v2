@@ -10,8 +10,7 @@ interface DiamondsProps {
 const Diamonds = ({ count, className }: DiamondsProps) => {
   return (
     <span className={className}>
-      {numberFormat.format(count)}
-      <span className={styles.diamond}>diamonds</span>
+      {numberFormat.format(count)} <span className={styles.diamond}>diamonds</span>
     </span>
   );
 };
