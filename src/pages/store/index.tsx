@@ -1,5 +1,6 @@
 import { Title } from '@/components/common';
 import { HelpModal, Hero, ItemCard, Navbar } from '@/components/store';
+import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
@@ -38,7 +39,9 @@ const StoreHomePage = ({ user: { credits }, collections }: HomePageProps) => {
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
       <div className={styles.container}>
         <Title type="h2" heading="Browse our collections">
-          <button type="button">See all items</button>
+          <button type="button" className={styles.viewToggle}>
+            See all items
+          </button>
         </Title>
         <div className={styles.collections}>
           {collections.map(collection => (
@@ -46,6 +49,7 @@ const StoreHomePage = ({ user: { credits }, collections }: HomePageProps) => {
               image={getCollectionThumbnail(collection)}
               title={collection.title}
               description={collection.description}
+              href={`${config.collectionRoute}${collection.uuid}`}
               key={collection.uuid}
             />
           ))}

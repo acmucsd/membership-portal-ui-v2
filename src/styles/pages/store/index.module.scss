@@ -7,9 +7,21 @@
   margin: 0 auto;
   max-width: 81rem;
 
+  .viewToggle {
+    background: none;
+    font: inherit;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .collections {
     display: grid;
     gap: 2rem;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    @media (max-width: vars.$breakpoint-sm) {
+      grid-template-columns: 1fr;
+    }
   }
 }

@@ -127,10 +127,14 @@
 
         .textButton {
           background: none;
-          color: var(--theme-primary-5);
+          color: var(--theme-blue-text-button);
           font: inherit;
           padding: 0;
           text-align: left;
+
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
 

@@ -52,6 +52,7 @@ const config = {
   loginRoute: '/login',
   cartRoute: '/store/cart',
   myOrdersRoute: '/store/orders',
+  collectionRoute: '/store/collection/',
   isDevelopment,
 };
 

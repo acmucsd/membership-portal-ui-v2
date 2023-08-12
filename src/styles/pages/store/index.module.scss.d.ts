@@ -1,6 +1,7 @@
 export type Styles = {
   collections: string;
   container: string;
+  viewToggle: string;
 };
 
 export type ClassNames = keyof Styles;

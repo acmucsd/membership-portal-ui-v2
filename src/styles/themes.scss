@@ -13,6 +13,7 @@
   --theme-primary-4: #{vars.$light-primary-4}; // circle background, link hover, progress bar
   --theme-primary-5: #{vars.$light-primary-5}; // event card links, arrow hover
   --theme-primary-6: #{vars.$light-primary-6}; // event card borders
+  --theme-blue-text-button: #{vars.$light-primary-5}; // storefront page blue text button
   --theme-gold: #{vars.$light-gold};
   --theme-gold-hover: #{vars.$light-gold-hover};
   --theme-silver: #{vars.$light-silver};
@@ -52,6 +53,7 @@
   --theme-primary-4: #{vars.$dark-primary-4}; // circle background, link hover, progress bar
   --theme-primary-5: #{vars.$dark-primary-5}; // event card links, arrow hover
   --theme-primary-6: #{vars.$dark-primary-6}; // event card borders
+  --theme-blue-text-button: #{vars.$blue-text-button-dark}; // blue text button
   --theme-gold: #{vars.$dark-gold};
   --theme-gold-hover: #{vars.$dark-gold-hover};
   --theme-silver: #{vars.$dark-silver};
