@@ -1,13 +1,14 @@
 export type Styles = {
-  barsLeft: string;
-  barsRest: string;
+  bar: string;
+  bars: string;
   barsRight: string;
+  clip: string;
+  contentWidth: string;
   orange: string;
   pink: string;
   rainbow: string;
-  rainbowContent: string;
-  rainbowWrapper: string;
   red: string;
+  rotate: string;
   teal: string;
 };
 
