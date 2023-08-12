@@ -1,12 +1,27 @@
-import { HelpModal, Hero, Navbar } from '@/components/store';
+import { Title } from '@/components/common';
+import { HelpModal, Hero, ItemCard, Navbar } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import NoImage from '@/public/assets/acm-logos/general/light-mode.png';
 import styles from '@/styles/pages/store/index.module.scss';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
+
+function getCollectionThumbnail(collection: PublicMerchCollection): string {
+  // TEMP. Also, eslint(no-restricted-syntax) says I can't use for-of loops,
+  // eslint(no-plusplus) says no i++, and noUncheckedIndexedAccess is set to
+  // true so `item` is potentially undefined.
+  for (let i = 0; i < collection.items.length; i += 1) {
+    const item = collection.items[i];
+    if (item && !item.picture.startsWith('https://i.imgur.com/')) {
+      return item.picture;
+    }
+  }
+  return NoImage.src;
+}
 
 interface HomePageProps {
   user: PrivateProfile;
@@ -22,9 +37,19 @@ const StoreHomePage = ({ user: { credits }, collections }: HomePageProps) => {
       <Hero onHelp={() => setHelpOpen(true)} />
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
       <div className={styles.container}>
-        {collections.map(collection => (
-          <pre key={collection.uuid}>{JSON.stringify(collection, null, 2)}</pre>
-        ))}
+        <Title type="h2" heading="Browse our collections">
+          <button type="button">See all items</button>
+        </Title>
+        <div className={styles.collections}>
+          {collections.map(collection => (
+            <ItemCard
+              image={getCollectionThumbnail(collection)}
+              title={collection.title}
+              description={collection.description}
+              key={collection.uuid}
+            />
+          ))}
+        </div>
       </div>
     </>
   );
@@ -39,7 +64,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   return {
     props: {
-      collections,
+      collections: [...collections],
     },
   };
 };

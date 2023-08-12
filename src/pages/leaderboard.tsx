@@ -1,3 +1,4 @@
+import { Title } from '@/components/common';
 import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { LeaderboardAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -21,12 +22,11 @@ const LeaderboardPage = (props: LeaderboardProps) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.heading}>Leaderboard</h1>
+      <Title heading="Leaderboard">
         <select name="timeOptions" id="timeOptions">
           <option>All Time</option>
         </select>
-      </div>
+      </Title>
       <div className={styles.topThreeContainer}>
         {topThreeUsers.map((user, index) => (
           <TopThreeCard

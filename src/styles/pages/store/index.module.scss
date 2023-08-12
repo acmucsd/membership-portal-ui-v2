@@ -6,4 +6,10 @@
   gap: 2rem;
   margin: 0 auto;
   max-width: 81rem;
+
+  .collections {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
