@@ -1,0 +1,41 @@
+@use 'src/styles/vars.scss' as vars;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .title {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  .description {
+    margin: 0;
+  }
+
+  .slider {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding: 1rem;
+    scrollbar-color: var(--theme-primary-2) var(--theme-primary-1);
+
+    &::-webkit-scrollbar {
+      background-color: var(--theme-primary-1);
+      border-radius: 1rem;
+      height: 0.75rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--theme-primary-2);
+      border-radius: 1rem;
+    }
+
+    .card {
+      flex: none;
+      max-width: calc(100vw - 6rem);
+      width: 25rem;
+    }
+  }
+}

@@ -10,12 +10,21 @@ interface ItemCardProps {
   href?: string;
   description?: string;
   inStock?: boolean;
+  className?: string;
 }
 
-const ItemCard = ({ image, title, cost, href, description, inStock = true }: ItemCardProps) => {
+const ItemCard = ({
+  image,
+  title,
+  cost,
+  href,
+  description,
+  inStock = true,
+  className = '',
+}: ItemCardProps) => {
   const Card = href ? Link : 'article';
   return (
-    <Card href={href ?? ''} className={styles.itemCard}>
+    <Card href={href ?? ''} className={`${styles.itemCard} ${className}`}>
       <div className={styles.imageWrapper}>
         <Image src={image} alt={title} fill />
       </div>
