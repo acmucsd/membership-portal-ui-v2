@@ -7,12 +7,22 @@
   margin: 0 auto;
   max-width: 81rem;
 
-  .viewToggle {
-    background: none;
-    font: inherit;
+  .header {
+    h2 {
+      @media (max-width: vars.$breakpoint-sm) {
+        font-size: 1.25rem;
+      }
+    }
 
-    &:hover {
-      text-decoration: underline;
+    .viewToggle {
+      background: none;
+      flex: none;
+      font: inherit;
+      padding: 0;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 

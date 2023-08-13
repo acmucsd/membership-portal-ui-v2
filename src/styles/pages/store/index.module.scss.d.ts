@@ -1,6 +1,7 @@
 export type Styles = {
   collections: string;
   container: string;
+  header: string;
   viewToggle: string;
 };
 

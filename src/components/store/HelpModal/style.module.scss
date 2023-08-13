@@ -49,16 +49,10 @@
 
     .header {
       align-items: flex-start;
-      display: flex;
-      justify-content: space-between;
       padding: 0.5rem;
 
       h1 {
-        flex: auto;
         font-size: 1.75rem;
-        margin: 0;
-        margin-right: auto;
-        width: 0;
       }
 
       .close {

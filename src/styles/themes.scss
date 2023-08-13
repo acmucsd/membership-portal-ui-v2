@@ -7,7 +7,7 @@
   /*
   * Light mode specific
   */
-  --theme-primary-1: #{vars.$light-primary-1};
+  --theme-primary-1: #{vars.$light-primary-1}; // storefront collection slider scrollbar gutter
   --theme-primary-2: #{vars.$light-primary-2}; // profile card borders, buttons, nav bar
   --theme-primary-3: #{vars.$light-primary-3};
   --theme-primary-4: #{vars.$light-primary-4}; // circle background, link hover, progress bar

@@ -45,6 +45,7 @@ const StoreHomePage = ({ user: { credits }, collections }: HomePageProps) => {
         <Title
           type="h2"
           heading={view === 'collections' ? 'Browse our collections' : 'Browse all items'}
+          className={styles.header}
         >
           <button
             type="button"
