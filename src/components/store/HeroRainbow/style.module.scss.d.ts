@@ -9,6 +9,7 @@ export type Styles = {
   rainbow: string;
   red: string;
   rotate: string;
+  strokeIn: string;
   teal: string;
 };
 

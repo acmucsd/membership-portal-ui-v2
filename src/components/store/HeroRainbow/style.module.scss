@@ -89,12 +89,24 @@
       }
 
       .rainbow {
+        animation: stroke-in 2s both;
         fill: none;
         flex: none;
         height: 273em;
         stroke: currentColor;
+        stroke-dasharray: 144rem 144rem;
         stroke-width: 1.625rem;
         width: 394.5em;
+
+        @keyframes stroke-in {
+          from {
+            stroke-dashoffset: -144rem;
+          }
+
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
       }
 
       .bars {

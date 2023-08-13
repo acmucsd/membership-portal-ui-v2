@@ -46,22 +46,31 @@
 
         &::before,
         &::after {
+          animation: pop 0.5s cubic-bezier(0.1, 2, 1, 1) both;
           border: 2px solid currentColor;
           content: '';
           height: 100%;
           position: absolute;
           width: 100%;
           z-index: -1;
+
+          @keyframes pop {
+            from {
+              transform: none;
+            }
+
+            to {
+              transform: var(--translation);
+            }
+          }
         }
 
         &::before {
-          left: -1.5rem;
-          top: 1.5rem;
+          --translation: translate(-1.5rem, 1.5rem);
         }
 
         &::after {
-          left: 1.5rem;
-          top: -1.5rem;
+          --translation: translate(1.5rem, -1.5rem);
         }
 
         img {
@@ -89,6 +98,25 @@
         }
       }
 
+      .deco1 path {
+        animation: spin-in 0.5s backwards;
+        transition: transform 1s;
+
+        &:hover {
+          transform: rotate(360deg);
+        }
+
+        @keyframes spin-in {
+          from {
+            transform: scale(0) rotate(-180deg);
+          }
+
+          to {
+            transform: none;
+          }
+        }
+      }
+
       .heroContent {
         align-items: flex-start;
         display: flex;
@@ -104,12 +132,22 @@
           z-index: 0;
 
           &::before {
+            animation: shadow-in 1s both, rainbow-in 1.5s 0.2s both;
             background-clip: text;
-            background-image: vars.$wobnaiw;
+            background-image: linear-gradient(
+              90deg,
+              var(--theme-background) 0%,
+              var(--theme-background) 25%,
+              #e981a0 50%,
+              #f9a857 60%,
+              #80ce1c 70%,
+              #51c0c0 80%,
+              #62b0ff 90%,
+              #816dff 100%
+            );
             color: transparent;
             content: 'The ACM Store';
             display: block;
-            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
             left: 0;
             margin: -10px;
             padding: 10px;
@@ -117,6 +155,27 @@
             -webkit-text-stroke: 7px transparent;
             top: 0;
             z-index: -1;
+
+            @keyframes shadow-in {
+              from {
+                filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0.25));
+              }
+
+              to {
+                filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+              }
+            }
+            @keyframes rainbow-in {
+              from {
+                background-position: left;
+                background-size: 400% 100%;
+              }
+
+              to {
+                background-position: right;
+                background-size: 200% 100%;
+              }
+            }
           }
         }
 
@@ -141,6 +200,28 @@
       .deco2 {
         align-self: flex-end;
         margin-top: -2rem;
+
+        > g {
+          animation: pop-in 0.5s backwards;
+          transition: transform 0.2s;
+
+          &:hover {
+            transform: scale(1.1) rotate(-15deg);
+            transition-timing-function: cubic-bezier(0.1, 2, 1, 1);
+          }
+
+          @keyframes pop-in {
+            from {
+              opacity: 0;
+              transform: translateY(10px) scale(0.5);
+            }
+
+            to {
+              opacity: 1;
+              transform: none;
+            }
+          }
+        }
       }
     }
   }
