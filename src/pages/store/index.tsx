@@ -90,7 +90,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   return {
     props: {
-      collections: [...collections],
+      collections,
     },
   };
 };
