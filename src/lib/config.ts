@@ -1,7 +1,6 @@
 const env = process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
 
-// added about to save the description somewhere
 const config = {
   api: {
     baseUrl: process.env.NEXT_PUBLIC_ACM_API_URL || 'https://testing.api.acmucsd.com/api/v2',
