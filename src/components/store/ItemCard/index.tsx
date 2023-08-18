@@ -3,25 +3,30 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styles from './style.module.scss';
 
-interface ItemCardProps {
+interface CommonOptions {
   image: string;
   title: string;
-  cost?: number;
   href?: string;
-  description?: string;
-  inStock?: boolean;
   className?: string;
 }
 
-const ItemCard = ({
-  image,
-  title,
-  cost,
-  href,
-  description,
-  inStock = true,
-  className = '',
-}: ItemCardProps) => {
+interface StoreItemOptions {
+  cost: number;
+  outOfStock?: boolean;
+}
+
+interface CollectionOptions {
+  description: string;
+}
+
+type ItemCardProps = (StoreItemOptions | CollectionOptions) & CommonOptions;
+
+/**
+ * A card that represents either
+ * - a store item that costs `cost` diamonds (optional `outOfStock`), or
+ * - a collection with a `description`.
+ */
+const ItemCard = ({ image, title, href, className, ...props }: ItemCardProps) => {
   const Card = href ? Link : 'article';
   return (
     <Card href={href ?? ''} className={`${styles.itemCard} ${className}`}>
@@ -30,11 +35,12 @@ const ItemCard = ({
       </div>
       <div className={styles.details}>
         <p className={styles.title}>{title}</p>
-        {description && <p>{description}</p>}
-        {(cost || !inStock) && (
+        {'description' in props && <p>{props.description}</p>}
+        {'cost' in props && (
           <p className={styles.cost}>
-            {cost && <Diamonds count={cost} />}{' '}
-            {!inStock && <span className={styles.outOfStock}>Out of stock</span>}
+            <Diamonds count={props.cost} />
+            &nbsp;
+            {props.outOfStock && <span className={styles.outOfStock}>Out of stock</span>}
           </p>
         )}
       </div>

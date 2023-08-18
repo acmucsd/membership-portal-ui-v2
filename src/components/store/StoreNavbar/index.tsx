@@ -1,6 +1,6 @@
 import Diamonds from '@/components/store/Diamonds';
 import { config } from '@/lib';
-import BackChevron from '@/public/assets/icons/back-chevron.svg';
+import BackArrow from '@/public/assets/icons/back-arrow.svg';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from './style.module.scss';
@@ -17,7 +17,7 @@ const Navbar = ({ balance, showBack }: NavbarProps) => {
     <nav className={styles.navbar}>
       {showBack && (
         <button type="button" className={styles.back} onClick={() => router.back()}>
-          <BackChevron aria-hidden="true" />
+          <BackArrow aria-hidden="true" />
           Back
         </button>
       )}
