@@ -1,41 +1,75 @@
-import { TopThreeCard } from '@/components/leaderboard';
+import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
+import { LeaderboardAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
-import { PermissionService } from '@/lib/services';
+import { CookieService, PermissionService } from '@/lib/services';
+import { PublicProfile } from '@/lib/types/apiResponses';
+import { CookieType } from '@/lib/types/enums';
+import { getProfilePicture, getUserRank } from '@/lib/utils';
+import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
 
-const LeaderboardPage = () => {
+interface LeaderboardProps {
+  leaderboard: PublicProfile[];
+}
+
+const LeaderboardPage = (props: LeaderboardProps) => {
+  const { leaderboard } = props;
+
+  const topThreeUsers = leaderboard.slice(0, 3);
+
+  const leaderboardRows = leaderboard.slice(3);
+
   return (
-    <div>
-      <TopThreeCard
-        position={3}
-        rank="Polynomial Pita"
-        name="Faris Ashi"
-        points={225}
-        image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/c7911ea6-0398-4697-96ff-d352601830e8.png"
-      />
-      <TopThreeCard
-        position={2}
-        rank="Fraction"
-        name="alfjksfioirjkljkhjjdflasjflksjdfkljsfklsjfklsjfslkfjls"
-        points={305}
-        image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/c7911ea6-0398-4697-96ff-d352601830e8.png"
-      />
-      <TopThreeCard
-        position={1}
-        rank="Polynomial Pita"
-        name="Joe Politz"
-        points={225}
-        image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/c7911ea6-0398-4697-96ff-d352601830e8.png"
-      />
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.heading}>Leaderboard</h1>
+        <select name="timeOptions" id="timeOptions">
+          <option>All Time</option>
+        </select>
+      </div>
+      <div className={styles.topThreeContainer}>
+        {topThreeUsers.map((user, index) => (
+          <TopThreeCard
+            key={user.uuid}
+            position={index + 1}
+            rank={getUserRank(user)}
+            name={`${user.firstName} ${user.lastName}`}
+            points={user.points}
+            image={getProfilePicture(user)}
+          />
+        ))}
+      </div>
+      <div className={styles.leaderboard}>
+        {leaderboardRows.map((user, index) => {
+          return (
+            <LeaderboardRow
+              key={user.uuid}
+              position={index + 4}
+              rank={getUserRank(user)}
+              name={`${user.firstName} ${user.lastName}`}
+              points={user.points}
+              image={getProfilePicture(user)}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };
 
 export default LeaderboardPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: {},
-});
+const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
+  const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+
+  const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN);
+
+  return {
+    props: {
+      leaderboard,
+    },
+  };
+};
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
