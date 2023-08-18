@@ -41,7 +41,7 @@
 
   .modalBody {
     background-color: var(--theme-background);
-    border-radius: 0.625rem;
+    border-radius: 10px;
     max-width: 100%;
     padding: 1.5rem;
     transform: scale(0.95);
@@ -72,7 +72,7 @@
       padding: 0.5rem;
       scroll-behavior: smooth;
 
-      @media (max-width: vars.$breakpoint-lg) {
+      @media screen and (max-width: vars.$breakpoint-lg) {
         -ms-overflow-style: none;
         scroll-snap-type: x mandatory;
         scrollbar-width: none;
@@ -99,16 +99,18 @@
           justify-content: space-between;
           margin-top: auto;
 
-          @media (max-width: vars.$breakpoint-lg) {
+          @media screen and (max-width: vars.$breakpoint-lg) {
             display: flex;
           }
 
           .stepControl {
+            align-items: center;
             background-color: var(--theme-surface-1);
             border-radius: 50%;
-            display: block;
-            height: 1.875rem;
-            width: 1.875rem;
+            display: flex;
+            height: 2rem;
+            justify-content: center;
+            width: 2rem;
 
             path {
               stroke: vars.$disabled;

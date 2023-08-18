@@ -15,7 +15,7 @@
   position: absolute;
   z-index: -1;
 
-  @media (max-width: vars.$breakpoint-lg) {
+  @media screen and (max-width: vars.$breakpoint-lg) {
     padding: 2rem 0;
     position: static;
   }
@@ -30,13 +30,13 @@
     position: absolute;
     right: 0;
 
-    @media (max-width: vars.$breakpoint-lg) {
+    @media screen and (max-width: vars.$breakpoint-lg) {
       font-size: 1px;
       position: static;
       transform: rotate(-12deg);
     }
 
-    @media (max-width: vars.$breakpoint-sm) {
+    @media screen and (max-width: vars.$breakpoint-sm) {
       font-size: 0.5px;
       transform: rotate(-24deg);
     }
@@ -83,7 +83,7 @@
       max-width: 81rem;
       width: 100%;
 
-      @media (max-width: vars.$breakpoint-lg) {
+      @media screen and (max-width: vars.$breakpoint-lg) {
         margin-left: 0;
         width: unset;
       }
@@ -114,7 +114,7 @@
         flex: auto;
 
         // Hide .barsRest so the bend can be centered on mobile
-        @media (max-width: vars.$breakpoint-lg) {
+        @media screen and (max-width: vars.$breakpoint-lg) {
           display: none;
         }
       }

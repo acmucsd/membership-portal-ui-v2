@@ -19,7 +19,7 @@
     padding-bottom: 9rem;
     width: 100%;
 
-    @media (max-width: vars.$breakpoint-lg) {
+    @media screen and (max-width: vars.$breakpoint-lg) {
       align-items: center;
       flex-direction: column;
       gap: 0;
@@ -32,7 +32,7 @@
       align-items: center;
       display: flex;
 
-      @media (max-width: vars.$breakpoint-lg) {
+      @media screen and (max-width: vars.$breakpoint-lg) {
         display: none;
       }
 
@@ -86,14 +86,14 @@
       margin-left: auto;
       max-width: 34rem;
 
-      @media (max-width: vars.$breakpoint-lg) {
+      @media screen and (max-width: vars.$breakpoint-lg) {
         margin: 0;
       }
 
       .deco1,
       .deco2 {
         flex: none;
-        @media (max-width: vars.$breakpoint-lg) {
+        @media screen and (max-width: vars.$breakpoint-lg) {
           display: none;
         }
       }

@@ -19,8 +19,7 @@ const CollectionSlider = ({ title, description, items }: CollectionSliderProps) 
         {items.map(item => (
           <ItemCard
             className={styles.card}
-            // TEMP. Also, the API sometimes returns null for item.picture.
-            image={item.picture?.startsWith('https://acmucsd') ? item.picture : NoImage.src}
+            image={item.picture ?? NoImage.src}
             title={item.itemName}
             href={`${config.itemRoute}${item.uuid}`}
             cost={item.options[0]?.price ?? 0}

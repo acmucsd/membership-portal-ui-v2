@@ -11,19 +11,6 @@ import styles from '@/styles/pages/store/index.module.scss';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 
-function getCollectionThumbnail(collection: PublicMerchCollection): string {
-  // TEMP. Also, eslint(no-restricted-syntax) says I can't use for-of loops,
-  // eslint(no-plusplus) says no i++, and noUncheckedIndexedAccess is set to
-  // true so `item` is potentially undefined.
-  for (let i = 0; i < collection.items.length; i += 1) {
-    const item = collection.items[i];
-    if (item?.picture?.startsWith('https://acmucsd')) {
-      return item.picture;
-    }
-  }
-  return NoImage.src;
-}
-
 type View = 'collections' | 'all-items';
 
 interface HomePageProps {
@@ -59,7 +46,7 @@ const StoreHomePage = ({ user: { credits }, collections }: HomePageProps) => {
           <div className={styles.collections}>
             {collections.map(collection => (
               <ItemCard
-                image={getCollectionThumbnail(collection)}
+                image={collection.items[0]?.picture ?? NoImage.src}
                 title={collection.title}
                 description={collection.description}
                 href={`${config.collectionRoute}${collection.uuid}`}
