@@ -25,7 +25,7 @@ const StoreHomePage = ({ user: { credits } }: HomePageProps) => {
           cost={42069}
           title="Nishant (not for sale)"
           href="/leaderboard"
-          inStock={false}
+          outOfStock
         />
         <ItemCard
           image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/a21d9a9d-0da5-479d-9183-9781be4f9daf.jpeg"
