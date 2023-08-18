@@ -29,6 +29,12 @@ const StoreHomePage = ({ user: { credits } }: HomePageProps) => {
           outOfStock
         />
         <ItemCard
+          image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/1a623af5-2d4c-47e5-89a9-6698cefc0249.png"
+          cost={1000}
+          title="This item has a long title that wraps over multiple lines"
+          href="/store/item/17774f20-e04d-4ace-a6fc-8dfe9286eca7"
+        />
+        <ItemCard
           image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/a21d9a9d-0da5-479d-9183-9781be4f9daf.jpeg"
           cost={10}
           title="Critter"
@@ -46,7 +52,7 @@ const StoreHomePage = ({ user: { credits } }: HomePageProps) => {
       >
         <ItemCard
           image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/cf6ca1b7-cd3b-4da5-8d2b-28ea55084a06.png"
-          title="The Crewmate Collection"
+          title="The Crewmate Collection (from Among Us)"
           href="/store/collection/05b4bd51-4c0c-4c41-a2c7-d9202eeace8c"
           description="Visors, space suits, and everything you need to stay unnoticed on a cold, starlit spaceship."
         />
