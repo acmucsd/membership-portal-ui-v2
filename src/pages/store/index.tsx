@@ -12,32 +12,51 @@ const StoreHomePage = ({ user: { credits } }: HomePageProps) => {
   return (
     <>
       <Navbar balance={credits} />
-      <div
+      <h2>Items</h2>
+      <section
         style={{
           display: 'grid',
           gap: '10px',
           gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          marginTop: '32px',
+          margin: '32px 0',
         }}
       >
         <ItemCard
           image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/07789a16-8326-4edc-ad2d-fc6193cd1ee3.jpg"
           cost={42069}
           title="Nishant (not for sale)"
-          href="/leaderboard"
+          href="/store/item/18d76c1d-0d77-40a5-81cf-a7438e89a117"
           outOfStock
         />
         <ItemCard
           image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/a21d9a9d-0da5-479d-9183-9781be4f9daf.jpeg"
           cost={10}
           title="Critter"
+          href="/store/item/1dc46f8b-1481-4dac-a3ff-b835c3d6de2b"
         />
+      </section>
+      <h2>Collections</h2>
+      <section
+        style={{
+          display: 'grid',
+          gap: '10px',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+          margin: '32px 0',
+        }}
+      >
         <ItemCard
           image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/cf6ca1b7-cd3b-4da5-8d2b-28ea55084a06.png"
           title="The Crewmate Collection"
+          href="/store/collection/05b4bd51-4c0c-4c41-a2c7-d9202eeace8c"
           description="Visors, space suits, and everything you need to stay unnoticed on a cold, starlit spaceship."
         />
-      </div>
+        <ItemCard
+          image="https://acmucsd.s3.us-west-1.amazonaws.com/portal/profiles/0fe091ce-2ada-46b1-86a8-1f416371a905.png"
+          title="The Golden Bear Collection"
+          href="/store/collection/d3b37fc6-5b44-4051-a6f8-fdacc3f8d3ab"
+          description='Recently a meme was shared to our subeddit outlining a dismissive and disrespectful act that, often, many non-Berkeley students are guilty of. Please do not refer to Berkeley as "UCB." This is not the proper way to refer to the University of California&apos;s original and flagship campus. Cal, Berkeley or UC Berkeley are all proper and acceptable ways to say it. UCB, on the other hand, is not. As the system&apos;s most prestigious and respected campus, we feel that it is important to honor and maintain an appropriate level of respect for our university&apos;s name. We feel that "UCB" cheapens our brand and doesn&apos;t emphasize the incredible prestige associated with Berkeley. While it may be acceptable to refer to all other UC campuses in initialisms due to their lack of recognition and prestige, this is not acceptable for the flagship and most well-known campus, and we therefore request that you cease using the name "UCB" to refer our school. Thank you. TL:DR Don&apos;t say "UCB" when referring to Berkeley.'
+        />
+      </section>
     </>
   );
 };

@@ -37,7 +37,8 @@ const ItemCard = ({ image, title, href, ...props }: ItemCardProps) => {
         {'description' in props && <p>{props.description}</p>}
         {'cost' in props && (
           <p className={styles.cost}>
-            <Diamonds count={props.cost} />{' '}
+            <Diamonds count={props.cost} />
+            &nbsp;
             {props.outOfStock && <span className={styles.outOfStock}>Out of stock</span>}
           </p>
         )}

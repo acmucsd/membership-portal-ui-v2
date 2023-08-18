@@ -7,12 +7,10 @@ interface DiamondsProps {
   className?: string;
 }
 
-const Diamonds = ({ count, className }: DiamondsProps) => {
-  return (
-    <span className={className}>
-      {numberFormat.format(count)} <span className={styles.diamond}>diamonds</span>
-    </span>
-  );
-};
+const Diamonds = ({ count, className }: DiamondsProps) => (
+  <span className={className}>
+    {numberFormat.format(count)} <span className={styles.diamond}>diamonds</span>
+  </span>
+);
 
 export default Diamonds;
