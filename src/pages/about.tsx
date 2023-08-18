@@ -34,31 +34,23 @@ const AboutPage = () => {
         <div className={styles.socials}>
           <p className={styles.description}>{about}</p>
           <a href="https://acmucsd.com">
-            <div className={styles.theme}>
-              <WebIcon />
-            </div>
-            acmurl.com
+            <WebIcon className={styles.theme} />
+            acmucsd.com
           </a>
           <a href="https://facebook.com/acm.ucsd">
-            <div className={styles.theme}>
-              <FacebookIcon />
-            </div>
-            facebook.com/acm.ucsd
+            <FacebookIcon className={styles.theme} />
+            acmurl.com/facebook
           </a>
           <a href="https://instagram.com/acm.ucsd">
-            <div className={styles.theme}>
-              <IgIcon />
-            </div>
-            instagram.com/acm.ucsd
+            <IgIcon className={styles.theme} />
+            acmurl.com/instagram
           </a>
           <a href="https://acmurl.com/discord">
-            <div className={styles.theme}>
-              <DiscordIcon />
-            </div>
+            <DiscordIcon className={styles.theme} />
             acmurl.com/discord
           </a>
         </div>
-        <div className={styles.discordpreview}>
+        <div className={styles.discordPreview}>
           <iframe
             title="discord embed"
             src={`https://discordapp.com/widget?id=573028991527550986&theme=${theme}`}

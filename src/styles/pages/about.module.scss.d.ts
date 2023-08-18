@@ -2,7 +2,7 @@ export type Styles = {
   body: string;
   container: string;
   description: string;
-  discordpreview: string;
+  discordPreview: string;
   header: string;
   logo: string;
   socials: string;

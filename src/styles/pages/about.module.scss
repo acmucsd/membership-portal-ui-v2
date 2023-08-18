@@ -1,7 +1,7 @@
-@use '../vars.scss' as vars;
+@use 'src/styles/vars.scss' as vars;
 
 .logo {
-  height: 115;
+  height: 115px;
 }
 
 .container {
@@ -13,6 +13,7 @@
 .header {
   align-items: center;
   display: flex;
+  padding: 0 2rem;
 
   h1 {
     font-size: vars.$general-heading-2;
@@ -50,7 +51,7 @@
     }
   }
 
-  .discordpreview {
+  .discordPreview {
     border-radius: 10px;
     overflow: hidden;
     width: 350px;
