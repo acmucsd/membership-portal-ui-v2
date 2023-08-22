@@ -3,6 +3,8 @@ export type Styles = {
   header: string;
   heading: string;
   leaderboard: string;
+  myPosition: string;
+  search: string;
   topThreeContainer: string;
 };
 

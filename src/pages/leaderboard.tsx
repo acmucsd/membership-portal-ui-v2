@@ -5,6 +5,7 @@ import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getProfilePicture, getUserRank } from '@/lib/utils';
+import MyPositionIcon from '@/public/assets/icons/my-position-icon.svg';
 import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
 import { useRef, useState } from 'react';
@@ -35,14 +36,17 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
       <div className={styles.header}>
         <h1 className={styles.heading}>Leaderboard</h1>
         <button
+          className={styles.myPosition}
           type="button"
           onClick={() => {
             myPosition.current?.scrollIntoView({ behavior: 'smooth' });
           }}
         >
           My Position
+          <MyPositionIcon />
         </button>
         <input
+          className={styles.search}
           type="search"
           placeholder="Search Users"
           aria-label="Search Users"
