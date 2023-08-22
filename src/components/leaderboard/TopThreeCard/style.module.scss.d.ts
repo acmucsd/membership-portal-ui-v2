@@ -3,7 +3,6 @@ export type Styles = {
   cardRight: string;
   cardText: string;
   leaderboardCard: string;
-  match: string;
   profileImage: string;
 };
 

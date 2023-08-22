@@ -32,11 +32,13 @@
   }
 
   .nameRank {
+    align-items: center;
     display: grid;
     gap: 2rem;
     grid-template-columns: 1fr 1fr;
 
     @media (max-width: vars.$breakpoint-md) {
+      align-items: flex-start;
       display: flex;
       flex-direction: column;
       gap: 0.5em;

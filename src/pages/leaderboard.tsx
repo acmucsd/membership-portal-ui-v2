@@ -15,9 +15,6 @@ interface Match {
   length: number;
 }
 function filter<T extends PublicProfile>(users: T[], query: string): (T & { match?: Match })[] {
-  if (query === '') {
-    return users;
-  }
   const search = query.toLowerCase();
   return users.flatMap(user => {
     const index = `${user.firstName} ${user.lastName}`.toLowerCase().indexOf(search);
@@ -35,8 +32,8 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
   const myPosition = useRef<HTMLDivElement>(null);
 
   const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
-  const topThreeUsers = filter(results.slice(0, 3), query);
-  const leaderboardRows = filter(results.slice(3), query);
+  const topThreeUsers = query === '' ? filter(results.slice(0, 3), query) : [];
+  const leaderboardRows = filter(query === '' ? results.slice(3) : results, query);
 
   return (
     <div className={styles.container}>
@@ -79,7 +76,6 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
               name={`${user.firstName} ${user.lastName}`}
               points={user.points}
               image={getProfilePicture(user)}
-              match={user.match}
             />
           ))}
         </div>
