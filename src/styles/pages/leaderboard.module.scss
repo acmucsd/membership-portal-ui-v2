@@ -33,7 +33,7 @@
       align-items: center;
       background-color: var(--theme-primary-2);
       border-radius: 1rem;
-      color: vars.$dark-text-on-background-1;
+      color: var(--theme-background);
       display: flex;
       font-size: 1rem;
       font-weight: bold;
@@ -81,6 +81,26 @@
     @media (max-width: vars.$breakpoint-sm) {
       border-radius: 0;
       margin: 0 -2rem;
+    }
+  }
+
+  .flash {
+    animation: flash 2s;
+    @keyframes flash {
+      0%,
+      20%,
+      40%,
+      60% {
+        background-color: var(--theme-background);
+        color: var(--theme-text-on-background-1);
+      }
+
+      10%,
+      30%,
+      50% {
+        background-color: var(--theme-primary-2);
+        color: var(--theme-background);
+      }
     }
   }
 }

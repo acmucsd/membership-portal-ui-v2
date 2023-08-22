@@ -10,12 +10,19 @@ import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
 import { useRef, useState } from 'react';
 
-function filter<T extends PublicProfile>(users: T[], query: string): T[] {
+interface Match {
+  index: number;
+  length: number;
+}
+function filter<T extends PublicProfile>(users: T[], query: string): (T & { match?: Match })[] {
   if (query === '') {
     return users;
   }
   const search = query.toLowerCase();
-  return users.filter(user => `${user.firstName} ${user.lastName}`.toLowerCase().includes(search));
+  return users.flatMap(user => {
+    const index = `${user.firstName} ${user.lastName}`.toLowerCase().indexOf(search);
+    return index !== -1 ? [{ ...user, match: { index, length: search.length } }] : [];
+  });
 }
 
 interface LeaderboardProps {
@@ -39,7 +46,12 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
           className={styles.myPosition}
           type="button"
           onClick={() => {
-            myPosition.current?.scrollIntoView({ behavior: 'smooth' });
+            myPosition.current?.scrollIntoView();
+            // Remove `.flash` in case it was already applied
+            myPosition.current?.classList.remove(styles.flash);
+            window.requestAnimationFrame(() => {
+              myPosition.current?.classList.add(styles.flash);
+            });
           }}
         >
           My Position
@@ -67,6 +79,7 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
               name={`${user.firstName} ${user.lastName}`}
               points={user.points}
               image={getProfilePicture(user)}
+              match={user.match}
             />
           ))}
         </div>
@@ -82,6 +95,7 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
                 name={`${user.firstName} ${user.lastName}`}
                 points={user.points}
                 image={getProfilePicture(user)}
+                match={user.match}
                 rowRef={user.uuid === uuid ? myPosition : null}
               />
             );

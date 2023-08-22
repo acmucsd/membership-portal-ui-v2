@@ -8,10 +8,22 @@ interface LeaderboardRowProps {
   name: string;
   points: number;
   image: string;
+  match?: {
+    index: number;
+    length: number;
+  };
   rowRef: RefObject<HTMLDivElement> | null;
 }
 
-const LeaderboardRow = ({ position, rank, name, points, image, rowRef }: LeaderboardRowProps) => {
+const LeaderboardRow = ({
+  position,
+  rank,
+  name,
+  points,
+  image,
+  match,
+  rowRef,
+}: LeaderboardRowProps) => {
   return (
     <div className={styles.row} ref={rowRef}>
       <span className={styles.position}>{position}</span>
@@ -24,7 +36,19 @@ const LeaderboardRow = ({ position, rank, name, points, image, rowRef }: Leaderb
         className={styles.profilePicture}
       />
       <div className={styles.nameRank}>
-        <span className={styles.name}>{name}</span>
+        <span className={styles.name}>
+          {match ? (
+            <>
+              {name.slice(0, match.index)}
+              <span className={styles.match}>
+                {name.slice(match.index, match.index + match.length)}
+              </span>
+              {name.slice(match.index + match.length)}
+            </>
+          ) : (
+            name
+          )}
+        </span>
         <span className={styles.rank}>{rank}</span>
       </div>
       <span className={styles.points}>{points} points</span>
