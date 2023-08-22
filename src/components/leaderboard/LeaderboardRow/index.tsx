@@ -11,7 +11,7 @@ interface LeaderboardRowProps {
 
 const LeaderboardRow = ({ position, rank, name, points, image }: LeaderboardRowProps) => {
   return (
-    <div className={styles.row} data-style={position % 2 === 0 ? 'even' : 'odd'}>
+    <div className={styles.row}>
       <span className={styles.position}>{position}</span>
       <Image
         src={image}

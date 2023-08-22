@@ -16,7 +16,7 @@
     padding-right: 1.5rem;
   }
 
-  &[data-style='odd'] {
+  &:nth-child(2n) {
     background-color: var(--theme-background);
   }
 

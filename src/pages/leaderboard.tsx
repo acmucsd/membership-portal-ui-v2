@@ -7,6 +7,15 @@ import { CookieType } from '@/lib/types/enums';
 import { getProfilePicture, getUserRank } from '@/lib/utils';
 import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
+import { useState } from 'react';
+
+function filter<T extends PublicProfile>(users: T[], query: string): T[] {
+  if (query === '') {
+    return users;
+  }
+  const search = query.toLowerCase();
+  return users.filter(user => `${user.firstName} ${user.lastName}`.toLowerCase().includes(search));
+}
 
 interface LeaderboardProps {
   leaderboard: PublicProfile[];
@@ -15,44 +24,60 @@ interface LeaderboardProps {
 const LeaderboardPage = (props: LeaderboardProps) => {
   const { leaderboard } = props;
 
-  const topThreeUsers = leaderboard.slice(0, 3);
+  const [query, setQuery] = useState('');
+  const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
 
-  const leaderboardRows = leaderboard.slice(3);
+  const topThreeUsers = filter(results.slice(0, 3), query);
+
+  const leaderboardRows = filter(results.slice(3), query);
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.heading}>Leaderboard</h1>
+        <button type="button">My Position</button>
+        <input
+          type="search"
+          placeholder="Search Users"
+          aria-label="Search Users"
+          value={query}
+          onChange={e => setQuery(e.currentTarget.value)}
+        />
         <select name="timeOptions" id="timeOptions">
           <option>All Time</option>
         </select>
       </div>
-      <div className={styles.topThreeContainer}>
-        {topThreeUsers.map((user, index) => (
-          <TopThreeCard
-            key={user.uuid}
-            position={index + 1}
-            rank={getUserRank(user)}
-            name={`${user.firstName} ${user.lastName}`}
-            points={user.points}
-            image={getProfilePicture(user)}
-          />
-        ))}
-      </div>
-      <div className={styles.leaderboard}>
-        {leaderboardRows.map((user, index) => {
-          return (
-            <LeaderboardRow
+      {topThreeUsers.length > 0 && (
+        <div className={styles.topThreeContainer}>
+          {topThreeUsers.map(user => (
+            <TopThreeCard
               key={user.uuid}
-              position={index + 4}
+              position={user.position}
               rank={getUserRank(user)}
               name={`${user.firstName} ${user.lastName}`}
               points={user.points}
               image={getProfilePicture(user)}
             />
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
+      {leaderboardRows.length > 0 && (
+        <div className={styles.leaderboard}>
+          {leaderboardRows.map(user => {
+            return (
+              <LeaderboardRow
+                key={user.uuid}
+                position={user.position}
+                rank={getUserRank(user)}
+                name={`${user.firstName} ${user.lastName}`}
+                points={user.points}
+                image={getProfilePicture(user)}
+              />
+            );
+          })}
+        </div>
+      )}
+      {topThreeUsers.length === 0 && leaderboardRows.length === 0 && <p>No results.</p>}
     </div>
   );
 };
