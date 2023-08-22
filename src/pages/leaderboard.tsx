@@ -2,12 +2,12 @@ import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { LeaderboardAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import { PublicProfile } from '@/lib/types/apiResponses';
+import { PrivateProfile, PublicProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getProfilePicture, getUserRank } from '@/lib/utils';
 import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 function filter<T extends PublicProfile>(users: T[], query: string): T[] {
   if (query === '') {
@@ -19,23 +19,29 @@ function filter<T extends PublicProfile>(users: T[], query: string): T[] {
 
 interface LeaderboardProps {
   leaderboard: PublicProfile[];
+  user: PrivateProfile;
 }
 
-const LeaderboardPage = (props: LeaderboardProps) => {
-  const { leaderboard } = props;
-
+const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
   const [query, setQuery] = useState('');
+  const myPosition = useRef<HTMLDivElement>(null);
+
   const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
-
   const topThreeUsers = filter(results.slice(0, 3), query);
-
   const leaderboardRows = filter(results.slice(3), query);
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.heading}>Leaderboard</h1>
-        <button type="button">My Position</button>
+        <button
+          type="button"
+          onClick={() => {
+            myPosition.current?.scrollIntoView({ behavior: 'smooth' });
+          }}
+        >
+          My Position
+        </button>
         <input
           type="search"
           placeholder="Search Users"
@@ -72,6 +78,7 @@ const LeaderboardPage = (props: LeaderboardProps) => {
                 name={`${user.firstName} ${user.lastName}`}
                 points={user.points}
                 image={getProfilePicture(user)}
+                rowRef={user.uuid === uuid ? myPosition : null}
               />
             );
           })}

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { RefObject } from 'react';
 import styles from './style.module.scss';
 
 interface LeaderboardRowProps {
@@ -7,11 +8,12 @@ interface LeaderboardRowProps {
   name: string;
   points: number;
   image: string;
+  rowRef: RefObject<HTMLDivElement> | null;
 }
 
-const LeaderboardRow = ({ position, rank, name, points, image }: LeaderboardRowProps) => {
+const LeaderboardRow = ({ position, rank, name, points, image, rowRef }: LeaderboardRowProps) => {
   return (
-    <div className={styles.row}>
+    <div className={styles.row} ref={rowRef}>
       <span className={styles.position}>{position}</span>
       <Image
         src={image}
