@@ -1,0 +1,112 @@
+.switch {
+  background: #242729;
+  display: inline-block;
+  float: left;
+  position: relative;
+
+  label {
+    color: #fff;
+    cursor: pointer;
+    float: left;
+    padding: 7px;
+
+    input {
+      opacity: 0;
+      position: absolute;
+    }
+  }
+
+  label:has(input:checked) {
+    background: green;
+  }
+
+  // /* The toggle background */
+  // .slider {
+  //   background-color: #ccc;
+  //   bottom: 0;
+  //   cursor: pointer;
+  //   left: 0;
+  //   pointer-events: none;
+  //   position: absolute;
+  //   right: 0;
+  //   top: 0;
+  //   transition: 0.4s;
+  //   transition: 0.4s;
+  // }
+
+  // // /* The toggle box when unchecked */
+  // // .slider::before {
+  // //   // height: 26px;
+  // //   aspect-ratio: 1 / 1;
+  // //   background-color: white;
+  // //   bottom: 4px;
+  // //   content: '';
+  // //   left: 4px;
+
+  // //   position: absolute;
+  // //   transition: 0.4s;
+  // //   transition: 0.4s;
+  // //   width: 33%;
+  // // }
+
+  // /* The toggle background color when checked */
+  // input:checked + .slider {
+  //   background-color: #2196f3;
+  // }
+
+  // /* The toggle box when checked */
+  // input:focus + .slider {
+  //   box-shadow: 0 0 1px #2196f3;
+  // }
+
+  // input:checked + .slider::before {
+  //   transform: translateX(100%);
+  //   // transform: translateX(26px);
+  //   // transform: translateX(26px);
+  // }
+
+  // /* Rounded sliders */
+  // .slider.round {
+  //   border-radius: 34px;
+  // }
+
+  // .slider.round::before {
+  //   border-radius: 50%;
+  // }
+
+  &indicator {
+    background: blue;
+    border-radius: 50%;
+    height: 4rem;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    top: -0.5rem;
+    transform: translate3d(1rem, 0, 0);
+    transition: transform 600ms cubic-bezier(0.02, 0.94, 0.09, 0.97),
+      background 300ms cubic-bezier(0.17, 0.67, 0.14, 1.03);
+    width: 4rem;
+  }
+
+  input.one:checked ~ .switchindicator {
+    background: PaleGreen;
+    transform: translate3d(1.2rem, 0, 0);
+  }
+
+  input.two:checked ~ .switchindicator {
+    background: MediumTurquoise;
+    transform: translate3d(5.5rem, 0, 0);
+  }
+
+  input.three:checked ~ .switchindicator {
+    background: PaleVioletRed;
+    transform: translate3d(10.6rem, 0, 0);
+  }
+
+  // input[type='radio'] {
+  //   &:not(:checked),
+  //   &:checked {
+  //     display: none;
+  //   }
+  // }
+}
