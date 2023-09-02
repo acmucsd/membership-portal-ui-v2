@@ -88,19 +88,19 @@
     width: 4rem;
   }
 
-  input.one:checked ~ .switchindicator {
+  .switchOne {
     background: PaleGreen;
-    transform: translate3d(1.2rem, 0, 0);
+    transform: translate3d(0%, 0, 0);
   }
 
-  input.two:checked ~ .switchindicator {
+  .switchTwo {
     background: MediumTurquoise;
-    transform: translate3d(5.5rem, 0, 0);
+    transform: translate3d(100%, 0, 0);
   }
 
-  input.three:checked ~ .switchindicator {
+  .switchThree {
     background: PaleVioletRed;
-    transform: translate3d(10.6rem, 0, 0);
+    transform: translate3d(200%, 0, 0);
   }
 
   // input[type='radio'] {
