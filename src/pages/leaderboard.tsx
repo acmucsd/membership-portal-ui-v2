@@ -1,4 +1,5 @@
 import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
+import { config } from '@/lib';
 import { LeaderboardAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
@@ -29,7 +30,7 @@ interface LeaderboardProps {
 
 const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
   const [query, setQuery] = useState('');
-  const myPosition = useRef<HTMLDivElement>(null);
+  const myPosition = useRef<HTMLAnchorElement>(null);
 
   const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
   const topThreeUsers = query === '' ? filter(results.slice(0, 3), query) : [];
@@ -74,6 +75,7 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
               position={user.position}
               rank={getUserRank(user)}
               name={`${user.firstName} ${user.lastName}`}
+              url={`${config.userProfileRoute}${user.uuid}`}
               points={user.points}
               image={getProfilePicture(user)}
             />
@@ -89,6 +91,7 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
                 position={user.position}
                 rank={getUserRank(user)}
                 name={`${user.firstName} ${user.lastName}`}
+                url={`${config.userProfileRoute}${user.uuid}`}
                 points={user.points}
                 image={getProfilePicture(user)}
                 match={user.match}

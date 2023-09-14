@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import type { RefObject } from 'react';
 import styles from './style.module.scss';
 
@@ -6,26 +7,28 @@ interface LeaderboardRowProps {
   position: number;
   rank: string;
   name: string;
+  url: string;
   points: number;
   image: string;
   match?: {
     index: number;
     length: number;
   };
-  rowRef: RefObject<HTMLDivElement> | null;
+  rowRef: RefObject<HTMLAnchorElement> | null;
 }
 
 const LeaderboardRow = ({
   position,
   rank,
   name,
+  url,
   points,
   image,
   match,
   rowRef,
 }: LeaderboardRowProps) => {
   return (
-    <div className={styles.row} ref={rowRef}>
+    <Link href={url} className={styles.row} ref={rowRef}>
       <span className={styles.position}>{position}</span>
       <Image
         src={image}
@@ -52,7 +55,7 @@ const LeaderboardRow = ({
         <span className={styles.rank}>{rank}</span>
       </div>
       <span className={styles.points}>{points} points</span>
-    </div>
+    </Link>
   );
 };
 
