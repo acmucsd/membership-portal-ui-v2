@@ -75,7 +75,7 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
               position={user.position}
               rank={getUserRank(user)}
               name={`${user.firstName} ${user.lastName}`}
-              url={`${config.userProfileRoute}${user.uuid}`}
+              url={`${config.userProfileRoute}${user.handle}`}
               points={user.points}
               image={getProfilePicture(user)}
             />
@@ -91,7 +91,7 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
                 position={user.position}
                 rank={getUserRank(user)}
                 name={`${user.firstName} ${user.lastName}`}
-                url={`${config.userProfileRoute}${user.uuid}`}
+                url={`${config.userProfileRoute}${user.handle}`}
                 points={user.points}
                 image={getProfilePicture(user)}
                 match={user.match}
