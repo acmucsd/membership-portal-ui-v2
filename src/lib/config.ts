@@ -48,8 +48,13 @@ const config = {
       },
     },
   },
+  cssVars: {
+    breakpointMd: 768,
+  },
   homeRoute: '/',
   loginRoute: '/login',
+  cartRoute: '/store/cart',
+  myOrdersRoute: '/store/orders',
   isDevelopment,
 };
 

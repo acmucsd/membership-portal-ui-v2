@@ -108,7 +108,10 @@ export default LeaderboardPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
-  const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN);
+  // Get all leaderboard items
+  const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN, {
+    limit: 0,
+  });
 
   return {
     props: {
