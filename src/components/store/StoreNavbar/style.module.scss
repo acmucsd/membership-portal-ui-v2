@@ -1,0 +1,41 @@
+@use 'src/styles/vars.scss' as vars;
+
+.navbar {
+  align-items: center;
+  display: flex;
+  height: 24px;
+
+  @media screen and (max-width: vars.$breakpoint-sm) {
+    font-size: 0.75em;
+  }
+
+  .back {
+    align-items: center;
+    background: none;
+    color: var(--theme-text-on-background-1);
+    display: flex;
+    font: inherit;
+    font-weight: bold;
+    gap: 8px;
+
+    @media screen and (max-width: vars.$breakpoint-sm) {
+      svg {
+        width: 6px;
+      }
+    }
+
+    path {
+      fill: currentColor;
+    }
+  }
+
+  .rightSide {
+    display: flex;
+    gap: 24px;
+    margin-left: auto;
+
+    .navlink {
+      font-weight: bold;
+    }
+  }
+}

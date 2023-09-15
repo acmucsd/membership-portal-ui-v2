@@ -10,13 +10,55 @@
   .header {
     align-items: center;
     display: flex;
-    justify-content: space-between;
-  }
+    gap: 0 2rem;
 
-  .heading {
-    font-size: 1.5rem;
-    letter-spacing: 1%;
-    line-height: 2rem;
+    @media (max-width: vars.$breakpoint-lg) {
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      justify-content: space-between;
+      justify-items: end;
+    }
+
+    .heading {
+      font-size: 1.5rem;
+      justify-self: start;
+      letter-spacing: 1%;
+      line-height: 2rem;
+      margin-right: auto;
+    }
+
+    .myPosition {
+      align-items: center;
+      background-color: var(--theme-primary-2);
+      border-radius: 1rem;
+      color: var(--theme-background);
+      display: flex;
+      font-size: 1rem;
+      font-weight: bold;
+      gap: 0.5rem;
+      height: 2rem;
+      justify-self: start;
+      padding: 0 1rem;
+    }
+
+    .search {
+      background: none;
+      border: 1px solid var(--theme-text-on-background-1);
+      border-radius: 1rem;
+      color: inherit;
+      font-size: 14px;
+      height: 2rem;
+      max-width: 18rem;
+      padding-left: 1.5rem;
+      padding-right: 0.5rem;
+      width: 100%;
+
+      &::placeholder {
+        color: var(--theme-text-on-background-3);
+      }
+    }
   }
 
   .topThreeContainer {
@@ -39,6 +81,26 @@
     @media (max-width: vars.$breakpoint-sm) {
       border-radius: 0;
       margin: 0 -2rem;
+    }
+  }
+
+  .flash {
+    animation: flash 2s;
+    @keyframes flash {
+      0%,
+      20%,
+      40%,
+      60% {
+        background-color: var(--theme-background);
+        color: var(--theme-text-on-background-1);
+      }
+
+      10%,
+      30%,
+      50% {
+        background-color: var(--theme-primary-2);
+        color: var(--theme-background);
+      }
     }
   }
 }

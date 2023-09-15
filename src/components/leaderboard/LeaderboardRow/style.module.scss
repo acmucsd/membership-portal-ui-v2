@@ -16,7 +16,7 @@
     padding-right: 1.5rem;
   }
 
-  &[data-style='odd'] {
+  &:nth-child(2n) {
     background-color: var(--theme-background);
   }
 
@@ -32,11 +32,13 @@
   }
 
   .nameRank {
+    align-items: center;
     display: grid;
     gap: 2rem;
     grid-template-columns: 1fr 1fr;
 
     @media (max-width: vars.$breakpoint-md) {
+      align-items: flex-start;
       display: flex;
       flex-direction: column;
       gap: 0.5em;
@@ -44,6 +46,12 @@
 
     .name {
       font-weight: 500;
+
+      .match {
+        background-color: var(--theme-primary-2);
+        border-radius: 2px;
+        color: var(--theme-background);
+      }
     }
 
     .rank {

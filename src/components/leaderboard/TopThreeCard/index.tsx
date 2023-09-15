@@ -1,19 +1,21 @@
 import { trim } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 import styles from './style.module.scss';
 
 interface UserCardProps {
   position: number;
   rank: string;
   name: string;
+  url: string;
   points: number;
   image: string;
 }
 const positionNames = ['first', 'second', 'third'];
 
-const TopThreeCard = ({ position, rank, name, points, image }: UserCardProps) => {
+const TopThreeCard = ({ position, rank, name, url, points, image }: UserCardProps) => {
   return (
-    <div className={styles.leaderboardCard} data-position={positionNames[position - 1]}>
+    <Link href={url} className={styles.leaderboardCard} data-position={positionNames[position - 1]}>
       <div className={styles.cardLeft}>{position}</div>
       <div className={styles.cardRight}>
         <Image
@@ -27,7 +29,7 @@ const TopThreeCard = ({ position, rank, name, points, image }: UserCardProps) =>
         <span className={styles.cardText}>{rank}</span>
         <span className={styles.cardText}>{points} points</span>
       </div>
-    </div>
+    </Link>
   );
 };
 

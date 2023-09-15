@@ -1,4 +1,5 @@
 export type Styles = {
+  match: string;
   name: string;
   nameRank: string;
   points: string;
