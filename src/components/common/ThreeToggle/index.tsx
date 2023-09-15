@@ -24,6 +24,10 @@ const ThreeToggle = () => {
   const systemId = `system${useId()}`;
   const darkId = `light${useId()}`;
 
+  const lightIcon = '/assets/icons/sun.svg';
+  const darkIcon = '/assets/icons/moon.svg';
+  const systemIcon = '/assets/icons/monitor.svg';
+
   // let switchStyle = styles.switchOne;
   // let currIcon = '/assets/icons/moon.svg';
   // let currAltText = 'Icon representing current theme';
@@ -45,13 +49,13 @@ const ThreeToggle = () => {
   const calcIcon = (theme: string | undefined) => {
     switch (theme) {
       case 'light':
-        return '/assets/icons/sun.svg';
+        return lightIcon;
       case 'system':
-        return '/assets/icons/moon.svg';
+        return systemIcon;
       case 'dark':
-        return '/assets/icons/moon.svg';
+        return darkIcon;
       default:
-        return '/assets/icons/moon.svg';
+        return darkIcon;
     }
   };
 
@@ -110,7 +114,24 @@ const ThreeToggle = () => {
   return (
     <form className={styles.switch}>
       <label htmlFor={lightId}>
-        LIGHT
+        {/* LIGHT */}
+        <Image
+          src={lightIcon}
+          alt={currAltText}
+          width={35}
+          height={35}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingTop: '10px',
+            paddingLeft: '10px',
+            position: 'absolute',
+            marginLeft: '10px',
+            zIndex: 2,
+          }}
+        />
+
         <input
           id={lightId}
           name="state-d"
@@ -124,7 +145,23 @@ const ThreeToggle = () => {
       </label>
 
       <label htmlFor={systemId}>
-        SYSTEM
+        {/* SYSTEM */}
+        <Image
+          src={systemIcon}
+          alt={currAltText}
+          width={35}
+          height={35}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingTop: '10px',
+            paddingLeft: '10px',
+            position: 'absolute',
+            marginLeft: '5px',
+            zIndex: 2,
+          }}
+        />
         <input
           id={systemId}
           name="state-d"
@@ -135,7 +172,23 @@ const ThreeToggle = () => {
       </label>
 
       <label htmlFor={darkId}>
-        DARK
+        {/* DARK */}
+        <Image
+          src={darkIcon}
+          alt={currAltText}
+          width={35}
+          height={35}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingTop: '10px',
+            paddingLeft: '10px',
+            marginLeft: '10px',
+            position: 'absolute',
+            zIndex: 2,
+          }}
+        />
         <input
           id={darkId}
           name="state-d"
@@ -145,7 +198,19 @@ const ThreeToggle = () => {
         />
       </label>
       <div className={`${switchStyle} ${styles.switchindicator}`}>
-        <Image src={currIcon} alt={currAltText} width={50} height={50} />
+        {/* <Image
+          src={currIcon}
+          alt={currAltText}
+          width={35}
+          height={35}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingTop: '10px',
+            paddingLeft: '10px',
+          }}
+        /> */}
       </div>
     </form>
   );
