@@ -1,0 +1,15 @@
+@use 'src/styles/vars.scss' as vars;
+
+.diamond {
+  background-color: var(--theme-primary-2);
+  border-radius: 2px;
+  color: transparent;
+  display: inline-block;
+  height: 0.75em;
+  margin-left: 0.55rem;
+  overflow: hidden;
+  // Push hidden "diamond" text away, so you can't see the text when highlighted
+  padding-left: 0.75em;
+  transform: rotate(45deg);
+  width: 0.75em;
+}
