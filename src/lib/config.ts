@@ -53,6 +53,7 @@ const config = {
   },
   homeRoute: '/',
   loginRoute: '/login',
+  userProfileRoute: '/u/',
   cartRoute: '/store/cart',
   myOrdersRoute: '/store/orders',
   isDevelopment,
