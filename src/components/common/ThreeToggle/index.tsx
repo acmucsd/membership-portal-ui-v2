@@ -27,7 +27,7 @@ const ThreeToggle = () => {
   const lightIcon = '/assets/icons/sun.svg';
   const darkIcon = '/assets/icons/moon.svg';
   const systemIcon = '/assets/icons/monitor.svg';
-  const iconSize = 35;
+  const iconSize = 30;
 
   // let switchStyle = styles.switchOne;
   // let currIcon = '/assets/icons/moon.svg';
@@ -94,16 +94,7 @@ const ThreeToggle = () => {
           alt={currAltText}
           width={iconSize}
           height={iconSize}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingTop: '10px',
-            paddingLeft: '10px',
-            position: 'absolute',
-            marginLeft: '10px',
-            zIndex: 2,
-          }}
+          className={styles.icon}
         />
 
         <input
@@ -125,16 +116,7 @@ const ThreeToggle = () => {
           alt={currAltText}
           width={iconSize}
           height={iconSize}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingTop: '10px',
-            paddingLeft: '10px',
-            position: 'absolute',
-            marginLeft: '10px',
-            zIndex: 2,
-          }}
+          className={styles.icon}
         />
         <input
           id={systemId}
@@ -152,16 +134,7 @@ const ThreeToggle = () => {
           alt={currAltText}
           width={iconSize}
           height={iconSize}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingTop: '10px',
-            paddingLeft: '10px',
-            marginLeft: '10px',
-            position: 'absolute',
-            zIndex: 2,
-          }}
+          className={styles.icon}
         />
         <input
           id={darkId}
