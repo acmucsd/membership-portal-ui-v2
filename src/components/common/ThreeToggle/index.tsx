@@ -27,6 +27,7 @@ const ThreeToggle = () => {
   const lightIcon = '/assets/icons/sun.svg';
   const darkIcon = '/assets/icons/moon.svg';
   const systemIcon = '/assets/icons/monitor.svg';
+  const iconSize = 35;
 
   // let switchStyle = styles.switchOne;
   // let currIcon = '/assets/icons/moon.svg';
@@ -72,10 +73,6 @@ const ThreeToggle = () => {
     }
   };
 
-  // const switchStyle = useMemo(() => calcStyle(theme), [theme]);
-  // const currAltText = useMemo(() => calcAltText(theme), [theme]);
-  // const currIcon = useMemo(() => calcIcon(theme), [theme]);
-
   const switchStyle = calcStyle(theme);
   const currAltText = calcAltText(theme);
   const currIcon = calcIcon(theme);
@@ -83,29 +80,6 @@ const ThreeToggle = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // useEffect(() => {
-  //   switch (theme) {
-  //     case 'light':
-  //       setSwitchStyle(styles.switchOne);
-  //       setCurrIcon('/assets/icons/sun.svg');
-  //       setCurrAltText('Icon representing light theme is on');
-  //       break;
-  //     case 'system':
-  //       setSwitchStyle(styles.switchTwo);
-  //       setCurrAltText('Icon representing system theme is on');
-  //       break;
-  //     case 'dark':
-  //       setSwitchStyle(styles.switchThree);
-  //       setCurrAltText('Icon representing dark theme is on');
-  //       setCurrIcon('/assets/icons/moon.svg');
-  //       break;
-  //     default:
-  //       setSwitchStyle(styles.switchOne);
-  //       console.log(theme);
-  //       break;
-  //   }
-  // }, [theme]);
 
   if (!mounted) {
     return null;
@@ -118,8 +92,8 @@ const ThreeToggle = () => {
         <Image
           src={lightIcon}
           alt={currAltText}
-          width={35}
-          height={35}
+          width={iconSize}
+          height={iconSize}
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -149,8 +123,8 @@ const ThreeToggle = () => {
         <Image
           src={systemIcon}
           alt={currAltText}
-          width={35}
-          height={35}
+          width={iconSize}
+          height={iconSize}
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -158,7 +132,7 @@ const ThreeToggle = () => {
             paddingTop: '10px',
             paddingLeft: '10px',
             position: 'absolute',
-            marginLeft: '5px',
+            marginLeft: '10px',
             zIndex: 2,
           }}
         />
@@ -176,8 +150,8 @@ const ThreeToggle = () => {
         <Image
           src={darkIcon}
           alt={currAltText}
-          width={35}
-          height={35}
+          width={iconSize}
+          height={iconSize}
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -201,8 +175,8 @@ const ThreeToggle = () => {
         {/* <Image
           src={currIcon}
           alt={currAltText}
-          width={35}
-          height={35}
+          width={iconSize}
+          height={iconSize}
           style={{
             display: 'flex',
             justifyContent: 'center',
