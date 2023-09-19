@@ -1,12 +1,12 @@
 export type Styles = {
+  body: string;
   container: string;
-  flash: string;
+  description: string;
+  discordPreview: string;
   header: string;
-  heading: string;
-  leaderboard: string;
-  myPosition: string;
-  search: string;
-  topThreeContainer: string;
+  logo: string;
+  socials: string;
+  theme: string;
 };
 
 export type ClassNames = keyof Styles;
