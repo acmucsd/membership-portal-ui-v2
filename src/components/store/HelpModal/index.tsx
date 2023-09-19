@@ -39,14 +39,6 @@ const HelpModal = ({ open, onClose }: HelpModalProps) => {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    ref.current?.addEventListener('click', e => {
-      if (e.target === e.currentTarget) {
-        onClose();
-      }
-    });
-  }, [onClose]);
-
-  useEffect(() => {
     if (ref.current && open) {
       ref.current.showModal();
     }
