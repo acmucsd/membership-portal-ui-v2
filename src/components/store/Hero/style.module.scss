@@ -46,20 +46,23 @@
 
         &::before,
         &::after {
-          animation: pop 0.5s cubic-bezier(0.1, 2, 1, 1) both;
+          animation: pop 0.5s cubic-bezier(0.1, 2, 1, 1) forwards 0.2s;
           border: 2px solid currentColor;
           content: '';
           height: 100%;
+          opacity: 0;
           position: absolute;
           width: 100%;
           z-index: -1;
 
           @keyframes pop {
             from {
+              opacity: 1;
               transform: none;
             }
 
             to {
+              opacity: 1;
               transform: var(--translation);
             }
           }
@@ -74,7 +77,20 @@
         }
 
         img {
+          clip-path: inset(0);
           object-fit: cover;
+          transition: clip-path 0.2s cubic-bezier(0.5, 0, 1, 1);
+        }
+
+        &.loading {
+          &::before,
+          &::after {
+            animation: none;
+          }
+
+          img {
+            clip-path: inset(0% calc(100% - 0.5px) 0% 0%);
+          }
         }
       }
     }

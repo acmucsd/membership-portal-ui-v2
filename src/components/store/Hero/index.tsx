@@ -3,6 +3,7 @@ import HeroDeco1 from '@/public/assets/graphics/store/hero-deco1.svg';
 import HeroDeco2 from '@/public/assets/graphics/store/hero-deco2.svg';
 import HeroPhoto from '@/public/assets/graphics/store/hero-photo.jpg';
 import Image from 'next/image';
+import { useState } from 'react';
 import styles from './style.module.scss';
 
 interface HeroProps {
@@ -10,15 +11,18 @@ interface HeroProps {
 }
 
 const Hero = ({ onHelp }: HeroProps) => {
+  const [loaded, setLoaded] = useState(false);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.hero}>
         <div className={styles.left}>
-          <div className={styles.imageWrapper}>
+          <div className={`${styles.imageWrapper} ${loaded ? '' : styles.loading}`}>
             <Image
               src={HeroPhoto}
               alt="A crowd of ACM members holding up ACM diamond shapes with their fingers."
               fill
+              onLoad={() => setLoaded(true)}
             />
           </div>
         </div>

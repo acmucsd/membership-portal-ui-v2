@@ -7,6 +7,7 @@ export type Styles = {
   heroContent: string;
   imageWrapper: string;
   left: string;
+  loading: string;
   pop: string;
   popIn: string;
   rainbowIn: string;
