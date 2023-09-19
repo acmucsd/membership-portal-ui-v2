@@ -1,4 +1,4 @@
-import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
+import { LeaderboardRow, SortDropdown, TopThreeCard } from '@/components/leaderboard';
 import { config } from '@/lib';
 import { LeaderboardAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -9,7 +9,7 @@ import { getProfilePicture, getUserRank } from '@/lib/utils';
 import MyPositionIcon from '@/public/assets/icons/my-position-icon.svg';
 import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 interface Match {
   index: number;
@@ -23,6 +23,9 @@ function filter<T extends PublicProfile>(users: T[], query: string): (T & { matc
   });
 }
 
+/** Year ACM was founded. */
+const START_YEAR = 2019;
+
 interface LeaderboardProps {
   leaderboard: PublicProfile[];
   user: PrivateProfile;
@@ -35,6 +38,16 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
   const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
   const topThreeUsers = query === '' ? filter(results.slice(0, 3), query) : [];
   const leaderboardRows = filter(query === '' ? results.slice(3) : results, query);
+
+  const endYear = useMemo(() => {
+    const today = new Date();
+    return today.getMonth() < 8 ? today.getFullYear() : today.getFullYear() + 1;
+  }, []);
+  const years = [];
+  for (let year = START_YEAR + 1; year <= endYear; year += 1) {
+    years.unshift({ value: String(year), label: `${year - 1}–${year}` });
+  }
+  const [sort, setSort] = useState<string>(String(endYear));
 
   return (
     <div className={styles.container}>
@@ -63,9 +76,20 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
           value={query}
           onChange={e => setQuery(e.currentTarget.value)}
         />
-        <select name="timeOptions" id="timeOptions">
-          <option>All Time</option>
-        </select>
+        <SortDropdown
+          name="timeOptions"
+          ariaLabel="Filter the leaderboard by"
+          options={[
+            { value: 'past-week', label: 'Past week' },
+            { value: 'past-month', label: 'Past month' },
+            { value: 'past-year', label: 'Past year' },
+            { value: 'all-time', label: 'All time' },
+            '---',
+            ...years,
+          ]}
+          value={sort}
+          onChange={setSort}
+        />
       </div>
       {topThreeUsers.length > 0 && (
         <div className={styles.topThreeContainer}>
