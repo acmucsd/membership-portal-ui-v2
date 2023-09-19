@@ -1,4 +1,3 @@
-import { Title } from '@/components/common';
 import Step1 from '@/public/assets/graphics/store/step1.svg';
 import Step2 from '@/public/assets/graphics/store/step2.svg';
 import Step3 from '@/public/assets/graphics/store/step3.svg';
@@ -70,11 +69,12 @@ const HelpModal = ({ open, onClose }: HelpModalProps) => {
       onClose={onClose}
     >
       <form method="dialog" className={styles.modalBody}>
-        <Title heading="How does the ACM Store work?" className={styles.header}>
+        <div className={styles.header}>
+          <h1>How does the ACM Store work?</h1>
           <button type="submit" className={styles.close} aria-label="Close">
             <CloseIcon aria-hidden />
           </button>
-        </Title>
+        </div>
         <div className={styles.steps}>
           <Step step={1}>
             <Step1 aria-label="Raccoons sitting about on a picnic blanket." />

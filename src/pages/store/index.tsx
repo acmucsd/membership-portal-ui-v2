@@ -1,4 +1,3 @@
-import { Title } from '@/components/common';
 import { CollectionSlider, HelpModal, Hero, ItemCard, Navbar } from '@/components/store';
 import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
@@ -29,11 +28,8 @@ const StoreHomePage = ({ user: { credits }, collections }: HomePageProps) => {
       <Hero onHelp={() => setHelpOpen(true)} />
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
       <div className={styles.container}>
-        <Title
-          type="h2"
-          heading={view === 'collections' ? 'Browse our collections' : 'Browse all items'}
-          className={styles.header}
-        >
+        <div className={styles.header}>
+          <h2>{view === 'collections' ? 'Browse our collections' : 'Browse all items'}</h2>
           <button
             type="button"
             className={styles.viewToggle}
@@ -41,7 +37,7 @@ const StoreHomePage = ({ user: { credits }, collections }: HomePageProps) => {
           >
             {view === 'collections' ? 'See all items' : 'See collections'}
           </button>
-        </Title>
+        </div>
         {view === 'collections' ? (
           <div className={styles.collections}>
             {collections.map(collection => (

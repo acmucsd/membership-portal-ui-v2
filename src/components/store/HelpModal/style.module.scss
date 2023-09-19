@@ -49,10 +49,14 @@
 
     .header {
       align-items: flex-start;
+      display: flex;
       padding: 0.5rem;
 
       h1 {
+        flex: auto;
         font-size: 1.75rem;
+        // Force heading to shrink
+        width: 0;
       }
 
       .close {
