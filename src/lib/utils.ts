@@ -71,4 +71,9 @@ export const getUserRank = (user: PublicProfile): string => {
   return ranks[index] ?? '';
 };
 
+/**
+ * Checks whether an image source is a gif
+ * @param src - source of the image
+ * @returns whether or not the source is a gif
+ */
 export const isSrcAGif = (src: string): boolean => /\.gif($|&)/.test(src);
