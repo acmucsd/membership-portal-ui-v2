@@ -70,3 +70,5 @@ export const getUserRank = (user: PublicProfile): string => {
 
   return ranks[index] ?? '';
 };
+
+export const isSrcAGif = (src: string): boolean => /\.gif($|&)/.test(src);
