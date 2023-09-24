@@ -16,6 +16,10 @@
     font-size: 1.5rem;
     font-weight: bold;
     pointer-events: none;
+
+    option {
+      background-color: var(--theme-background);
+    }
   }
 
   .contents {
