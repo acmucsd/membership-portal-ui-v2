@@ -99,12 +99,21 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
           className={styles.myPosition}
           type="button"
           onClick={() => {
-            myPosition.current?.scrollIntoView();
+            const row = myPosition.current;
+            if (!row) {
+              return;
+            }
+            row.scrollIntoView({ behavior: 'smooth' });
             // Remove `.flash` in case it was already applied
-            myPosition.current?.classList.remove(styles.flash);
-            window.requestAnimationFrame(() => {
-              myPosition.current?.classList.add(styles.flash);
+            row.classList.remove(styles.flash);
+            const observer = new IntersectionObserver(([entry]) => {
+              if (entry?.isIntersecting) {
+                row.classList.add(styles.flash);
+                observer.disconnect();
+              }
             });
+            observer.observe(row);
+            window.requestAnimationFrame(() => {});
           }}
         >
           My Position
