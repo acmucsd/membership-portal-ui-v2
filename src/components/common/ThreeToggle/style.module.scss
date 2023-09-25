@@ -1,14 +1,13 @@
 $indicator-size: 30px;
-$switch-gap: 128%;
+$switch-gap: 127%;
 $switch-gap-num: $switch-gap / 100%;
-$switch-start: 12%;
+$switch-start: 15%;
 
 .switch {
-  background: #242729;
   border-radius: 34px;
   display: inline-block;
   float: left;
-  opacity: 90%;
+  // opacity: 90%;
   position: relative;
 
   label {
@@ -26,16 +25,25 @@ $switch-start: 12%;
       opacity: 0;
       position: absolute;
     }
+
+    .switchLightMode {
+      background: #121415;
+    }
+
+    .switchDarkMode {
+      background: #fffff4;
+    }
   }
 
   &indicator {
     align-items: center;
-    background: blue;
+    background: #9f9f9f;
     border-radius: 50%;
     display: flex;
     height: $indicator-size;
     justify-content: center;
     left: 0;
+    opacity: 50%;
     pointer-events: none;
     position: absolute;
     // top: -0.5rem;
@@ -48,7 +56,9 @@ $switch-start: 12%;
 
   .icon {
     align-items: center;
+    color: #fff;
     display: flex;
+    // fill: #fff;
     height: $indicator-size;
     justify-content: center;
     // margin-left: 10px;
@@ -58,18 +68,28 @@ $switch-start: 12%;
     z-index: 2;
   }
 
+  .iconDarkMode {
+    fill: #fff;
+    stroke: #fff;
+  }
+
+  .iconLightMode {
+    fill: #000;
+    stroke: #000;
+  }
+
   .switchOne {
-    background: PaleGreen;
-    transform: translate3d($switch-start, 0, 0);
+    // background: PaleGreen;
+    transform: translate3d(#{$switch-start}, 0, 0);
   }
 
   .switchTwo {
-    background: MediumTurquoise;
+    // background: MediumTurquoise;
     transform: translate3d(calc(#{$switch-start} + #{$switch-gap}), 0, 0);
   }
 
   .switchThree {
-    background: PaleVioletRed;
+    // background: PaleVioletRed;
     transform: translate3d(calc(#{$switch-start} + #{$switch-gap * 2}), 0, 0);
   }
 
@@ -80,3 +100,6 @@ $switch-start: 12%;
   //   }
   // }
 }
+
+// INFO LINKS
+// https://stackoverflow.com/questions/19417081/doing-math-on-variable-argument-sass-mixins

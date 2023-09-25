@@ -1,4 +1,5 @@
 export type Styles = {
+  icon: string | undefined;
   switch: string;
   switchindicator: string;
   switchOne: string;
