@@ -51,6 +51,20 @@ const ThreeToggle = () => {
     }
   };
 
+  const calcSwitchBackgroundStyle = (newTheme: string | undefined) => {
+    switch (newTheme) {
+      case 'light':
+        return styles.switchLightMode;
+      case 'system':
+        return systemTheme === 'light' ? styles.switchLightMode : styles.switchDarkMode;
+      case 'dark':
+        return styles.switchDarkMode;
+      default:
+        console.log(newTheme);
+        return styles.switchDarkMode;
+    }
+  };
+
   // const calcIcon = (theme: string | undefined) => {
   //   switch (theme) {
   //     case 'light':
