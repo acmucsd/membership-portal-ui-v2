@@ -65,6 +65,20 @@ const ThreeToggle = () => {
     }
   };
 
+  const calcIndColorStyle = (newTheme: string | undefined) => {
+    switch (newTheme) {
+      case 'light':
+        return styles.indicatorLightMode;
+      case 'system':
+        return systemTheme === 'light' ? styles.indicatorLightMode : styles.indicatorDarkMode;
+      case 'dark':
+        return styles.indicatorDarkMode;
+      default:
+        console.log(newTheme);
+        return styles.indicatorDarkMode;
+    }
+  };
+
   // const calcIcon = (theme: string | undefined) => {
   //   switch (theme) {
   //     case 'light':
@@ -91,7 +105,8 @@ const ThreeToggle = () => {
     }
   };
 
-  const switchStyle = calcIndicatorStyle(theme);
+  const switchPos = calcIndicatorStyle(theme);
+  const switchColor = calcIndColorStyle(theme);
   const currAltText = calcAltText(theme);
   const iconStyle = calcIconStyle(theme);
   // const currIcon = calcIcon(theme);
@@ -168,7 +183,7 @@ const ThreeToggle = () => {
           onClick={() => setTheme('dark')}
         />
       </label>
-      <div className={`${switchStyle} ${styles.switchindicator}`}>
+      <div className={`${switchPos} ${styles.switchindicator} ${switchColor}`}>
         {/* <Image
           src={currIcon}
           alt={currAltText}

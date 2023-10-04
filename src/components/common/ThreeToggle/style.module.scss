@@ -2,6 +2,7 @@ $indicator-size: 30px;
 $switch-gap: 127%;
 $switch-gap-num: $switch-gap / 100%;
 $switch-start: 15%;
+$component-roundness: 34px;
 
 .switch {
   align-items: center;
@@ -42,7 +43,7 @@ $switch-start: 15%;
 
   &indicator {
     align-self: center;
-    background: #9f9f9f;
+    // background: #9f9f9f;
     border-radius: 50%;
     display: flex;
     height: $indicator-size;
@@ -56,6 +57,14 @@ $switch-start: 15%;
       background 300ms cubic-bezier(0.17, 0.67, 0.14, 1.03);
     width: $indicator-size;
     z-index: 1;
+  }
+
+  .indicatorLightMode {
+    background: #c1c1c1;
+  }
+
+  .indicatorDarkMode {
+    background: #9f9f9f;
   }
 
   .icon {
