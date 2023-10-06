@@ -1,6 +1,6 @@
 $indicator-size: 30px;
 $switch-gap: 127%;
-$switch-gap-num: $switch-gap / 100%;
+$switch-gap-num: calc($switch-gap / 100%);
 $switch-start: 15%;
 $component-roundness: 34px;
 
