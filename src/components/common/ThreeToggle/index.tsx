@@ -14,14 +14,7 @@ const ThreeToggle = () => {
   const systemId = `system${useId()}`;
   const darkId = `light${useId()}`;
 
-  const lightIcon = '/assets/icons/sun.svg';
-  const darkIcon = '/assets/icons/moon.svg';
-  const systemIcon = '/assets/icons/monitor.svg';
   const iconSize = 30;
-
-  // let switchStyle = styles.switchOne;
-  // let currIcon = '/assets/icons/moon.svg';
-  // let currAltText = 'Icon representing current theme';
 
   const calcIndicatorStyle = (newTheme: string | undefined) => {
     switch (newTheme) {
@@ -32,7 +25,6 @@ const ThreeToggle = () => {
       case 'dark':
         return styles.switchThree;
       default:
-        console.log(newTheme);
         return styles.switchOne;
     }
   };
@@ -46,11 +38,11 @@ const ThreeToggle = () => {
       case 'dark':
         return styles.iconDarkMode;
       default:
-        console.log(newTheme);
         return styles.iconDarkMode;
     }
   };
 
+  // IF YOU WANT TO ADD BACKGROUND TO SWITCH, USE THIS FUNCTION
   const calcSwitchBackgroundStyle = (newTheme: string | undefined) => {
     switch (newTheme) {
       case 'light':
@@ -60,7 +52,6 @@ const ThreeToggle = () => {
       case 'dark':
         return styles.switchDarkMode;
       default:
-        console.log(newTheme);
         return styles.switchDarkMode;
     }
   };
@@ -74,7 +65,6 @@ const ThreeToggle = () => {
       case 'dark':
         return styles.indicatorDarkMode;
       default:
-        console.log(newTheme);
         return styles.indicatorDarkMode;
     }
   };
