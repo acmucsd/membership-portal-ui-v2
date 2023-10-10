@@ -39,7 +39,7 @@
   --theme-text-on-surface-1: #{vars.$light-text-on-surface-1}; // dark text on sidebar
   --theme-text-on-surface-2: #{vars.$light-text-on-surface-2}; // light titles on sidebar
 
-  --invert: percentage($number: 1);
+  --invert: math.percentage($number: 1);
 }
 
 [data-theme='dark'] {
@@ -78,7 +78,7 @@
   --theme-text-on-surface-1: #{vars.$dark-text-on-surface-1}; // dark text on sidebar
   --theme-text-on-surface-2: #{vars.$dark-text-on-surface-2}; // dark titles on sidebar
 
-  --invert: percentage($number: 1);
+  --invert: math.percentage($number: 1);
 }
 
 html,
