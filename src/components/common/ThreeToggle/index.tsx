@@ -43,18 +43,18 @@ const ThreeToggle = () => {
   };
 
   // IF YOU WANT TO ADD BACKGROUND TO SWITCH, USE THIS FUNCTION
-  const calcSwitchBackgroundStyle = (newTheme: string | undefined) => {
-    switch (newTheme) {
-      case 'light':
-        return styles.switchLightMode;
-      case 'system':
-        return systemTheme === 'light' ? styles.switchLightMode : styles.switchDarkMode;
-      case 'dark':
-        return styles.switchDarkMode;
-      default:
-        return styles.switchDarkMode;
-    }
-  };
+  // const calcSwitchBackgroundStyle = (newTheme: string | undefined) => {
+  //   switch (newTheme) {
+  //     case 'light':
+  //       return styles.switchLightMode;
+  //     case 'system':
+  //       return systemTheme === 'light' ? styles.switchLightMode : styles.switchDarkMode;
+  //     case 'dark':
+  //       return styles.switchDarkMode;
+  //     default:
+  //       return styles.switchDarkMode;
+  //   }
+  // };
 
   const calcIndColorStyle = (newTheme: string | undefined) => {
     switch (newTheme) {
