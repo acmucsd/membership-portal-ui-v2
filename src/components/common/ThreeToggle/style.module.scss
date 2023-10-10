@@ -32,6 +32,7 @@ $component-roundness: 34px;
       position: absolute;
     }
 
+    // IF YOU WANT TO ADD BACKGROUND TO SWITCH, USE THESE
     .switchLightMode {
       background: #121415;
     }
@@ -53,8 +54,8 @@ $component-roundness: 34px;
     position: absolute;
     // top: -0.5rem;
     transform: translate3d(1rem, 0, 0);
-    transition: transform 600ms cubic-bezier(0.02, 0.94, 0.09, 0.97),
-      background 300ms cubic-bezier(0.17, 0.67, 0.14, 1.03);
+    transition: transform 0.6s cubic-bezier(0.02, 0.94, 0.09, 0.97),
+      background 0.3s cubic-bezier(0.17, 0.67, 0.14, 1.03);
     width: $indicator-size;
     z-index: 1;
   }
