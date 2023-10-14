@@ -1,4 +1,5 @@
 export type Styles = {
+  flash: string;
   match: string;
   name: string;
   nameRank: string;

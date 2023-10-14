@@ -11,7 +11,7 @@ import { getProfilePicture, getUserRank } from '@/lib/utils';
 import MyPositionIcon from '@/public/assets/icons/my-position-icon.svg';
 import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 /** Year ACM was founded. */
 const START_YEAR = 2019;
@@ -65,7 +65,7 @@ function getLeaderboardRange(sort: string | number, limit = 0): SlidingLeaderboa
   return params;
 }
 
-const ROWS_PER_PAGE = 100;
+const ROWS_PER_PAGE = 15;
 
 interface LeaderboardProps {
   authToken: string;
@@ -78,7 +78,7 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
 
   const [page, setPage] = useState(0);
   const [query, setQuery] = useState('');
-  const myPosition = useRef<HTMLAnchorElement>(null);
+  const [scrollIntoView, setScrollIntoView] = useState(false);
 
   const endYear = useMemo(getEndYear, []);
   const years = useMemo(() => {
@@ -94,11 +94,11 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
     LeaderboardAPI.getLeaderboard(authToken, getLeaderboardRange(sort)).then(setLeaderboard);
   }, [authToken, sort]);
 
-  const { allRows, hasMe } = useMemo(() => {
+  const { allRows, myIndex } = useMemo(() => {
     const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
     const allRows = filter(results, query);
-    const hasMe = allRows.find(row => row.uuid === uuid);
-    return { allRows, hasMe };
+    const myIndex = allRows.findIndex(row => row.uuid === uuid);
+    return { allRows, myIndex };
   }, [leaderboard, query, uuid]);
 
   const topThreeUsers = page === 0 && query === '' ? allRows.slice(0, 3) : [];
@@ -115,23 +115,10 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
           className={styles.myPosition}
           type="button"
           onClick={() => {
-            const row = myPosition.current;
-            if (!row) {
-              return;
-            }
-            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            // Remove `.flash` in case it was already applied
-            row.classList.remove(styles.flash);
-            const observer = new IntersectionObserver(([entry]) => {
-              if (entry?.isIntersecting) {
-                row.classList.add(styles.flash);
-                observer.disconnect();
-              }
-            });
-            observer.observe(row);
-            window.requestAnimationFrame(() => {});
+            setPage(Math.floor(myIndex / ROWS_PER_PAGE));
+            setScrollIntoView(true);
           }}
-          disabled={!hasMe}
+          disabled={myIndex === -1}
         >
           My Position
           <MyPositionIcon />
@@ -190,7 +177,7 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
                 points={user.points}
                 image={getProfilePicture(user)}
                 match={user.match}
-                rowRef={user.uuid === uuid ? myPosition : null}
+                scrollIntoView={scrollIntoView && user.uuid === uuid}
               />
             );
           })}

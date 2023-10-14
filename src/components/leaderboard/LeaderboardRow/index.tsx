@@ -1,7 +1,7 @@
 import { isSrcAGif } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { RefObject } from 'react';
+import { useEffect, useRef } from 'react';
 import styles from './style.module.scss';
 
 interface LeaderboardRowProps {
@@ -15,7 +15,7 @@ interface LeaderboardRowProps {
     index: number;
     length: number;
   };
-  rowRef: RefObject<HTMLAnchorElement> | null;
+  scrollIntoView: boolean;
 }
 
 const LeaderboardRow = ({
@@ -26,10 +26,31 @@ const LeaderboardRow = ({
   points,
   image,
   match,
-  rowRef,
+  scrollIntoView,
 }: LeaderboardRowProps) => {
+  const ref = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (scrollIntoView) {
+      const row = ref.current;
+      if (!row) {
+        return;
+      }
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Remove `.flash` in case it was already applied
+      row.classList.remove(styles.flash);
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry?.isIntersecting) {
+          row.classList.add(styles.flash);
+          observer.disconnect();
+        }
+      });
+      observer.observe(row);
+    }
+  }, [scrollIntoView]);
+
   return (
-    <Link href={url} className={styles.row} ref={rowRef}>
+    <Link href={url} className={styles.row} ref={ref}>
       <span className={styles.position}>{position}</span>
       <Image
         src={image}

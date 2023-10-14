@@ -34,6 +34,7 @@
     right: 0;
     top: 100%;
     transition: all 0.2s;
+    z-index: 5;
 
     &.closed {
       opacity: 0;
