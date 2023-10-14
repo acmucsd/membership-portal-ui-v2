@@ -69,11 +69,17 @@ const ROWS_PER_PAGE = 100;
 
 interface LeaderboardProps {
   authToken: string;
+  initSort: string;
   initLeaderboard: PublicProfile[];
   user: PrivateProfile;
 }
 
-const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: LeaderboardProps) => {
+const LeaderboardPage = ({
+  authToken,
+  initSort,
+  initLeaderboard,
+  user: { uuid },
+}: LeaderboardProps) => {
   const [leaderboard, setLeaderboard] = useState(initLeaderboard);
 
   const [page, setPage] = useState(0);
@@ -91,10 +97,14 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
     return years;
   }, [endYear]);
 
-  const [sort, setSort] = useState(String(endYear));
+  const [sort, setSort] = useState(initSort);
   useEffect(() => {
-    LeaderboardAPI.getLeaderboard(authToken, getLeaderboardRange(sort)).then(setLeaderboard);
-  }, [authToken, sort]);
+    if (sort === initSort) {
+      setLeaderboard(initLeaderboard);
+    } else {
+      LeaderboardAPI.getLeaderboard(authToken, getLeaderboardRange(sort)).then(setLeaderboard);
+    }
+  }, [sort, initSort, initLeaderboard, authToken]);
 
   const { allRows, myIndex } = useMemo(() => {
     const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
@@ -211,15 +221,16 @@ export default LeaderboardPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
-  // Only render first 100 leaderboard items on the back end
+  const initSort = String(getEndYear());
   const initLeaderboard = await LeaderboardAPI.getLeaderboard(
     AUTH_TOKEN,
-    getLeaderboardRange(getEndYear(), 100)
+    getLeaderboardRange(initSort)
   );
 
   return {
     props: {
       authToken: AUTH_TOKEN,
+      initSort,
       initLeaderboard,
     },
   };
