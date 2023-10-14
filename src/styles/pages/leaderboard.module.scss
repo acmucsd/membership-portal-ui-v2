@@ -41,6 +41,11 @@
       height: 2rem;
       justify-self: start;
       padding: 0 1rem;
+
+      &:disabled {
+        cursor: auto;
+        opacity: 0.5;
+      }
     }
 
     .search {

@@ -1,4 +1,5 @@
 import { LeaderboardRow, SortDropdown, TopThreeCard } from '@/components/leaderboard';
+import PaginationControls from '@/components/leaderboard/PaginationControls';
 import { config } from '@/lib';
 import { LeaderboardAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -64,6 +65,8 @@ function getLeaderboardRange(sort: string | number, limit = 0): SlidingLeaderboa
   return params;
 }
 
+const ROWS_PER_PAGE = 100;
+
 interface LeaderboardProps {
   authToken: string;
   initLeaderboard: PublicProfile[];
@@ -73,23 +76,36 @@ interface LeaderboardProps {
 const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: LeaderboardProps) => {
   const [leaderboard, setLeaderboard] = useState(initLeaderboard);
 
+  const [page, setPage] = useState(0);
   const [query, setQuery] = useState('');
   const myPosition = useRef<HTMLAnchorElement>(null);
 
   const endYear = useMemo(getEndYear, []);
-  const years = [];
-  for (let year = START_YEAR + 1; year <= endYear; year += 1) {
-    years.unshift({ value: String(year), label: `${year - 1}–${year}` });
-  }
-  const [sort, setSort] = useState<string>(String(endYear));
-  const params = useMemo(() => getLeaderboardRange(sort), [sort]);
-  useEffect(() => {
-    LeaderboardAPI.getLeaderboard(authToken, params).then(setLeaderboard);
-  }, [authToken, params]);
+  const years = useMemo(() => {
+    const years = [];
+    for (let year = START_YEAR + 1; year <= endYear; year += 1) {
+      years.unshift({ value: String(year), label: `${year - 1}–${year}` });
+    }
+    return years;
+  }, [endYear]);
 
-  const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
-  const topThreeUsers = query === '' ? filter(results.slice(0, 3), query) : [];
-  const leaderboardRows = filter(query === '' ? results.slice(3) : results, query);
+  const [sort, setSort] = useState(String(endYear));
+  useEffect(() => {
+    LeaderboardAPI.getLeaderboard(authToken, getLeaderboardRange(sort)).then(setLeaderboard);
+  }, [authToken, sort]);
+
+  const { allRows, hasMe } = useMemo(() => {
+    const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
+    const allRows = filter(results, query);
+    const hasMe = allRows.find(row => row.uuid === uuid);
+    return { allRows, hasMe };
+  }, [leaderboard, query, uuid]);
+
+  const topThreeUsers = page === 0 && query === '' ? allRows.slice(0, 3) : [];
+  const leaderboardRows =
+    page === 0 && query === ''
+      ? allRows.slice(3, ROWS_PER_PAGE)
+      : allRows.slice(page * ROWS_PER_PAGE, (page + 1) * ROWS_PER_PAGE);
 
   return (
     <div className={styles.container}>
@@ -103,7 +119,7 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
             if (!row) {
               return;
             }
-            row.scrollIntoView({ behavior: 'smooth' });
+            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
             // Remove `.flash` in case it was already applied
             row.classList.remove(styles.flash);
             const observer = new IntersectionObserver(([entry]) => {
@@ -115,6 +131,7 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
             observer.observe(row);
             window.requestAnimationFrame(() => {});
           }}
+          disabled={!hasMe}
         >
           My Position
           <MyPositionIcon />
@@ -125,7 +142,10 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
           placeholder="Search Users"
           aria-label="Search Users"
           value={query}
-          onChange={e => setQuery(e.currentTarget.value)}
+          onChange={e => {
+            setQuery(e.currentTarget.value);
+            setPage(0);
+          }}
         />
         <SortDropdown
           name="timeOptions"
@@ -176,7 +196,15 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
           })}
         </div>
       )}
-      {topThreeUsers.length === 0 && leaderboardRows.length === 0 && <p>No results.</p>}
+      {allRows.length > 0 ? (
+        <PaginationControls
+          page={page}
+          onPage={setPage}
+          pages={Math.ceil(allRows.length / ROWS_PER_PAGE)}
+        />
+      ) : (
+        <p>No results.</p>
+      )}
     </div>
   );
 };
