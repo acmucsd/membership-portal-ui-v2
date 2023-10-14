@@ -15,7 +15,7 @@ interface LeaderboardRowProps {
     index: number;
     length: number;
   };
-  scrollIntoView: boolean;
+  scrollIntoView: number;
 }
 
 const LeaderboardRow = ({
@@ -31,7 +31,7 @@ const LeaderboardRow = ({
   const ref = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    if (scrollIntoView) {
+    if (scrollIntoView > 0) {
       const row = ref.current;
       if (!row) {
         return;

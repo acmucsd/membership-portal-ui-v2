@@ -65,7 +65,7 @@ function getLeaderboardRange(sort: string | number, limit = 0): SlidingLeaderboa
   return params;
 }
 
-const ROWS_PER_PAGE = 15;
+const ROWS_PER_PAGE = 100;
 
 interface LeaderboardProps {
   authToken: string;
@@ -78,7 +78,9 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
 
   const [page, setPage] = useState(0);
   const [query, setQuery] = useState('');
-  const [scrollIntoView, setScrollIntoView] = useState(false);
+  // Using a number to force LeaderboardRow's useEffect to run again when the
+  // user presses the button multiple times
+  const [scrollIntoView, setScrollIntoView] = useState(0);
 
   const endYear = useMemo(getEndYear, []);
   const years = useMemo(() => {
@@ -116,7 +118,7 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
           type="button"
           onClick={() => {
             setPage(Math.floor(myIndex / ROWS_PER_PAGE));
-            setScrollIntoView(true);
+            setScrollIntoView(n => n + 1);
           }}
           disabled={myIndex === -1}
         >
@@ -132,6 +134,7 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
           onChange={e => {
             setQuery(e.currentTarget.value);
             setPage(0);
+            setScrollIntoView(0);
           }}
         />
         <SortDropdown
@@ -177,7 +180,7 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
                 points={user.points}
                 image={getProfilePicture(user)}
                 match={user.match}
-                scrollIntoView={scrollIntoView && user.uuid === uuid}
+                scrollIntoView={user.uuid === uuid ? scrollIntoView : 0}
               />
             );
           })}
@@ -186,7 +189,10 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
       {allRows.length > 0 ? (
         <PaginationControls
           page={page}
-          onPage={setPage}
+          onPage={page => {
+            setPage(page);
+            setScrollIntoView(0);
+          }}
           pages={Math.ceil(allRows.length / ROWS_PER_PAGE)}
         />
       ) : (
