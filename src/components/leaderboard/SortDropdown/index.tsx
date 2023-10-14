@@ -62,7 +62,7 @@ const SortDropdown = ({ name, ariaLabel, options, value, onChange }: SortDropdow
           ) : null
         )}
       </select>
-      <DropdownArrow />
+      <DropdownArrow className={styles.arrow} />
       <div className={`${styles.contents} ${open ? '' : styles.closed}`}>
         {options.map((option, i) =>
           option !== '---' ? (

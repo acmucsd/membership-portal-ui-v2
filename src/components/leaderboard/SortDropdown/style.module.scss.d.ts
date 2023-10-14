@@ -1,4 +1,5 @@
 export type Styles = {
+  arrow: string;
   closed: string;
   contents: string;
   dropdownWrapper: string;

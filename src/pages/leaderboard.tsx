@@ -11,7 +11,8 @@ import { getProfilePicture, getUserRank } from '@/lib/utils';
 import MyPositionIcon from '@/public/assets/icons/my-position-icon.svg';
 import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
-import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useMemo, useState } from 'react';
 
 /** Year ACM was founded. */
 const START_YEAR = 2019;
@@ -68,19 +69,13 @@ function getLeaderboardRange(sort: string | number, limit = 0): SlidingLeaderboa
 const ROWS_PER_PAGE = 100;
 
 interface LeaderboardProps {
-  authToken: string;
-  initSort: string;
-  initLeaderboard: PublicProfile[];
+  sort: string;
+  leaderboard: PublicProfile[];
   user: PrivateProfile;
 }
 
-const LeaderboardPage = ({
-  authToken,
-  initSort,
-  initLeaderboard,
-  user: { uuid },
-}: LeaderboardProps) => {
-  const [leaderboard, setLeaderboard] = useState(initLeaderboard);
+const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps) => {
+  const router = useRouter();
 
   const [page, setPage] = useState(0);
   const [query, setQuery] = useState('');
@@ -88,23 +83,14 @@ const LeaderboardPage = ({
   // user presses the button multiple times
   const [scrollIntoView, setScrollIntoView] = useState(0);
 
-  const endYear = useMemo(getEndYear, []);
   const years = useMemo(() => {
+    const endYear = getEndYear();
     const years = [];
-    for (let year = START_YEAR + 1; year <= endYear; year += 1) {
-      years.unshift({ value: String(year), label: `${year - 1}–${year}` });
+    for (let year = START_YEAR; year < endYear; year += 1) {
+      years.unshift({ value: String(year), label: `${year}–${year + 1}` });
     }
     return years;
-  }, [endYear]);
-
-  const [sort, setSort] = useState(initSort);
-  useEffect(() => {
-    if (sort === initSort) {
-      setLeaderboard(initLeaderboard);
-    } else {
-      LeaderboardAPI.getLeaderboard(authToken, getLeaderboardRange(sort)).then(setLeaderboard);
-    }
-  }, [sort, initSort, initLeaderboard, authToken]);
+  }, []);
 
   const { allRows, myIndex } = useMemo(() => {
     const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
@@ -160,7 +146,7 @@ const LeaderboardPage = ({
           ]}
           value={sort}
           onChange={sort => {
-            setSort(sort);
+            router.push(`${config.leaderboardRoute}?sort=${sort}`);
             setPage(0);
             setScrollIntoView(0);
           }}
@@ -218,21 +204,14 @@ const LeaderboardPage = ({
 
 export default LeaderboardPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
-  const initSort = String(getEndYear());
-  const initLeaderboard = await LeaderboardAPI.getLeaderboard(
-    AUTH_TOKEN,
-    getLeaderboardRange(initSort)
-  );
+  const sort = typeof query.sort === 'string' ? query.sort : getEndYear() - 1;
+  const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN, getLeaderboardRange(sort));
 
   return {
-    props: {
-      authToken: AUTH_TOKEN,
-      initSort,
-      initLeaderboard,
-    },
+    props: { sort, leaderboard },
   };
 };
 

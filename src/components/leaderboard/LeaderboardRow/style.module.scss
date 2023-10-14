@@ -3,11 +3,10 @@
 .row {
   align-items: center;
   background-color: var(--theme-surface-1);
-  content-visibility: auto;
   display: grid;
   gap: 2rem;
   grid-template-columns: auto auto 2fr 1fr;
-  height: 4rem;
+  min-height: 4rem;
   padding: 0.5rem;
   padding-right: 2rem;
   transition: none;

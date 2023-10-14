@@ -24,6 +24,10 @@
     }
   }
 
+  .arrow {
+    flex: none;
+  }
+
   .contents {
     background-color: var(--theme-background);
     border-radius: 4px;

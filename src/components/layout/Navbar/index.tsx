@@ -101,7 +101,7 @@ const Navbar = ({ user }: NavbarProps) => {
         <Link
           className={styles.mobileNavItem}
           onClick={() => setMenuOpen(false)}
-          href="/leaderboard"
+          href={config.leaderboardRoute}
         >
           <LeaderboardIcon className={styles.iconLink} />
           Leaderboard
