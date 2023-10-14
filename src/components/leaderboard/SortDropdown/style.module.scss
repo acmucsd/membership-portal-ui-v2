@@ -5,6 +5,7 @@
   cursor: pointer;
   display: flex;
   gap: 9px;
+  grid-area: 1 / 2;
   position: relative;
 
   select {
@@ -16,6 +17,7 @@
     font-size: 1.5rem;
     font-weight: bold;
     pointer-events: none;
+    width: 100%;
 
     option {
       background-color: var(--theme-background);
