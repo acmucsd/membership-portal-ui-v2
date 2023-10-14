@@ -149,7 +149,11 @@ const LeaderboardPage = ({ authToken, initLeaderboard, user: { uuid } }: Leaderb
             ...years,
           ]}
           value={sort}
-          onChange={setSort}
+          onChange={sort => {
+            setSort(sort);
+            setPage(0);
+            setScrollIntoView(0);
+          }}
         />
       </div>
       {topThreeUsers.length > 0 && (
