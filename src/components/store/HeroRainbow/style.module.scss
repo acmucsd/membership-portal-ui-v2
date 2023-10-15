@@ -1,0 +1,123 @@
+@use 'src/styles/vars.scss' as vars;
+
+// A wrapper that has the same size as the hero, but with overflow: hidden. This
+// is mostly important so that the rotated rainbow doesn't overflow off the
+// right edge of <body>, which on mobile browsers will add a horizontal
+// scrollbar and might zoom out the page. This overflow would also be bad for
+// SEO (content wider than screen).
+.clip {
+  // The rainbow band sizes and spacing have a 13:7 ratio, which I'm
+  // expressing in terms of the font size (em) since the rainbow itself has no
+  // text. This makes it easier to resize the bands
+  font-size: 2px;
+  inset: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+
+  @media screen and (max-width: vars.$breakpoint-lg) {
+    padding: 2rem 0;
+    position: static;
+  }
+
+  // This aligns the rainbow to the bottom of the hero, and rotates the entire
+  // rainbow on mobile.
+  .rotate {
+    bottom: 0;
+    display: flex;
+    left: 0;
+    margin: 0 -2rem;
+    position: absolute;
+    right: 0;
+
+    @media screen and (max-width: vars.$breakpoint-lg) {
+      font-size: 1px;
+      position: static;
+      transform: rotate(-12deg);
+    }
+
+    @media screen and (max-width: vars.$breakpoint-sm) {
+      font-size: 0.5px;
+      transform: rotate(-24deg);
+    }
+
+    // Rainbow bar colors
+    .teal {
+      color: vars.$cyan-5;
+    }
+
+    .orange {
+      color: vars.$orange-5;
+    }
+
+    .red {
+      color: vars.$scarlet-4;
+    }
+
+    .pink {
+      color: vars.$pink-4;
+    }
+
+    .bars {
+      display: flex;
+      flex: auto;
+      flex-direction: column;
+      gap: 7em;
+
+      .bar {
+        background-color: currentColor;
+        height: 13em;
+      }
+    }
+
+    .barsRight {
+      align-self: flex-end;
+    }
+
+    // Has the same width as the main page content so I can align the rainbow
+    // bend to the left side of the content.
+    .contentWidth {
+      display: flex;
+      // Shoves the rainbow bend off the screen a bit
+      margin-left: -10rem;
+      max-width: 81rem;
+      width: 100%;
+
+      @media screen and (max-width: vars.$breakpoint-lg) {
+        margin-left: 0;
+        width: unset;
+      }
+
+      .rainbow {
+        animation: stroke-in 2s both;
+        fill: none;
+        flex: none;
+        height: 273em;
+        stroke: currentColor;
+        stroke-dasharray: 144rem 144rem;
+        stroke-width: 1.625rem;
+        width: 394.5em;
+
+        @keyframes stroke-in {
+          from {
+            stroke-dashoffset: -144rem;
+          }
+
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+      }
+
+      .bars {
+        align-self: flex-end;
+        flex: auto;
+
+        // Hide .barsRest so the bend can be centered on mobile
+        @media screen and (max-width: vars.$breakpoint-lg) {
+          display: none;
+        }
+      }
+    }
+  }
+}
