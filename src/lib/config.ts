@@ -57,6 +57,8 @@ const config = {
   userProfileRoute: '/u/',
   cartRoute: '/store/cart',
   myOrdersRoute: '/store/orders',
+  collectionRoute: '/store/collection/',
+  itemRoute: '/store/item/',
   isDevelopment,
 };
 
