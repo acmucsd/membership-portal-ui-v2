@@ -110,7 +110,11 @@ const Navbar = ({ user }: NavbarProps) => {
           <ProfileIcon className={styles.iconLink} />
           Profile
         </Link>
-        <Link onClick={() => setMenuOpen(false)} className={styles.mobileNavItem} href="/store">
+        <Link
+          onClick={() => setMenuOpen(false)}
+          className={styles.mobileNavItem}
+          href={config.storeRoute}
+        >
           <ShopIcon className={styles.iconLink} />
           Store
         </Link>

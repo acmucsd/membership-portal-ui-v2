@@ -54,6 +54,7 @@ const config = {
   homeRoute: '/',
   loginRoute: '/login',
   userProfileRoute: '/u/',
+  storeRoute: '/store',
   cartRoute: '/store/cart',
   myOrdersRoute: '/store/orders',
   collectionRoute: '/store/collection/',
