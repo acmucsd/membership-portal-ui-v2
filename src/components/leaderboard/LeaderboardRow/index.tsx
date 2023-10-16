@@ -1,3 +1,4 @@
+import { isSrcAGif } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { RefObject } from 'react';
@@ -37,6 +38,7 @@ const LeaderboardRow = ({
         quality={10}
         alt={`Profile picture for ${name}`}
         className={styles.profilePicture}
+        unoptimized={isSrcAGif(image)}
       />
       <div className={styles.nameRank}>
         <span className={styles.name}>
