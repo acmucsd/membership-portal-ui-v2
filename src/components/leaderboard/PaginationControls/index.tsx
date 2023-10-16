@@ -11,7 +11,7 @@ interface PaginationControlsProps {
 }
 
 const PaginationControls = ({ page, onPage, pages }: PaginationControlsProps) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(String(page + 1));
 
   useEffect(() => {
     setValue(String(page + 1));
@@ -39,6 +39,19 @@ const PaginationControls = ({ page, onPage, pages }: PaginationControlsProps) =>
             const page = +e.currentTarget.value - 1;
             if (Number.isInteger(page) && page >= 0 && page < pages) {
               onPage(page);
+            }
+          }}
+          onBlur={e => {
+            // Clamp page number between 1 and pages
+            const inputPage = Math.min(
+              Math.max(Math.trunc(+e.currentTarget.value - 1), 0),
+              pages - 1
+            );
+            if (Number.isNaN(inputPage)) {
+              setValue(String(page + 1));
+            } else {
+              onPage(inputPage);
+              setValue(String(inputPage + 1));
             }
           }}
         />

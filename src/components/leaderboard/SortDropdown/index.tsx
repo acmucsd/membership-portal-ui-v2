@@ -23,10 +23,7 @@ const SortDropdown = ({ name, ariaLabel, options, value, onChange }: SortDropdow
 
   useEffect(() => {
     document.addEventListener('click', event => {
-      if (
-        event.target instanceof HTMLElement &&
-        event.target.closest(`.${styles.dropdownWrapper}`)
-      ) {
+      if (event.target instanceof Element && event.target.closest(`.${styles.dropdownWrapper}`)) {
         return;
       }
       setOpen(false);
