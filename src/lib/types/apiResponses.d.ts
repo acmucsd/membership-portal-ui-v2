@@ -167,7 +167,7 @@ export interface PublicMerchItem {
   uuid: UUID;
   itemName: string;
   collection?: PublicMerchCollection;
-  picture: string;
+  picture: string | null;
   description: string;
   monthlyLimit: number;
   lifetimeLimit: number;
