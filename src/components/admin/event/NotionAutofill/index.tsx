@@ -9,10 +9,11 @@ import style from './style.module.scss';
 
 interface IProps {
   setFields: (data: NotionEventDetails) => void;
+  loading: boolean;
   upcomingEvents: NotionEventPreview[];
 }
 
-const NotionAutofill = ({ setFields, upcomingEvents }: IProps) => {
+const NotionAutofill = ({ setFields, loading, upcomingEvents }: IProps) => {
   const [query, setQuery] = useState('');
   const [activeOption, setActiveOption] = useState<string | undefined>(undefined);
 
@@ -29,17 +30,19 @@ const NotionAutofill = ({ setFields, upcomingEvents }: IProps) => {
       },
     });
 
+  const defaultFormText = loading ? 'Loading events from Notion...' : 'Select an Event';
+
   return (
     <div className={style.autofill}>
       <select
         name=""
         id=""
-        placeholder="Select Event"
+        placeholder={defaultFormText}
         onChange={e => setActiveOption(e.target.value)}
         value={activeOption}
-        defaultValue="Select an Event"
+        defaultValue={defaultFormText}
       >
-        <option disabled>Select an Event</option>
+        <option disabled>{defaultFormText}</option>
 
         {upcomingEvents?.map(event => (
           <option key={event.url} value={event.url}>

@@ -2,6 +2,7 @@ import EventDetailsFormItem from '@/components/admin/event/EventDetailsFormItem'
 import NotionAutofill from '@/components/admin/event/NotionAutofill';
 import { Button } from '@/components/common';
 import { config, showToast } from '@/lib';
+import { KlefkiAPI } from '@/lib/api';
 import { AdminEventManager } from '@/lib/managers';
 import { CookieService } from '@/lib/services';
 import { FillInLater } from '@/lib/types';
@@ -11,18 +12,18 @@ import { CookieType } from '@/lib/types/enums';
 import { getMessagesFromError } from '@/lib/utils';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import style from './style.module.scss';
 
 interface IProps {
   editing?: boolean;
   defaultData?: Partial<PublicEvent>;
-  upcomingEvents: NotionEventPreview[];
 }
 
 const EventDetailsForm = (props: IProps) => {
-  const { editing, defaultData, upcomingEvents } = props;
+  const { editing, defaultData } = props;
   const router = useRouter();
   const initialValues: Partial<PublicEvent> = {
     title: defaultData?.title || '',
@@ -45,6 +46,17 @@ const EventDetailsForm = (props: IProps) => {
     formState: { errors },
   } = useForm<Event>({ defaultValues: initialValues });
 
+  const [loading, setLoading] = useState<boolean>(false);
+  const [upcomingEvents, setUpcomingEvents] = useState<NotionEventPreview[]>([]);
+
+  useEffect(() => {
+    setLoading(true);
+    KlefkiAPI.getFutureEventsPreview().then(notionUpcomingEvents => {
+      setUpcomingEvents(notionUpcomingEvents);
+      setLoading(false);
+    });
+  }, []);
+
   const setFieldsFromAutofill = (data: NotionEventDetails) => {
     const { checkin, title, description, start, end, location } = data;
     setValue('attendanceCode', checkin, { shouldValidate: true });
@@ -62,6 +74,7 @@ const EventDetailsForm = (props: IProps) => {
   const resetForm = () => reset(initialValues);
 
   const createEvent: SubmitHandler<FillInLater> = formData => {
+    setLoading(true);
     const { start: isoStart, end: isoEnd, ...event } = formData;
 
     const start = new Date(isoStart).toISOString();
@@ -78,6 +91,7 @@ const EventDetailsForm = (props: IProps) => {
       },
       cover: event.cover[0],
       onSuccessCallback: event => {
+        setLoading(false);
         router.push(`/admin/event`);
         showToast('Event Created Successfully!', '', [
           {
@@ -86,12 +100,15 @@ const EventDetailsForm = (props: IProps) => {
           },
         ]);
       },
-      onFailCallback: error =>
-        showToast('Unanble to create event', getMessagesFromError(error).join()),
+      onFailCallback: error => {
+        setLoading(false);
+        showToast('Unable to create event', getMessagesFromError(error).join());
+      },
     });
   };
 
   const editEvent: SubmitHandler<FillInLater> = formData => {
+    setLoading(true);
     const { start: isoStart, end: isoEnd, ...event } = formData;
 
     const start = new Date(isoStart).toISOString();
@@ -108,6 +125,7 @@ const EventDetailsForm = (props: IProps) => {
         end,
       },
       onSuccessCallback: event => {
+        setLoading(false);
         router.push(`/admin/event/edit/${event.uuid}`);
         showToast('Event Details Saved!', '', [
           {
@@ -117,17 +135,20 @@ const EventDetailsForm = (props: IProps) => {
         ]);
       },
       onFailCallback: error => {
-        showToast('Unanble to create event', getMessagesFromError(error).join());
+        setLoading(false);
+        showToast('Unable to create event', getMessagesFromError(error).join());
       },
     });
   };
 
   const deleteEvent = () => {
+    setLoading(true);
     const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
     AdminEventManager.deleteEvent({
       event: initialValues.uuid ?? '',
       token: AUTH_TOKEN,
       onSuccessCallback: () => {
+        setLoading(false);
         router.push('/event');
       },
     });
@@ -138,7 +159,11 @@ const EventDetailsForm = (props: IProps) => {
       <Link href="/admin" className={style.back}>
         Back
       </Link>
-      <NotionAutofill setFields={setFieldsFromAutofill} upcomingEvents={upcomingEvents} />
+      <NotionAutofill
+        setFields={setFieldsFromAutofill}
+        loading={loading}
+        upcomingEvents={upcomingEvents}
+      />
       <h1>{editing ? 'Modify' : 'Create'} Event</h1>
       <div className={style.form}>
         <label htmlFor="name">Event Name</label>
@@ -165,6 +190,8 @@ const EventDetailsForm = (props: IProps) => {
             <option>General</option>
             <option>AI</option>
             <option>Cyber</option>
+            <option>Hack</option>
+            <option>Design</option>
           </select>
         </EventDetailsFormItem>
 
@@ -263,19 +290,23 @@ const EventDetailsForm = (props: IProps) => {
       <div className={style.submitButtons}>
         {editing ? (
           <>
-            <Button onClick={handleSubmit(editEvent)}>Save Changes</Button>
-            <Button onClick={resetForm} variant="secondary" destructive>
+            <Button onClick={handleSubmit(editEvent)} disabled={loading}>
+              Save Changes
+            </Button>
+            <Button onClick={resetForm} disabled={loading} destructive>
               Discard Changes
             </Button>
-            <Button onClick={deleteEvent} destructive>
+            <Button onClick={deleteEvent} disabled={loading} destructive>
               Delete Event
             </Button>
           </>
         ) : (
           <>
-            <Button onClick={handleSubmit(createEvent)}>Create Event</Button>
-            <Button onClick={resetForm} variant="secondary" destructive>
-              Clear Form
+            <Button onClick={handleSubmit(createEvent)} disabled={loading}>
+              Create Event
+            </Button>
+            <Button onClick={resetForm} disabled={loading} destructive>
+              = Clear Form
             </Button>
           </>
         )}
