@@ -15,7 +15,7 @@ const ManageEventCard = ({ event }: IProps) => {
   const router = useRouter();
 
   const duplicateEvent = () => {
-    router.push(`/admin/event/create?duplicate=${event.uuid}`, {});
+    router.push(`/admin/event/create?duplicate=${event.uuid}`);
   };
 
   const generateDiscordEvent = () => {
