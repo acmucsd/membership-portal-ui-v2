@@ -49,6 +49,7 @@ const EventDetailsForm = (props: IProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [upcomingEvents, setUpcomingEvents] = useState<NotionEventPreview[]>([]);
 
+  // Load in the Notion event options for NotionAutofill using Klefki.
   useEffect(() => {
     setLoading(true);
     KlefkiAPI.getFutureEventsPreview().then(notionUpcomingEvents => {
@@ -306,7 +307,7 @@ const EventDetailsForm = (props: IProps) => {
               Create Event
             </Button>
             <Button onClick={resetForm} disabled={loading} destructive>
-              = Clear Form
+              Clear Form
             </Button>
           </>
         )}

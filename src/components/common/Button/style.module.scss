@@ -1,3 +1,5 @@
+@use '../../../styles/vars.scss' as vars;
+
 .button {
   align-items: center;
   background-color: #62b0ff;
@@ -47,5 +49,14 @@
 
   &:hover {
     transform: scale(1.04);
+
+    &:disabled {
+      cursor: wait;
+      transform: scale(1);
+    }
+  }
+
+  &:disabled {
+    background-color: vars.$disabled !important;
   }
 }

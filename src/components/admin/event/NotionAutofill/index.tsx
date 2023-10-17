@@ -57,7 +57,7 @@ const NotionAutofill = ({ setFields, loading, upcomingEvents }: IProps) => {
           onChange={e => setQuery(e.target.value)}
           placeholder="Notion Calendar URL"
         />
-        <Button onClick={autofillForm} variant="primary" size="small">
+        <Button onClick={autofillForm} variant="primary" size="small" disabled={loading}>
           Autofill Form
         </Button>
       </div>
