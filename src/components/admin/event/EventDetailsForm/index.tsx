@@ -24,16 +24,15 @@ interface IProps {
 const EventDetailsForm = (props: IProps) => {
   const { editing, defaultData, upcomingEvents } = props;
   const router = useRouter();
-
   const initialValues: Partial<PublicEvent> = {
-    title: defaultData?.title ?? '',
-    committee: defaultData?.committee ?? 'General', // TODO: Parse Notion committee format into valid dropdown option
-    location: defaultData?.location ?? '',
-    pointValue: defaultData?.pointValue ?? 10,
-    start: defaultData?.start ?? '',
-    end: defaultData?.end ?? '',
-    attendanceCode: defaultData?.attendanceCode ?? '',
-    description: defaultData?.description ?? '',
+    title: defaultData?.title || '',
+    committee: defaultData?.committee || 'General', // TODO: Parse Notion committee format into valid dropdown option
+    location: defaultData?.location || '',
+    pointValue: defaultData?.pointValue || 10,
+    start: defaultData?.start || '',
+    end: defaultData?.end || '',
+    attendanceCode: defaultData?.attendanceCode || '',
+    description: defaultData?.description || '',
     cover: defaultData?.cover,
     uuid: defaultData?.uuid,
   };
@@ -48,7 +47,6 @@ const EventDetailsForm = (props: IProps) => {
 
   const setFieldsFromAutofill = (data: NotionEventDetails) => {
     const { checkin, title, description, start, end, location } = data;
-
     setValue('attendanceCode', checkin, { shouldValidate: true });
     setValue('title', title, { shouldValidate: true });
     setValue('description', description, { shouldValidate: true });

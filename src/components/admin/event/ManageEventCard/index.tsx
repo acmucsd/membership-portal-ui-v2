@@ -2,9 +2,9 @@ import { Button } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { AdminEventManager } from '@/lib/managers';
 import { PublicEvent } from '@/lib/types/apiResponses';
-import { copy } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import style from './style.module.scss';
 
 interface IProps {
@@ -12,8 +12,10 @@ interface IProps {
 }
 
 const ManageEventCard = ({ event }: IProps) => {
+  const router = useRouter();
+
   const duplicateEvent = () => {
-    showToast('Function not implemented yet!');
+    router.push(`/admin/event/create?duplicate=${event.uuid}`, {});
   };
 
   const generateDiscordEvent = () => {
@@ -30,10 +32,6 @@ const ManageEventCard = ({ event }: IProps) => {
 
   const generateACMURL = () => {
     showToast('Function not implemented yet!');
-  };
-
-  const copyCheckinLink = () => {
-    copy(`https://members.acmucsd.com/checkin?code=${event.attendanceCode}`);
   };
 
   return (
@@ -53,7 +51,6 @@ const ManageEventCard = ({ event }: IProps) => {
       <Button onClick={duplicateEvent}>Duplicate Event</Button>
       <Button onClick={generateDiscordEvent}>Generate Discord Event</Button>
       <Button onClick={generateACMURL}>Generate ACMURL</Button>
-      <Button onClick={copyCheckinLink}>Copy Checkin Link</Button>
     </div>
   );
 };

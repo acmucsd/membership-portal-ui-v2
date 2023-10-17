@@ -49,13 +49,17 @@ export const getFutureEventsPreview = async (): Promise<NotionEventPreview[]> =>
   const { klefki } = config;
   const requestUrl = `${klefki.baseUrl}${klefki.endpoints.notion.events}`;
 
-  const response = await axios.get<NotionEventPreview[]>(requestUrl, {
-    headers: {
-      Authorization: `Bearer ${generateToken(klefki.key)}`,
-    },
-  });
+  try {
+    const response = await axios.get<NotionEventPreview[]>(requestUrl, {
+      headers: {
+        Authorization: `Bearer ${generateToken(klefki.key)}`,
+      },
+    });
 
-  return response.data.sort(
-    (a, b) => new Date(a.date.start).getTime() - new Date(b.date.start).getTime()
-  );
+    return response.data.sort(
+      (a, b) => new Date(a.date.start).getTime() - new Date(b.date.start).getTime()
+    );
+  } catch (e) {
+    return [];
+  }
 };
