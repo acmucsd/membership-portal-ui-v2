@@ -27,7 +27,7 @@ const EventDetailsForm = (props: IProps) => {
   const router = useRouter();
   const initialValues: Partial<PublicEvent> = {
     title: defaultData?.title || '',
-    committee: defaultData?.committee || 'General', // TODO: Parse Notion committee format into valid dropdown option
+    committee: defaultData?.committee || 'General',
     location: defaultData?.location || '',
     pointValue: defaultData?.pointValue || 10,
     start: defaultData?.start || '',
@@ -59,7 +59,7 @@ const EventDetailsForm = (props: IProps) => {
   }, []);
 
   const setFieldsFromAutofill = (data: NotionEventDetails) => {
-    const { checkin, title, description, start, end, location } = data;
+    const { checkin, title, description, start, end, location, community } = data;
     setValue('attendanceCode', checkin, { shouldValidate: true });
     setValue('title', title, { shouldValidate: true });
     setValue('description', description, { shouldValidate: true });
@@ -70,6 +70,7 @@ const EventDetailsForm = (props: IProps) => {
       shouldValidate: true,
     });
     setValue('location', location, { shouldValidate: true });
+    setValue('committee', community);
   };
 
   const resetForm = () => reset(initialValues);

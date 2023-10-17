@@ -418,7 +418,7 @@ export interface PatchResumeResponse extends ApiResponse {
 
 export interface NotionEventDetails {
   title: string;
-  organization: string[];
+  community: string;
   location: string;
   description: string;
   checkin: string;

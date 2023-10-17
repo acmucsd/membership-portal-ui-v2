@@ -24,7 +24,10 @@ const NotionAutofill = ({ setFields, loading, upcomingEvents }: IProps) => {
   const autofillForm = () =>
     AdminEventManager.getEventFromNotionURL({
       pageUrl: query,
-      onSuccessCallback: data => setFields(data),
+      onSuccessCallback: data => {
+        setFields(data);
+        showToast(`Filled out fields for event: ${data.title}!`);
+      },
       onFailCallback: err => {
         showToast('Notion API Error', err);
       },
