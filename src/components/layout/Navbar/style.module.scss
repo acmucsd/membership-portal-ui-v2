@@ -1,5 +1,7 @@
 @use 'src/styles/vars.scss' as vars;
 
+$wainbow-height: 20rem;
+
 .header {
   background-color: var(--theme-background);
   height: vars.$header-height;
@@ -117,11 +119,12 @@
     font-size: 20px;
     font-weight: 700;
     gap: 0.25rem;
+    height: $wainbow-height;
     justify-content: center;
     line-height: 300%;
-    margin-top: -20rem;
+    margin-top: #{$wainbow-height * -1};
 
-    padding: 0 1rem;
+    padding: 0 1rem 1rem;
     position: relative;
     transition: margin-top 0.3s cubic-bezier(0, 0.4, 0.1, 1), background-color 0.3s ease;
     width: 100vw;
