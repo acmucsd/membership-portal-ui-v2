@@ -94,13 +94,13 @@ const EventDetailsForm = (props: IProps) => {
       cover: event.cover[0],
       onSuccessCallback: event => {
         setLoading(false);
-        router.push(`/admin/event`);
         showToast('Event Created Successfully!', '', [
           {
             text: 'View Live Event Page',
             onClick: () => router.push(`https://acmucsd.com/events/${event.uuid}`),
           },
         ]);
+        router.push(`/admin/event`);
       },
       onFailCallback: error => {
         setLoading(false);
@@ -128,13 +128,13 @@ const EventDetailsForm = (props: IProps) => {
       },
       onSuccessCallback: event => {
         setLoading(false);
-        router.push(`/admin/event/edit/${event.uuid}`);
         showToast('Event Details Saved!', '', [
           {
             text: 'View Event',
             onClick: () => router.push(`https://acmucsd.com/events/${event.uuid}`),
           },
         ]);
+        router.push(`/admin/event`);
       },
       onFailCallback: error => {
         setLoading(false);
