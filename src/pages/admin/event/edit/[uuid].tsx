@@ -37,12 +37,12 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
       },
     };
   } catch (err: any) {
-    return { redirect: { destination: config.admin, permanent: false } };
+    return { redirect: { destination: config.admin.homeRoute, permanent: false } };
   }
 };
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canManageEvents(),
-  config.admin
+  config.admin.homeRoute
 );

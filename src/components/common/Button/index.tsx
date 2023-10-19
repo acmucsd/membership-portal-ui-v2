@@ -1,7 +1,6 @@
 import { PropsWithChildren } from 'react';
 import style from './style.module.scss';
 
-// TODO: Implement generic buttons that follow our design system
 interface IProps {
   variant?: 'primary' | 'secondary';
   destructive?: boolean;

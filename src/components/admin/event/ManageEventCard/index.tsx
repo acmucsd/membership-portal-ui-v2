@@ -15,7 +15,7 @@ const ManageEventCard = ({ event }: IProps) => {
   const router = useRouter();
 
   const duplicateEvent = () => {
-    router.push(`/admin/event/create?duplicate=${event.uuid}`);
+    router.push(`${config.admin.events.createRoute}?duplicate=${event.uuid}`);
   };
 
   const generateDiscordEvent = () => {
@@ -47,7 +47,7 @@ const ManageEventCard = ({ event }: IProps) => {
       <h3>{event.title}</h3>
       <br />
       <a href={`https://acmucsd.com/events/${event.uuid}`}>View Public Event Page</a>
-      <Link href={`/admin/event/edit/${event.uuid}`}>Edit Details</Link>
+      <Link href={`${config.admin.events.editRoute}/${event.uuid}`}>Edit Details</Link>
       <Button onClick={duplicateEvent}>Duplicate Event</Button>
       <Button onClick={generateDiscordEvent}>Generate Discord Event</Button>
       <Button onClick={generateACMURL}>Generate ACMURL</Button>

@@ -69,12 +69,19 @@ const config = {
   },
   homeRoute: '/',
   loginRoute: '/login',
-  admin: '/admin',
   userProfileRoute: '/u/',
   cartRoute: '/store/cart',
   myOrdersRoute: '/store/orders',
   collectionRoute: '/store/collection/',
   itemRoute: '/store/item/',
+  admin: {
+    homeRoute: '/admin',
+    events: {
+      homeRoute: '/admin/event',
+      editRoute: '/admin/event/edit',
+      createRoute: '/admin/event/create',
+    },
+  },
   isDevelopment,
   file: {
     MAX_EVENT_COVER_SIZE_KB: isDevelopment ? 256 : 2048,

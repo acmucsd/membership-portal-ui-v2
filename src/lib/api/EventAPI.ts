@@ -6,6 +6,7 @@ import {
   GetAllEventsResponse,
   GetFutureEventsResponse,
   GetOneEventResponse,
+  GetPastEventsResponse,
   PatchEventResponse,
   PublicEvent,
 } from '@/lib/types/apiResponses';
@@ -50,7 +51,7 @@ export const getAllFutureEvents = async (): Promise<PublicEvent[]> => {
 export const getAllPastEvents = async (): Promise<PublicEvent[]> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.event.past}`;
 
-  const response = await axios.get<GetFutureEventsResponse>(requestUrl);
+  const response = await axios.get<GetPastEventsResponse>(requestUrl);
 
   return response.data.events;
 };

@@ -62,7 +62,7 @@ const ManageAllEventsPage: NextPage<IProps> = (props: IProps) => {
           </Button>
         </div>
 
-        <Link href="/admin/event/create">Create New Event</Link>
+        <Link href={config.admin.events.createRoute}>Create New Event</Link>
       </div>
       <div className={style.eventContainer}>
         {visibleEvents.map(event => (
@@ -94,5 +94,5 @@ const getServerSidePropsFunc: GetServerSideProps = async () => {
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canManageEvents(),
-  config.admin
+  config.admin.homeRoute
 );

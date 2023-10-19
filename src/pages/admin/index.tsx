@@ -8,7 +8,7 @@ const AdminPage: NextPage = () => {
   return (
     <div>
       <h1>Portal Admin Page</h1>
-      <Link href="/admin/event">Manage Events</Link>
+      <Link href={config.admin.events.homeRoute}>Manage Events</Link>
     </div>
   );
 };
