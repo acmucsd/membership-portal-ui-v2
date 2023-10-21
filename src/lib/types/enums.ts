@@ -21,6 +21,14 @@ export enum UserState {
   PASSWORD_RESET = 'PASSWORD_RESET',
 }
 
+export enum Community {
+  GENERAL = 'General',
+  AI = 'AI',
+  CYBER = 'Cyber',
+  HACK = 'Hack',
+  DESIGN = 'Design',
+}
+
 export enum MediaType {
   EVENT_COVER = 'EVENT_COVER',
   PROFILE_PICTURE = 'PROFILE_PICTURE',

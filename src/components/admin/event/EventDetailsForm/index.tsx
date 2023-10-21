@@ -8,9 +8,10 @@ import { CookieService } from '@/lib/services';
 import { FillInLater } from '@/lib/types';
 import { Event } from '@/lib/types/apiRequests';
 import { NotionEventDetails, NotionEventPreview, PublicEvent } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
+import { Community, CookieType } from '@/lib/types/enums';
 import { getMessagesFromError } from '@/lib/utils';
 import { DateTime } from 'luxon';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -158,7 +159,7 @@ const EventDetailsForm = (props: IProps) => {
 
   return (
     <div className={style.container}>
-      <Link href="/admin" className={style.back}>
+      <Link href={config.admin.events.homeRoute} className={style.back}>
         Back
       </Link>
       <NotionAutofill
@@ -189,11 +190,9 @@ const EventDetailsForm = (props: IProps) => {
               required: 'Required',
             })}
           >
-            <option>General</option>
-            <option>AI</option>
-            <option>Cyber</option>
-            <option>Hack</option>
-            <option>Design</option>
+            {(Object.keys(Community) as Array<keyof typeof Community>).map(key => (
+              <option key={key}>{Community[key]}</option>
+            ))}
           </select>
         </EventDetailsFormItem>
 
@@ -287,6 +286,14 @@ const EventDetailsForm = (props: IProps) => {
             </EventDetailsFormItem>
           </>
         )}
+        {initialValues.cover ? (
+          <>
+            <span>Cover Image</span>
+            <div className={style.coverImageContainer}>
+              <Image src={initialValues.cover || ''} alt="Event cover" objectFit="cover" fill />
+            </div>
+          </>
+        ) : null}
       </div>
 
       <div className={style.submitButtons}>

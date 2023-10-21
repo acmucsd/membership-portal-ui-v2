@@ -4,8 +4,59 @@
   gap: 1rem;
 
   .header {
+    align-items: center;
     display: flex;
     justify-content: space-between;
+
+    .viewControls {
+      .active {
+        cursor: pointer;
+        fill: var(--theme-primary-4);
+      }
+
+      .inactive {
+        cursor: pointer;
+        fill: var(--theme-primary-1);
+      }
+    }
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+
+    .controlsLeft {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+
+      .createNewEvent {
+        align-items: center;
+        display: flex;
+      }
+
+      .searchBar {
+        align-items: center;
+        background: #fff;
+        border: 2px solid var(--theme-primary-1);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+        color: #62b0ff;
+        display: flex;
+        gap: 0.5rem;
+        padding: 4px 0.5rem;
+
+        .searchInput {
+          background: #fff;
+          border: 0;
+          color: #62b0ff;
+        }
+
+        .searchInput::placeholder {
+          color: #62b0ff;
+        }
+      }
+    }
 
     .buttons {
       display: flex;
@@ -13,7 +64,7 @@
     }
   }
 
-  .eventContainer {
+  .eventCardContainer {
     display: grid;
     gap: 1rem 1rem;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

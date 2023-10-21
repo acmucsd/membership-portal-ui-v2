@@ -23,4 +23,13 @@
     display: flex;
     gap: 1rem;
   }
+
+  .coverImageContainer {
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--theme-primary-6);
+    border-radius: 10px;
+    height: auto;
+    position: relative;
+    width: 100%;
+  }
 }

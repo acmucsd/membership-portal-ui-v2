@@ -9,6 +9,7 @@ import { PageLayout } from '@/components/layout';
 import { CookieService } from '@/lib/services';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import { createTheme, ThemeProvider as MUIThemeProvider } from '@mui/material';
 import { NextPageContext } from 'next';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
@@ -21,6 +22,13 @@ interface InitialPropInterface {
 const dmSans = DMSans({ subsets: ['latin'], weight: ['400', '500', '700'] });
 
 export default function MyApp({ Component, pageProps }: AppProps<InitialPropInterface>) {
+  const theme = createTheme({
+    typography: {
+      fontFamily: dmSans.style.fontFamily,
+      fontSize: 16,
+    },
+  });
+
   return (
     <>
       <style jsx global>{`
@@ -30,10 +38,12 @@ export default function MyApp({ Component, pageProps }: AppProps<InitialPropInte
       `}</style>
       <SEO />
       <ThemeProvider>
-        <ToastContainer />
-        <PageLayout user={pageProps?.user}>
-          <Component {...pageProps} />
-        </PageLayout>
+        <MUIThemeProvider theme={theme}>
+          <ToastContainer />
+          <PageLayout user={pageProps?.user}>
+            <Component {...pageProps} />
+          </PageLayout>
+        </MUIThemeProvider>
       </ThemeProvider>
     </>
   );

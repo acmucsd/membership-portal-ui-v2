@@ -1,7 +1,11 @@
 export type Styles = {
+  cardEvent: string;
   cover: string;
   coverContainer: string;
-  event: string;
+  eventInfo: string;
+  eventText: string;
+  eventTitle: string;
+  rowEvent: string;
 };
 
 export type ClassNames = keyof Styles;

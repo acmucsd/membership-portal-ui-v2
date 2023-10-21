@@ -1,9 +1,6 @@
 export type Styles = {
-  back: string;
-  container: string;
-  coverImageContainer: string;
-  form: string;
-  submitButtons: string;
+  eventControls: string;
+  theme: string;
 };
 
 export type ClassNames = keyof Styles;
