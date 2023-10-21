@@ -12,7 +12,6 @@ $component-roundness: 34px;
   border-width: 1px;
   display: flex;
   float: left;
-  // opacity: 90%;
   position: relative;
 
   label {
@@ -24,7 +23,6 @@ $component-roundness: 34px;
     float: left;
     height: $indicator-size * 1.2;
     justify-content: center;
-    // padding: 4px;
     width: #{$indicator-size * $switch-gap-num};
 
     input {
@@ -44,7 +42,6 @@ $component-roundness: 34px;
 
   &indicator {
     align-self: center;
-    // background: #9f9f9f;
     border-radius: 50%;
     display: flex;
     height: $indicator-size;
@@ -52,7 +49,6 @@ $component-roundness: 34px;
     opacity: 50%;
     pointer-events: none;
     position: absolute;
-    // top: -0.5rem;
     transform: translate3d(1rem, 0, 0);
     transition: transform 0.6s cubic-bezier(0.02, 0.94, 0.09, 0.97),
       background 0.3s cubic-bezier(0.17, 0.67, 0.14, 1.03);
@@ -72,10 +68,8 @@ $component-roundness: 34px;
     align-items: center;
     color: #fff;
     display: flex;
-    // fill: #fff;
     height: $indicator-size;
     justify-content: center;
-    // margin-left: 10px;
     padding: #{$indicator-size * 0.25};
     position: absolute;
     width: $indicator-size;
@@ -93,17 +87,14 @@ $component-roundness: 34px;
   }
 
   .switchOne {
-    // background: PaleGreen;
     transform: translate3d(#{$switch-start}, 0, 0);
   }
 
   .switchTwo {
-    // background: MediumTurquoise;
     transform: translate3d(calc(#{$switch-start} + #{$switch-gap}), 0, 0);
   }
 
   .switchThree {
-    // background: PaleVioletRed;
     transform: translate3d(calc(#{$switch-start} + #{$switch-gap * 2}), 0, 0);
   }
 

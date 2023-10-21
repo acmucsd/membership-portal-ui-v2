@@ -6,7 +6,6 @@ import SunIcon from '../../../../public/assets/icons/sun.svg';
 import styles from './style.module.scss';
 
 const ThreeToggle = () => {
-  //   const { theme = 'light', onThemeChange } = props;
   const { theme, setTheme, systemTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -69,19 +68,6 @@ const ThreeToggle = () => {
     }
   };
 
-  // const calcIcon = (theme: string | undefined) => {
-  //   switch (theme) {
-  //     case 'light':
-  //       return lightIcon;
-  //     case 'system':
-  //       return systemIcon;
-  //     case 'dark':
-  //       return darkIcon;
-  //     default:
-  //       return darkIcon;
-  //   }
-  // };
-
   const calcAltText = (theme: string | undefined) => {
     switch (theme) {
       case 'light':
@@ -99,7 +85,6 @@ const ThreeToggle = () => {
   const switchColor = calcIndColorStyle(theme);
   const currAltText = calcAltText(theme);
   const iconStyle = calcIconStyle(theme);
-  // const currIcon = calcIcon(theme);
 
   useEffect(() => {
     setMounted(true);
@@ -114,13 +99,7 @@ const ThreeToggle = () => {
       <label htmlFor={lightId}>
         {/* LIGHT */}
         <svg className={`${styles.icon} ${iconStyle}`}>
-          <SunIcon
-            // src={lightIcon}
-            alt={currAltText}
-            width={iconSize}
-            height={iconSize}
-            // className={styles.icon}
-          />
+          <SunIcon alt={currAltText} width={iconSize} height={iconSize} />
         </svg>
 
         <input
@@ -135,13 +114,7 @@ const ThreeToggle = () => {
       <label htmlFor={systemId}>
         {/* SYSTEM */}
         <svg className={`${styles.icon} ${iconStyle}`}>
-          <MonitorIcon
-            // src={systemIcon}
-            alt={currAltText}
-            width={iconSize}
-            height={iconSize}
-            // className={styles.icon}
-          />
+          <MonitorIcon alt={currAltText} width={iconSize} height={iconSize} />
         </svg>
 
         <input
@@ -156,13 +129,7 @@ const ThreeToggle = () => {
       <label htmlFor={darkId}>
         {/* DARK */}
         <svg className={`${styles.icon} ${iconStyle}`}>
-          <MoonIcon
-            // src={darkIcon}
-            alt={currAltText}
-            width={iconSize}
-            height={iconSize}
-            // className={styles.icon}
-          />
+          <MoonIcon alt={currAltText} width={iconSize} height={iconSize} />
         </svg>
 
         <input
@@ -173,21 +140,7 @@ const ThreeToggle = () => {
           onClick={() => setTheme('dark')}
         />
       </label>
-      <div className={`${switchPos} ${styles.switchindicator} ${switchColor}`}>
-        {/* <Image
-          src={currIcon}
-          alt={currAltText}
-          width={iconSize}
-          height={iconSize}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingTop: '10px',
-            paddingLeft: '10px',
-          }}
-        /> */}
-      </div>
+      <div className={`${switchPos} ${styles.switchindicator} ${switchColor}`} />
     </form>
   );
 };
