@@ -1629,6 +1629,11 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.198.tgz#4d27465257011aedc741a809f1269941fa2c5d4c"
   integrity sha512-trNJ/vtMZYMLhfN45uLq4ShQSw0/S7xCTLLVM+WM1rmFpba/VS42jVUgaO3w/NOLiWR/09lnYk0yMaA/atdIsg==
 
+"@types/luxon@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-3.3.0.tgz#a61043a62c0a72696c73a0a305c544c96501e006"
+  integrity sha512-uKRI5QORDnrGFYgcdAVnHvEIvEZ8noTpP/Bg+HeUzZghwinDlIS87DEenV5r1YoOF9G4x600YsUXLWZ19rmTmg==
+
 "@types/minimist@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.2.tgz#ee771e2ba4b3dc5b372935d549fd9617bf345b8c"
@@ -1713,6 +1718,11 @@
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.3.tgz#ff5e2f1902969d305225a047c8a0fd5c915cebef"
   integrity sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==
+
+"@types/totp-generator@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@types/totp-generator/-/totp-generator-0.0.5.tgz#5363c36b65a52ea33e2e6d7cf3a8172e759b224a"
+  integrity sha512-ryo6U5lfQg2/7pNQnpEXG49EPX7/cmRi/FX7sPBYO7QVJf0z6turM3km3w+98mpqlM4E+vkoOrN+gcjqCBmX0g==
 
 "@types/validator@^13.7.14":
   version "13.11.1"
@@ -4429,6 +4439,11 @@ jsprim@^2.0.2:
     json-schema "0.4.0"
     verror "1.10.0"
 
+jssha@^3.1.2:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/jssha/-/jssha-3.3.0.tgz#44b5531bcf55a12f4a388476c647a9a1cca92839"
+  integrity sha512-w9OtT4ALL+fbbwG3gw7erAO0jvS5nfvrukGPMWIAoea359B26ALXGpzy4YJSp9yGnpUvuvOw1nSjSoHDfWSr1w==
+
 "jsx-ast-utils@^2.4.1 || ^3.0.0", jsx-ast-utils@^3.3.3:
   version "3.3.5"
   resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-3.3.5.tgz#4766bd05a8e2a11af222becd19e15575e52a853a"
@@ -4582,6 +4597,11 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
+
+luxon@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.3.0.tgz#d73ab5b5d2b49a461c47cedbc7e73309b4805b48"
+  integrity sha512-An0UCfG/rSiqtAIiBPO0Y9/zAnHUZxAMiCpTd5h2smgsj7GGmcenvrvww2cqNA8/4A5ZrD1gJpHN2mIHZQF+Mg==
 
 map-obj@^1.0.0:
   version "1.0.1"
@@ -6060,6 +6080,13 @@ to-regex-range@^5.0.1:
   integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
   dependencies:
     is-number "^7.0.0"
+
+totp-generator@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/totp-generator/-/totp-generator-0.0.14.tgz#c136bcb4030f9cab5b10ecd82d15cd2d5518234a"
+  integrity sha512-vFZ8N2TdF4mCj8bUW460jI73LqS+JKccsZ8cttQSuXa3dkTmZo8q81Pq2yAuiPxCI5fPfUrfaKuU+7adjx5s4w==
+  dependencies:
+    jssha "^3.1.2"
 
 tough-cookie@^4.1.3:
   version "4.1.3"
