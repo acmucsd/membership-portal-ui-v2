@@ -10,10 +10,10 @@ import style from '@/styles/pages/manage-events.module.scss';
 import { IconButton } from '@mui/material';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { BsFillGrid3X3GapFill } from 'react-icons/bs';
-import { FaThList } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaThList } from 'react-icons/fa';
 
 interface IProps {
   allEvents: PublicEvent[];
@@ -22,6 +22,10 @@ interface IProps {
 }
 
 const NO_FILTER_OPTION = 'All Communities';
+const communityFilterOptions = [
+  NO_FILTER_OPTION,
+  ...(Object.keys(Community) as Array<keyof typeof Community>).map(key => Community[key]),
+];
 
 const communityMatch = (event: PublicEvent, filter: string): boolean => {
   if (filter === NO_FILTER_OPTION) {
@@ -37,11 +41,9 @@ const ManageAllEventsPage: NextPage<IProps> = (props: IProps) => {
   const [mode, setMode] = useState<'all' | 'past' | 'future'>('future');
   const [query, setQuery] = useState<string>('');
   const [viewMode, setViewMode] = useState<'card' | 'row'>('row');
-  const communityFilterOptions = [
-    NO_FILTER_OPTION,
-    ...(Object.keys(Community) as Array<keyof typeof Community>).map(key => Community[key]),
-  ];
   const [communityFilter, setCommunityFilter] = useState<string>(NO_FILTER_OPTION);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [paginationSize, setPaginationSize] = useState<'All' | number>('All');
 
   const visibleEvents = useMemo(() => {
     switch (mode) {
@@ -55,6 +57,39 @@ const ManageAllEventsPage: NextPage<IProps> = (props: IProps) => {
         return futureEvents;
     }
   }, [allEvents, futureEvents, mode, pastEvents]);
+
+  const filteredEvents = visibleEvents
+    .filter(event => communityMatch(event, communityFilter))
+    .filter(event => event.title.toLowerCase().includes(query));
+
+  const pageSize = paginationSize === 'All' ? filteredEvents.length : paginationSize;
+
+  const nextPage = () => {
+    if ((currentPage + 1) * pageSize < filteredEvents.length) {
+      setCurrentPage(current => current + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(current => current - 1);
+    }
+  };
+
+  const changePageSize = (e: ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value === 'All') {
+      setPaginationSize(e.target.value);
+    } else {
+      setPaginationSize(parseInt(e.target.value, 10));
+    }
+  };
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [pageSize]);
+
+  const leftPageBound = currentPage * pageSize;
+  const rightPageBound = Math.min((currentPage + 1) * pageSize, filteredEvents.length);
 
   return (
     <div className={style.container}>
@@ -99,7 +134,7 @@ const ManageAllEventsPage: NextPage<IProps> = (props: IProps) => {
             Create New Event
           </Button>
         </div>
-        <div className={style.buttons}>
+        <div className={style.modeControls}>
           <Button
             onClick={() => setMode('past')}
             size="small"
@@ -123,13 +158,40 @@ const ManageAllEventsPage: NextPage<IProps> = (props: IProps) => {
           </Button>
         </div>
       </div>
+      <div className={style.pagination}>
+        <div className={style.paginationSizeControl}>
+          <span>Items per page:</span>
+          <select
+            id="pageSize"
+            value={pageSize}
+            onChange={e => changePageSize(e)}
+            className={style.paginationSizeSelect}
+          >
+            {['All', 5, 10, 20].map(size => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className={style.paginationSwitcher}>
+          {`${leftPageBound + 1} - ${rightPageBound} of ${filteredEvents.length}`}
+          <FaChevronLeft
+            onClick={prevPage}
+            className={style.paginationSwitcherArrow}
+            aria-disabled={currentPage === 0}
+          />
+          <FaChevronRight
+            onClick={nextPage}
+            className={style.paginationSwitcherArrow}
+            aria-disabled={rightPageBound >= filteredEvents.length}
+          />
+        </div>
+      </div>
       <div className={viewMode === 'card' ? style.eventCardContainer : ''}>
-        {visibleEvents
-          .filter(event => communityMatch(event, communityFilter))
-          .filter(event => event.title.toLowerCase().includes(query))
-          .map(event => (
-            <ManageEventCard event={event} key={event.uuid} viewMode={viewMode} />
-          ))}
+        {filteredEvents.slice(leftPageBound, rightPageBound).map(event => (
+          <ManageEventCard event={event} key={event.uuid} viewMode={viewMode} />
+        ))}
       </div>
     </div>
   );

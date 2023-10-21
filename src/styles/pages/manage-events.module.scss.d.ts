@@ -1,6 +1,5 @@
 export type Styles = {
   active: string;
-  buttons: string;
   container: string;
   controls: string;
   controlsLeft: string;
@@ -8,6 +7,12 @@ export type Styles = {
   eventCardContainer: string;
   header: string;
   inactive: string;
+  modeControls: string;
+  pagination: string;
+  paginationSizeControl: string;
+  paginationSizeSelect: string;
+  paginationSwitcher: string;
+  paginationSwitcherArrow: string;
   searchBar: string;
   searchInput: string;
   viewControls: string;

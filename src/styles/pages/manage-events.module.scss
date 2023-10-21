@@ -1,3 +1,5 @@
+@use 'src/styles/vars.scss' as vars;
+
 .container {
   display: flex;
   flex-direction: column;
@@ -41,7 +43,7 @@
         border: 2px solid var(--theme-primary-1);
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-        color: #62b0ff;
+        color: vars.$light-primary-2;
         display: flex;
         gap: 0.5rem;
         padding: 4px 0.5rem;
@@ -49,18 +51,49 @@
         .searchInput {
           background: #fff;
           border: 0;
-          color: #62b0ff;
+          color: vars.$light-primary-2;
         }
 
         .searchInput::placeholder {
-          color: #62b0ff;
+          color: vars.$light-primary-2;
         }
       }
     }
 
-    .buttons {
+    .modeControls {
       display: flex;
       gap: 1rem;
+    }
+  }
+
+  .pagination {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .paginationSizeControl {
+      align-items: center;
+      display: flex;
+      gap: 4px;
+
+      .paginationSizeSelect {
+        border: 0;
+        font-size: 1rem;
+      }
+    }
+
+    .paginationSwitcher {
+      display: flex;
+      gap: 1rem;
+
+      .paginationSwitcherArrow {
+        fill: currentColor;
+      }
+
+      .paginationSwitcherArrow[aria-disabled='true'] {
+        fill: vars.$disabled;
+      }
     }
   }
 
