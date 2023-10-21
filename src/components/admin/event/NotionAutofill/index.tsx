@@ -21,9 +21,9 @@ const NotionAutofill = ({ setFields, loading, upcomingEvents }: IProps) => {
     setQuery(activeOption ?? '');
   }, [activeOption]);
 
-  const autofillForm = () =>
+  const autofillForm = (pageUrl: string) =>
     AdminEventManager.getEventFromNotionURL({
-      pageUrl: query,
+      pageUrl,
       onSuccessCallback: data => {
         setFields(data);
         showToast(`Filled out fields for event: ${data.title}!`);
@@ -41,9 +41,13 @@ const NotionAutofill = ({ setFields, loading, upcomingEvents }: IProps) => {
         name=""
         id=""
         placeholder={defaultFormText}
-        onChange={e => setActiveOption(e.target.value)}
+        onChange={e => {
+          setActiveOption(e.target.value);
+          autofillForm(e.target.value);
+        }}
         value={activeOption}
         defaultValue={defaultFormText}
+        disabled={loading}
       >
         <option disabled>{defaultFormText}</option>
 
@@ -60,7 +64,12 @@ const NotionAutofill = ({ setFields, loading, upcomingEvents }: IProps) => {
           onChange={e => setQuery(e.target.value)}
           placeholder="Notion Calendar URL"
         />
-        <Button onClick={autofillForm} variant="primary" size="small" disabled={loading}>
+        <Button
+          onClick={() => autofillForm(query)}
+          variant="primary"
+          size="small"
+          disabled={loading}
+        >
           Autofill Form
         </Button>
       </div>
