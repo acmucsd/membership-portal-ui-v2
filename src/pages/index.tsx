@@ -1,6 +1,8 @@
+import { EventCard } from '@/components/dashboard';
+import { EventAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
-import type { PrivateProfile } from '@/lib/types/apiResponses';
+import type { PrivateProfile, PublicEvent } from '@/lib/types/apiResponses';
 import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
 import ShopIcon from '@/public/assets/icons/shop-icon.svg';
 import styles from '@/styles/pages/index.module.scss';
@@ -9,11 +11,12 @@ import Link from 'next/link';
 
 interface HomePageProps {
   user: PrivateProfile;
+  events: PublicEvent[];
 }
 
-const PortalHomePage = ({ user }: HomePageProps) => {
+const PortalHomePage = ({ user, events }: HomePageProps) => {
   return (
-    <div>
+    <>
       <div className={styles.hero}>
         <form className={styles.heroContent}>
           <div className={styles.welcome}>
@@ -42,14 +45,32 @@ const PortalHomePage = ({ user }: HomePageProps) => {
           </div>
         </form>
       </div>
-    </div>
+      <div className={styles.content}>
+        <h2>Upcoming events</h2>
+        <div className={styles.cards}>
+          {events.map(({ uuid, cover, title, start, end, pointValue, location }) => (
+            <EventCard
+              key={uuid}
+              cover={cover}
+              title={title}
+              start={start}
+              end={end}
+              pointValue={pointValue}
+              location={location}
+            />
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 
 export default PortalHomePage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: {},
+  props: {
+    events: await EventAPI.getAllFutureEvents(),
+  },
 });
 
 export const getServerSideProps = withAccessType(

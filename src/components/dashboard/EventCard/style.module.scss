@@ -1,0 +1,19 @@
+.card {
+  border: 1px solid var(--theme-shadow);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .cover {
+    aspect-ratio: 16 / 9;
+    position: relative;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+}

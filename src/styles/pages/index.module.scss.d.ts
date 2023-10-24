@@ -1,5 +1,7 @@
 export type Styles = {
+  cards: string;
   checkIn: string;
+  content: string;
   hero: string;
   heroContent: string;
   links: string;
