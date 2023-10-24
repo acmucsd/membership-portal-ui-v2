@@ -40,7 +40,14 @@ const EventCard = ({
           <p>{format.formatRange(new Date(start), new Date(end)).replace(/\s/g, ' ')}</p>
           <p>{location}</p>
         </div>
-        <div className={`${styles.points} ${attended ? styles.attended : ''}`}>
+        <div
+          className={`${styles.points} ${attended ? styles.attended : ''}`}
+          title={
+            attended
+              ? `You earned ${pointValue} points for attending this event.`
+              : `Attend this event to earn ${pointValue} points.`
+          }
+        >
           <strong>{pointValue}</strong>
           {attended ? <CheckIcon /> : 'points'}
         </div>

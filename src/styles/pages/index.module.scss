@@ -1,5 +1,7 @@
 @use 'src/styles/vars.scss' as vars;
 
+$width: 60rem;
+
 .hero {
   background-image: vars.$wainbow;
   display: flex;
@@ -11,7 +13,7 @@
     flex-direction: column;
     gap: 4rem;
     margin: 0 auto;
-    max-width: 64rem;
+    max-width: $width + 4rem;
     padding: 4rem 2rem;
     width: 100%;
 
@@ -135,7 +137,7 @@
   flex-direction: column;
   gap: 1rem;
   margin: 0 auto;
-  max-width: 60rem;
+  max-width: $width;
 
   h2 {
     font-size: 1.5rem;
