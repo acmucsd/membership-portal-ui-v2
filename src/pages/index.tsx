@@ -1,7 +1,11 @@
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
+import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
+import ShopIcon from '@/public/assets/icons/shop-icon.svg';
+import styles from '@/styles/pages/index.module.scss';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 
 interface HomePageProps {
   user: PrivateProfile;
@@ -10,8 +14,24 @@ interface HomePageProps {
 const PortalHomePage = ({ user }: HomePageProps) => {
   return (
     <div>
-      <h1>Portal Home Page</h1>
-      <pre>User Info: {JSON.stringify(user, null, 2)}</pre>
+      <div className={styles.hero}>
+        <form className={styles.heroContent}>
+          <label className={styles.checkIn}>
+            <h1>Check in to an event</h1>
+            <input type="text" placeholder="Check-in code" />
+          </label>
+          <div className={styles.links}>
+            <Link href="/store">
+              <ShopIcon />
+              <span>Spend points on merch</span>
+            </Link>
+            <Link href="/leaderboard">
+              <LeaderboardIcon />
+              <span>Compete with friends</span>
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
