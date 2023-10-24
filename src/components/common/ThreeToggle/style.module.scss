@@ -31,17 +31,19 @@ $component-roundness: 34px;
     }
 
     // IF YOU WANT TO ADD BACKGROUND TO SWITCH, USE THESE
-    .switchLightMode {
-      background: #121415;
-    }
+    // .switchLightMode {
+    //   background: #121415;
+    // }
 
-    .switchDarkMode {
-      background: #fffff4;
-    }
+    // .switchDarkMode {
+    //   background: #fffff4;
+    // }
   }
 
   &indicator {
     align-self: center;
+
+    background: var(--theme-mode-indicator);
     border-radius: 50%;
     display: flex;
     height: $indicator-size;
@@ -56,34 +58,19 @@ $component-roundness: 34px;
     z-index: 1;
   }
 
-  .indicatorLightMode {
-    background: #b8b8b8;
-  }
-
-  .indicatorDarkMode {
-    background: #9f9f9f;
-  }
-
   .icon {
     align-items: center;
     color: #fff;
     display: flex;
+
+    fill: var(--theme-mode-icon);
     height: $indicator-size;
     justify-content: center;
     padding: #{$indicator-size * 0.25};
     position: absolute;
+    stroke: var(--theme-mode-icon);
     width: $indicator-size;
     z-index: 2;
-  }
-
-  .iconDarkMode {
-    fill: #fff;
-    stroke: #fff;
-  }
-
-  .iconLightMode {
-    fill: #000;
-    stroke: #000;
   }
 
   .switchOne {

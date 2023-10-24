@@ -82,9 +82,9 @@ const ThreeToggle = () => {
   };
 
   const switchPos = calcIndicatorStyle(theme);
-  const switchColor = calcIndColorStyle(theme);
+  // const switchColor = calcIndColorStyle(theme);
   const currAltText = calcAltText(theme);
-  const iconStyle = calcIconStyle(theme);
+  // const iconStyle = calcIconStyle(theme);
 
   useEffect(() => {
     setMounted(true);
@@ -98,7 +98,7 @@ const ThreeToggle = () => {
     <form className={styles.switch}>
       <label htmlFor={lightId}>
         {/* LIGHT */}
-        <svg className={`${styles.icon} ${iconStyle}`}>
+        <svg className={`${styles.icon}`}>
           <SunIcon alt={currAltText} width={iconSize} height={iconSize} />
         </svg>
 
@@ -113,7 +113,7 @@ const ThreeToggle = () => {
 
       <label htmlFor={systemId}>
         {/* SYSTEM */}
-        <svg className={`${styles.icon} ${iconStyle}`}>
+        <svg className={`${styles.icon}`}>
           <MonitorIcon alt={currAltText} width={iconSize} height={iconSize} />
         </svg>
 
@@ -128,7 +128,7 @@ const ThreeToggle = () => {
 
       <label htmlFor={darkId}>
         {/* DARK */}
-        <svg className={`${styles.icon} ${iconStyle}`}>
+        <svg className={`${styles.icon} `}>
           <MoonIcon alt={currAltText} width={iconSize} height={iconSize} />
         </svg>
 
@@ -140,7 +140,7 @@ const ThreeToggle = () => {
           onClick={() => setTheme('dark')}
         />
       </label>
-      <div className={`${switchPos} ${styles.switchindicator} ${switchColor}`} />
+      <div className={`${switchPos} ${styles.switchindicator}`} />
     </form>
   );
 };
