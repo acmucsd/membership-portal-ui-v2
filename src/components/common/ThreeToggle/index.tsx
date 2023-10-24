@@ -6,7 +6,7 @@ import SunIcon from '../../../../public/assets/icons/sun.svg';
 import styles from './style.module.scss';
 
 const ThreeToggle = () => {
-  const { theme, setTheme, systemTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   const lightId = `light${useId()}`;
