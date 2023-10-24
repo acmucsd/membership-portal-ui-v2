@@ -48,7 +48,7 @@ const PortalHomePage = ({ user, events }: HomePageProps) => {
       <div className={styles.content}>
         <h2>Upcoming events</h2>
         <div className={styles.cards}>
-          {events.map(({ uuid, cover, title, start, end, pointValue, location }) => (
+          {events.map(({ uuid, cover, title, start, end, pointValue, location }, i) => (
             <EventCard
               key={uuid}
               cover={cover}
@@ -57,6 +57,8 @@ const PortalHomePage = ({ user, events }: HomePageProps) => {
               end={end}
               pointValue={pointValue}
               location={location}
+              // TEMP
+              attended={i % 4 === 0}
             />
           ))}
         </div>

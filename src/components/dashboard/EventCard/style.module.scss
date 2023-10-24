@@ -1,3 +1,5 @@
+@use 'src/styles/vars.scss' as vars;
+
 .card {
   border: 1px solid var(--theme-shadow);
   border-radius: 1rem;
@@ -10,10 +12,55 @@
     position: relative;
   }
 
-  .details {
+  .bottom {
+    align-items: stretch;
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem;
+    flex: auto;
+    justify-content: space-between;
+
+    .details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1rem;
+    }
+
+    .points {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      text-align: center;
+
+      &.attended {
+        background-color: var(--theme-primary-2);
+        color: var(--theme-background);
+      }
+
+      strong {
+        color: inherit;
+        font-size: 3rem;
+      }
+
+      svg {
+        animation: appear 0.5s;
+        height: 3rem;
+        margin: -0.5rem;
+        // margin-top: 0;
+        width: 3rem;
+
+        @keyframes appear {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+    }
   }
 }
