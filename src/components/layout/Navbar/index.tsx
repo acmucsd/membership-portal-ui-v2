@@ -1,3 +1,4 @@
+import ThreeToggle from '@/components/common/ThreeToggle';
 import { config } from '@/lib';
 import { useWindowSize } from '@/lib/hooks/useWindowSize';
 import { PermissionService } from '@/lib/services';
@@ -12,7 +13,6 @@ import ShopIcon from '@/public/assets/icons/shop-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import DarkModeToggle from '../DarkModeToggle';
 import styles from './style.module.scss';
 
 interface NavbarProps {
@@ -55,7 +55,7 @@ const Navbar = ({ user }: NavbarProps) => {
             <Image src={LightModeLogo} alt="ACM General Logo" width={48} height={48} />
             <span className={styles.headerTitle}>Membership Portal</span>
           </Link>
-          <DarkModeToggle />
+          <ThreeToggle />
         </div>
         <hr className={styles.wainbow} />
       </header>
@@ -83,7 +83,7 @@ const Navbar = ({ user }: NavbarProps) => {
           <Link href="/about">About ACM</Link>
         </nav>
         <nav className={styles.iconLinks}>
-          <DarkModeToggle />
+          <ThreeToggle />
           {isAdmin ? (
             <Link href="/admin" className={styles.iconLink}>
               <SettingsIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
@@ -128,7 +128,7 @@ const Navbar = ({ user }: NavbarProps) => {
           About ACM
         </Link>
         <div>
-          <DarkModeToggle />
+          <ThreeToggle />
         </div>
       </div>
       <hr className={styles.wainbow} />
