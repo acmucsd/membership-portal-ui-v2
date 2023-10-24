@@ -153,7 +153,7 @@
   }
 
   .wainbow {
-    animation: loading infinite linear 1s;
+    animation: loading infinite linear 0.5s;
     animation-play-state: paused;
     background: vars.$wainbow;
     background-position: -20vw;
