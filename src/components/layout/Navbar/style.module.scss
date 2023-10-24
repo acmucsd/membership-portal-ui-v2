@@ -153,9 +153,27 @@
   }
 
   .wainbow {
+    animation: loading infinite linear 1s;
+    animation-play-state: paused;
     background: vars.$wainbow;
+    background-position: -20vw;
+    background-size: 120vw;
     height: 0.25rem;
     width: 100vw;
+
+    &.loading {
+      animation-play-state: running;
+
+      @keyframes loading {
+        from {
+          background-position: -20vw;
+        }
+
+        to {
+          background-position: 100vw;
+        }
+      }
+    }
   }
 }
 

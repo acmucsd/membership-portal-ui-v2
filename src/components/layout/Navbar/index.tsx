@@ -11,6 +11,7 @@ import SettingsIcon from '@/public/assets/icons/setting-icon.svg';
 import ShopIcon from '@/public/assets/icons/shop-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import DarkModeToggle from '../DarkModeToggle';
 import styles from './style.module.scss';
@@ -19,6 +20,22 @@ interface NavbarProps {
   user: PrivateProfile;
 }
 const Navbar = ({ user }: NavbarProps) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const handleLoadStart = () => setLoading(true);
+    const handleLoadEnd = () => setLoading(false);
+
+    router.events.on('routeChangeStart', handleLoadStart);
+    router.events.on('routeChangeComplete', handleLoadEnd);
+
+    return () => {
+      router.events.off('routeChangeStart', handleLoadStart);
+      router.events.off('routeChangeComplete', handleLoadEnd);
+    };
+  }, [router]);
+
   const size = useWindowSize();
   const headerRef = useRef<HTMLHeadElement>(null);
 
@@ -57,7 +74,7 @@ const Navbar = ({ user }: NavbarProps) => {
           </Link>
           <DarkModeToggle />
         </div>
-        <hr className={styles.wainbow} />
+        <hr className={`${styles.wainbow} ${loading ? styles.loading : ''}`} />
       </header>
     );
 
@@ -131,7 +148,7 @@ const Navbar = ({ user }: NavbarProps) => {
           <DarkModeToggle />
         </div>
       </div>
-      <hr className={styles.wainbow} />
+      <hr className={`${styles.wainbow} ${loading ? styles.loading : ''}`} />
     </header>
   );
 };
