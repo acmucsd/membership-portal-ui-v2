@@ -28,20 +28,8 @@ const ThreeToggle = () => {
     }
   };
 
-  const calcIconStyle = (newTheme: string | undefined) => {
-    switch (newTheme) {
-      case 'light':
-        return styles.iconLightMode;
-      case 'system':
-        return systemTheme === 'light' ? styles.iconLightMode : styles.iconDarkMode;
-      case 'dark':
-        return styles.iconDarkMode;
-      default:
-        return styles.iconDarkMode;
-    }
-  };
-
   // IF YOU WANT TO ADD BACKGROUND TO SWITCH, USE THIS FUNCTION
+  // OR ADD VARS TO STYLES.SCSS AND VAR.SCSS
   // const calcSwitchBackgroundStyle = (newTheme: string | undefined) => {
   //   switch (newTheme) {
   //     case 'light':
@@ -55,19 +43,6 @@ const ThreeToggle = () => {
   //   }
   // };
 
-  const calcIndColorStyle = (newTheme: string | undefined) => {
-    switch (newTheme) {
-      case 'light':
-        return styles.indicatorLightMode;
-      case 'system':
-        return systemTheme === 'light' ? styles.indicatorLightMode : styles.indicatorDarkMode;
-      case 'dark':
-        return styles.indicatorDarkMode;
-      default:
-        return styles.indicatorDarkMode;
-    }
-  };
-
   const calcAltText = (theme: string | undefined) => {
     switch (theme) {
       case 'light':
@@ -80,7 +55,7 @@ const ThreeToggle = () => {
         return 'Icon representing dark theme is on';
     }
   };
-
+  a;
   const switchPos = calcIndicatorStyle(theme);
   // const switchColor = calcIndColorStyle(theme);
   const currAltText = calcAltText(theme);
