@@ -55,7 +55,7 @@ const ThreeToggle = () => {
         return 'Icon representing dark theme is on';
     }
   };
-  a;
+
   const switchPos = calcIndicatorStyle(theme);
   // const switchColor = calcIndColorStyle(theme);
   const currAltText = calcAltText(theme);
