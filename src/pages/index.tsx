@@ -16,19 +16,29 @@ const PortalHomePage = ({ user }: HomePageProps) => {
     <div>
       <div className={styles.hero}>
         <form className={styles.heroContent}>
-          <label className={styles.checkIn}>
-            <h1>Check in to an event</h1>
-            <input type="text" placeholder="Check-in code" />
-          </label>
-          <div className={styles.links}>
-            <Link href="/store">
-              <ShopIcon />
-              <span>Spend points on merch</span>
-            </Link>
-            <Link href="/leaderboard">
-              <LeaderboardIcon />
-              <span>Compete with friends</span>
-            </Link>
+          <div className={styles.welcome}>
+            <h1>
+              Welcome to ACM, <strong>{user.firstName}</strong>.
+            </h1>
+            <p>
+              You have <strong>{user.points}</strong> points.
+            </p>
+          </div>
+          <div className={styles.row}>
+            <label className={styles.checkIn}>
+              <h2>Check in to an event</h2>
+              <input type="text" placeholder="Check-in code" />
+            </label>
+            <div className={styles.links}>
+              <Link href="/store">
+                <ShopIcon />
+                <span>Spend points on merch</span>
+              </Link>
+              <Link href="/leaderboard">
+                <LeaderboardIcon />
+                <span>Compete with friends</span>
+              </Link>
+            </div>
           </div>
         </form>
       </div>
