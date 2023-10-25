@@ -11,7 +11,7 @@ const ThreeToggle = () => {
 
   const lightId = `light${useId()}`;
   const systemId = `system${useId()}`;
-  const darkId = `light${useId()}`;
+  const darkId = `dark${useId()}`;
 
   const iconSize = 30;
 
