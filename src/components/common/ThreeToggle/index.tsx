@@ -1,8 +1,8 @@
 import { useTheme } from 'next-themes';
+import MonitorIcon from 'public/assets/icons/monitor.svg';
+import MoonIcon from 'public/assets/icons/moon.svg';
+import SunIcon from 'public/assets/icons/sun.svg';
 import { useEffect, useId, useState } from 'react';
-import MonitorIcon from '../../../../public/assets/icons/monitor.svg';
-import MoonIcon from '../../../../public/assets/icons/moon.svg';
-import SunIcon from '../../../../public/assets/icons/sun.svg';
 import styles from './style.module.scss';
 
 const ThreeToggle = () => {
@@ -28,21 +28,6 @@ const ThreeToggle = () => {
     }
   };
 
-  // IF YOU WANT TO ADD BACKGROUND TO SWITCH, USE THIS FUNCTION
-  // OR ADD VARS TO STYLES.SCSS AND VAR.SCSS
-  // const calcSwitchBackgroundStyle = (newTheme: string | undefined) => {
-  //   switch (newTheme) {
-  //     case 'light':
-  //       return styles.switchLightMode;
-  //     case 'system':
-  //       return systemTheme === 'light' ? styles.switchLightMode : styles.switchDarkMode;
-  //     case 'dark':
-  //       return styles.switchDarkMode;
-  //     default:
-  //       return styles.switchDarkMode;
-  //   }
-  // };
-
   const calcAltText = (theme: string | undefined) => {
     switch (theme) {
       case 'light':
@@ -57,9 +42,7 @@ const ThreeToggle = () => {
   };
 
   const switchPos = calcIndicatorStyle(theme);
-  // const switchColor = calcIndColorStyle(theme);
   const currAltText = calcAltText(theme);
-  // const iconStyle = calcIconStyle(theme);
 
   useEffect(() => {
     setMounted(true);
@@ -125,3 +108,4 @@ export default ThreeToggle;
 // https://stackoverflow.com/questions/71039088/what-is-onchange-e-setnamee-target-value-in-react-mean
 // https://css-tricks.com/the-sass-ampersand/
 // https://www.npmjs.com/package/next-themes
+// https://medium.com/geekculture/making-life-easier-with-absolute-imports-react-in-javascript-and-typescript-bbdab8a8a3a1
