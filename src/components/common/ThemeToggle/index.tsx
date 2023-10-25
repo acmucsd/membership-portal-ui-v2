@@ -1,7 +1,7 @@
+import MonitorIcon from '@/public/assets/icons/monitor.svg';
+import MoonIcon from '@/public/assets/icons/moon.svg';
+import SunIcon from '@/public/assets/icons/sun.svg';
 import { useTheme } from 'next-themes';
-import MonitorIcon from 'public/assets/icons/monitor.svg';
-import MoonIcon from 'public/assets/icons/moon.svg';
-import SunIcon from 'public/assets/icons/sun.svg';
 import { useEffect, useId, useState } from 'react';
 import styles from './style.module.scss';
 
