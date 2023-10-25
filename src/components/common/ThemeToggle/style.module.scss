@@ -84,13 +84,6 @@ $component-roundness: 34px;
   .switchThree {
     transform: translate3d(calc(#{$switch-start} + #{$switch-gap * 2}), 0, 0);
   }
-
-  // input[type='radio'] {
-  //   &:not(:checked),
-  //   &:checked {
-  //     display: none;
-  //   }
-  // }
 }
 
 // INFO LINKS

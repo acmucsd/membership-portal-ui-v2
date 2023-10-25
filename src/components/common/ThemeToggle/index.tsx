@@ -28,21 +28,8 @@ const ThemeToggle = () => {
     }
   };
 
-  const calcAltText = (theme: string | undefined) => {
-    switch (theme) {
-      case 'light':
-        return 'Icon representing light theme is on';
-      case 'system':
-        return 'Icon representing system theme is on';
-      case 'dark':
-        return 'Icon representing dark theme is on';
-      default:
-        return 'Icon representing dark theme is on';
-    }
-  };
-
   const switchPos = calcIndicatorStyle(theme);
-  const currAltText = calcAltText(theme);
+  const currAltText = `Icon representing ${theme} theme is on.`;
 
   useEffect(() => {
     setMounted(true);
