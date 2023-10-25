@@ -5,7 +5,7 @@ import SunIcon from 'public/assets/icons/sun.svg';
 import { useEffect, useId, useState } from 'react';
 import styles from './style.module.scss';
 
-const ThreeToggle = () => {
+const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -102,7 +102,7 @@ const ThreeToggle = () => {
     </form>
   );
 };
-export default ThreeToggle;
+export default ThemeToggle;
 
 // Links for knowledge:
 // https://stackoverflow.com/questions/71039088/what-is-onchange-e-setnamee-target-value-in-react-mean

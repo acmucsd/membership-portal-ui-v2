@@ -1,4 +1,4 @@
-import ThreeToggle from '@/components/common/ThreeToggle';
+import ThemeToggle from '@/components/common/ThemeToggle';
 import { config } from '@/lib';
 import { useWindowSize } from '@/lib/hooks/useWindowSize';
 import { PermissionService } from '@/lib/services';
@@ -55,7 +55,7 @@ const Navbar = ({ user }: NavbarProps) => {
             <Image src={LightModeLogo} alt="ACM General Logo" width={48} height={48} />
             <span className={styles.headerTitle}>Membership Portal</span>
           </Link>
-          <ThreeToggle />
+          <ThemeToggle />
         </div>
         <hr className={styles.wainbow} />
       </header>
@@ -83,7 +83,7 @@ const Navbar = ({ user }: NavbarProps) => {
           <Link href="/about">About ACM</Link>
         </nav>
         <nav className={styles.iconLinks}>
-          <ThreeToggle />
+          <ThemeToggle />
           {isAdmin ? (
             <Link href="/admin" className={styles.iconLink}>
               <SettingsIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
@@ -128,7 +128,7 @@ const Navbar = ({ user }: NavbarProps) => {
           About ACM
         </Link>
         <div>
-          <ThreeToggle />
+          <ThemeToggle />
         </div>
       </div>
       <hr className={styles.wainbow} />
