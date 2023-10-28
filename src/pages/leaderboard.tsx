@@ -1,5 +1,5 @@
-import { LeaderboardRow, SortDropdown, TopThreeCard } from '@/components/leaderboard';
-import PaginationControls from '@/components/leaderboard/PaginationControls';
+import { Dropdown, PaginationControls } from '@/components/common';
+import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { config } from '@/lib';
 import { LeaderboardAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -119,7 +119,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
           disabled={myIndex === -1}
         >
           My Position
-          <MyPositionIcon />
+          <MyPositionIcon aria-hidden />
         </button>
         <input
           className={styles.search}
@@ -133,9 +133,9 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             setScrollIntoView(0);
           }}
         />
-        <SortDropdown
+        <Dropdown
           name="timeOptions"
-          ariaLabel="Filter the leaderboard by"
+          ariaLabel="Filter the leaderboard by time"
           options={[
             { value: 'past-week', label: 'Past week' },
             { value: 'past-month', label: 'Past month' },
