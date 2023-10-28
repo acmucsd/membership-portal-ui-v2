@@ -302,9 +302,6 @@ const EventDetailsForm = (props: IProps) => {
             <Button onClick={handleSubmit(editEvent)} disabled={loading}>
               Save Changes
             </Button>
-            <Button onClick={resetForm} disabled={loading} destructive>
-              Discard Changes
-            </Button>
             <Button onClick={deleteEvent} disabled={loading} destructive>
               Delete Event
             </Button>

@@ -10,6 +10,7 @@
   .header {
     align-items: center;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
 
     .viewControls {
@@ -27,11 +28,14 @@
 
   .controls {
     display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     justify-content: space-between;
 
     .controlsLeft {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       gap: 1rem;
 
       .createNewEvent {
@@ -64,6 +68,7 @@
 
     .modeControls {
       display: flex;
+      flex-wrap: wrap;
       gap: 1rem;
     }
   }
@@ -72,6 +77,8 @@
     align-items: center;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
     justify-content: space-between;
 
     .paginationSizeControl {
@@ -80,6 +87,7 @@
       gap: 4px;
 
       .paginationSizeSelect {
+        background-color: transparent;
         border: 0;
         font-size: 1rem;
       }
@@ -102,6 +110,6 @@
   .eventCardContainer {
     display: grid;
     gap: 1rem 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
   }
 }

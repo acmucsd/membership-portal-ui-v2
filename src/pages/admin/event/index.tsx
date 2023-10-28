@@ -43,7 +43,7 @@ const ManageAllEventsPage: NextPage<IProps> = (props: IProps) => {
   const [viewMode, setViewMode] = useState<'card' | 'row'>('row');
   const [communityFilter, setCommunityFilter] = useState<string>(NO_FILTER_OPTION);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [paginationSize, setPaginationSize] = useState<'All' | number>('All');
+  const [paginationSize, setPaginationSize] = useState<'All' | number>(5);
 
   const visibleEvents = useMemo(() => {
     switch (mode) {
@@ -86,7 +86,7 @@ const ManageAllEventsPage: NextPage<IProps> = (props: IProps) => {
 
   useEffect(() => {
     setCurrentPage(0);
-  }, [pageSize]);
+  }, [pageSize, query, communityFilter, mode]);
 
   const leftPageBound = currentPage * pageSize;
   const rightPageBound = Math.min((currentPage + 1) * pageSize, filteredEvents.length);
