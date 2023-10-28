@@ -28,6 +28,7 @@ export default function MyApp({ Component, pageProps }: AppProps<InitialPropInte
   // pages in Next.js must be a static page)
   useEffect(() => {
     if (pageProps?.user) {
+      setUser(pageProps?.user);
       return;
     }
     const userCookie = CookieService.getClientCookie(CookieType.USER);
