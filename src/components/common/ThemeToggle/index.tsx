@@ -6,7 +6,7 @@ import { useEffect, useId, useState } from 'react';
 import styles from './style.module.scss';
 
 const ThemeToggle = () => {
-  const { theme, setTheme } = useTheme();
+  const { theme = 'system', setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   const lightId = `light${useId()}`;
@@ -15,20 +15,13 @@ const ThemeToggle = () => {
 
   const iconSize = 30;
 
-  const indicatorText = styles[theme]
-    switch (newTheme) {
-      case 'light':
-        return styles.switchOne;
-      case 'system':
-        return styles.switchTwo;
-      case 'dark':
-        return styles.switchThree;
-      default:
-        return styles.switchOne;
-    }
+  const themeToSwitch: Record<string, string> = {
+    light: styles.switchOne,
+    system: styles.switchTwo,
+    dark: styles.switchThree,
   };
 
-  const switchPos = calcIndicatorStyle(theme);
+  const switchPos = themeToSwitch[theme];
   const currAltText = `Icon representing ${theme} theme is on.`;
 
   useEffect(() => {
