@@ -59,8 +59,8 @@ function getLeaderboardRange(sort: string | number, limit = 0): SlidingLeaderboa
     default: {
       const year = +sort;
       // Arbitrarily academic years on August 1, which should be during the summer
-      params.from = new Date(year - 1, 7, 1).getTime() / 1000;
-      params.to = new Date(year, 7, 1).getTime() / 1000;
+      params.from = new Date(year, 7, 1).getTime() / 1000;
+      params.to = new Date(year + 1, 7, 1).getTime() / 1000;
     }
   }
   return params;
