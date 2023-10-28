@@ -12,6 +12,7 @@ const nextConfig = {
   },
   images: {
     domains: [
+      'acmucsd.s3-us-west-1.amazonaws.com',
       'acmucsd.s3.us-west-1.amazonaws.com',
       // This one's for Sumeet Bansal
       'acmucsd.s3-us-west-1.amazonaws.com',
