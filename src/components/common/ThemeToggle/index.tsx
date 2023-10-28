@@ -15,7 +15,7 @@ const ThemeToggle = () => {
 
   const iconSize = 30;
 
-  const calcIndicatorStyle = (newTheme: string | undefined) => {
+  const indicatorText = styles[theme]
     switch (newTheme) {
       case 'light':
         return styles.switchOne;
