@@ -14,7 +14,7 @@ import DarkModeToggle from '../DarkModeToggle';
 import styles from './style.module.scss';
 
 interface NavbarProps {
-  user: PrivateProfile;
+  user?: PrivateProfile;
 }
 const Navbar = ({ user }: NavbarProps) => {
   const size = useWindowSize();
@@ -45,7 +45,7 @@ const Navbar = ({ user }: NavbarProps) => {
     if (!isMobile) setMenuOpen(false);
   }, [isMobile]);
 
-  if (!user)
+  if (!user) {
     return (
       <header className={styles.header}>
         <div className={styles.content}>
@@ -58,6 +58,7 @@ const Navbar = ({ user }: NavbarProps) => {
         <hr className={styles.wainbow} />
       </header>
     );
+  }
 
   return (
     <header className={styles.header} ref={headerRef}>
