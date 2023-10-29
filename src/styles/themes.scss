@@ -41,6 +41,9 @@
   --theme-text-on-surface-2: #{vars.$light-text-on-surface-2}; // light titles on sidebar
 
   --invert: math.percentage($number: 1);
+
+  --theme-mode-indicator: #{vars.$light-mode-indicator};
+  --theme-mode-icon: #{vars.$black};
 }
 
 [data-theme='dark'] {
@@ -81,6 +84,9 @@
   --theme-text-on-surface-2: #{vars.$dark-text-on-surface-2}; // dark titles on sidebar
 
   --invert: math.percentage($number: 1);
+
+  --theme-mode-indicator: #{vars.$dark-mode-indicator};
+  --theme-mode-icon: #{vars.$white};
 }
 
 html,
