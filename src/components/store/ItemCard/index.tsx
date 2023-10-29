@@ -7,6 +7,7 @@ interface CommonOptions {
   image: string;
   title: string;
   href?: string;
+  className?: string;
 }
 
 interface StoreItemOptions {
@@ -25,10 +26,10 @@ type ItemCardProps = (StoreItemOptions | CollectionOptions) & CommonOptions;
  * - a store item that costs `cost` diamonds (optional `outOfStock`), or
  * - a collection with a `description`.
  */
-const ItemCard = ({ image, title, href, ...props }: ItemCardProps) => {
+const ItemCard = ({ image, title, href, className, ...props }: ItemCardProps) => {
   const Card = href ? Link : 'article';
   return (
-    <Card href={href ?? ''} className={styles.itemCard}>
+    <Card href={href ?? ''} className={`${styles.itemCard} ${className}`}>
       <div className={styles.imageWrapper}>
         <Image src={image} alt={title} fill />
       </div>

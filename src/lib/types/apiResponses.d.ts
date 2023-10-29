@@ -1,4 +1,4 @@
-import { MerchItemOptionMetadata, UUID } from '.';
+import { MerchItemOptionMetadata, URL, UUID } from '.';
 import {
   ActivityScope,
   ActivityType,
@@ -108,8 +108,8 @@ export interface PublicEvent {
   description: string;
   location: string;
   eventLink: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   attendanceCode?: string;
   pointValue: number;
   requiresStaff: boolean;
@@ -167,7 +167,7 @@ export interface PublicMerchItem {
   uuid: UUID;
   itemName: string;
   collection?: PublicMerchCollection;
-  picture: string;
+  picture: string | null;
   description: string;
   monthlyLimit: number;
   lifetimeLimit: number;
@@ -414,4 +414,24 @@ export interface PublicResume {
 
 export interface PatchResumeResponse extends ApiResponse {
   resume: PublicResume;
+}
+
+export interface NotionEventDetails {
+  title: string;
+  community: string;
+  location: string;
+  description: string;
+  checkin: string;
+  start: string;
+  end: string;
+  acmurl: string;
+}
+
+export interface NotionEventPreview {
+  title: string;
+  date: {
+    start: string;
+    end: string;
+  };
+  url: URL;
 }
