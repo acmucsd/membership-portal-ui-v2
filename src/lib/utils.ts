@@ -30,8 +30,10 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
   return errBody.errors.map(err => getAllErrMessages(err)).flat();
 };
 
-// function to trim strings too long to fit on component
-// returns truncated string of desired length with ...
+export const copy = async (text: string): Promise<void> => {
+  if (window === undefined) return;
+  await window.navigator.clipboard.writeText(text);
+};
 
 /**
  * Function to trim given text to max character length
