@@ -41,6 +41,11 @@
       height: 2rem;
       justify-self: start;
       padding: 0 1rem;
+
+      &:disabled {
+        cursor: auto;
+        opacity: 0.5;
+      }
     }
 
     .search {
@@ -81,26 +86,6 @@
     @media (max-width: vars.$breakpoint-sm) {
       border-radius: 0;
       margin: 0 -2rem;
-    }
-  }
-
-  .flash {
-    animation: flash 2s;
-    @keyframes flash {
-      0%,
-      20%,
-      40%,
-      60% {
-        background-color: var(--theme-background);
-        color: var(--theme-text-on-background-1);
-      }
-
-      10%,
-      30%,
-      50% {
-        background-color: var(--theme-primary-2);
-        color: var(--theme-background);
-      }
     }
   }
 }

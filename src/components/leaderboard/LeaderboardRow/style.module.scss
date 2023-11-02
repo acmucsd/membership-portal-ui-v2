@@ -9,6 +9,7 @@
   min-height: 4rem;
   padding: 0.5rem;
   padding-right: 2rem;
+  transition: none;
 
   @media (max-width: vars.$breakpoint-md) {
     gap: 1rem;
@@ -20,6 +21,26 @@
     background-color: var(--theme-background);
   }
 
+  &.flash {
+    animation: flash 2s;
+    @keyframes flash {
+      0%,
+      20%,
+      40%,
+      60% {
+        background-color: var(--theme-background);
+        color: var(--theme-text-on-background-1);
+      }
+
+      10%,
+      30%,
+      50% {
+        background-color: var(--theme-primary-2);
+        color: var(--theme-background);
+      }
+    }
+  }
+
   .position {
     font-size: 1.25rem;
     font-weight: bold;
@@ -29,6 +50,7 @@
 
   .profilePicture {
     border-radius: 50%;
+    object-fit: cover;
   }
 
   .nameRank {

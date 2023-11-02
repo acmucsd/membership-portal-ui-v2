@@ -1,0 +1,37 @@
+.paginationBtns {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+
+  .paginationBtn {
+    background: none;
+    font-size: 0;
+    padding: 0;
+
+    &:disabled {
+      cursor: auto;
+      opacity: 0.5;
+    }
+  }
+
+  .paginationText {
+    align-items: center;
+    display: flex;
+    font-weight: bold;
+    gap: 1em;
+
+    .pageNumber {
+      width: 24px;
+
+      &:is(input) {
+        border: 1px solid var(--theme-text-on-background-1);
+        border-radius: 2px;
+        color: inherit;
+        font: inherit;
+        height: 24px;
+        text-align: center;
+      }
+    }
+  }
+}
