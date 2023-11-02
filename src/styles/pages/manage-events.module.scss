@@ -45,23 +45,22 @@
 
       .searchBar {
         align-items: center;
-        background: #fff;
         border: 2px solid var(--theme-primary-1);
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-        color: vars.$light-primary-2;
+        color: currentColor;
         display: flex;
         gap: 0.5rem;
         padding: 4px 0.5rem;
 
         .searchInput {
-          background: #fff;
+          background-color: transparent;
           border: 0;
-          color: vars.$light-primary-2;
+          color: currentColor;
         }
 
         .searchInput::placeholder {
-          color: vars.$light-primary-2;
+          color: currentColor;
         }
       }
     }
@@ -85,28 +84,6 @@
       align-items: center;
       display: flex;
       gap: 4px;
-
-      .paginationSizeSelect {
-        background-color: transparent;
-        border: 0;
-        cursor: pointer;
-        font-size: 1rem;
-      }
-    }
-
-    .paginationSwitcher {
-      display: flex;
-      gap: 1rem;
-
-      .paginationSwitcherArrow {
-        cursor: pointer;
-        fill: currentColor;
-      }
-
-      .paginationSwitcherArrow[aria-disabled='true'] {
-        cursor: auto;
-        fill: vars.$disabled;
-      }
     }
   }
 

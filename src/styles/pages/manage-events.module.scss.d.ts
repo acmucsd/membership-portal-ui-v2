@@ -10,9 +10,6 @@ export type Styles = {
   modeControls: string;
   pagination: string;
   paginationSizeControl: string;
-  paginationSizeSelect: string;
-  paginationSwitcher: string;
-  paginationSwitcherArrow: string;
   searchBar: string;
   searchInput: string;
   viewControls: string;
