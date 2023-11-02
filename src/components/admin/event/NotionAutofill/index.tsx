@@ -41,10 +41,7 @@ const NotionAutofill = ({ setFields, loading, upcomingEvents }: IProps) => {
         name=""
         id=""
         placeholder={defaultFormText}
-        onChange={e => {
-          setActiveOption(e.target.value);
-          autofillForm(e.target.value);
-        }}
+        onChange={e => setActiveOption(e.target.value)}
         value={activeOption}
         defaultValue={defaultFormText}
         disabled={loading}
