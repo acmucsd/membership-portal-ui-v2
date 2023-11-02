@@ -14,6 +14,8 @@ const nextConfig = {
     domains: [
       'acmucsd.s3-us-west-1.amazonaws.com',
       'acmucsd.s3.us-west-1.amazonaws.com',
+      // This one's for Sumeet Bansal
+      'acmucsd.s3-us-west-1.amazonaws.com',
       'acmucsd-membership-portal.s3.us-west-1.amazonaws.com',
       // The dev backend test data uses image URLs outside the allowlist
       ...(isDevelopment ? ['i.imgur.com', 'i.pinimg.com', 'i.etsystatic.com'] : []),
