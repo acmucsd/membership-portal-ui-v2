@@ -4,10 +4,19 @@
   display: flex;
 
   .label {
-    display: block;
+    display: flex;
     font-size: 1.375rem;
     font-weight: normal;
     width: 12rem;
+  }
+
+  &.hasIcon {
+    align-items: center;
+
+    .label {
+      align-items: center;
+      gap: 1.5rem;
+    }
   }
 
   .content {

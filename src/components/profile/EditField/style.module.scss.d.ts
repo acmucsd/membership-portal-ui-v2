@@ -4,6 +4,7 @@ export type Styles = {
   description: string;
   field: string;
   fieldBorder: string;
+  hasIcon: string;
   info: string;
   label: string;
   prefix: string;

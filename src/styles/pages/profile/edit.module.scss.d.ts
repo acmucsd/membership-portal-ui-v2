@@ -2,6 +2,7 @@ export type Styles = {
   columnLeft: string;
   columnRight: string;
   columns: string;
+  icon: string;
   mainContent: string;
   section: string;
   title: string;

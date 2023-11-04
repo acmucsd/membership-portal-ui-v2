@@ -5,6 +5,7 @@ import { PrivateProfile } from '@/lib/types/apiResponses';
 import styles from '@/styles/pages/profile/edit.module.scss';
 import type { GetServerSideProps } from 'next';
 import { useState } from 'react';
+import { BsDiscord, BsFacebook, BsGithub, BsInstagram, BsLinkedin } from 'react-icons/bs';
 
 interface EditProfileProps {
   user: PrivateProfile;
@@ -134,6 +135,7 @@ const EditProfilePage = ({ user }: EditProfileProps) => {
               </summary>
               <div className={styles.section}>
                 <EditField
+                  icon={<BsLinkedin className={styles.icon} aria-hidden />}
                   label="LinkedIn"
                   type="url"
                   placeholder="linkedin.com/in/"
@@ -141,6 +143,7 @@ const EditProfilePage = ({ user }: EditProfileProps) => {
                   onChange={() => {}}
                 />
                 <EditField
+                  icon={<BsGithub className={styles.icon} aria-hidden />}
                   label="GitHub"
                   type="url"
                   placeholder="github.com/"
@@ -148,6 +151,7 @@ const EditProfilePage = ({ user }: EditProfileProps) => {
                   onChange={() => {}}
                 />
                 <EditField
+                  icon={<BsDiscord className={styles.icon} aria-hidden />}
                   label="Discord"
                   type="url"
                   placeholder="discord.com/"
@@ -155,13 +159,15 @@ const EditProfilePage = ({ user }: EditProfileProps) => {
                   onChange={() => {}}
                 />
                 <EditField
-                  label="LinkedIn"
+                  icon={<BsFacebook className={styles.icon} aria-hidden />}
+                  label="Facebook"
                   type="url"
                   placeholder="facebook.com/"
                   value=""
                   onChange={() => {}}
                 />
                 <EditField
+                  icon={<BsInstagram className={styles.icon} aria-hidden />}
                   label="Instagram"
                   type="url"
                   placeholder="instagram.com/"

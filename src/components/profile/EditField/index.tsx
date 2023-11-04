@@ -2,21 +2,25 @@ import React from 'react';
 import styles from './style.module.scss';
 
 interface EditBlockProps {
+  icon?: React.ReactNode;
   title: string;
   wrapper?: 'label' | 'div';
   children?: React.ReactNode;
 }
 
-export const EditBlock = ({ title, wrapper: Wrapper = 'div', children }: EditBlockProps) => {
+export const EditBlock = ({ icon, title, wrapper: Wrapper = 'div', children }: EditBlockProps) => {
   return (
-    <Wrapper className={styles.field}>
-      <h3 className={styles.label}>{title}</h3>
+    <Wrapper className={`${styles.field} ${icon ? styles.hasIcon : ''}`}>
+      <h3 className={styles.label}>
+        {icon} {title}
+      </h3>
       <div className={styles.content}>{children}</div>
     </Wrapper>
   );
 };
 
 interface EditFieldProps {
+  icon?: React.ReactNode;
   label: string;
   placeholder?: string;
   description?: string;
@@ -31,6 +35,7 @@ interface EditFieldProps {
 }
 
 export const EditField = ({
+  icon,
   label,
   placeholder,
   description,
@@ -43,7 +48,7 @@ export const EditField = ({
   onChange,
 }: EditFieldProps) => {
   return (
-    <EditBlock title={label} wrapper="label">
+    <EditBlock icon={icon} title={label} wrapper="label">
       <div className={styles.fieldBorder}>
         {prefix && <span className={styles.prefix}>{prefix}</span>}
         <Input
