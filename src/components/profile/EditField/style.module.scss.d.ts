@@ -1,0 +1,16 @@
+export type Styles = {
+  chars: string;
+  content: string;
+  description: string;
+  field: string;
+  fieldBorder: string;
+  info: string;
+  label: string;
+  prefix: string;
+};
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;

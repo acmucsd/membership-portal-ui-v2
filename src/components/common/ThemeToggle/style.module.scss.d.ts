@@ -1,13 +1,7 @@
 export type Styles = {
   icon: string;
-  iconDarkMode: string;
-  iconLightMode: string;
-  indicatorDarkMode: string;
-  indicatorLightMode: string;
   switch: string;
-  switchDarkMode: string;
   switchindicator: string;
-  switchLightMode: string;
   switchOne: string;
   switchThree: string;
   switchTwo: string;

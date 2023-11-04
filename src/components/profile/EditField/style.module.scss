@@ -1,0 +1,61 @@
+@use 'src/styles/vars.scss' as vars;
+
+.field {
+  display: flex;
+
+  .label {
+    display: block;
+    font-size: 1.375rem;
+    width: 15rem;
+  }
+
+  .content {
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    gap: 6px;
+
+    .fieldBorder {
+      border: 2px solid vars.$light-text-on-background-3;
+      border-radius: 4px;
+      display: flex;
+      overflow: hidden;
+
+      .prefix {
+        align-items: center;
+        background-color: #93939370;
+        border-right: 2px solid vars.$light-text-on-background-3;
+        display: flex;
+        padding: 0 1rem;
+      }
+
+      .field {
+        background: none;
+        border: 0;
+        color: inherit;
+        flex: auto;
+        font: inherit;
+        padding: 0.5rem 1rem;
+
+        &::placeholder {
+          color: vars.$light-text-on-background-2;
+        }
+      }
+    }
+
+    .info {
+      align-items: center;
+      display: flex;
+
+      .description {
+        font-size: 0.875rem;
+      }
+
+      .chars {
+        color: vars.$light-text-on-background-2;
+        font-size: 0.625rem;
+        margin-left: auto;
+      }
+    }
+  }
+}

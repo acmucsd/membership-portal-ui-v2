@@ -1,0 +1,56 @@
+@use 'src/styles/vars.scss' as vars;
+
+.title,
+.columns {
+  margin: 0 auto;
+  max-width: 81rem;
+  width: 100%;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.mainContent {
+  border-top: 0.5px solid vars.$light-primary-2;
+  margin: 0 -2rem;
+  padding: 0 2rem;
+
+  h2,
+  summary {
+    color: vars.$light-primary-2;
+    font-size: 1.75rem;
+    font-weight: 500;
+    list-style: none;
+  }
+
+  .columns {
+    display: flex;
+
+    .columnLeft,
+    .columnRight {
+      padding: 2rem;
+    }
+
+    .columnLeft {
+      border-right: 0.5px solid vars.$light-primary-2;
+      padding-left: 0;
+
+      h2 {
+        text-align: center;
+      }
+    }
+
+    .columnRight {
+      padding-right: 0;
+
+      .section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+    }
+  }
+}
