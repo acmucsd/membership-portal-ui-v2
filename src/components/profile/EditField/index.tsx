@@ -1,19 +1,36 @@
+import React from 'react';
 import styles from './style.module.scss';
+
+interface EditBlockProps {
+  title: string;
+  wrapper?: 'label' | 'div';
+  children?: React.ReactNode;
+}
+
+export const EditBlock = ({ title, wrapper: Wrapper = 'div', children }: EditBlockProps) => {
+  return (
+    <Wrapper className={styles.field}>
+      <h3 className={styles.label}>{title}</h3>
+      <div className={styles.content}>{children}</div>
+    </Wrapper>
+  );
+};
 
 interface EditFieldProps {
   label: string;
-  placeholder: string;
+  placeholder?: string;
   description?: string;
   prefix?: string;
   type?: string;
-  element?: 'input' | 'textarea';
+  element?: 'input' | 'textarea' | 'select';
+  options?: string[];
   maxLength?: number;
   value: string;
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
 }
 
-const EditField = ({
+export const EditField = ({
   label,
   placeholder,
   description,
@@ -21,36 +38,64 @@ const EditField = ({
   maxLength,
   type = 'text',
   element: Input = 'input',
+  options,
   value,
   onChange,
 }: EditFieldProps) => {
   return (
-    <label className={styles.field}>
-      <span className={styles.label}>{label}</span>
-      <div className={styles.content}>
-        <div className={styles.fieldBorder}>
-          {prefix && <span className={styles.prefix}>{prefix}</span>}
-          <Input
-            className={styles.field}
-            type={type}
-            placeholder={placeholder}
-            value={value}
-            onChange={e => onChange(e.currentTarget.value)}
-          />
+    <EditBlock title={label} wrapper="label">
+      <div className={styles.fieldBorder}>
+        {prefix && <span className={styles.prefix}>{prefix}</span>}
+        <Input
+          className={styles.field}
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={e => onChange(e.currentTarget.value)}
+        >
+          {options?.map(option => (
+            <option value={option} key={option}>
+              {option}
+            </option>
+          ))}
+        </Input>
+      </div>
+      {(description || maxLength) && (
+        <div className={styles.info}>
+          {description && <p className={styles.description}>{description}</p>}
+          {maxLength && (
+            <span className={styles.chars}>
+              {value.length}/{maxLength}
+            </span>
+          )}
         </div>
-        {(description || maxLength) && (
-          <div className={styles.info}>
-            {description && <p className={styles.description}>{description}</p>}
-            {maxLength && (
-              <span className={styles.chars}>
-                {value.length}/{maxLength}
-              </span>
-            )}
-          </div>
-        )}
+      )}
+    </EditBlock>
+  );
+};
+
+interface SingleFieldProps {
+  label: string;
+  placeholder?: string;
+  type?: string;
+  value: string;
+  // eslint-disable-next-line no-unused-vars
+  onChange: (value: string) => void;
+}
+
+export const SingleField = ({ label, placeholder, type, value, onChange }: SingleFieldProps) => {
+  return (
+    <label className={styles.singleField}>
+      <h4 className={styles.singleLabel}>{label}</h4>
+      <div className={styles.fieldBorder}>
+        <input
+          className={styles.field}
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={e => onChange(e.currentTarget.value)}
+        />
       </div>
     </label>
   );
 };
-
-export default EditField;

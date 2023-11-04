@@ -7,6 +7,8 @@ export type Styles = {
   info: string;
   label: string;
   prefix: string;
+  singleField: string;
+  singleLabel: string;
 };
 
 export type ClassNames = keyof Styles;

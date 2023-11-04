@@ -6,7 +6,8 @@
   .label {
     display: block;
     font-size: 1.375rem;
-    width: 15rem;
+    font-weight: normal;
+    width: 12rem;
   }
 
   .content {
@@ -40,6 +41,21 @@
         &::placeholder {
           color: vars.$light-text-on-background-2;
         }
+
+        &:is(textarea) {
+          height: 10rem;
+          padding: 1rem;
+          resize: vertical;
+        }
+      }
+    }
+
+    .singleField {
+      display: flex;
+      flex-direction: column;
+
+      .singleLabel {
+        padding: 7px 0;
       }
     }
 

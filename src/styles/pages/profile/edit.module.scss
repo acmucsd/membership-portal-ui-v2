@@ -43,6 +43,10 @@
     }
 
     .columnRight {
+      display: flex;
+      flex: auto;
+      flex-direction: column;
+      gap: 2.75rem;
       padding-right: 0;
 
       .section {
