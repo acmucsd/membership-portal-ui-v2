@@ -28,7 +28,7 @@ interface TypographyProps extends HTMLAttributes<HTMLElement> {
   style?: CSSProperties;
 }
 
-// Implements styles from https://www.figma.com/file/ihJGLgfFTURKCgl9KNUPcA/Website-%26-Portal%3A-Design-System?node-id=1561%3A307&mode=dev
+// Implements styles from https://www.figma.com/file/ihJGLgfFTURKCgl9KNUPcA/Website-%26-Portal%3A-Design-System?node-id=1561%3A263&mode=dev
 const sizeMapping = {
   h1: '2rem',
   h2: '1.75rem',
@@ -59,6 +59,17 @@ const weightMapping = {
   regular: 400,
 };
 
+/**
+ * Typography component applies h1-h6 styles from Diamond Design System.
+ *
+ * https://www.figma.com/file/ihJGLgfFTURKCgl9KNUPcA/Website-%26-Portal%3A-Design-System?node-id=1561%3A263&mode=dev
+ * @param props
+ * @param props.variant - accepts: just the heading, i.e. `h1`; the heading with weight, i.e. `h1/bold`; or heading, weight, and component, i.e. `h1/bold/div`
+ * @param props.weight - font weight: `bold`, `medium`, or `regular`
+ * @param props.component - the actual semantic element, i.e. `h1`, `p`, `div`
+ * @param props.style - style prop for JSX component
+ * @returns styled typography component
+ */
 const Typography = (props: PropsWithChildren<TypographyProps>) => {
   const { style, children, ...restProps } = props;
   let { variant = 'h1', weight = 'regular', component } = props;
