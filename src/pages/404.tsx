@@ -20,7 +20,7 @@ const PageNotFound = ({ user }: PageNotFoundProps) => {
         <Navbar balance={user.credits} showBack />
       )}
       <VerticalForm style={{ alignItems: 'center', flex: 'auto', height: 'unset' }}>
-        <h1 className={styles.header}>Whoops, we entered up on the wrong page!</h1>
+        <h1 className={styles.header}>Whoops, we ended up on the wrong page!</h1>
         <Image src={Cat404} width={256} height={256} alt="Sad Cat" />
         <SignInButton type="link" display="button1" href="/" text="Return to Home" />
       </VerticalForm>
