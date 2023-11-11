@@ -5,7 +5,7 @@ export type FillInLater = any;
 
 export type APIHandlerProps = {
   onSuccessCallback?: (data?: any) => void;
-  onFailCallback?: (error: any) => void;
+  onFailCallback?: (error?: any) => void;
 };
 
 export interface AuthAPIHandlerProps extends APIHandlerProps {

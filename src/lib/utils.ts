@@ -1,4 +1,6 @@
-import type { CustomErrorBody, ValidatorError } from '@/lib/types/apiResponses';
+import defaultProfilePictures from '@/lib/constants/profilePictures';
+import { URL } from '@/lib/types';
+import type { CustomErrorBody, PublicProfile, ValidatorError } from '@/lib/types/apiResponses';
 
 /**
  * Get next `num` years from today in a number array to generate dropdown options for future selections
@@ -28,14 +30,52 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
   return errBody.errors.map(err => getAllErrMessages(err)).flat();
 };
 
-/**
- * Get a random default avatar
- * @returns string path to an avatar .png, suitable for use as src for a Next Image component
- */
-export const getDefaultAvatarSrc = (): string => {
-  const PROFILE_PIC_PATH = '/assets/profile-pics/';
-  const NUM_PROFILE_PICS = 9;
-
-  const i = Math.floor(Math.random() * NUM_PROFILE_PICS);
-  return `${PROFILE_PIC_PATH}adorable${i}.png`;
+export const copy = async (text: string): Promise<void> => {
+  if (window === undefined) return;
+  await window.navigator.clipboard.writeText(text);
 };
+
+/**
+ * Function to trim given text to max character length
+ * @param text String text input
+ * @param len Maximum length
+ * @returns Formatted text
+ */
+export const trim = (text: string, len: number) => {
+  return text.length > len ? `${text.substring(0, len - 3)}...` : text;
+};
+
+/**
+ * Helper function to map each user to a numeric value deterministically
+ * TODO: Use the user's UUID to hash to a number since it will never change
+ * @param user
+ * @returns
+ */
+const hashUser = (user: PublicProfile) => {
+  return user.points;
+};
+
+export const getProfilePicture = (user: PublicProfile): URL => {
+  if (user.profilePicture) return user.profilePicture;
+
+  const NUM_IMAGES = defaultProfilePictures.length;
+  const index = hashUser(user) % NUM_IMAGES;
+  const path = defaultProfilePictures[index]?.src ?? '';
+
+  return path;
+};
+
+// TODO: Define all ranks and logic for this
+export const getUserRank = (user: PublicProfile): string => {
+  const ranks = ['Polynomial Pita', 'Factorial Flatbread'];
+  const index = user.points % 2;
+
+  return ranks[index] ?? '';
+};
+
+/**
+ * Checks whether an image source is a gif
+ * @param src - source of the image
+ * @returns whether or not the source is a gif
+ */
+export const isSrcAGif = (src: string): boolean => /\.gif($|&)/.test(src);

@@ -2,6 +2,6 @@
 
 .content {
   margin-top: vars.$header-height;
-  overflow-y: scroll;
+  overflow: auto;
   padding: 2rem;
 }
