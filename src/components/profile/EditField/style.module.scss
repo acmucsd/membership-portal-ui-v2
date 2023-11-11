@@ -5,6 +5,7 @@
 
   .label {
     display: flex;
+    flex: none;
     font-size: 1.375rem;
     font-weight: normal;
     width: 12rem;
@@ -23,7 +24,7 @@
     display: flex;
     flex: auto;
     flex-direction: column;
-    gap: 6px;
+    gap: 0.5rem;
 
     .fieldBorder {
       border: 2px solid vars.$light-text-on-background-3;
@@ -64,7 +65,7 @@
       flex-direction: column;
 
       .singleLabel {
-        padding: 7px 0;
+        padding: 5px 0;
       }
     }
 

@@ -1,2 +1,2 @@
-// eslint-disable-next-line import/prefer-default-export
 export { EditBlock, EditField, SingleField } from './EditField';
+export { default as Switch } from './Switch';

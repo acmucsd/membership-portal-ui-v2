@@ -1,10 +1,11 @@
-import { EditBlock, EditField, SingleField } from '@/components/profile';
+import { EditBlock, EditField, SingleField, Switch } from '@/components/profile';
+import { majors } from '@/lib/constants/majors.json';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import styles from '@/styles/pages/profile/edit.module.scss';
 import type { GetServerSideProps } from 'next';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { BsDiscord, BsFacebook, BsGithub, BsInstagram, BsLinkedin } from 'react-icons/bs';
 
 interface EditProfileProps {
@@ -20,9 +21,28 @@ const EditProfilePage = ({ user }: EditProfileProps) => {
   const [graduationYear, setGraduationYear] = useState(String(user.graduationYear));
   const [bio, setBio] = useState(user.bio);
 
+  const [canSeeAttendance, setCanSeeAttendance] = useState(false);
+  const [isResumeVisible, setIsResumeVisible] = useState(false);
+
   const [passwordCurrent, setPasswordCurrent] = useState('');
   const [passwordNew, setPasswordNew] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  const years = useMemo(() => {
+    const years: number[] = [];
+    const currentYear = new Date().getUTCFullYear();
+    // UCSD's 6-year graduation rate is 87%. Make sure the user's graduation year
+    // is listed in the dropdown (in case they're taking longer than expected to
+    // graduate)
+    for (
+      let year = Math.min(user.graduationYear, currentYear - 2);
+      year <= currentYear + 6;
+      year += 1
+    ) {
+      years.push(year);
+    }
+    return years;
+  }, [user.graduationYear]);
 
   return (
     <>
@@ -107,14 +127,14 @@ const EditProfilePage = ({ user }: EditProfileProps) => {
                 <EditField
                   label="Major"
                   element="select"
-                  options={['Cognitive Science - Machine Learning', 'Computer Engineering', 'TODO']}
+                  options={majors}
                   value={major}
                   onChange={setMajor}
                 />
                 <EditField
                   label="Graduation Year"
                   element="select"
-                  options={['2024', '2025', 'TODO']}
+                  options={years.map(String)}
                   value={graduationYear}
                   onChange={setGraduationYear}
                 />
@@ -125,8 +145,16 @@ const EditProfilePage = ({ user }: EditProfileProps) => {
                   value={bio}
                   onChange={setBio}
                 />
-                <EditBlock title="Resume" />
-                <EditBlock title="Attendance" />
+                <EditBlock title="Resume">
+                  <Switch checked={isResumeVisible} onCheck={setIsResumeVisible}>
+                    Share my resume with recruiters from ACM sponsor companies
+                  </Switch>
+                </EditBlock>
+                <EditBlock title="Attendance">
+                  <Switch checked={canSeeAttendance} onCheck={setCanSeeAttendance}>
+                    Display my ACM attendance history on my profile
+                  </Switch>
+                </EditBlock>
               </div>
             </details>
             <details open>
