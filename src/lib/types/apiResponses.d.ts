@@ -312,6 +312,7 @@ export interface PublicProfile {
   major: string;
   bio: string;
   points: number;
+  credits: number;
 }
 
 export interface PrivateProfile extends PublicProfile {

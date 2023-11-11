@@ -5,9 +5,13 @@ export type Styles = {
   cardWrapper: string;
   horizontal: string;
   iconBox: string;
+  inner: string;
   profileCard: string;
   profilePage: string;
   profilePic: string;
+  progressBar: string;
+  progressInfo: string;
+  section: string;
 };
 
 export type ClassNames = keyof Styles;

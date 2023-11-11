@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import defaultProfilePictures from '@/lib/constants/profilePictures';
 import { URL } from '@/lib/types';
 import type { CustomErrorBody, PublicProfile, ValidatorError } from '@/lib/types/apiResponses';
@@ -47,12 +48,17 @@ export const trim = (text: string, len: number) => {
 
 /**
  * Helper function to map each user to a numeric value deterministically
- * TODO: Use the user's UUID to hash to a number since it will never change
  * @param user
- * @returns
+ * @returns A 32-bit integer
+ * @see https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
  */
-const hashUser = (user: PublicProfile) => {
-  return user.points;
+const hashUser = ({ uuid }: PublicProfile) => {
+  return uuid.split('').reduce((hash, char) => {
+    /* eslint-disable no-bitwise */
+    const hash1 = (hash << 5) - hash + char.charCodeAt(0);
+    return hash1 | 0; // Convert to 32bit integer
+    /* eslint-enable no-bitwise */
+  }, 0);
 };
 
 export const getProfilePicture = (user: PublicProfile): URL => {
