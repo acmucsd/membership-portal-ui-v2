@@ -10,7 +10,7 @@ interface DiamondsProps {
 
 const Diamonds = ({ count, className }: DiamondsProps) => (
   <span className={className}>
-    {(count >= 1e6 ? compactFormat : numberFormat).format(count)}{' '}
+    {(count >= 1e5 ? compactFormat : numberFormat).format(count)}{' '}
     <span className={styles.diamond}>diamonds</span>
   </span>
 );
