@@ -1,15 +1,23 @@
+import { Dropdown, PaginationControls } from '@/components/common';
 import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { config } from '@/lib';
 import { LeaderboardAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
+import { SlidingLeaderboardQueryParams } from '@/lib/types/apiRequests';
 import { PrivateProfile, PublicProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getProfilePicture, getUserRank } from '@/lib/utils';
 import MyPositionIcon from '@/public/assets/icons/my-position-icon.svg';
 import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
-import { useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useMemo, useState } from 'react';
+
+/** Year ACM was founded. */
+const START_YEAR = 2019;
+/** Number of seconds in a day. */
+const DAY_SECONDS = 86400;
 
 interface Match {
   index: number;
@@ -23,18 +31,79 @@ function filter<T extends PublicProfile>(users: T[], query: string): (T & { matc
   });
 }
 
+function getEndYear(): number {
+  const today = new Date();
+  // Arbitrarily start the next academic year in August
+  return today.getMonth() < 7 ? today.getFullYear() : today.getFullYear() + 1;
+}
+
+function getLeaderboardRange(sort: string | number, limit = 0): SlidingLeaderboardQueryParams {
+  const params: SlidingLeaderboardQueryParams = { limit };
+  const now = Date.now() / 1000;
+  switch (sort) {
+    case 'past-week': {
+      params.from = now - DAY_SECONDS * 7;
+      break;
+    }
+    case 'past-month': {
+      params.from = now - DAY_SECONDS * 28;
+      break;
+    }
+    case 'past-year': {
+      params.from = now - DAY_SECONDS * 365;
+      break;
+    }
+    case 'all-time': {
+      break;
+    }
+    default: {
+      const year = +sort;
+      // Arbitrarily academic years on August 1, which should be during the summer
+      params.from = new Date(year, 7, 1).getTime() / 1000;
+      params.to = new Date(year + 1, 7, 1).getTime() / 1000;
+    }
+  }
+  return params;
+}
+
+const ROWS_PER_PAGE = 100;
+
 interface LeaderboardProps {
+  sort: string;
   leaderboard: PublicProfile[];
   user: PrivateProfile;
 }
 
-const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
-  const [query, setQuery] = useState('');
-  const myPosition = useRef<HTMLAnchorElement>(null);
+const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps) => {
+  const router = useRouter();
 
-  const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
-  const topThreeUsers = query === '' ? filter(results.slice(0, 3), query) : [];
-  const leaderboardRows = filter(query === '' ? results.slice(3) : results, query);
+  const [page, setPage] = useState(0);
+  const [query, setQuery] = useState('');
+  // Using a number to force LeaderboardRow's useEffect to run again when the
+  // user presses the button multiple times
+  const [scrollIntoView, setScrollIntoView] = useState(0);
+
+  const years = useMemo(() => {
+    const endYear = getEndYear();
+    const years = [];
+    for (let year = START_YEAR; year < endYear; year += 1) {
+      years.unshift({ value: String(year), label: `${year}–${year + 1}` });
+    }
+    return years;
+  }, []);
+
+  const { allRows, myIndex } = useMemo(() => {
+    const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
+    const allRows = filter(results, query);
+    const myIndex = allRows.findIndex(row => row.uuid === uuid);
+    return { allRows, myIndex };
+  }, [leaderboard, query, uuid]);
+
+  const topThreeUsers = page === 0 && query === '' ? allRows.slice(0, 3) : [];
+  const leaderboardRows =
+    page === 0 && query === ''
+      ? allRows.slice(3, ROWS_PER_PAGE)
+      : allRows.slice(page * ROWS_PER_PAGE, (page + 1) * ROWS_PER_PAGE);
 
   return (
     <div className={styles.container}>
@@ -44,16 +113,13 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
           className={styles.myPosition}
           type="button"
           onClick={() => {
-            myPosition.current?.scrollIntoView();
-            // Remove `.flash` in case it was already applied
-            myPosition.current?.classList.remove(styles.flash);
-            window.requestAnimationFrame(() => {
-              myPosition.current?.classList.add(styles.flash);
-            });
+            setPage(Math.floor(myIndex / ROWS_PER_PAGE));
+            setScrollIntoView(n => n + 1);
           }}
+          disabled={myIndex === -1}
         >
           My Position
-          <MyPositionIcon />
+          <MyPositionIcon aria-hidden />
         </button>
         <input
           className={styles.search}
@@ -61,11 +127,30 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
           placeholder="Search Users"
           aria-label="Search Users"
           value={query}
-          onChange={e => setQuery(e.currentTarget.value)}
+          onChange={e => {
+            setQuery(e.currentTarget.value);
+            setPage(0);
+            setScrollIntoView(0);
+          }}
         />
-        <select name="timeOptions" id="timeOptions">
-          <option>All Time</option>
-        </select>
+        <Dropdown
+          name="timeOptions"
+          ariaLabel="Filter the leaderboard by time"
+          options={[
+            { value: 'past-week', label: 'Past week' },
+            { value: 'past-month', label: 'Past month' },
+            { value: 'past-year', label: 'Past year' },
+            { value: 'all-time', label: 'All time' },
+            '---',
+            ...years,
+          ]}
+          value={sort}
+          onChange={sort => {
+            router.push(`${config.leaderboardRoute}?sort=${sort}`);
+            setPage(0);
+            setScrollIntoView(0);
+          }}
+        />
       </div>
       {topThreeUsers.length > 0 && (
         <div className={styles.topThreeContainer}>
@@ -95,31 +180,38 @@ const LeaderboardPage = ({ leaderboard, user: { uuid } }: LeaderboardProps) => {
                 points={user.points}
                 image={getProfilePicture(user)}
                 match={user.match}
-                rowRef={user.uuid === uuid ? myPosition : null}
+                scrollIntoView={user.uuid === uuid ? scrollIntoView : 0}
               />
             );
           })}
         </div>
       )}
-      {topThreeUsers.length === 0 && leaderboardRows.length === 0 && <p>No results.</p>}
+      {allRows.length > 0 ? (
+        <PaginationControls
+          page={page}
+          onPage={page => {
+            setPage(page);
+            setScrollIntoView(0);
+          }}
+          pages={Math.ceil(allRows.length / ROWS_PER_PAGE)}
+        />
+      ) : (
+        <p>No results.</p>
+      )}
     </div>
   );
 };
 
 export default LeaderboardPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
-  // Get all leaderboard items
-  const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN, {
-    limit: 0,
-  });
+  const sort = typeof query.sort === 'string' ? query.sort : getEndYear() - 1;
+  const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN, getLeaderboardRange(sort));
 
   return {
-    props: {
-      leaderboard,
-    },
+    props: { sort, leaderboard },
   };
 };
 
