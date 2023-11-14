@@ -22,25 +22,28 @@
   }
 
   .switch {
+    align-items: center;
     background-color: var(--theme-text-on-background-1);
     border-radius: 5em;
+    box-sizing: content-box;
     cursor: pointer;
     display: inline-flex;
     flex: none;
     height: 1em;
-    padding: 0.2em;
+    margin: -0.3em 0;
+    padding: 0.3em;
     transition: background-color 0.2s;
 
     &::after {
+      aspect-ratio: 1 / 1;
       background-color: var(--theme-background);
       border-radius: 5em;
       content: '';
       display: block;
-      height: 0.6em;
+      height: 100%;
       margin-left: 0;
       margin-right: 1em;
       transition: margin 0.2s;
-      width: 0.6em;
     }
   }
 }

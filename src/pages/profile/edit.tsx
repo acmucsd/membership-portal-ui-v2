@@ -1,5 +1,5 @@
 import { EditBlock, EditField, SingleField, Switch } from '@/components/profile';
-import { majors } from '@/lib/constants/majors.json';
+import majors from '@/lib/constants/majors.json';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
@@ -127,7 +127,7 @@ const EditProfilePage = ({ user }: EditProfileProps) => {
                 <EditField
                   label="Major"
                   element="select"
-                  options={majors}
+                  options={majors.majors}
                   value={major}
                   onChange={setMajor}
                 />
@@ -149,6 +149,10 @@ const EditProfilePage = ({ user }: EditProfileProps) => {
                   <Switch checked={isResumeVisible} onCheck={setIsResumeVisible}>
                     Share my resume with recruiters from ACM sponsor companies
                   </Switch>
+                  <p>
+                    By uploading your resume and opting in to sharing, you grant ACM permission to
+                    send your resume to recruiters at our sponsor companies.
+                  </p>
                 </EditBlock>
                 <EditBlock title="Attendance">
                   <Switch checked={canSeeAttendance} onCheck={setCanSeeAttendance}>
