@@ -4,7 +4,7 @@ import { PropsWithChildren } from 'react';
 import styles from './style.module.scss';
 
 interface LayoutProps {
-  user: PrivateProfile;
+  user?: PrivateProfile;
 }
 
 const PageLayout = ({ user, children }: PropsWithChildren<LayoutProps>) => (

@@ -16,7 +16,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import styles from './style.module.scss';
 
 interface NavbarProps {
-  user: PrivateProfile;
+  user?: PrivateProfile;
 }
 const Navbar = ({ user }: NavbarProps) => {
   const size = useWindowSize();
@@ -47,7 +47,7 @@ const Navbar = ({ user }: NavbarProps) => {
     if (!isMobile) setMenuOpen(false);
   }, [isMobile]);
 
-  if (!user)
+  if (!user) {
     return (
       <header className={styles.header}>
         <div className={styles.content}>
@@ -60,6 +60,7 @@ const Navbar = ({ user }: NavbarProps) => {
         <hr className={styles.wainbow} />
       </header>
     );
+  }
 
   const isAdmin = PermissionService.canViewAdminPage().includes(user.accessType);
 
@@ -72,14 +73,14 @@ const Navbar = ({ user }: NavbarProps) => {
           <div className={styles.bar2} data-open={menuOpen} />
         </button>
         <Link href={config.homeRoute} className={styles.icon}>
-          <Image src={LightModeLogo} alt="ACM General Logo" width={48} height={48} />
+          <Image src={LightModeLogo} alt="ACM Membership Home" width={48} height={48} />
         </Link>
         {/* Desktop Nav Links */}
         <nav className={styles.portalLinks}>
           <Link href={config.homeRoute}>Events</Link>
-          <p>·</p>
+          <p aria-hidden>·</p>
           <Link href="/leaderboard">Leaderboard</Link>
-          <span>·</span>
+          <span aria-hidden>·</span>
           <Link href="/about">About ACM</Link>
         </nav>
         <nav className={styles.iconLinks}>
@@ -98,7 +99,7 @@ const Navbar = ({ user }: NavbarProps) => {
         </nav>
       </div>
       {/* Mobile Menu Dropdown */}
-      <div className={styles.mobileNav} data-open={menuOpen}>
+      <div className={styles.mobileNav} data-open={menuOpen} aria-hidden={!menuOpen}>
         <Link
           className={styles.mobileNavItem}
           onClick={() => setMenuOpen(false)}
@@ -119,7 +120,11 @@ const Navbar = ({ user }: NavbarProps) => {
           <ProfileIcon className={styles.iconLink} />
           Profile
         </Link>
-        <Link onClick={() => setMenuOpen(false)} className={styles.mobileNavItem} href="/store">
+        <Link
+          onClick={() => setMenuOpen(false)}
+          className={styles.mobileNavItem}
+          href={config.storeRoute}
+        >
           <ShopIcon className={styles.iconLink} />
           Store
         </Link>
