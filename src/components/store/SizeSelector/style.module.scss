@@ -1,0 +1,51 @@
+@use 'src/styles/vars.scss' as vars;
+$indicator-size: 30px;
+$switch-gap: 127%;
+$switch-gap-num: calc($switch-gap / 100%);
+$switch-start: 15%;
+$component-roundness: 34px;
+
+.switch {
+  align-items: center;
+  border-color: #9f9f9f;
+  border-radius: 34px;
+  border-style: solid;
+  border-width: 1px;
+  display: flex;
+  float: left;
+  position: relative;
+
+  label {
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    float: left;
+    height: $indicator-size;
+    justify-content: center;
+    width: #{$indicator-size * 2};
+
+    input {
+      opacity: 0;
+      position: absolute;
+    }
+
+    //https://markheath.net/post/customize-radio-button-css
+    input:checked {
+      border-color: var(--size-selector-border);
+    }
+
+    input:focus + label {
+      border-color: var(--size-selector-border);
+    }
+
+    input:checked + label {
+      border-color: var(--size-selector-border);
+      color: var(--size-selector-border);
+    }
+  }
+}
+
+// INFO LINKS
+// https://stackoverflow.com/questions/19417081/doing-math-on-variable-argument-sass-mixins
