@@ -74,6 +74,7 @@ const config = {
   loginRoute: '/login',
   leaderboardRoute: '/leaderboard',
   userProfileRoute: '/u/',
+  storeRoute: '/store',
   cartRoute: '/store/cart',
   myOrdersRoute: '/store/orders',
   collectionRoute: '/store/collection/',
