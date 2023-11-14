@@ -14,9 +14,7 @@ const config = {
         handle: '/user/handle',
       },
       activity: '/activity',
-      resume: {
-        resume: '/resume',
-      },
+      resume: '/resume',
       auth: {
         register: '/auth/registration',
         login: '/auth/login',

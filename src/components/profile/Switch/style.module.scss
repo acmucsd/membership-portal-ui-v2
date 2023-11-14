@@ -1,15 +1,11 @@
+@use 'src/styles/vars.scss' as vars;
+
 .label {
   display: flex;
   gap: 0.5em;
 
   .checkbox {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
+    @include vars.accessibly-hidden;
 
     &:checked ~ .switch {
       background-color: var(--theme-primary-2);

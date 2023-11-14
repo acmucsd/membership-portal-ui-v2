@@ -57,7 +57,7 @@ export default function withAccessType(
       try {
         const userObj = await UserAPI.getCurrentUser(authTokenCookie);
         userCookie = JSON.stringify(userObj);
-        CookieService.setServerCookie(CookieType.USER, JSON.stringify(userCookie), { req, res });
+        CookieService.setServerCookie(CookieType.USER, JSON.stringify(userObj), { req, res });
       } catch (err: any) {
         return loginRedirect;
       }

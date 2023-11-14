@@ -319,6 +319,7 @@ export interface PrivateProfile extends PublicProfile {
   accessType: UserAccessType;
   state: UserState;
   credits: number;
+  resumes?: PublicResume[];
 }
 
 export interface PublicFeedback {
@@ -406,7 +407,7 @@ export interface CancelAllPendingOrdersResponse extends ApiResponse {}
 
 export interface PublicResume {
   uuid: UUID;
-  user: UUID;
+  user?: PublicProfile;
   isResumeVisible: boolean;
   url: string;
   lastUpdated: Date;
