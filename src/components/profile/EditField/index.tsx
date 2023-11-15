@@ -29,6 +29,7 @@ interface EditFieldProps {
   element?: 'input' | 'textarea' | 'select';
   options?: string[];
   maxLength?: number;
+  disabled?: boolean;
   value: string;
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
@@ -44,17 +45,19 @@ export const EditField = ({
   type = 'text',
   element: Input = 'input',
   options,
+  disabled,
   value,
   onChange,
 }: EditFieldProps) => {
   return (
     <EditBlock icon={icon} title={label} wrapper="label">
-      <div className={styles.fieldBorder}>
+      <div className={`${styles.fieldBorder} ${disabled ? styles.disabled : ''}`}>
         {prefix && <span className={styles.prefix}>{prefix}</span>}
         <Input
           className={styles.field}
           type={type}
           placeholder={placeholder}
+          disabled={disabled}
           value={value}
           onChange={e => onChange(e.currentTarget.value)}
         >

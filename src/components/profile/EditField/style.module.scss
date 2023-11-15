@@ -32,6 +32,10 @@
       display: flex;
       overflow: hidden;
 
+      &.disabled {
+        opacity: 0.5;
+      }
+
       .prefix {
         align-items: center;
         background-color: #93939370;

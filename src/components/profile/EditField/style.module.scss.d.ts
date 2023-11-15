@@ -2,6 +2,7 @@ export type Styles = {
   chars: string;
   content: string;
   description: string;
+  disabled: string;
   field: string;
   fieldBorder: string;
   hasIcon: string;

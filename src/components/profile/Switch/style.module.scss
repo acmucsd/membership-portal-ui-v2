@@ -15,6 +15,11 @@
         margin-right: 0;
       }
     }
+
+    &:disabled ~ .switch {
+      cursor: default;
+      opacity: 0.3;
+    }
   }
 
   .switch {

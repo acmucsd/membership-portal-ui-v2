@@ -114,9 +114,8 @@
         gap: 1.5rem;
         margin-top: 1.5rem;
 
-        .icon {
-          height: 2rem;
-          width: 2rem;
+        .fileInput {
+          @include vars.accessibly-hidden;
         }
 
         .resume {
@@ -132,8 +131,9 @@
           }
         }
 
-        .fileInput {
-          @include vars.accessibly-hidden;
+        .icon {
+          height: 2rem;
+          width: 2rem;
         }
       }
 

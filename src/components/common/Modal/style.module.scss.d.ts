@@ -1,8 +1,8 @@
 export type Styles = {
-  step: string;
-  stepControl: string;
-  stepControls: string;
-  steps: string;
+  close: string;
+  header: string;
+  modal: string;
+  modalBody: string;
 };
 
 export type ClassNames = keyof Styles;

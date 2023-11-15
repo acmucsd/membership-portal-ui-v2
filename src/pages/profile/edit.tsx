@@ -6,11 +6,12 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getMessagesFromError } from '@/lib/utils';
+import { getMessagesFromError, getProfilePicture, isSrcAGif } from '@/lib/utils';
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import styles from '@/styles/pages/profile/edit.module.scss';
 import { AxiosError } from 'axios';
 import type { GetServerSideProps } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { BsDiscord, BsFacebook, BsGithub, BsInstagram, BsLinkedin } from 'react-icons/bs';
@@ -40,6 +41,9 @@ interface EditProfileProps {
 
 const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
   const [user, setUser] = useState(initUser);
+
+  // A value to force the browser to fetch the new profile photo
+  const [pfpCache, setPfpCache] = useState(0);
 
   const [firstName, setFirstName] = useState(initUser.firstName);
   const [lastName, setLastName] = useState(initUser.lastName);
@@ -151,7 +155,50 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 <h2>Basic Info</h2>
               </summary>
               <div className={styles.section}>
-                <EditBlock title="Profile Photo" />
+                <EditBlock title="Profile Photo">
+                  <div>
+                    <div>
+                      <Image
+                        src={getProfilePicture(user) + (pfpCache > 0 ? `?_=${pfpCache}` : '')}
+                        alt="Profile picture"
+                        width={125}
+                        height={125}
+                        unoptimized={isSrcAGif(user.profilePicture)}
+                      />
+                    </div>
+                    <div>
+                      <label className={`${styles.button} ${styles.primaryBtn} ${styles.smaller}`}>
+                        <input
+                          className={styles.fileInput}
+                          type="file"
+                          accept="image/*"
+                          onChange={async e => {
+                            const file = e.currentTarget.files?.[0];
+                            e.currentTarget.value = '';
+                            try {
+                              if (file) {
+                                setUser(await UserAPI.uploadProfilePicture(authToken, file));
+                                setPfpCache(cache => cache + 1);
+                                regenerateUser();
+                                showToast('Profile photo uploaded!');
+                              }
+                            } catch (error) {
+                              reportError('Photo failed to upload', error);
+                            }
+                          }}
+                        />
+                        Upload New
+                      </label>
+                      <button
+                        className={`${styles.button} ${styles.dangerBtn} ${styles.smaller}`}
+                        type="button"
+                        disabled
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </EditBlock>
                 <EditBlock title="Display Name">
                   <SingleField
                     label="First"
@@ -280,6 +327,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                         accept=".pdf"
                         onChange={async e => {
                           const file = e.currentTarget.files?.[0];
+                          e.currentTarget.value = '';
                           try {
                             if (file) {
                               const resume = await ResumeAPI.uploadResume(
@@ -311,7 +359,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   </p>
                 </EditBlock>
                 <EditBlock title="Attendance">
-                  <Switch checked={canSeeAttendance} onCheck={setCanSeeAttendance}>
+                  <Switch checked={canSeeAttendance} onCheck={setCanSeeAttendance} disabled>
                     Display my ACM attendance history on my profile
                   </Switch>
                 </EditBlock>
@@ -329,6 +377,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   placeholder="linkedin.com/in/"
                   value=""
                   onChange={() => {}}
+                  disabled
                 />
                 <EditField
                   icon={<BsGithub className={styles.icon} aria-hidden />}
@@ -337,6 +386,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   placeholder="github.com/"
                   value=""
                   onChange={() => {}}
+                  disabled
                 />
                 <EditField
                   icon={<BsDiscord className={styles.icon} aria-hidden />}
@@ -345,6 +395,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   placeholder="discord.com/"
                   value=""
                   onChange={() => {}}
+                  disabled
                 />
                 <EditField
                   icon={<BsFacebook className={styles.icon} aria-hidden />}
@@ -353,6 +404,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   placeholder="facebook.com/"
                   value=""
                   onChange={() => {}}
+                  disabled
                 />
                 <EditField
                   icon={<BsInstagram className={styles.icon} aria-hidden />}
@@ -361,6 +413,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   placeholder="instagram.com/"
                   value=""
                   onChange={() => {}}
+                  disabled
                 />
               </div>
             </details>
