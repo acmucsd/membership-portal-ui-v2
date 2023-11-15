@@ -118,6 +118,36 @@
           @include vars.accessibly-hidden;
         }
 
+        .pfpWrapper {
+          align-items: center;
+          display: flex;
+          gap: 3rem;
+
+          .pfpOutline {
+            border: 2px dashed var(--theme-primary-2);
+            border-radius: 50%;
+            display: flex;
+            padding: 0.5rem;
+
+            .pfp {
+              border-radius: 50%;
+              object-fit: cover;
+            }
+          }
+
+          .pfpButtons {
+            align-items: stretch;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 9rem;
+
+            .button {
+              width: 100%;
+            }
+          }
+        }
+
         .resume {
           display: flex;
           gap: 0.5rem;

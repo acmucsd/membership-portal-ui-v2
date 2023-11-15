@@ -11,6 +11,10 @@ export type Styles = {
   icon: string;
   mainContent: string;
   medium: string;
+  pfp: string;
+  pfpButtons: string;
+  pfpOutline: string;
+  pfpWrapper: string;
   primaryBtn: string;
   resume: string;
   section: string;

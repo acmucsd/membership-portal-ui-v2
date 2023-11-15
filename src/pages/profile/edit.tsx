@@ -156,9 +156,10 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
               </summary>
               <div className={styles.section}>
                 <EditBlock title="Profile Photo">
-                  <div>
-                    <div>
+                  <div className={styles.pfpWrapper}>
+                    <div className={styles.pfpOutline}>
                       <Image
+                        className={styles.pfp}
                         src={getProfilePicture(user) + (pfpCache > 0 ? `?_=${pfpCache}` : '')}
                         alt="Profile picture"
                         width={125}
@@ -166,7 +167,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                         unoptimized={isSrcAGif(user.profilePicture)}
                       />
                     </div>
-                    <div>
+                    <div className={styles.pfpButtons}>
                       <label className={`${styles.button} ${styles.primaryBtn} ${styles.smaller}`}>
                         <input
                           className={styles.fileInput}
