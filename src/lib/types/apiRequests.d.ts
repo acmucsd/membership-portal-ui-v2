@@ -16,7 +16,6 @@ export interface LoginRequest {
 }
 
 export interface PasswordChange {
-  code: string;
   newPassword: string;
   confirmPassword: string;
 }

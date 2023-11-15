@@ -1,3 +1,4 @@
+import { config } from '@/lib';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import type { GetServerSideProps, NextPage } from 'next';
@@ -7,7 +8,7 @@ const UserProfilePage: NextPage = () => {
   return (
     <>
       <h1>Portal Profile Page</h1>
-      <Link href="/profile/edit" style={{ color: '#62b0ff' }}>
+      <Link href={config.profile.editRoute} style={{ color: '#62b0ff' }}>
         Edit profile
       </Link>
     </>

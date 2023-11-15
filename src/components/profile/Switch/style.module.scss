@@ -26,7 +26,6 @@
     display: inline-flex;
     flex: none;
     height: 1em;
-    margin: -0.3em 0;
     padding: 0.3em;
     transition: background-color 0.2s;
 
@@ -41,5 +40,9 @@
       margin-right: 1em;
       transition: margin 0.2s;
     }
+  }
+
+  .label {
+    margin: auto 0;
   }
 }

@@ -1,13 +1,17 @@
 import { EditBlock, EditField, SingleField, Switch } from '@/components/profile';
-import { ResumeAPI } from '@/lib/api';
+import { config, showToast } from '@/lib';
+import { AuthAPI, ResumeAPI, UserAPI } from '@/lib/api';
 import majors from '@/lib/constants/majors.json';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import { getMessagesFromError } from '@/lib/utils';
+import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import styles from '@/styles/pages/profile/edit.module.scss';
 import { AxiosError } from 'axios';
 import type { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { BsDiscord, BsFacebook, BsGithub, BsInstagram, BsLinkedin } from 'react-icons/bs';
 
@@ -19,30 +23,52 @@ function regenerateUser() {
   CookieService.setClientCookie(CookieType.USER, '');
 }
 
+function reportError(title: string, error: unknown) {
+  if (error instanceof AxiosError && error.response?.data?.error) {
+    showToast(title, getMessagesFromError(error.response.data.error).join('\n\n'));
+  } else if (error instanceof Error) {
+    showToast(title, error.message);
+  } else {
+    showToast(title, 'Unknown error');
+  }
+}
+
 interface EditProfileProps {
   user: PrivateProfile;
   authToken: string;
 }
 
-const EditProfilePage = ({ user, authToken }: EditProfileProps) => {
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [username, setUsername] = useState(user.uuid);
-  const [email, setEmail] = useState(user.email);
-  const [major, setMajor] = useState(user.major);
-  const [graduationYear, setGraduationYear] = useState(String(user.graduationYear));
-  const [bio, setBio] = useState(user.bio);
+const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
+  const [user, setUser] = useState(initUser);
+
+  const [firstName, setFirstName] = useState(initUser.firstName);
+  const [lastName, setLastName] = useState(initUser.lastName);
+  const [handle, setHandle] = useState(initUser.handle);
+  const [email, setEmail] = useState(initUser.email);
+  const [major, setMajor] = useState(initUser.major);
+  const [graduationYear, setGraduationYear] = useState(String(initUser.graduationYear));
+  const [bio, setBio] = useState(initUser.bio);
 
   const [canSeeAttendance, setCanSeeAttendance] = useState(false); // TEMP
   const [isResumeVisible, setIsResumeVisible] = useState(
-    user.resumes?.some(resume => resume.isResumeVisible) || user.resumes?.length === 0
+    initUser.resumes?.some(resume => resume.isResumeVisible) || initUser.resumes?.length === 0
   );
 
-  const [passwordCurrent, setPasswordCurrent] = useState('');
-  const [passwordNew, setPasswordNew] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [resumes, setResumes] = useState(user.resumes ?? []);
+  const hasChange =
+    firstName !== user.firstName ||
+    lastName !== user.lastName ||
+    handle !== user.uuid ||
+    email !== user.email ||
+    major !== user.major ||
+    +graduationYear !== user.graduationYear ||
+    bio !== user.bio ||
+    newPassword.length > 0;
+
+  const [resumes, setResumes] = useState(initUser.resumes ?? []);
 
   const years = useMemo(() => {
     const years: number[] = [];
@@ -68,7 +94,58 @@ const EditProfilePage = ({ user, authToken }: EditProfileProps) => {
           <section className={styles.columnLeft}>
             <h2>Current Profile</h2>
           </section>
-          <section className={styles.columnRight}>
+          <form
+            className={styles.columnRight}
+            onSubmit={async e => {
+              e.preventDefault();
+
+              let changed = false;
+              if (
+                firstName !== user.firstName ||
+                lastName !== user.lastName ||
+                handle !== user.uuid ||
+                email !== user.email ||
+                major !== user.major ||
+                +graduationYear !== user.graduationYear ||
+                bio !== user.bio ||
+                newPassword.length > 0
+              ) {
+                try {
+                  setUser(
+                    await UserAPI.updateCurrentUser(authToken, {
+                      firstName: firstName !== user.firstName ? firstName : undefined,
+                      lastName: lastName !== user.lastName ? lastName : undefined,
+                      handle: handle !== user.handle ? handle : undefined,
+                      major: major !== user.major ? major : undefined,
+                      graduationYear:
+                        +graduationYear !== user.graduationYear ? +graduationYear : undefined,
+                      bio: bio !== user.bio ? bio : undefined,
+                      passwordChange:
+                        newPassword.length > 0
+                          ? { password, newPassword, confirmPassword }
+                          : undefined,
+                    })
+                  );
+                  changed = true;
+                } catch (error) {
+                  reportError('Changes failed to save', error);
+                }
+              }
+              if (email !== user.email) {
+                try {
+                  await AuthAPI.modifyEmail(authToken, email);
+                  setUser(user => ({ ...user, email }));
+                  changed = true;
+                } catch (error) {
+                  reportError('Email failed to change', error);
+                }
+              }
+              if (changed) {
+                regenerateUser();
+                showToast('Changes saved!');
+              }
+            }}
+          >
             <details open>
               <summary>
                 <h2>Basic Info</h2>
@@ -102,8 +179,8 @@ const EditProfilePage = ({ user, authToken }: EditProfileProps) => {
                   description="This will be your unique URL on the Membership Portal."
                   prefix="members.acmucsd.com/u/"
                   maxLength={30}
-                  value={username}
-                  onChange={setUsername}
+                  value={handle}
+                  onChange={setHandle}
                 />
                 <EditField
                   label="Email Address"
@@ -117,20 +194,20 @@ const EditProfilePage = ({ user, authToken }: EditProfileProps) => {
                   <SingleField
                     label="Current Password"
                     type="password"
-                    value={passwordCurrent}
-                    onChange={setPasswordCurrent}
+                    value={password}
+                    onChange={setPassword}
                   />
                   <SingleField
                     label="New Password"
                     type="password"
-                    value={passwordNew}
-                    onChange={setPasswordNew}
+                    value={newPassword}
+                    onChange={setNewPassword}
                   />
                   <SingleField
                     label="Confirm Password"
                     type="password"
-                    value={passwordConfirm}
-                    onChange={setPasswordConfirm}
+                    value={confirmPassword}
+                    onChange={setConfirmPassword}
                   />
                 </EditBlock>
               </div>
@@ -167,16 +244,27 @@ const EditProfilePage = ({ user, authToken }: EditProfileProps) => {
                       new URL(resume.url).pathname.split('/').slice(4).join('/')
                     );
                     return (
-                      <div key={resume.uuid}>
-                        <a href={resume.url} download={fileName}>
-                          {fileName}
+                      <div className={styles.resume} key={resume.uuid}>
+                        <a
+                          className={`${styles.button} ${styles.borderBtn} ${styles.smaller} ${styles.medium}`}
+                          href={resume.url}
+                          download={fileName}
+                        >
+                          <DownloadIcon className={styles.downloadIcon} />
+                          <span>{fileName}</span>
                         </a>
                         <button
+                          className={`${styles.button} ${styles.dangerBtn} ${styles.smaller}`}
                           type="button"
                           onClick={async () => {
-                            await ResumeAPI.deleteResume(authToken, resume.uuid);
-                            setResumes(resumes.filter(({ uuid }) => uuid !== resume.uuid));
-                            regenerateUser();
+                            try {
+                              await ResumeAPI.deleteResume(authToken, resume.uuid);
+                              setResumes(resumes.filter(({ uuid }) => uuid !== resume.uuid));
+                              regenerateUser();
+                              showToast('Successfully deleted resume!');
+                            } catch (error) {
+                              reportError('Failed to delete resume', error);
+                            }
                           }}
                         >
                           Delete
@@ -184,36 +272,36 @@ const EditProfilePage = ({ user, authToken }: EditProfileProps) => {
                       </div>
                     );
                   })}
-                  <label>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      onChange={async e => {
-                        const file = e.currentTarget.files?.[0];
-                        try {
-                          if (file) {
-                            const resume = await ResumeAPI.uploadResume(
-                              authToken,
-                              file,
-                              isResumeVisible
-                            );
-                            // NOTE: The server currently overwrites the
-                            // previous resume with the new one.
-                            // https://github.com/acmucsd/membership-portal/blob/a45a68833854068aa3a6cceee59700f84114c308/api/controllers/ResumeController.ts#L45-L46
-                            setResumes([resume]);
-                            regenerateUser();
+                  <div className={styles.resume}>
+                    <label className={`${styles.button} ${styles.primaryBtn} ${styles.smaller}`}>
+                      <input
+                        className={styles.fileInput}
+                        type="file"
+                        accept=".pdf"
+                        onChange={async e => {
+                          const file = e.currentTarget.files?.[0];
+                          try {
+                            if (file) {
+                              const resume = await ResumeAPI.uploadResume(
+                                authToken,
+                                file,
+                                isResumeVisible
+                              );
+                              // NOTE: The server currently overwrites the
+                              // previous resume with the new one.
+                              // https://github.com/acmucsd/membership-portal/blob/a45a68833854068aa3a6cceee59700f84114c308/api/controllers/ResumeController.ts#L45-L46
+                              setResumes([resume]);
+                              regenerateUser();
+                              showToast('Resume uploaded!');
+                            }
+                          } catch (error) {
+                            reportError('Resume failed to upload', error);
                           }
-                        } catch (error: unknown) {
-                          if (error instanceof AxiosError) {
-                            const message = error.response?.data?.error?.message;
-                            // TODO
-                            console.error(message);
-                          }
-                        }
-                      }}
-                    />
-                    Upload New
-                  </label>
+                        }}
+                      />
+                      Upload New
+                    </label>
+                  </div>
                   <Switch checked={isResumeVisible} onCheck={setIsResumeVisible}>
                     Share my resume with recruiters from ACM sponsor companies
                   </Switch>
@@ -276,7 +364,19 @@ const EditProfilePage = ({ user, authToken }: EditProfileProps) => {
                 />
               </div>
             </details>
-          </section>
+            <div className={styles.submitBtns}>
+              <Link className={`${styles.button} ${styles.cancelBtn}`} href={config.profile.route}>
+                Cancel
+              </Link>
+              <button
+                type="submit"
+                className={`${styles.button} ${styles.primaryBtn}`}
+                disabled={!hasChange}
+              >
+                Save
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </>

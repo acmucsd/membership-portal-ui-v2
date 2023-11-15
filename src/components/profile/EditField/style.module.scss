@@ -47,6 +47,7 @@
         flex: auto;
         font: inherit;
         padding: 0.5rem 1rem;
+        width: 0;
 
         &::placeholder {
           color: vars.$light-text-on-background-2;

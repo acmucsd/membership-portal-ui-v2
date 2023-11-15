@@ -1,10 +1,21 @@
 export type Styles = {
+  borderBtn: string;
+  button: string;
+  cancelBtn: string;
   columnLeft: string;
   columnRight: string;
   columns: string;
+  dangerBtn: string;
+  downloadIcon: string;
+  fileInput: string;
   icon: string;
   mainContent: string;
+  medium: string;
+  primaryBtn: string;
+  resume: string;
   section: string;
+  smaller: string;
+  submitBtns: string;
   title: string;
 };
 

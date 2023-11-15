@@ -77,6 +77,10 @@ const config = {
   myOrdersRoute: '/store/orders',
   collectionRoute: '/store/collection/',
   itemRoute: '/store/item/',
+  profile: {
+    route: '/profile',
+    editRoute: '/profile/edit',
+  },
   admin: {
     homeRoute: '/admin',
     events: {
