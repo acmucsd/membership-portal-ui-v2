@@ -8,17 +8,18 @@ import { CookieType } from '@/lib/types/enums';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import styles from '@/styles/pages/store/index.module.scss';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import { useState } from 'react';
 
 type View = 'collections' | 'all-items';
 
 interface HomePageProps {
   user: PrivateProfile;
+  view: View;
   collections: PublicMerchCollection[];
 }
-const StoreHomePage = ({ user: { credits }, collections }: HomePageProps) => {
+const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) => {
   const [helpOpen, setHelpOpen] = useState(false);
-  const [view, setView] = useState<View>('collections');
 
   return (
     <>
@@ -30,13 +31,13 @@ const StoreHomePage = ({ user: { credits }, collections }: HomePageProps) => {
       <div className={styles.container}>
         <div className={styles.header}>
           <h2>{view === 'collections' ? 'Browse our collections' : 'Browse all items'}</h2>
-          <button
-            type="button"
+          <Link
             className={styles.viewToggle}
-            onClick={() => setView(view === 'collections' ? 'all-items' : 'collections')}
+            href={view === 'collections' ? `${config.storeRoute}?view=all` : config.storeRoute}
+            scroll={false}
           >
             {view === 'collections' ? 'See all items' : 'See collections'}
-          </button>
+          </Link>
         </div>
         {view === 'collections' ? (
           <div className={styles.collections}>
@@ -67,13 +68,14 @@ const StoreHomePage = ({ user: { credits }, collections }: HomePageProps) => {
 
 export default StoreHomePage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   const collections = await StoreAPI.getAllCollections(AUTH_TOKEN);
 
   return {
     props: {
+      view: query.view === 'all' ? 'all-items' : 'collections',
       collections,
     },
   };

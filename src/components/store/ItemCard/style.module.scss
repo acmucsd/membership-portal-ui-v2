@@ -2,6 +2,7 @@
 
 .itemCard {
   background-color: var(--theme-background);
+  border: 1px solid var(--theme-shadow);
   border-radius: 10px;
   box-shadow: 0 4px 4px var(--theme-shadow);
   display: inline-flex;
