@@ -8,7 +8,7 @@ import { GetServerSideProps } from 'next';
 interface ItemPageProps {
   user: PrivateProfile;
 }
-const StoreOrderPage = ({ user: { credits } }: ItemPageProps) => {
+const StoreItemPage = ({ user: { credits } }: ItemPageProps) => {
   return (
     <>
       <Navbar balance={credits} showBack />
@@ -18,7 +18,7 @@ const StoreOrderPage = ({ user: { credits } }: ItemPageProps) => {
   );
 };
 
-export default StoreOrderPage;
+export default StoreItemPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => ({
   props: {},

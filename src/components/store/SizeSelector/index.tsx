@@ -19,8 +19,6 @@ const SizeSelector = () => {
 
   // NEED TO CHANGE ACTUAL LABEL, NOT SOME EXTERNAL DIV. CAN'T USE + B/C OF ODD LINTING ERRORS
 
-  const iconSize = 30;
-
   const currAltText = `TODO`;
 
   useEffect(() => {
