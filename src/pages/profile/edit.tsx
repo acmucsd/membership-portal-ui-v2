@@ -429,6 +429,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
           <Cropper
             file={pfp}
             aspectRatio={1.5}
+            maxFileHeight={256}
             onUpload={async file => {
               try {
                 setUser(await UserAPI.uploadProfilePicture(authToken, file));
@@ -440,7 +441,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 reportError('Photo failed to upload', error);
               }
             }}
-            onCancel={() => setPfp(null)}
+            onClose={() => setPfp(null)}
           />
         </div>
       </div>

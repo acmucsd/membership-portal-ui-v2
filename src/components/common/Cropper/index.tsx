@@ -17,20 +17,22 @@ interface CropperProps {
   file: Blob | null;
   aspectRatio: number;
   circle?: boolean;
+  maxFileHeight: number;
   // eslint-disable-next-line no-unused-vars
   onUpload: (file: Blob) => void;
-  onCancel: () => void;
+  onClose: () => void;
 }
 
-const Cropper = ({ file, aspectRatio, circle, onUpload, onCancel }: CropperProps) => {
+const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }: CropperProps) => {
   const WIDTH = HEIGHT * aspectRatio;
 
   const [url, setUrl] = useState('');
   const image = useRef<HTMLImageElement>(null);
   const [left, setLeft] = useState(0);
   const [top, setTop] = useState(0);
-  const [naturalRatio, setNaturalRatio] = useState(0);
+  const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+  const [scale, setScale] = useState(1);
   const dragState = useRef<DragState | null>(null);
 
   useEffect(() => {
@@ -39,7 +41,9 @@ const Cropper = ({ file, aspectRatio, circle, onUpload, onCancel }: CropperProps
     }
     const url = URL.createObjectURL(file);
     setUrl(url);
+    setWidth(0);
     setHeight(0);
+    setScale(1);
     return () => {
       URL.revokeObjectURL(url);
     };
@@ -52,7 +56,7 @@ const Cropper = ({ file, aspectRatio, circle, onUpload, onCancel }: CropperProps
   };
 
   return (
-    <Modal title="Edit image" open={file !== null} onClose={onCancel}>
+    <Modal title="Edit image" open={file !== null} onClose={onClose}>
       <div
         className={styles.cropWrapper}
         onPointerDown={e => {
@@ -72,8 +76,8 @@ const Cropper = ({ file, aspectRatio, circle, onUpload, onCancel }: CropperProps
           if (state?.pointerId === e.pointerId) {
             const left = state.initLeft + e.clientX - state.offsetX;
             const top = state.initTop + e.clientY - state.offsetY;
-            setLeft(Math.max(Math.min(left, 0), WIDTH - height * naturalRatio));
-            setTop(Math.max(Math.min(top, 0), HEIGHT - height));
+            setLeft(Math.max(Math.min(left, 0), WIDTH - width * scale));
+            setTop(Math.max(Math.min(top, 0), HEIGHT - height * scale));
           }
         }}
         onPointerUp={handlePointerEnd}
@@ -85,14 +89,14 @@ const Cropper = ({ file, aspectRatio, circle, onUpload, onCancel }: CropperProps
             alt="Selected file"
             className={styles.image}
             style={{ transform: `translate(${left}px, ${top}px)` }}
-            width={naturalRatio * height}
-            height={height}
+            width={width * scale}
+            height={height * scale}
             onLoad={e => {
               if (e.currentTarget.naturalHeight > 0) {
                 const ratio = e.currentTarget.naturalWidth / e.currentTarget.naturalHeight;
-                setNaturalRatio(ratio);
                 const height = Math.max(HEIGHT, WIDTH / ratio);
                 const width = height * ratio;
+                setWidth(width);
                 setHeight(height);
                 // Default to centering the image
                 setLeft((WIDTH - width) / 2);
@@ -106,6 +110,51 @@ const Cropper = ({ file, aspectRatio, circle, onUpload, onCancel }: CropperProps
           className={`${styles.frame} ${circle ? styles.circle : ''}`}
           style={{ aspectRatio: `${aspectRatio}` }}
         />
+      </div>
+      <div>
+        <label>
+          Zoom:{' '}
+          <input
+            type="range"
+            min={1}
+            max={10}
+            step="any"
+            value={scale}
+            onChange={e => setScale(+e.currentTarget.value)}
+          />
+        </label>
+        <button
+          type="submit"
+          onClick={() => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            if (!context || !image.current) {
+              return;
+            }
+            const sourceHeight = image.current.naturalHeight * (HEIGHT / (height * scale));
+            const fileHeight = Math.min(maxFileHeight, sourceHeight);
+            canvas.width = fileHeight * aspectRatio;
+            canvas.height = fileHeight;
+            context.drawImage(
+              image.current,
+              image.current.naturalWidth * (-left / (width * scale)),
+              image.current.naturalHeight * (-top / (height * scale)),
+              sourceHeight * aspectRatio,
+              sourceHeight,
+              0,
+              0,
+              fileHeight * aspectRatio,
+              fileHeight
+            );
+            canvas.toBlob(blob => {
+              if (blob) {
+                onUpload(blob);
+              }
+            });
+          }}
+        >
+          Upload
+        </button>
       </div>
     </Modal>
   );

@@ -9,6 +9,8 @@ $height: 200px;
   cursor: grab;
   overflow: hidden;
   position: relative;
+  touch-action: none;
+  user-select: none;
   z-index: 0;
 
   .image {
