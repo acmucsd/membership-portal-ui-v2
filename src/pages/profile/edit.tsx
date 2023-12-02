@@ -1,3 +1,4 @@
+import { Cropper } from '@/components/common';
 import { EditBlock, EditField, SingleField, Switch } from '@/components/profile';
 import { config, showToast } from '@/lib';
 import { AuthAPI, ResumeAPI, UserAPI } from '@/lib/api';
@@ -42,6 +43,7 @@ interface EditProfileProps {
 const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
   const [user, setUser] = useState(initUser);
 
+  const [pfp, setPfp] = useState<File | null>(null);
   // A value to force the browser to fetch the new profile photo
   const [pfpCache, setPfpCache] = useState(0);
 
@@ -176,15 +178,8 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                           onChange={async e => {
                             const file = e.currentTarget.files?.[0];
                             e.currentTarget.value = '';
-                            try {
-                              if (file) {
-                                setUser(await UserAPI.uploadProfilePicture(authToken, file));
-                                setPfpCache(cache => cache + 1);
-                                regenerateUser();
-                                showToast('Profile photo uploaded!');
-                              }
-                            } catch (error) {
-                              reportError('Photo failed to upload', error);
+                            if (file) {
+                              setPfp(file);
                             }
                           }}
                         />
@@ -431,6 +426,22 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
               </button>
             </div>
           </form>
+          <Cropper
+            file={pfp}
+            aspectRatio={1.5}
+            onUpload={async file => {
+              try {
+                setUser(await UserAPI.uploadProfilePicture(authToken, file));
+                setPfpCache(cache => cache + 1);
+                regenerateUser();
+                showToast('Profile photo uploaded!');
+                setPfp(null);
+              } catch (error) {
+                reportError('Photo failed to upload', error);
+              }
+            }}
+            onCancel={() => setPfp(null)}
+          />
         </div>
       </div>
     </>

@@ -1,0 +1,31 @@
+@use 'sass:math';
+@use 'src/styles/vars.scss' as vars;
+
+$margin: 40px;
+$height: 200px;
+
+.cropWrapper {
+  border-radius: 1rem;
+  cursor: grab;
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+
+  .image {
+    margin: $margin;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .frame {
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0 3px var(--theme-text-on-background-1),
+      0 0 0 (($height + $margin) * sqrt(0.5)) var(--theme-accent-line-1-transparent);
+    height: $height;
+    margin: $margin;
+
+    &.circle {
+      border-radius: 50%;
+    }
+  }
+}

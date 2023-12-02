@@ -42,7 +42,7 @@ const HelpModal = ({ open, onClose }: HelpModalProps) => {
     // button. HTML already supports pressing the escape key to close modals, so
     // I don't need to add my own.
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
-    <Modal open={open} onClose={onClose}>
+    <Modal title="How does the ACM Store work?" open={open} onClose={onClose}>
       <div className={styles.steps}>
         <Step step={1}>
           <Step1 aria-label="Raccoons sitting about on a picnic blanket." />

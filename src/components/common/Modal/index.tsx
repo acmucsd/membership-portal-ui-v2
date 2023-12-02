@@ -3,12 +3,13 @@ import { ReactNode, useEffect, useRef } from 'react';
 import styles from './style.module.scss';
 
 interface ModalProps {
+  title: string;
   open: boolean;
   onClose: () => void;
   children?: ReactNode;
 }
 
-const Modal = ({ open, onClose, children }: ModalProps) => {
+const Modal = ({ title, open, onClose, children }: ModalProps) => {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const Modal = ({ open, onClose, children }: ModalProps) => {
     >
       <form method="dialog" className={styles.modalBody}>
         <div className={styles.header}>
-          <h1>How does the ACM Store work?</h1>
+          <h1>{title}</h1>
           <button type="submit" className={styles.close} aria-label="Close">
             <CloseIcon aria-hidden />
           </button>
