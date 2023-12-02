@@ -7,6 +7,7 @@ export type Styles = {
   columns: string;
   dangerBtn: string;
   downloadIcon: string;
+  dropOver: string;
   fileInput: string;
   icon: string;
   mainContent: string;

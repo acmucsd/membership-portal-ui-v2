@@ -120,12 +120,18 @@
 
         .pfpWrapper {
           align-items: center;
+          border-radius: 1rem;
           display: flex;
           gap: 3rem;
+
+          &.dropOver {
+            background-color: var(--theme-shadow);
+          }
 
           .pfpOutline {
             border: 2px dashed var(--theme-primary-2);
             border-radius: 50%;
+            cursor: pointer;
             display: flex;
             padding: 0.5rem;
 

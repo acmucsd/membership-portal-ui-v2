@@ -117,7 +117,7 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
           <input
             type="range"
             min={1}
-            max={10}
+            max={2}
             step="any"
             value={scale}
             onChange={e => setScale(+e.currentTarget.value)}

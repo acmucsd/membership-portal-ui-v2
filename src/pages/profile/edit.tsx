@@ -14,7 +14,7 @@ import { AxiosError } from 'axios';
 import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import { BsDiscord, BsFacebook, BsGithub, BsInstagram, BsLinkedin } from 'react-icons/bs';
 
 /**
@@ -43,9 +43,11 @@ interface EditProfileProps {
 const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
   const [user, setUser] = useState(initUser);
 
+  const pfpUploadId = useId();
   const [pfp, setPfp] = useState<File | null>(null);
   // A value to force the browser to fetch the new profile photo
-  const [pfpCache, setPfpCache] = useState(0);
+  const [pfpCacheBust, setPfpCacheBust] = useState(-1);
+  const [pfpDrop, setPfpDrop] = useState(false);
 
   const [firstName, setFirstName] = useState(initUser.firstName);
   const [lastName, setLastName] = useState(initUser.lastName);
@@ -158,20 +160,38 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
               </summary>
               <div className={styles.section}>
                 <EditBlock title="Profile Photo">
-                  <div className={styles.pfpWrapper}>
-                    <div className={styles.pfpOutline}>
+                  <div
+                    className={`${styles.pfpWrapper} ${pfpDrop ? styles.dropOver : ''}`}
+                    onDrop={e => {
+                      if (e.dataTransfer.types.includes('Files') && e.dataTransfer.files[0]) {
+                        setPfp(e.dataTransfer.files[0]);
+                      }
+                      setPfpDrop(false);
+                      e.preventDefault();
+                    }}
+                    onDragOver={e => {
+                      setPfpDrop(true);
+                      e.preventDefault();
+                    }}
+                    onDragLeave={() => setPfpDrop(false)}
+                  >
+                    <label className={styles.pfpOutline} htmlFor={pfpUploadId}>
                       <Image
                         className={styles.pfp}
-                        src={getProfilePicture(user) + (pfpCache > 0 ? `?_=${pfpCache}` : '')}
+                        src={
+                          getProfilePicture(user) +
+                          (pfpCacheBust !== -1 ? `?_=${pfpCacheBust}` : '')
+                        }
                         alt="Profile picture"
                         width={125}
                         height={125}
                         unoptimized={isSrcAGif(user.profilePicture)}
                       />
-                    </div>
+                    </label>
                     <div className={styles.pfpButtons}>
                       <label className={`${styles.button} ${styles.primaryBtn} ${styles.smaller}`}>
                         <input
+                          id={pfpUploadId}
                           className={styles.fileInput}
                           type="file"
                           accept="image/*"
@@ -428,12 +448,13 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
           </form>
           <Cropper
             file={pfp}
-            aspectRatio={1.5}
+            aspectRatio={1}
+            circle
             maxFileHeight={256}
             onUpload={async file => {
               try {
                 setUser(await UserAPI.uploadProfilePicture(authToken, file));
-                setPfpCache(cache => cache + 1);
+                setPfpCacheBust(Date.now());
                 regenerateUser();
                 showToast('Profile photo uploaded!');
                 setPfp(null);
