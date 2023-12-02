@@ -20,7 +20,7 @@ interface CropperProps {
   maxFileHeight: number;
   // eslint-disable-next-line no-unused-vars
   onUpload: (file: Blob) => void;
-  onClose: () => void;
+  onClose: (reason: 'image-error' | null) => void;
 }
 
 const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }: CropperProps) => {
@@ -56,7 +56,7 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
   };
 
   return (
-    <Modal title="Edit image" open={file !== null} onClose={onClose}>
+    <Modal title="Edit image" open={file !== null} onClose={() => onClose(null)}>
       <div
         className={styles.cropWrapper}
         onPointerDown={e => {
@@ -101,6 +101,11 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
                 // Default to centering the image
                 setLeft((WIDTH - width) / 2);
                 setTop((HEIGHT - height) / 2);
+              }
+            }}
+            onError={() => {
+              if (file !== null) {
+                onClose('image-error');
               }
             }}
             ref={image}

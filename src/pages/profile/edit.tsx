@@ -462,7 +462,12 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 reportError('Photo failed to upload', error);
               }
             }}
-            onClose={() => setPfp(null)}
+            onClose={reason => {
+              setPfp(null);
+              if (reason === 'image-error') {
+                showToast('This image format is not supported.');
+              }
+            }}
           />
         </div>
       </div>

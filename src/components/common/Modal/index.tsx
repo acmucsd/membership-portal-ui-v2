@@ -13,8 +13,10 @@ const Modal = ({ title, open, onClose, children }: ModalProps) => {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    if (ref.current && open) {
-      ref.current.showModal();
+    if (open) {
+      ref.current?.showModal();
+    } else {
+      ref.current?.close();
     }
   }, [open]);
 
