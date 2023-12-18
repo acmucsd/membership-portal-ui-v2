@@ -1,9 +1,16 @@
 import { useEffect, useId, useState } from 'react';
 import styles from './style.module.scss';
 
-const SizeSelector = () => {
+interface SizeSelectorProps {
+  currSize: 'S' | 'M' | 'L' | 'XL';
+  // Justification for disabling rules: This seems to be a false positive.
+  // https://stackoverflow.com/q/63767199/
+  // eslint-disable-next-line no-unused-vars
+  setSize: (value: 'S' | 'M' | 'L' | 'XL') => void;
+}
+
+const SizeSelector = ({ currSize, setSize }: SizeSelectorProps) => {
   const [mounted, setMounted] = useState(false);
-  const [size, setSize] = useState('S' || 'M' || 'L' || 'XL');
 
   const smallId = `small${useId()}`;
   const mediumId = `medium${useId()}`;
@@ -37,7 +44,7 @@ const SizeSelector = () => {
           id={smallId}
           name="state-d"
           type="radio"
-          defaultChecked={size === 'S'}
+          defaultChecked={currSize === 'S'}
           onClick={() => setSize('S')}
         />
         <label htmlFor={smallId}>{'S' /* SMALL */}</label>
@@ -46,7 +53,7 @@ const SizeSelector = () => {
           id={mediumId}
           name="state-d"
           type="radio"
-          defaultChecked={size === 'M'}
+          defaultChecked={currSize === 'M'}
           onClick={() => setSize('M')}
         />
         <label htmlFor={mediumId}>{'M' /* MEDIUM */}</label>
@@ -55,7 +62,7 @@ const SizeSelector = () => {
           id={largeId}
           name="state-d"
           type="radio"
-          defaultChecked={size === 'L'}
+          defaultChecked={currSize === 'L'}
           onClick={() => setSize('L')}
         />
         <label htmlFor={largeId}>{'L' /* LARGE */}</label>
@@ -64,7 +71,7 @@ const SizeSelector = () => {
           id={xlId}
           name="state-d"
           type="radio"
-          defaultChecked={size === 'XL'}
+          defaultChecked={currSize === 'XL'}
           onClick={() => setSize('XL')}
         />
         <label htmlFor={xlId}>{'XL' /* XL */}</label>
