@@ -10,7 +10,7 @@ const SizeSelector = () => {
   const largeId = `large${useId()}`;
   const xlId = `XL${useId()}`;
 
-  const sizeToStyle: Record<string, string> = {
+  const sizeToStyle: Record<string, string | undefined> = {
     S: styles.smallOn,
     M: styles.medOn,
     L: styles.lOn,
@@ -30,43 +30,46 @@ const SizeSelector = () => {
   }
 
   return (
-    <form className={styles.switch}>
-      <input
-        id={smallId}
-        name="state-d"
-        type="radio"
-        defaultChecked={size === 'S'}
-        onClick={() => setSize('S')}
-      />
-      <label htmlFor={smallId}>{/* SMALL */}</label>
+    <div className={styles.sizeSelector}>
+      <p>Size</p>
+      <form className={styles.switch}>
+        <input
+          id={smallId}
+          name="state-d"
+          type="radio"
+          defaultChecked={size === 'S'}
+          onClick={() => setSize('S')}
+        />
+        <label htmlFor={smallId}>{'S' /* SMALL */}</label>
 
-      <input
-        id={mediumId}
-        name="state-d"
-        type="radio"
-        defaultChecked={size === 'M'}
-        onClick={() => setSize('M')}
-      />
-      <label htmlFor={mediumId}>{/* MEDIUM */}</label>
+        <input
+          id={mediumId}
+          name="state-d"
+          type="radio"
+          defaultChecked={size === 'M'}
+          onClick={() => setSize('M')}
+        />
+        <label htmlFor={mediumId}>{'M' /* MEDIUM */}</label>
 
-      <input
-        id={largeId}
-        name="state-d"
-        type="radio"
-        defaultChecked={size === 'L'}
-        onClick={() => setSize('L')}
-      />
-      <label htmlFor={largeId}>{/* LARGE */}</label>
+        <input
+          id={largeId}
+          name="state-d"
+          type="radio"
+          defaultChecked={size === 'L'}
+          onClick={() => setSize('L')}
+        />
+        <label htmlFor={largeId}>{'L' /* LARGE */}</label>
 
-      <input
-        id={xlId}
-        name="state-d"
-        type="radio"
-        defaultChecked={size === 'XL'}
-        onClick={() => setSize('XL')}
-      />
-      <label htmlFor={xlId}>{/* XL */}</label>
-    </form>
+        <input
+          id={xlId}
+          name="state-d"
+          type="radio"
+          defaultChecked={size === 'XL'}
+          onClick={() => setSize('XL')}
+        />
+        <label htmlFor={xlId}>{'XL' /* XL */}</label>
+      </form>
+    </div>
   );
 };
 export default SizeSelector;
