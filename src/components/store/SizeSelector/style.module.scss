@@ -3,14 +3,19 @@ $indicator-size: 30px;
 $switch-gap: 127%;
 $switch-gap-num: calc($switch-gap / 100%);
 $switch-start: 15%;
-$component-roundness: 24px;
+$component-roundness: 10px;
 
 .sizeSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   overflow: auto;
-  padding: 5px 3px;
+  // padding: 5px 3px;
 
   p {
-    margin: 0 0 12px;
+    color: var(--theme-text-on-background-1);
+    font-size: vars.$general-body;
+    font-weight: bold;
   }
 
   .switch {
@@ -19,6 +24,7 @@ $component-roundness: 24px;
     border-radius: $component-roundness;
     display: flex;
     float: left;
+    gap: 12px;
     // border-style: solid;
     // border-width: 1px;
 
@@ -26,10 +32,11 @@ $component-roundness: 24px;
 
     label {
       align-items: center;
+      background-color: var(--theme-surface-2);
       border-radius: $component-roundness;
       border-style: solid;
       border-width: 1px;
-      color: #fff;
+      color: var(--theme-text-on-background-1);
       cursor: pointer;
       display: flex;
       flex-direction: row;

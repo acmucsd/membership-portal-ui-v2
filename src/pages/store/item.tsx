@@ -11,6 +11,7 @@ interface ItemPageProps {
 }
 const StoreItemPage = ({ user: { credits } }: ItemPageProps) => {
   const [size, setSize] = useState<'S' | 'M' | 'L' | 'XL'>('M');
+  const [inStock, setInStock] = useState<boolean>(false);
 
   return (
     <>
@@ -34,3 +35,4 @@ export const getServerSideProps = withAccessType(
 
 // Knowledge:
 // useState typing: https://stackoverflow.com/questions/72016031/how-to-set-type-of-variable-on-usestate-using-typescript#:~:text=You%20just%20need%20to%20specify%20the%20type%20of,const%20%5B%20text%2C%20setText%20%5D%20%3D%20useState%20%28%27%27%29%3B
+// State Sharing: https://react.dev/learn/sharing-state-between-components
