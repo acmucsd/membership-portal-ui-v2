@@ -38,13 +38,15 @@ const AddCartButton = ({ currSize, inStock, inCart, setInCart }: AddCartButtonPr
     <p className={styles.error}>This item is out of stock.</p>
   );
 
+  const buttonStyle = inStock ? styles.buttonInStock : styles.buttonNoStock;
+
   return (
     <div className={styles.addCartGroup}>
       <p>You can buy up to XXXXX of this item.</p>
       <p>{`In cart: ${inCart}`}</p>
-      {currSize == null ? <p className={styles.error}>Please select a size.</p> : validText}
+      {currSize === undefined ? <p className={styles.error}>Please select a size.</p> : validText}
       <input
-        className={styles.button}
+        className={`${buttonStyle} ${styles.button}`}
         type="button"
         value={inStock ? 'Add to Cart' : 'Out of Stock'}
         onClick={() => {

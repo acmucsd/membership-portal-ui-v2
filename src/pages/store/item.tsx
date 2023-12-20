@@ -11,9 +11,9 @@ interface ItemPageProps {
   user: PrivateProfile;
 }
 const StoreItemPage = ({ user: { credits } }: ItemPageProps) => {
-  const [size, setSize] = useState<'S' | 'M' | 'L' | 'XL'>('M');
+  const [size, setSize] = useState<'S' | 'M' | 'L' | 'XL'>();
   const [inCart, setInCart] = useState<boolean>(false);
-  const [inStock, setInStock] = useState<boolean>(true);
+  const [inStock, setInStock] = useState<boolean>(false);
 
   return (
     <>

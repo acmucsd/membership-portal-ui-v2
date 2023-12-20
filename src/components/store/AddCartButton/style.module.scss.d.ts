@@ -1,6 +1,8 @@
 export type Styles = {
   addCartGroup: string;
   button: string;
+  buttonInStock: string;
+  buttonNoStock: string;
   error: string;
   valid: string;
 };

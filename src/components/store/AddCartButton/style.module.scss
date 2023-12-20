@@ -26,12 +26,23 @@ $button-roundness: 10px;
   }
 
   .button {
-    background-color: var(--theme-primary-2);
     border-color: var(--theme-accent-line-2);
     border-radius: $button-roundness;
     border-width: 1px;
+    font-size: vars.$input-text-medium;
+    font-weight: bold;
     height: 40px;
     width: 200px;
+  }
+
+  .buttonInStock {
+    background-color: var(--theme-primary-2);
+    color: vars.$light-background; // or var(--theme-background);
+  }
+
+  .buttonNoStock {
+    background-color: var(--theme-background);
+    color: vars.$disabled;
   }
 }
 
