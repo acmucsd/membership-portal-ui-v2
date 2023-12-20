@@ -1,9 +1,8 @@
 .options {
   align-items: center;
   display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  justify-content: flex-start;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .calendarButton {
@@ -14,14 +13,22 @@
   display: flex;
   gap: 10px;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.75rem;
+  width: 15rem;
 }
 
 .calendarButton:hover {
   background: var(--theme-primary-2);
   transition: all 0.2s;
 }
-@media screen and (max-width: 30rem) {
+
+@media screen and (max-width: 60rem) {
+  .options {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   .calendarButton {
     font-size: 0.8rem;
   }

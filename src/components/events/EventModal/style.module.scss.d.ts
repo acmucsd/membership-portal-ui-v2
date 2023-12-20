@@ -1,5 +1,6 @@
 export type Styles = {
   contents: string;
+  eventDetails: string;
   header: string;
   image: string;
   link: string;

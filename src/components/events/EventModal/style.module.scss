@@ -63,10 +63,16 @@
       width: 70vw;
 
       .header {
-        align-items: center;
         display: flex;
         flex-direction: row;
-        gap: 1rem;
+        justify-content: space-between;
+
+        .eventDetails {
+          align-items: center;
+          display: flex;
+          flex-direction: row;
+          gap: 1rem;
+        }
       }
 
       .link {
@@ -77,5 +83,12 @@
         text-decoration: underline;
       }
     }
+  }
+}
+
+@media screen and (max-width: 60rem) {
+  .header {
+    flex-wrap: wrap;
+    gap: 2.5rem;
   }
 }

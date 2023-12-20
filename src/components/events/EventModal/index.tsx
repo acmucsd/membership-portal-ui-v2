@@ -58,17 +58,20 @@ const EventModal = ({ open, event, onClose }: EventModalProps) => {
         </div>
         <div className={styles.contents}>
           <div className={styles.header}>
-            <CommunityLogo community={event.committee} width={100} />
-            <div>
-              <Typography variant="title/large" style={{ fontWeight: 700 }}>
-                {title}
-              </Typography>
-              <Typography variant="title/medium">{formatEventDate(start, end)}</Typography>
-              <Typography variant="title/medium">{location}</Typography>
+            <div className={styles.eventDetails}>
+              <CommunityLogo community={event.committee} width={100} />
+              <div>
+                <Typography variant="title/large" style={{ fontWeight: 700 }}>
+                  {title}
+                </Typography>
+                <Typography variant="title/medium">{formatEventDate(start, end)}</Typography>
+                <Typography variant="title/medium">{location}</Typography>
+              </div>
             </div>
+
+            <CalendarButtons event={event} />
           </div>
 
-          <CalendarButtons event={event} />
           <Typography variant="body/medium">{description}</Typography>
           <Link className={styles.link} href={displayEventLink}>
             <LinkIcon aria="Link" />
