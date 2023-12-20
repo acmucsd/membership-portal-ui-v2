@@ -1,0 +1,28 @@
+.options {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.calendarButton {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--theme-primary-2);
+  border-radius: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.calendarButton:hover {
+  background: var(--theme-primary-2);
+  transition: all 0.2s;
+}
+@media screen and (max-width: 30rem) {
+  .calendarButton {
+    font-size: 0.8rem;
+  }
+}

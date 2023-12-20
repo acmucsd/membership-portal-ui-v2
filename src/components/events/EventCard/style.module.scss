@@ -1,0 +1,53 @@
+.container {
+  background: transparent;
+  border: 1px solid var(--theme-primary-6);
+  border-radius: 10px;
+  -ms-overflow-style: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 0;
+  position: relative;
+  scrollbar-width: none;
+  text-align: left;
+  width: 20rem;
+
+  .image {
+    flex-shrink: 0;
+    height: 9.375rem;
+    overflow: none;
+    position: relative;
+    width: 20rem;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+
+    .header {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+
+      .eventDetails {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .viewMore {
+    background: none;
+    display: flex;
+    padding: 0;
+  }
+}
+
+.container:hover {
+  box-shadow: 0 0 8px var(--theme-primary-6);
+  transform: scale(1.025);
+  transition: transform 0.3s;
+}
