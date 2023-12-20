@@ -1,6 +1,7 @@
 import { Typography } from '@/components/common';
 import CommunityLogo from '@/components/common/CommunityLogo';
 import CalendarButtons from '@/components/events/CalendarButtons';
+import PointsDisplay from '@/components/events/PointsDisplay';
 import { PublicEvent } from '@/lib/types/apiResponses';
 import { formatEventDate } from '@/lib/utils';
 import LinkIcon from '@/public/assets/icons/link.svg';
@@ -11,11 +12,12 @@ import styles from './style.module.scss';
 
 interface EventModalProps {
   open: boolean;
+  attended: boolean;
   event: PublicEvent;
   onClose: () => void;
 }
 
-const EventModal = ({ open, event, onClose }: EventModalProps) => {
+const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
   const { cover, title, start, end, location, description, eventLink } = event;
 
   let displayCover = cover;
@@ -54,6 +56,7 @@ const EventModal = ({ open, event, onClose }: EventModalProps) => {
     >
       <form method="dialog" className={styles.modalBody}>
         <div className={styles.image}>
+          <PointsDisplay points={event.pointValue} attended={attended} />
           <Image src={displayCover} alt="Event Cover Image" layout="fill" objectFit="cover" />
         </div>
         <div className={styles.contents}>
@@ -64,7 +67,9 @@ const EventModal = ({ open, event, onClose }: EventModalProps) => {
                 <Typography variant="title/large" style={{ fontWeight: 700 }}>
                   {title}
                 </Typography>
-                <Typography variant="title/medium">{formatEventDate(start, end)}</Typography>
+                <Typography variant="title/medium" suppressHydrationWarning>
+                  {formatEventDate(start, end)}
+                </Typography>
                 <Typography variant="title/medium">{location}</Typography>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import { Typography } from '@/components/common';
 import CommunityLogo from '@/components/common/CommunityLogo';
 import EventModal from '@/components/events/EventModal';
+import PointsDisplay from '@/components/events/PointsDisplay';
 import { PublicEvent } from '@/lib/types/apiResponses';
 import { formatEventDate } from '@/lib/utils';
 import Image from 'next/image';
@@ -9,9 +10,10 @@ import styles from './style.module.scss';
 
 interface EventCardProps {
   event: PublicEvent;
+  attended: boolean;
 }
 
-const EventCard = ({ event }: EventCardProps) => {
+const EventCard = ({ event, attended }: EventCardProps) => {
   const { cover, title, start, end, location } = event;
   const [expanded, setExpanded] = useState(false);
 
@@ -22,9 +24,15 @@ const EventCard = ({ event }: EventCardProps) => {
 
   return (
     <>
-      {expanded && <EventModal open={expanded} event={event} onClose={() => setExpanded(false)} />}
+      <EventModal
+        open={expanded}
+        attended={attended}
+        event={event}
+        onClose={() => setExpanded(false)}
+      />
       <button type="button" className={styles.container} onClick={() => setExpanded(true)}>
         <div className={styles.image}>
+          <PointsDisplay points={event.pointValue} attended={attended} />
           <Image src={displayCover} alt="Event Cover Image" layout="fill" objectFit="cover" />
         </div>
         <div className={styles.info}>
