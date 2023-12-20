@@ -1,10 +1,6 @@
 export type Styles = {
-  icon: string;
+  sizeSelector: string;
   switch: string;
-  switchindicator: string;
-  switchOne: string;
-  switchThree: string;
-  switchTwo: string;
 };
 
 export type ClassNames = keyof Styles;

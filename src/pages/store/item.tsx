@@ -1,4 +1,5 @@
 import { Navbar } from '@/components/store';
+import AddCartButton from '@/components/store/AddCartButton';
 import SizeSelector from '@/components/store/SizeSelector';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
@@ -11,13 +12,15 @@ interface ItemPageProps {
 }
 const StoreItemPage = ({ user: { credits } }: ItemPageProps) => {
   const [size, setSize] = useState<'S' | 'M' | 'L' | 'XL'>('M');
-  const [inStock, setInStock] = useState<boolean>(false);
+  const [inCart, setInCart] = useState<boolean>(false);
+  const [inStock, setInStock] = useState<boolean>(true);
 
   return (
     <>
       <Navbar balance={credits} showBack />
       <h1>Store Item Page {size}</h1>
       <SizeSelector currSize={size} setSize={setSize} />
+      <AddCartButton inCart={inCart} setInCart={setInCart} currSize={size} inStock={inStock} />
     </>
   );
 };

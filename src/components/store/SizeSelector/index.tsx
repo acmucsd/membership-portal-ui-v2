@@ -17,16 +17,9 @@ const SizeSelector = ({ currSize, setSize }: SizeSelectorProps) => {
   const largeId = `large${useId()}`;
   const xlId = `XL${useId()}`;
 
-  const sizeToStyle: Record<string, string | undefined> = {
-    S: styles.smallOn,
-    M: styles.medOn,
-    L: styles.lOn,
-    XL: styles.xlOn,
-  };
-
   // NEED TO CHANGE ACTUAL LABEL, NOT SOME EXTERNAL DIV. CAN'T USE + B/C OF ODD LINTING ERRORS
 
-  const currAltText = `TODO`;
+  // const currAltText = `TODO`;
 
   useEffect(() => {
     setMounted(true);

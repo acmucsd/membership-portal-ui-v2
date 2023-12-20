@@ -33,7 +33,9 @@ const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) 
           <h2>{view === 'collections' ? 'Browse our collections' : 'Browse all items'}</h2>
           <Link
             className={styles.viewToggle}
-            href={view === 'collections' ? `${config.storeRoute}?view=all` : config.storeRoute}
+            href={
+              view === 'collections' ? `${config.store.homeRoute}?view=all` : config.store.homeRoute
+            }
             scroll={false}
           >
             {view === 'collections' ? 'See all items' : 'See collections'}
@@ -46,7 +48,7 @@ const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) 
                 image={collection.items[0]?.picture ?? NoImage.src}
                 title={collection.title}
                 description={collection.description}
-                href={`${config.collectionRoute}${collection.uuid}`}
+                href={`${config.store.collectionRoute}${collection.uuid}`}
                 key={collection.uuid}
               />
             ))}
