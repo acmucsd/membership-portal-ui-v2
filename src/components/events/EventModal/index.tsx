@@ -64,13 +64,23 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
             <div className={styles.eventDetails}>
               <CommunityLogo community={event.committee} width={100} />
               <div>
-                <Typography variant="title/large" style={{ fontWeight: 700 }}>
+                <Typography
+                  className={styles.eventTitle}
+                  variant="title/large"
+                  style={{ fontWeight: 700 }}
+                >
                   {title}
                 </Typography>
-                <Typography variant="title/medium" suppressHydrationWarning>
+                <Typography
+                  className={styles.eventInfo}
+                  variant="title/medium"
+                  suppressHydrationWarning
+                >
                   {formatEventDate(start, end)}
                 </Typography>
-                <Typography variant="title/medium">{location}</Typography>
+                <Typography className={styles.eventInfo} variant="title/medium">
+                  {location}
+                </Typography>
               </div>
             </div>
 
@@ -79,8 +89,13 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
 
           <Typography variant="body/medium">{description}</Typography>
           <Link className={styles.link} href={displayEventLink}>
-            <LinkIcon aria="Link" />
-            <Typography variant="body/medium" style={{ color: 'var(--theme-primary-2)' }}>
+            <div style={{ width: 11 }}>
+              <LinkIcon aria="Link" />
+            </div>
+            <Typography
+              variant="body/medium"
+              style={{ color: 'var(--theme-primary-2)', wordBreak: 'break-all' }}
+            >
               {displayEventLink}
             </Typography>
           </Link>
