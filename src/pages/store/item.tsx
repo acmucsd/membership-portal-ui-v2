@@ -1,9 +1,11 @@
 import { Navbar } from '@/components/store';
 import AddCartButton from '@/components/store/AddCartButton';
+import ItemHeader from '@/components/store/ItemHeader';
 import SizeSelector from '@/components/store/SizeSelector';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
+import styles from '@/styles/pages/store/item.module.scss';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 
@@ -16,12 +18,13 @@ const StoreItemPage = ({ user: { credits } }: ItemPageProps) => {
   const [inStock, setInStock] = useState<boolean>(false);
 
   return (
-    <>
+    <div className={styles.container}>
       <Navbar balance={credits} showBack />
       <h1>Store Item Page {size}</h1>
+      <ItemHeader itemName="Cool Sweater" cost={300} />
       <SizeSelector currSize={size} setSize={setSize} />
       <AddCartButton inCart={inCart} setInCart={setInCart} currSize={size} inStock={inStock} />
-    </>
+    </div>
   );
 };
 

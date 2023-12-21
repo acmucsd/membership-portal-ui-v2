@@ -12,9 +12,9 @@ $component-roundness: 10px;
   overflow: auto;
   // padding: 5px 3px;
 
-  p {
+  h4 {
     color: var(--theme-text-on-background-1);
-    font-size: vars.$general-body;
+    font-size: vars.$general-heading-3-4;
     font-weight: bold;
   }
 

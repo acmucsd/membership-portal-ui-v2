@@ -31,7 +31,7 @@ const SizeSelector = ({ currSize, setSize }: SizeSelectorProps) => {
 
   return (
     <div className={styles.sizeSelector}>
-      <p>Size</p>
+      <h4>Size</h4>
       <form className={styles.switch}>
         <input
           id={smallId}

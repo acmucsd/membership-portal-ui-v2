@@ -16,7 +16,7 @@ const PageNotFound = ({ user }: PageNotFoundProps) => {
   const router = useRouter();
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 8.25rem)' }}>
-      {user && router.asPath.startsWith(config.storeRoute) && (
+      {user && router.asPath.startsWith(config.store.homeRoute) && (
         <Navbar balance={user.credits} showBack />
       )}
       <VerticalForm style={{ alignItems: 'center', flex: 'auto', height: 'unset' }}>
