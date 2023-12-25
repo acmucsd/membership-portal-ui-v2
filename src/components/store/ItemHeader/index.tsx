@@ -4,7 +4,7 @@ import styles from './style.module.scss';
 
 interface ItemHeaderProps {
   itemName: string;
-  cost: number;
+  cost: number | undefined;
   // Justification for disabling rules: This seems to be a false positive.
   // https://stackoverflow.com/q/63767199/
   // eslint-disable-next-line no-unused-vars
@@ -29,7 +29,7 @@ const ItemHeader = ({ itemName, cost }: ItemHeaderProps) => {
     <div className={styles.itemHeaderGroup}>
       <h1>{itemName}</h1>
       <div className={styles.price}>
-        <p>{cost}</p>
+        <p>{cost || 'Select Size Option First'}</p>
         <BlueDiamond />
       </div>
     </div>
