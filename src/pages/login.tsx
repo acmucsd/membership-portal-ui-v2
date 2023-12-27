@@ -1,6 +1,7 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
 import { config, showToast } from '@/lib';
+import { resendEmailVerification } from '@/lib/api/AuthAPI';
 import { AuthManager } from '@/lib/managers';
 import { CookieService, ValidationService } from '@/lib/services';
 import { URL } from '@/lib/types';
@@ -36,8 +37,9 @@ const LoginPage: NextPage<LoginProps> = ({ destination }) => {
           showToast('Account Not Verified', 'Click to resend a verification email', [
             {
               text: 'Send Email',
-              onClick: () => {
-                // TODO: Implement the API call to resend a verification email
+              onClick: async () => {
+                await resendEmailVerification(user.email);
+                showToast(`Verification email sent to ${user.email}!`);
               },
             },
           ]);
