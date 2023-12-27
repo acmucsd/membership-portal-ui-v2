@@ -1,11 +1,13 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
 import { config, showToast } from '@/lib';
+import { resendEmailVerification } from '@/lib/api/AuthAPI';
 import { AuthManager } from '@/lib/managers';
 import { CookieService, ValidationService } from '@/lib/services';
 import { URL } from '@/lib/types';
 import type { LoginRequest } from '@/lib/types/apiRequests';
-import { CookieType } from '@/lib/types/enums';
+import type { PrivateProfile } from '@/lib/types/apiResponses';
+import { CookieType, UserState } from '@/lib/types/enums';
 import { getMessagesFromError } from '@/lib/utils';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -30,7 +32,25 @@ const LoginPage: NextPage<LoginProps> = ({ destination }) => {
     AuthManager.login({
       email,
       password,
-      onSuccessCallback: () => router.push(destination),
+      onSuccessCallback: (user: PrivateProfile) => {
+        if (user.state === UserState.PENDING) {
+          showToast('Account Not Verified', 'Click to resend a verification email', [
+            {
+              text: 'Send Email',
+              onClick: async () => {
+                await resendEmailVerification(user.email);
+                showToast(`Verification email sent to ${user.email}!`);
+              },
+            },
+          ]);
+
+          CookieService.deleteClientCookie(CookieType.USER);
+
+          return;
+        }
+
+        router.push(destination);
+      },
       onFailCallback: error => {
         showToast('Unable to login', getMessagesFromError(error)[0]);
       },
