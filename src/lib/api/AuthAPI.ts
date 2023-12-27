@@ -1,13 +1,13 @@
 import { config } from '@/lib';
 import type { LoginRequest, PasswordResetRequest, UserRegistration } from '@/lib/types/apiRequests';
-import {
+import type {
+  LoginResponse,
+  PrivateProfile,
+  RegistrationResponse,
   ResendEmailVerificationResponse,
-  type LoginResponse,
-  type PrivateProfile,
-  type RegistrationResponse,
-  type ResetPasswordResponse,
-  type SendPasswordResetEmailResponse,
-  type VerifyEmailResponse,
+  ResetPasswordResponse,
+  SendPasswordResetEmailResponse,
+  VerifyEmailResponse,
 } from '@/lib/types/apiResponses';
 
 import axios from 'axios';
