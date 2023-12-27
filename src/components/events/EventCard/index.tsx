@@ -1,5 +1,4 @@
-import { Typography } from '@/components/common';
-import CommunityLogo from '@/components/common/CommunityLogo';
+import { CommunityLogo, Typography } from '@/components/common';
 import EventModal from '@/components/events/EventModal';
 import PointsDisplay from '@/components/events/PointsDisplay';
 import { PublicEvent } from '@/lib/types/apiResponses';
@@ -34,7 +33,7 @@ const EventCard = ({ event, attended }: EventCardProps) => {
         </div>
         <div className={styles.info}>
           <div className={styles.header}>
-            <CommunityLogo community={event.committee} width={50} />
+            <CommunityLogo community={event.committee} size={50} />
             <div className={styles.eventDetails}>
               <Typography
                 variant="body/medium"

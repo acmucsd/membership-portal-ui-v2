@@ -1,3 +1,5 @@
+@use 'src/styles/vars.scss' as vars;
+
 .options {
   align-items: center;
   display: flex;
@@ -27,7 +29,7 @@
   }
 }
 
-@media screen and (max-width: 60rem) {
+@media screen and (width <= vars.$breakpoint-md) {
   .options {
     flex-direction: row;
     flex-wrap: wrap;

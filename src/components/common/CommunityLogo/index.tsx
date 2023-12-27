@@ -8,21 +8,21 @@ import ACMLogo from '@/public/assets/acm-logos/general/light-mode.png';
 
 interface CommunityLogoProps {
   community: string;
-  width: number;
+  size: number;
 }
 
-const CommunityLogo = ({ community, width }: CommunityLogoProps) => {
+const CommunityLogo = ({ community, size }: CommunityLogoProps) => {
   switch (community.toLowerCase()) {
     case 'hack':
-      return <Image src={HackLogo} width={width} alt="ACM Hack Logo" />;
+      return <Image src={HackLogo} width={size} alt="ACM Hack Logo" />;
     case 'ai':
-      return <Image src={AILogo} width={width} alt="ACM AI Logo" />;
+      return <Image src={AILogo} width={size} alt="ACM AI Logo" />;
     case 'cyber':
-      return <Image src={CyberLogo} width={width} alt="ACM Cyber Logo" />;
+      return <Image src={CyberLogo} width={size} alt="ACM Cyber Logo" />;
     case 'design':
-      return <Image src={DesignLogo} width={width} alt="ACM Design Logo" />;
+      return <Image src={DesignLogo} width={size} alt="ACM Design Logo" />;
     default:
-      return <Image src={ACMLogo} width={width} alt="ACM General Logo" />;
+      return <Image src={ACMLogo} width={size} alt="ACM General Logo" />;
   }
 };
 

@@ -1,5 +1,6 @@
 .circle {
   align-items: center;
+  background-color: var(--theme-primary-4);
   border-radius: 50%;
   display: flex;
   height: 50px;
@@ -9,10 +10,6 @@
   top: 5%;
   width: 50px;
   z-index: 1;
-
-  &.blue {
-    background-color: var(--theme-primary-4);
-  }
 
   &.green {
     background-color: var(--theme-success-1);

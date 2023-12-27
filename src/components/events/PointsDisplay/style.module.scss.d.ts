@@ -1,5 +1,4 @@
 export type Styles = {
-  blue: string;
   circle: string;
   green: string;
   inner: string;

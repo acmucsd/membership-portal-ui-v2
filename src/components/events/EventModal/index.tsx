@@ -1,5 +1,4 @@
-import { Typography } from '@/components/common';
-import CommunityLogo from '@/components/common/CommunityLogo';
+import { CommunityLogo, Typography } from '@/components/common';
 import CalendarButtons from '@/components/events/CalendarButtons';
 import PointsDisplay from '@/components/events/PointsDisplay';
 import { PublicEvent } from '@/lib/types/apiResponses';
@@ -55,7 +54,7 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
         <div className={styles.contents}>
           <div className={styles.header}>
             <div className={styles.eventDetails}>
-              <CommunityLogo community={event.committee} width={100} />
+              <CommunityLogo community={event.committee} size={100} />
               <div>
                 <Typography
                   className={styles.eventTitle}

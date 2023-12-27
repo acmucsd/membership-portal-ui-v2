@@ -87,20 +87,11 @@
   }
 }
 
-@media screen and (max-width: 60rem) {
-  .modal {
-    padding: 2rem 0;
-
-    .modalBody {
-      .contents {
-        width: 100vw;
-      }
-    }
-  }
-
+@media screen and (width <= vars.$breakpoint-md) {
   .eventDetails {
     flex-wrap: wrap;
 
+    /* !important's are necessary here to override Typography's styling */
     .eventTitle {
       font-size: 1.5rem !important;
       line-height: 2rem !important;
@@ -115,5 +106,17 @@
   .header {
     flex-wrap: wrap;
     gap: 2.5rem;
+  }
+}
+
+@media screen and (width <= vars.$breakpoint-sm) {
+  .modal {
+    padding: 3rem 0;
+
+    .modalBody {
+      .contents {
+        width: 100vw;
+      }
+    }
   }
 }
