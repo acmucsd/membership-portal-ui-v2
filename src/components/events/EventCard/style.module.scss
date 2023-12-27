@@ -1,0 +1,44 @@
+.container {
+  background: transparent;
+  border: 1px solid var(--theme-primary-6);
+  border-radius: 10px;
+  -ms-overflow-style: none;
+  overflow-x: hidden;
+  padding: 0;
+  position: relative;
+  text-align: left;
+  transition: all 0.3s;
+  width: 20rem;
+
+  &:hover {
+    box-shadow: 0 0 8px var(--theme-primary-6);
+    transform: scale(1.025);
+  }
+
+  .image {
+    flex-shrink: 0;
+    height: 9.375rem;
+    overflow: none;
+    position: relative;
+    width: 20rem;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+
+    .header {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+
+      .eventDetails {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
+  }
+}
