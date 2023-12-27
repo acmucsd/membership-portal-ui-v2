@@ -70,11 +70,15 @@ export default function withAccessType(
     if (!validAccessTypes.includes(userAccessLevel)) return missingAccessRedirect;
 
     // If we haven't short-circuited, user has valid access. Show the page and add the user prop.
-
     const originalReturnValue = await gssp(context);
     // Insert the user object to the original return value if it doesn't exist already
-    if ('props' in originalReturnValue && !('user' in originalReturnValue.props))
-      originalReturnValue.props.user = user;
+    if ('props' in originalReturnValue) {
+      const existingProps = await Promise.resolve(originalReturnValue.props);
+      if (!existingProps.user) {
+        existingProps.user = user;
+        originalReturnValue.props = existingProps;
+      }
+    }
 
     return originalReturnValue;
   };
