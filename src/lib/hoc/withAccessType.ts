@@ -4,7 +4,6 @@ import { CookieService } from '@/lib/services';
 import type { URL } from '@/lib/types';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, UserAccessType } from '@/lib/types/enums';
-import * as _ from 'lodash';
 import type { GetServerSideProps, GetServerSidePropsContext } from 'next';
 /**
  * Redirects to login if user is not logged in and allowed to see the specified page
@@ -52,11 +51,15 @@ export default function withAccessType(
       return loginRedirect;
     }
 
+    let user: PrivateProfile = JSON.parse(userCookie);
+    let userAccessLevel = user.accessType;
+
     // If no user cookie, try to re-generate one
-    if (!userCookie) {
+    if (!userCookie || !userAccessLevel) {
       try {
-        const userObj = await UserAPI.getCurrentUser(authTokenCookie);
-        userCookie = JSON.stringify(userObj);
+        user = await UserAPI.getCurrentUser(authTokenCookie);
+        userAccessLevel = user.accessType;
+        userCookie = JSON.stringify(user);
         CookieService.setServerCookie(CookieType.USER, JSON.stringify(userCookie), { req, res });
       } catch (err: any) {
         return loginRedirect;
@@ -64,8 +67,7 @@ export default function withAccessType(
     }
 
     /* If the user does not have the right access, redirect as specified */
-    const user: PrivateProfile = JSON.parse(userCookie);
-    if (!validAccessTypes.includes(user.accessType)) return missingAccessRedirect;
+    if (!validAccessTypes.includes(userAccessLevel)) return missingAccessRedirect;
 
     // If we haven't short-circuited, user has valid access. Show the page and add the user prop.
     const propsWithUser = {
@@ -74,9 +76,11 @@ export default function withAccessType(
       },
     };
     const originalReturnValue = await gssp(context);
-    // Append user at the start of the originally defined props object so it can be overridden if necessary using deep merge and we don't delete the whole props object
-    const finalObj = _.merge(propsWithUser, originalReturnValue);
-    return finalObj;
+    // Insert the user object to the original return value if it doesn't exist already
+    if ('props' in originalReturnValue && !('user' in originalReturnValue.props))
+      originalReturnValue.props.user = user;
+
+    return originalReturnValue;
   };
   return modified;
 }
