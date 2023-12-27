@@ -4,6 +4,7 @@ import type {
   LoginResponse,
   PrivateProfile,
   RegistrationResponse,
+  ResendEmailVerificationResponse,
   ResetPasswordResponse,
   SendPasswordResetEmailResponse,
   VerifyEmailResponse,
@@ -45,6 +46,16 @@ export const sendPasswordResetEmail = async (email: string): Promise<void> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.auth.resetPassword}/${email}`;
 
   await axios.get<SendPasswordResetEmailResponse>(requestUrl);
+};
+
+/**
+ * Resend an email to verify the user's email address.
+ * @param {string} email The email address to send the password reset email to
+ */
+export const resendEmailVerification = async (email: string): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.auth.emailVerification}/${email}`;
+
+  await axios.get<ResendEmailVerificationResponse>(requestUrl);
 };
 
 /**
