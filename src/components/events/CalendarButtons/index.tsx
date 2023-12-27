@@ -87,7 +87,7 @@ const CalendarButtons = ({ event }: CalendarButtonProps) => {
       {generateAppleCalLink(
         event,
         <>
-          <AppleCalendarLogo alt="apple calendar" />
+          <AppleCalendarLogo className={styles.appleCalLogo} alt="apple calendar" />
           <Typography variant="h6/bold">Add to Apple Calendar</Typography>
         </>
       )}
