@@ -4,7 +4,6 @@ export type Styles = {
   header: string;
   image: string;
   info: string;
-  viewMore: string;
 };
 
 export type ClassNames = keyof Styles;

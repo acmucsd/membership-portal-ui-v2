@@ -65,6 +65,7 @@
       .header {
         display: flex;
         flex-direction: row;
+        gap: 1rem;
         justify-content: space-between;
 
         .eventDetails {
@@ -87,6 +88,16 @@
 }
 
 @media screen and (max-width: 60rem) {
+  .modal {
+    padding: 2rem 0;
+
+    .modalBody {
+      .contents {
+        width: 100vw;
+      }
+    }
+  }
+
   .eventDetails {
     flex-wrap: wrap;
 

@@ -17,10 +17,7 @@ const EventCard = ({ event, attended }: EventCardProps) => {
   const { cover, title, start, end, location } = event;
   const [expanded, setExpanded] = useState(false);
 
-  let displayCover = cover;
-  if (!displayCover) {
-    displayCover = '/assets/graphics/store/hero-photo.jpg';
-  }
+  const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
 
   return (
     <>
@@ -39,13 +36,25 @@ const EventCard = ({ event, attended }: EventCardProps) => {
           <div className={styles.header}>
             <CommunityLogo community={event.committee} width={50} />
             <div className={styles.eventDetails}>
-              <Typography variant="body/medium" style={{ fontWeight: 700 }}>
+              <Typography
+                variant="body/medium"
+                style={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis' }}
+              >
                 {title}
               </Typography>
-              <Typography variant="body/small" suppressHydrationWarning>
+              <Typography
+                variant="body/small"
+                style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+                suppressHydrationWarning
+              >
                 {formatEventDate(start, end)}
               </Typography>
-              <Typography variant="body/small">{location}</Typography>
+              <Typography
+                variant="body/small"
+                style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+              >
+                {location}
+              </Typography>
             </div>
           </div>
         </div>

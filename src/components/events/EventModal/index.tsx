@@ -20,15 +20,8 @@ interface EventModalProps {
 const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
   const { cover, title, start, end, location, description, eventLink } = event;
 
-  let displayCover = cover;
-  if (!displayCover) {
-    displayCover = '/assets/graphics/store/hero-photo.jpg';
-  }
-
-  let displayEventLink = eventLink;
-  if (!eventLink) {
-    displayEventLink = `https://acmucsd.com/events/${event.uuid}`;
-  }
+  const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
+  const displayEventLink = eventLink || `https://acmucsd.com/events/${event.uuid}`;
 
   const ref = useRef<HTMLDialogElement>(null);
 
