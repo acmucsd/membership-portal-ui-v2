@@ -1,5 +1,6 @@
 export type Styles = {
   calendarButton: string;
+  calendarLink: string;
   options: string;
 };
 
