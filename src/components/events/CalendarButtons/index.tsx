@@ -5,7 +5,7 @@ import { formatURLEventTitle } from '@/lib/utils';
 import AppleCalendarLogo from '@/public/assets/icons/applecalendar.svg';
 import GoogleCalendarLogo from '@/public/assets/icons/googlecalendar.svg';
 import * as ics from 'ics';
-import { ReactNode } from 'react';
+import { useMemo } from 'react';
 import styles from './style.module.scss';
 
 /**
@@ -25,11 +25,17 @@ const generateGCalURL = ({ title, description, location, start, end }: PublicEve
   return GCAL_URL;
 };
 
+interface AppleCalInfo {
+  href?: string;
+  download?: string;
+  error?: string;
+}
+
 /**
- * Generates an <a> component that downloads the Apple Calendar .ics file to the user's computer.
- * If an error occurs during .ics file generation, shows an error toast instead.
+ * Generates info for a Apple Calendar .ics download file.
+ * If an error occurs during .ics file generation, returns undefined.
  */
-const generateAppleCalLink = (event: PublicEvent, children: ReactNode) => {
+const generateAppleCalInfo = (event: PublicEvent): AppleCalInfo => {
   const startDate = new Date(event.start);
   const endDate = new Date(event.end);
   const duration = endDate.getTime() - startDate.getTime();
@@ -57,19 +63,10 @@ const generateAppleCalLink = (event: PublicEvent, children: ReactNode) => {
     const file = new Blob([response.value], { type: 'text/calendar' });
     const href = URL.createObjectURL(file);
     const download = `${formatURLEventTitle(event.title)}.ics`;
-    return (
-      <a className={styles.calendarLink} href={href} download={download}>
-        {children}
-      </a>
-    );
+    return { href, download };
   }
-  const errorMessage =
-    response.error?.message || 'An error occurred when saving to Apple Calendar.';
-  return (
-    <button type="button" className={styles.calendarLink} onClick={() => showToast(errorMessage)}>
-      {children}
-    </button>
-  );
+  const error = response.error?.message;
+  return { error };
 };
 
 interface CalendarButtonProps {
@@ -77,19 +74,35 @@ interface CalendarButtonProps {
 }
 
 const CalendarButtons = ({ event }: CalendarButtonProps) => {
-  const gCalURL = generateGCalURL(event);
+  const gCalURL = useMemo(() => generateGCalURL(event), [event]);
+  const appleCalInfo: AppleCalInfo = generateAppleCalInfo(event);
+
   return (
     <div className={styles.options}>
       <a className={styles.calendarLink} href={gCalURL} target="blank">
         <GoogleCalendarLogo alt="google calendar" />
         <Typography variant="h6/bold">Add to Google Calendar</Typography>
       </a>
-      {generateAppleCalLink(
-        event,
-        <>
+      {appleCalInfo.download ? (
+        <a
+          className={styles.calendarLink}
+          href={appleCalInfo.href}
+          download={appleCalInfo.download}
+        >
           <AppleCalendarLogo className={styles.appleCalLogo} alt="apple calendar" />
           <Typography variant="h6/bold">Add to Apple Calendar</Typography>
-        </>
+        </a>
+      ) : (
+        <button
+          type="button"
+          className={styles.calendarLink}
+          onClick={() =>
+            showToast(appleCalInfo.error || 'An error occurred when saving to Apple Calendar.')
+          }
+        >
+          <AppleCalendarLogo className={styles.appleCalLogo} alt="apple calendar" />
+          <Typography variant="h6/bold">Add to Apple Calendar</Typography>
+        </button>
       )}
     </div>
   );
