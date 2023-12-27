@@ -2,7 +2,7 @@ import { useEffect, useId, useState } from 'react';
 import styles from './style.module.scss';
 
 interface AddCartButtonProps {
-  currSize: 'S' | 'M' | 'L' | 'XL' | undefined;
+  currSize: string | undefined;
   // Justification for disabling rules: This seems to be a false positive.
   // https://stackoverflow.com/q/63767199/
   // eslint-disable-next-line no-unused-vars
@@ -24,7 +24,7 @@ const AddCartButton = ({ currSize, inStock, inCart, setInCart }: AddCartButtonPr
   const currAltText = `TODO`;
 
   useEffect(() => {
-    console.log(`currSize ${currSize} inStock ${inStock} inCart ${inCart}`);
+    // console.log(`currSize ${currSize} inStock ${inStock} inCart ${inCart}`);
     setMounted(true);
   }, []);
 

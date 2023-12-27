@@ -18,24 +18,36 @@ interface ItemPageProps {
   item: PublicMerchItemWithPurchaseLimits;
 }
 const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
-  const [size, setSize] = useState<'S' | 'M' | 'L' | 'XL'>();
-  const [inCart, setInCart] = useState<boolean>(false);
-  const [inStock, setInStock] = useState<boolean>(false);
   console.log(item.options.length);
-  item.options.forEach(val => {
-    console.log(val);
-  });
+  const [size, setSize] = useState<string | undefined>(item.options.length <= 1 ? 'Y' : undefined);
+  const [inCart, setInCart] = useState<boolean>(false);
+  // const [inStock, setInStock] = useState<boolean>(false);
+  console.log(size);
+  // item.options.forEach(val => {
+  //   console.log(val);
+  // });
 
-  const currOption = item.options[item.options.findIndex(val => val.metadata.value === size)];
-  console.log(currOption);
+  const currOption =
+    item.options.length <= 1
+      ? item.options[0]
+      : item.options[item.options.findIndex(val => val.metadata?.value === size)];
+  // console.log(currOption);
 
   return (
     <div className={styles.container}>
       <Navbar balance={credits} showBack />
       <h1>Store Item Page {size}</h1>
+      {item.options.length > 1 && (
+        <SizeSelector currSize={size} setSize={setSize} options={item.options} />
+      )}
       <ItemHeader itemName={item.itemName} cost={currOption?.price} />
-      <SizeSelector currSize={size} setSize={setSize} />
-      <AddCartButton inCart={inCart} setInCart={setInCart} currSize={size} inStock={inStock} />
+
+      <AddCartButton
+        inCart={inCart}
+        setInCart={setInCart}
+        currSize={size}
+        inStock={currOption?.quantity != null && currOption?.quantity >= 1}
+      />
     </div>
   );
 };
