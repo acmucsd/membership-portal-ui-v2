@@ -33,7 +33,7 @@ const EventCard = ({ event, attended }: EventCardProps) => {
       <button type="button" className={styles.container} onClick={() => setExpanded(true)}>
         <div className={styles.image}>
           <PointsDisplay points={event.pointValue} attended={attended} />
-          <Image src={displayCover} alt="Event Cover Image" layout="fill" objectFit="cover" />
+          <Image src={displayCover} alt="Event Cover Image" style={{ objectFit: 'cover' }} fill />
         </div>
         <div className={styles.info}>
           <div className={styles.header}>

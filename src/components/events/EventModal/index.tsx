@@ -57,7 +57,7 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
       <form method="dialog" className={styles.modalBody}>
         <div className={styles.image}>
           <PointsDisplay points={event.pointValue} attended={attended} />
-          <Image src={displayCover} alt="Event Cover Image" layout="fill" objectFit="cover" />
+          <Image src={displayCover} alt="Event Cover Image" style={{ objectFit: 'cover' }} fill />
         </div>
         <div className={styles.contents}>
           <div className={styles.header}>
@@ -90,7 +90,7 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
           <Typography variant="body/medium">{description}</Typography>
           <Link className={styles.link} href={displayEventLink}>
             <div style={{ width: 11 }}>
-              <LinkIcon aria="Link" />
+              <LinkIcon role="link" />
             </div>
             <Typography
               variant="body/medium"
