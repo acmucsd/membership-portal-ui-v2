@@ -1,6 +1,5 @@
 import { Dropdown, Typography } from '@/components/common';
-import { Navbar } from '@/components/store';
-import OrdersDisplay from '@/components/store/OrdersDisplay';
+import { Navbar, OrdersDisplay } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';

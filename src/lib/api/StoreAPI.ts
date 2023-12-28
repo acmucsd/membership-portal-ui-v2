@@ -1,6 +1,5 @@
-/* eslint-disable import/prefer-default-export */
 import { config } from '@/lib';
-import {
+import type {
   GetAllMerchCollectionsResponse,
   GetMerchOrdersResponse,
   PublicMerchCollection,
