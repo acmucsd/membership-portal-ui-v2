@@ -19,7 +19,8 @@ const orderInFilter = (order: PublicOrder, filter: string): boolean => {
   const lastDay = new Date();
   if (filter === 'all-time') {
     return true;
-  } else if (filter === 'past-30-days') {
+  }
+  if (filter === 'past-30-days') {
     lastDay.setDate(lastDay.getDate() - 30);
   } else if (filter === 'past-3-months') {
     lastDay.setMonth(lastDay.getMonth() - 3);
@@ -28,14 +29,13 @@ const orderInFilter = (order: PublicOrder, filter: string): boolean => {
   } else if (filter === 'past-year') {
     lastDay.setFullYear(lastDay.getFullYear() - 1);
   }
-  console.log(lastDay);
   return order.orderedAt >= lastDay;
 };
 
 const StoreOrderPage = ({ user: { credits }, orders }: OrderPageProps) => {
   const [filter, setFilter] = useState('past-6-months');
 
-  let filteredOrders = orders.filter(o => orderInFilter(o, filter));
+  const filteredOrders = orders.filter(o => orderInFilter(o, filter));
 
   return (
     <div className={styles.page}>
