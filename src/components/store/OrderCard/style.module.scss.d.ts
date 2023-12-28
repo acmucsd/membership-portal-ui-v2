@@ -1,8 +1,12 @@
 export type Styles = {
+  blue: string;
   container: string;
-  filter: string;
-  header: string;
-  page: string;
+  gray: string;
+  green: string;
+  label: string;
+  orderInfo: string;
+  orderStatus: string;
+  red: string;
 };
 
 export type ClassNames = keyof Styles;

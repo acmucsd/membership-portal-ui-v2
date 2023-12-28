@@ -80,16 +80,34 @@ export const getUserRank = (user: PublicProfile): string => {
  */
 export const isSrcAGif = (src: string): boolean => /\.gif($|&)/.test(src);
 
-const rangeFormat = new Intl.DateTimeFormat('en-US', {
+const dateFormat = new Intl.DateTimeFormat('en-US', {
   month: 'short',
   day: 'numeric',
   hour: 'numeric',
   minute: '2-digit',
 });
 
-export const formatEventDate = (start: string, end: string): string => {
+const dateFormatWithYear = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+});
+
+export const formatDate = (date: Date | string, year?: boolean): string => {
+  const format = year ? dateFormatWithYear : dateFormat;
+  return format.format(new Date(date));
+};
+
+export const formatEventDate = (
+  start: Date | string,
+  end: Date | string,
+  year?: boolean
+): string => {
+  const format = year ? dateFormatWithYear : dateFormat;
   try {
-    return rangeFormat.formatRange(new Date(start), new Date(end));
+    return format.formatRange(new Date(start), new Date(end));
   } catch {
     return `Invalid date range: ${new Date(start)}, ${new Date(end)}`;
   }
