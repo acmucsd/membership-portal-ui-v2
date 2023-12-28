@@ -8,7 +8,7 @@ interface EventDisplayProps {
 }
 
 const EventDisplay = ({ events, attendances }: EventDisplayProps) => {
-  const displayedEvents = events;
+  const displayedEvents = events.slice(0, Math.min(20, events.length));
   return (
     <div className={styles.container}>
       {displayedEvents.map(event => (
