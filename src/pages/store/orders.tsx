@@ -29,7 +29,7 @@ const orderInFilter = (order: PublicOrder, filter: string): boolean => {
   } else if (filter === 'past-year') {
     lastDay.setFullYear(lastDay.getFullYear() - 1);
   }
-  return order.orderedAt >= lastDay;
+  return new Date(order.orderedAt) >= lastDay;
 };
 
 const StoreOrderPage = ({ user: { credits }, orders }: OrderPageProps) => {
