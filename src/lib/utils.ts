@@ -79,3 +79,22 @@ export const getUserRank = (user: PublicProfile): string => {
  * @returns whether or not the source is a gif
  */
 export const isSrcAGif = (src: string): boolean => /\.gif($|&)/.test(src);
+
+const rangeFormat = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+});
+
+export const formatEventDate = (start: string, end: string): string => {
+  try {
+    return rangeFormat.formatRange(new Date(start), new Date(end));
+  } catch {
+    return `Invalid date range: ${new Date(start)}, ${new Date(end)}`;
+  }
+};
+
+export const formatURLEventTitle = (title: string): string => {
+  return encodeURIComponent(title.toLowerCase().trim().replace(/ /g, '-'));
+};

@@ -130,9 +130,9 @@ const v2WeightedSizes: Record<V2WeightedStyle, Record<V2Size, string>> = {
     small: '2.875rem',
   },
   headline: {
-    large: '2.5625rem',
-    medium: '2.25rem',
-    small: '2.625rem',
+    large: '2.625rem',
+    medium: '2.5625rem',
+    small: '2.25rem',
   },
 };
 
