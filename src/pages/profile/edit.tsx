@@ -69,7 +69,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
   const hasChange =
     firstName !== user.firstName ||
     lastName !== user.lastName ||
-    handle !== user.uuid ||
+    handle !== user.handle ||
     email !== user.email ||
     major !== user.major ||
     +graduationYear !== user.graduationYear ||
@@ -111,7 +111,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
               if (
                 firstName !== user.firstName ||
                 lastName !== user.lastName ||
-                handle !== user.uuid ||
+                handle !== user.handle ||
                 email !== user.email ||
                 major !== user.major ||
                 +graduationYear !== user.graduationYear ||
@@ -464,7 +464,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
             }}
             onClose={reason => {
               setPfp(null);
-              if (reason === 'image-error') {
+              if (reason !== null) {
                 showToast('This image format is not supported.');
               }
             }}

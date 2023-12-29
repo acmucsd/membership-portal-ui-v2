@@ -1,8 +1,10 @@
 import Modal from '@/components/common/Modal';
+import { useObjectUrl } from '@/lib/utils';
 import Image from 'next/image';
-import { PointerEvent, useEffect, useRef, useState } from 'react';
+import { PointerEvent, useRef, useState } from 'react';
 import styles from './style.module.scss';
 
+/** Height of the preview square. */
 const HEIGHT = 200;
 
 type DragState = {
@@ -20,34 +22,22 @@ interface CropperProps {
   maxFileHeight: number;
   // eslint-disable-next-line no-unused-vars
   onUpload: (file: Blob) => void;
-  onClose: (reason: 'image-error' | null) => void;
+  // eslint-disable-next-line no-unused-vars
+  onClose: (reason: 'invalid-image' | null) => void;
 }
 
 const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }: CropperProps) => {
   const WIDTH = HEIGHT * aspectRatio;
 
-  const [url, setUrl] = useState('');
+  const url = useObjectUrl(file);
   const image = useRef<HTMLImageElement>(null);
+  const [loaded, setLoaded] = useState(file);
   const [left, setLeft] = useState(0);
   const [top, setTop] = useState(0);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [scale, setScale] = useState(1);
   const dragState = useRef<DragState | null>(null);
-
-  useEffect(() => {
-    if (!file) {
-      return () => {};
-    }
-    const url = URL.createObjectURL(file);
-    setUrl(url);
-    setWidth(0);
-    setHeight(0);
-    setScale(1);
-    return () => {
-      URL.revokeObjectURL(url);
-    };
-  }, [file]);
 
   const handlePointerEnd = (e: PointerEvent<HTMLElement>) => {
     if (dragState.current?.pointerId === e.pointerId) {
@@ -56,7 +46,7 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
   };
 
   return (
-    <Modal title="Edit image" open={file !== null} onClose={() => onClose(null)}>
+    <Modal title="Edit image" open={loaded === file && file !== null} onClose={() => onClose(null)}>
       <div
         className={styles.cropWrapper}
         onPointerDown={e => {
@@ -101,11 +91,13 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
                 // Default to centering the image
                 setLeft((WIDTH - width) / 2);
                 setTop((HEIGHT - height) / 2);
+                setScale(1);
+                setLoaded(file);
               }
             }}
             onError={() => {
               if (file !== null) {
-                onClose('image-error');
+                onClose('invalid-image');
               }
             }}
             ref={image}

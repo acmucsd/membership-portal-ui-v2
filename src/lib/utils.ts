@@ -1,6 +1,7 @@
 import defaultProfilePictures from '@/lib/constants/profilePictures';
-import { URL } from '@/lib/types';
+import type { URL } from '@/lib/types';
 import type { CustomErrorBody, PublicProfile, ValidatorError } from '@/lib/types/apiResponses';
+import { useEffect, useState } from 'react';
 
 /**
  * Get next `num` years from today in a number array to generate dropdown options for future selections
@@ -79,3 +80,27 @@ export const getUserRank = (user: PublicProfile): string => {
  * @returns whether or not the source is a gif
  */
 export const isSrcAGif = (src: string): boolean => /\.gif($|&)/.test(src);
+
+/**
+ * A React hook for calling `URL.createObjectURL` on the given file. Avoids
+ * re-generating the URL on re-render, and frees memory by revoking the old URL
+ * when unmounted or the file changes.
+ * @param file - `File` or `Blob` object to create a URL for.
+ * @returns The object URL. Defaults an empty string if `file` is empty.
+ */
+export function useObjectUrl(file?: Blob | null): string {
+  const [url, setUrl] = useState('');
+
+  useEffect(() => {
+    if (!file) {
+      return () => {};
+    }
+    const url = URL.createObjectURL(file);
+    setUrl(url);
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [file]);
+
+  return url;
+}
