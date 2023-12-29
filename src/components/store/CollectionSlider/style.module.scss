@@ -13,32 +13,10 @@
   .description {
     margin: 0;
   }
+}
 
-  .slider {
-    display: flex;
-    gap: 2rem;
-    margin: 0 -1rem;
-    overflow-x: auto;
-    padding: 1rem;
-    scrollbar-color: var(--theme-primary-2) var(--theme-primary-1);
-
-    &::-webkit-scrollbar {
-      background-color: var(--theme-primary-1);
-      border: 1rem solid var(--theme-background);
-      border-radius: 3rem;
-      height: 2.75rem;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: var(--theme-primary-2);
-      border: 1rem solid var(--theme-background);
-      border-radius: 3rem;
-    }
-
-    .card {
-      flex: none;
-      max-width: calc(100vw - 6rem);
-      width: 25rem;
-    }
-  }
+.card {
+  flex: none;
+  max-width: calc(100vw - 6rem);
+  width: 25rem;
 }

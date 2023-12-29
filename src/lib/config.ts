@@ -68,6 +68,7 @@ const config = {
     breakpointMd: 768,
   },
   homeRoute: '/',
+  eventsRoute: '/events',
   loginRoute: '/login',
   leaderboardRoute: '/leaderboard',
   userProfileRoute: '/u/',

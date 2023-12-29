@@ -1,7 +1,8 @@
 export type Styles = {
   card: string;
-  description: string;
-  title: string;
+  header: string;
+  headerText: string;
+  viewToggle: string;
   wrapper: string;
 };
 

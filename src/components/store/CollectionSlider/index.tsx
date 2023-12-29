@@ -1,3 +1,4 @@
+import { Carousel } from '@/components/common';
 import ItemCard from '@/components/store/ItemCard';
 import { config } from '@/lib';
 import { PublicMerchItem } from '@/lib/types/apiResponses';
@@ -15,7 +16,7 @@ const CollectionSlider = ({ title, description, items }: CollectionSliderProps) 
     <div className={styles.wrapper}>
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.description}>{description}</p>
-      <div className={styles.slider}>
+      <Carousel>
         {items.map(item => (
           <ItemCard
             className={styles.card}
@@ -26,7 +27,7 @@ const CollectionSlider = ({ title, description, items }: CollectionSliderProps) 
             key={item.uuid}
           />
         ))}
-      </div>
+      </Carousel>
     </div>
   );
 };
