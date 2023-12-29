@@ -51,7 +51,7 @@ const PortalHomePage = ({
         <EventCarousel
           title="Past Events"
           description="Take a look at some of ACM's past events!"
-          events={pastEvents.slice(0, 20)}
+          events={pastEvents.slice(0, 10)} // Slicing past events so the carousel doesn't balloon.
           attendances={attendances}
         />
       )}
