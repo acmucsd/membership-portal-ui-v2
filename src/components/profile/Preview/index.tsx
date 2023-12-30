@@ -31,8 +31,8 @@ const Preview = ({ user, pfpCacheBust }: PreviewProps) => {
         className={styles.pfp}
         src={getProfilePicture(user) + (pfpCacheBust !== -1 ? `?_=${pfpCacheBust}` : '')}
         alt="Profile picture"
-        width={125}
-        height={125}
+        width={90}
+        height={90}
         unoptimized={isSrcAGif(user.profilePicture)}
       />
       <Typography variant="h2/bold" component="p">
