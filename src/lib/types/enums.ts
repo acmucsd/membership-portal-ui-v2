@@ -84,15 +84,6 @@ export enum OrderStatus {
   PICKUP_CANCELLED = 'PICKUP_CANCELLED',
 }
 
-export const orderStatusName: { [_ in OrderStatus]: string } = {
-  [OrderStatus.FULFILLED]: 'Fulfilled',
-  [OrderStatus.CANCELLED]: 'Cancelled',
-  [OrderStatus.PLACED]: 'Placed',
-  [OrderStatus.PARTIALLY_FULFILLED]: 'Partially Fulfilled',
-  [OrderStatus.PICKUP_MISSED]: 'Pickup Missed',
-  [OrderStatus.PICKUP_CANCELLED]: 'Pickup Cancelled',
-};
-
 export enum OrderPickupEventStatus {
   ACTIVE = 'ACTIVE',
   CANCELLED = 'CANCELLED',

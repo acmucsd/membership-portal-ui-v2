@@ -5,7 +5,7 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicOrder } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import styles from '@/styles/pages/store/orders/index.module.scss';
+import styles from '@/styles/pages/StoreOrders.module.scss';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 

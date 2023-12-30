@@ -1,8 +1,17 @@
 import { Typography } from '@/components/common';
 import { PublicOrder } from '@/lib/types/apiResponses';
-import { OrderStatus, orderStatusName } from '@/lib/types/enums';
+import { OrderStatus } from '@/lib/types/enums';
 import { formatDate, formatEventDate } from '@/lib/utils';
 import styles from './style.module.scss';
+
+export const orderStatusName: { [_ in OrderStatus]: string } = {
+  [OrderStatus.FULFILLED]: 'Fulfilled',
+  [OrderStatus.CANCELLED]: 'Cancelled',
+  [OrderStatus.PLACED]: 'Placed',
+  [OrderStatus.PARTIALLY_FULFILLED]: 'Partially Fulfilled',
+  [OrderStatus.PICKUP_MISSED]: 'Pickup Missed',
+  [OrderStatus.PICKUP_CANCELLED]: 'Pickup Cancelled',
+};
 
 export const orderStatusColor: { [_ in OrderStatus]: string } = {
   // Green: Order completed and picked up.

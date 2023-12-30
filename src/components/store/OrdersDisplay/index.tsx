@@ -1,6 +1,6 @@
 import { Typography } from '@/components/common';
-import OrderCard from '@/components/store/OrderCard';
 import { PublicOrder } from '@/lib/types/apiResponses';
+import OrderCard from '../OrderCard';
 import styles from './style.module.scss';
 
 interface OrdersDisplayProps {
