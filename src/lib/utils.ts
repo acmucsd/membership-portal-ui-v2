@@ -76,6 +76,15 @@ export const getProfilePicture = (user: PublicProfile): URL => {
   return path;
 };
 
+/**
+ * Retrieves the level from the number of points.
+ * @param {number} points The number of the points the user has.
+ * @return {number} The current level of the user.
+ */
+export const getLevel = (points: number): number => {
+  return Math.floor(points / 100) + 1;
+};
+
 // TODO: Define all ranks and logic for this
 export const getUserRank = (user: PublicProfile): string => {
   const ranks = ['Polynomial Pita', 'Factorial Flatbread'];

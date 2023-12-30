@@ -9,6 +9,7 @@ import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getMessagesFromError, getProfilePicture, isSrcAGif } from '@/lib/utils';
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
+import DropdownIcon from '@/public/assets/icons/dropdown-arrow-1.svg';
 import styles from '@/styles/pages/profile/edit.module.scss';
 import { AxiosError } from 'axios';
 import type { GetServerSideProps } from 'next';
@@ -158,6 +159,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
             <details open>
               <summary>
                 <h2>Basic Info</h2>
+                <DropdownIcon />
               </summary>
               <div className={styles.section}>
                 <EditBlock title="Profile Photo">
@@ -235,6 +237,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
             <details open>
               <summary>
                 <h2>Account Management</h2>
+                <DropdownIcon />
               </summary>
               <div className={styles.section}>
                 <EditField
@@ -279,6 +282,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
             <details open>
               <summary>
                 <h2>About Me</h2>
+                <DropdownIcon />
               </summary>
               <div className={styles.section}>
                 <EditField
@@ -385,6 +389,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
             <details open>
               <summary>
                 <h2>External Links</h2>
+                <DropdownIcon />
               </summary>
               <div className={styles.section}>
                 <EditField

@@ -1,4 +1,10 @@
 export type Styles = {
+  bio: string;
+  faded: string;
+  major: string;
+  pfp: string;
+  stat: string;
+  stats: string;
   wrapper: string;
 };
 

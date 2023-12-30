@@ -7,11 +7,6 @@ import styles from './style.module.scss';
 /** Height of the preview square. */
 const HEIGHT = 200;
 
-type CropState = {
-  left: number;
-  top: number;
-  scale: number;
-};
 type DragState = {
   pointerId: number;
   offsetX: number;

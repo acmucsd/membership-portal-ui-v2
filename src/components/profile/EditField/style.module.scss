@@ -76,6 +76,7 @@
 
         &:is(textarea) {
           height: 10rem;
+          line-height: 1.5;
           padding: 1rem;
           resize: vertical;
           @media (max-width: vars.$breakpoint-md) {
