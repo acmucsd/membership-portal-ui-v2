@@ -18,14 +18,6 @@ import Link from 'next/link';
 import { useEffect, useId, useMemo, useState } from 'react';
 import { BsDiscord, BsFacebook, BsGithub, BsInstagram, BsLinkedin } from 'react-icons/bs';
 
-/**
- * Forces the server to re-generate the user cookie. The server does this in
- * `withAccessType.ts:58`.
- */
-function regenerateUser() {
-  CookieService.setClientCookie(CookieType.USER, '');
-}
-
 function reportError(title: string, error: unknown) {
   if (error instanceof AxiosError && error.response?.data?.error) {
     showToast(title, getMessagesFromError(error.response.data.error).join('\n\n'));
@@ -43,6 +35,12 @@ interface EditProfileProps {
 
 const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
   const [user, setUser] = useState(initUser);
+
+  useEffect(() => {
+    if (user !== initUser) {
+      CookieService.setClientCookie(CookieType.USER, JSON.stringify(user));
+    }
+  }, [user, initUser]);
 
   const pfpUploadId = useId();
   const [pfp, setPfp] = useState<File | null>(null);
@@ -135,21 +133,22 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 newPassword.length > 0
               ) {
                 try {
-                  setUser(
-                    await UserAPI.updateCurrentUser(authToken, {
-                      firstName: firstName !== user.firstName ? firstName : undefined,
-                      lastName: lastName !== user.lastName ? lastName : undefined,
-                      handle: handle !== user.handle ? handle : undefined,
-                      major: major !== user.major ? major : undefined,
-                      graduationYear:
-                        +graduationYear !== user.graduationYear ? +graduationYear : undefined,
-                      bio: bio !== user.bio ? bio : undefined,
-                      passwordChange:
-                        newPassword.length > 0
-                          ? { password, newPassword, confirmPassword }
-                          : undefined,
-                    })
-                  );
+                  const newUser = await UserAPI.updateCurrentUser(authToken, {
+                    firstName: firstName !== user.firstName ? firstName : undefined,
+                    lastName: lastName !== user.lastName ? lastName : undefined,
+                    handle: handle !== user.handle ? handle : undefined,
+                    major: major !== user.major ? major : undefined,
+                    graduationYear:
+                      +graduationYear !== user.graduationYear ? +graduationYear : undefined,
+                    bio: bio !== user.bio ? bio : undefined,
+                    passwordChange:
+                      newPassword.length > 0
+                        ? { password, newPassword, confirmPassword }
+                        : undefined,
+                  });
+                  // Doesn't include the `resumes` field, so we need to preserve
+                  // it
+                  setUser(user => ({ ...user, ...newUser }));
                   changed = true;
                 } catch (error) {
                   reportError('Changes failed to save', error);
@@ -165,7 +164,6 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 }
               }
               if (changed) {
-                regenerateUser();
                 showToast('Changes saved!');
               }
             }}
@@ -342,7 +340,6 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                             try {
                               await ResumeAPI.deleteResume(authToken, resume.uuid);
                               setResumes(resumes.filter(({ uuid }) => uuid !== resume.uuid));
-                              regenerateUser();
                               showToast('Successfully deleted resume!');
                             } catch (error) {
                               reportError('Failed to delete resume', error);
@@ -374,7 +371,6 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                               // previous resume with the new one.
                               // https://github.com/acmucsd/membership-portal/blob/a45a68833854068aa3a6cceee59700f84114c308/api/controllers/ResumeController.ts#L45-L46
                               setResumes([resume]);
-                              regenerateUser();
                               showToast('Resume uploaded!');
                             }
                           } catch (error) {
@@ -473,10 +469,13 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
             maxFileHeight={256}
             onUpload={async file => {
               try {
-                setUser(await UserAPI.uploadProfilePicture(authToken, file));
+                const newUser = await UserAPI.uploadProfilePicture(authToken, file);
+                setUser(user => ({ ...user, ...newUser }));
                 setPfpCacheBust(Date.now());
-                regenerateUser();
-                showToast('Profile photo uploaded!');
+                showToast(
+                  'Profile photo uploaded!',
+                  'The changes may take some time to show up on the website.'
+                );
                 setPfp(null);
               } catch (error) {
                 reportError('Photo failed to upload', error);
