@@ -87,17 +87,18 @@
   .columns {
     display: flex;
 
-    .columnLeft,
-    .columnRight {
-      padding: 2rem;
-    }
-
     .columnLeft {
       border-right: 0.5px solid vars.$light-primary-2;
+      margin-right: 2rem;
+      padding: 2rem;
       padding-left: 0;
 
       h2 {
         text-align: center;
+      }
+
+      @media (max-width: vars.$breakpoint-lg) {
+        display: none;
       }
     }
 
@@ -106,7 +107,7 @@
       flex: auto;
       flex-direction: column;
       gap: 2.75rem;
-      padding-right: 0;
+      padding: 2rem 0;
 
       .section {
         display: flex;
@@ -123,6 +124,10 @@
           border-radius: 1rem;
           display: flex;
           gap: 3rem;
+          @media (max-width: vars.$breakpoint-md) {
+            gap: 0;
+            justify-content: space-between;
+          }
 
           &.dropOver {
             background-color: var(--theme-shadow);
@@ -177,6 +182,9 @@
         display: flex;
         gap: 1rem;
         justify-content: flex-end;
+        @media (max-width: vars.$breakpoint-md) {
+          justify-content: center;
+        }
       }
     }
   }

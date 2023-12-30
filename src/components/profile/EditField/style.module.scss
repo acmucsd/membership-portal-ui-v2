@@ -2,6 +2,11 @@
 
 .field {
   display: flex;
+  gap: 0.5rem;
+
+  @media (max-width: vars.$breakpoint-md) {
+    flex-direction: column;
+  }
 
   .label {
     display: flex;
@@ -9,10 +14,19 @@
     font-size: 1.375rem;
     font-weight: normal;
     width: 12rem;
+
+    @media (max-width: vars.$breakpoint-md) {
+      font-size: 1rem;
+      font-weight: bold;
+    }
   }
 
   &.hasIcon {
     align-items: center;
+
+    @media (max-width: vars.$breakpoint-md) {
+      align-items: stretch;
+    }
 
     .label {
       align-items: center;
@@ -52,6 +66,9 @@
         font: inherit;
         padding: 0.5rem 1rem;
         width: 0;
+        @media (max-width: vars.$breakpoint-md) {
+          padding: 0.5rem 0.75rem;
+        }
 
         &::placeholder {
           color: vars.$light-text-on-background-2;
@@ -61,6 +78,9 @@
           height: 10rem;
           padding: 1rem;
           resize: vertical;
+          @media (max-width: vars.$breakpoint-md) {
+            padding: 0.75rem;
+          }
         }
       }
     }
@@ -71,12 +91,17 @@
 
       .singleLabel {
         padding: 5px 0;
+
+        @media (max-width: vars.$breakpoint-md) {
+          font-size: 0.8rem;
+        }
       }
     }
 
     .info {
       align-items: center;
       display: flex;
+      gap: 1rem;
 
       .description {
         font-size: 0.875rem;

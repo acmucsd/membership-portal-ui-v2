@@ -1,5 +1,5 @@
 import { Cropper } from '@/components/common';
-import { EditBlock, EditField, SingleField, Switch } from '@/components/profile';
+import { EditBlock, EditField, Preview, SingleField, Switch } from '@/components/profile';
 import { config, showToast } from '@/lib';
 import { AuthAPI, ResumeAPI, UserAPI } from '@/lib/api';
 import majors from '@/lib/constants/majors.json';
@@ -101,6 +101,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
         <div className={styles.columns}>
           <section className={styles.columnLeft}>
             <h2>Current Profile</h2>
+            <Preview user={user} pfpCacheBust={pfpCacheBust} />
           </section>
           <form
             className={styles.columnRight}
