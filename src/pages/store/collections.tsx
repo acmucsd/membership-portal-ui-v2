@@ -1,19 +1,27 @@
-import { ItemCard } from '@/components/store';
+import { Navbar } from '@/components/store';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
+import { PublicMerchCollection } from '@/lib/types/apiResponses';
+import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
 
-const CollectionsPage = () => {
+interface CollectionProps {
+  collection: PublicMerchCollection;
+}
+
+/* component for each row, one collection = one row
+component for each item 
+for each collection: map it into a row
+for each row: map merch items in
+*/
+const CollectionsPage = ({ collection: { title, description } }: CollectionProps) => {
   return (
-    <div>
-      <h1>The Cozy Collection</h1>
-      <p> Sweaters, hoodies, and everything you need to stay warm on a cold night. </p>
-      <ItemCard
-        image="@/public/assets/graphics/cat404.png"
-        title="The Cozy Collection"
-        href="/store/collection/05b4bd51-4c0c-4c41-a2c7-d9202eeace8c"
-        description="Warm hoodies and sweaters to keep you warm in the chilly weather!"
-      />
+    <div className={styles.container}>
+      <Navbar balance={0} />
+      <div className={styles.header}>
+        <h2 className={styles.heading}>`${title}`</h2>
+        <p>`${description}`</p>
+      </div>
     </div>
   );
 };
