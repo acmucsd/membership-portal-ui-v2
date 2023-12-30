@@ -1,0 +1,42 @@
+@use 'src/styles/vars.scss' as vars;
+
+.options {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.calendarLink {
+  align-items: center;
+  border: 1px solid var(--theme-primary-2);
+  border-radius: 10px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+  padding: 0.75rem;
+  transition: all 0.2s;
+  width: 14.5rem;
+
+  &:hover {
+    background: var(--theme-primary-2);
+  }
+}
+
+[data-theme='light'] {
+  .appleCalLogo {
+    filter: drop-shadow(0 0 2px rgb(0 0 0 / 0.25));
+  }
+}
+
+@media screen and (width <= vars.$breakpoint-md) {
+  .options {
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 80%;
+  }
+
+  .calendarButton {
+    font-size: 0.8rem;
+  }
+}

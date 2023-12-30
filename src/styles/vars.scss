@@ -64,6 +64,8 @@ $dark-primary-3: #6cb5fd;
 $dark-primary-4: #3dbeff;
 $dark-primary-5: #0659bc;
 $dark-primary-6: #97c8f8;
+// https://discord.com/channels/573028991527550986/791028389799526430/1136842262605742151
+$blue-text-button-dark: #9ecaff;
 
 $dark-gold: #ccb76b;
 $dark-gold-hover: #4c411a;
@@ -90,7 +92,7 @@ $dark-text-on-background-3: #fff;
 $dark-text-on-surface-1: #fff;
 $dark-text-on-surface-2: #fff;
 
-/* 
+/*
  * Communities
 */
 // Hack
@@ -251,3 +253,6 @@ $save-button-width: 226px;
 $discard-button-width: 104px;
 $link-button-width: 200px;
 $button-height: 49px;
+
+$light-mode-indicator: #b8b8b8;
+$dark-mode-indicator: #9f9f9f;

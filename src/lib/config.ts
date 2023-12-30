@@ -1,3 +1,5 @@
+import Cat from '@/public/assets/graphics/cat404.png';
+
 const env = process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
 
@@ -48,15 +50,44 @@ const config = {
       },
     },
   },
+  klefki: {
+    baseUrl: process.env.NEXT_PUBLIC_KLEFKI_API_URL ?? '',
+    key: process.env.NEXT_PUBLIC_TOTP_KEY ?? '',
+    endpoints: {
+      notion: {
+        page: '/notion/page/',
+        events: '/notion/events/upcoming',
+      },
+      discord: {
+        event: '/discord/event',
+      },
+    },
+  },
+  defaultEventImage: Cat,
   cssVars: {
     breakpointMd: 768,
   },
   homeRoute: '/',
   loginRoute: '/login',
+  leaderboardRoute: '/leaderboard',
   userProfileRoute: '/u/',
+  storeRoute: '/store',
   cartRoute: '/store/cart',
   myOrdersRoute: '/store/orders',
+  collectionRoute: '/store/collection/',
+  itemRoute: '/store/item/',
+  admin: {
+    homeRoute: '/admin',
+    events: {
+      homeRoute: '/admin/event',
+      editRoute: '/admin/event/edit',
+      createRoute: '/admin/event/create',
+    },
+  },
   isDevelopment,
+  file: {
+    MAX_EVENT_COVER_SIZE_KB: isDevelopment ? 256 : 2048,
+  },
 };
 
 export default config;

@@ -7,12 +7,13 @@
   /*
   * Light mode specific
   */
-  --theme-primary-1: #{vars.$light-primary-1};
+  --theme-primary-1: #{vars.$light-primary-1}; // storefront collection slider scrollbar gutter
   --theme-primary-2: #{vars.$light-primary-2}; // profile card borders, buttons, nav bar
   --theme-primary-3: #{vars.$light-primary-3};
   --theme-primary-4: #{vars.$light-primary-4}; // circle background, link hover, progress bar
   --theme-primary-5: #{vars.$light-primary-5}; // event card links, arrow hover
   --theme-primary-6: #{vars.$light-primary-6}; // event card borders
+  --theme-blue-text-button: #{vars.$light-primary-5}; // storefront page blue text button
   --theme-gold: #{vars.$light-gold};
   --theme-gold-hover: #{vars.$light-gold-hover};
   --theme-silver: #{vars.$light-silver};
@@ -40,6 +41,12 @@
   --theme-text-on-surface-2: #{vars.$light-text-on-surface-2}; // light titles on sidebar
 
   --invert: math.percentage($number: 1);
+
+  --theme-mode-indicator: #{vars.$light-mode-indicator};
+  --theme-mode-icon: #{vars.$black};
+
+  --theme-success-1: #{vars.$green-100};
+  --theme-success-2: #{vars.$green-200};
 }
 
 [data-theme='dark'] {
@@ -52,6 +59,7 @@
   --theme-primary-4: #{vars.$dark-primary-4}; // circle background, link hover, progress bar
   --theme-primary-5: #{vars.$dark-primary-5}; // event card links, arrow hover
   --theme-primary-6: #{vars.$dark-primary-6}; // event card borders
+  --theme-blue-text-button: #{vars.$blue-text-button-dark}; // blue text button
   --theme-gold: #{vars.$dark-gold};
   --theme-gold-hover: #{vars.$dark-gold-hover};
   --theme-silver: #{vars.$dark-silver};
@@ -79,6 +87,9 @@
   --theme-text-on-surface-2: #{vars.$dark-text-on-surface-2}; // dark titles on sidebar
 
   --invert: math.percentage($number: 1);
+
+  --theme-mode-indicator: #{vars.$dark-mode-indicator};
+  --theme-mode-icon: #{vars.$white};
 }
 
 html,
