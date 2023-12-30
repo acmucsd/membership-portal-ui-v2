@@ -1,6 +1,7 @@
-import { Typography } from '@/components/common';
+import { Button, Typography } from '@/components/common';
 import Diamonds from '@/components/store/Diamonds';
 import { PublicOrderItemWithQuantity, PublicOrderWithItems } from '@/lib/types/apiResponses';
+import { OrderStatus } from '@/lib/types/enums';
 import { capitalize } from '@/lib/utils';
 import Image from 'next/image';
 import styles from './style.module.scss';
@@ -8,6 +9,22 @@ import styles from './style.module.scss';
 interface OrderSummaryProps {
   order: PublicOrderWithItems;
 }
+
+const isOrderActionable = ({ status, pickupEvent }: PublicOrderWithItems): boolean => {
+  if (status === OrderStatus.CANCELLED || status === OrderStatus.FULFILLED) {
+    // If the order is cancelled by the user or fulfilled, no further action can be taken.
+    return false;
+  }
+  // If there's less than two days before the pickup event, merch distributors are already
+  // preparing the order. Thus, the order can't be rescheduled/cancelled at this time.
+  const now = new Date();
+  const eventStart = new Date(pickupEvent.start);
+  eventStart.setDate(eventStart.getDate() - 2);
+  if (now > eventStart) {
+    return false;
+  }
+  return true;
+};
 
 const OrderSummary = ({ order }: OrderSummaryProps) => {
   const itemMap = new Map<string, PublicOrderItemWithQuantity>();
@@ -26,6 +43,8 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
   const totalCostWithoutDiscount = updatedItems.reduce((cost, item) => {
     return cost + item.quantity * item.option.price;
   }, 0);
+
+  const actionable = isOrderActionable(order);
 
   return (
     <div className={styles.container}>
@@ -65,13 +84,25 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
         </div>
       ))}
       <hr className={styles.divider} />
-      <div className={styles.totalPrice}>
-        <Typography variant="h4/bold">Total: </Typography>
-        <Diamonds
-          count={totalCostWithoutDiscount}
-          discount={order.totalCost}
-          className={styles.totalDiamonds}
-        />
+      <div className={styles.footer}>
+        <div className={styles.buttons}>
+          {actionable && (
+            <>
+              <Button onClick={() => {}}>Reschedule Pickup</Button>
+              <Button onClick={() => {}} destructive>
+                Cancel Order
+              </Button>
+            </>
+          )}
+        </div>
+        <div className={styles.totalPrice}>
+          <Typography variant="h4/bold">Total: </Typography>
+          <Diamonds
+            count={totalCostWithoutDiscount}
+            discount={order.totalCost}
+            className={styles.totalDiamonds}
+          />
+        </div>
       </div>
     </div>
   );

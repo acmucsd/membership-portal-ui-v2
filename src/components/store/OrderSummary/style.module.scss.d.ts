@@ -1,6 +1,8 @@
 export type Styles = {
+  buttons: string;
   container: string;
   divider: string;
+  footer: string;
   image: string;
   itemInfo: string;
   itemSummary: string;
