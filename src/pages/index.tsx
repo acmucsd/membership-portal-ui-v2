@@ -2,33 +2,21 @@ import EventCarousel from '@/components/events/EventCarousel';
 import { EventAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import type { PrivateProfile, PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
+import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import styles from '@/styles/pages/index.module.scss';
+import styles from '@/styles/pages/Home.module.scss';
 import { GetServerSideProps } from 'next';
 
 interface HomePageProps {
-  user: PrivateProfile;
   pastEvents: PublicEvent[];
   upcomingEvents: PublicEvent[];
   liveEvents: PublicEvent[];
   attendances: PublicAttendance[];
 }
 
-const PortalHomePage = ({
-  user,
-  pastEvents,
-  upcomingEvents,
-  liveEvents,
-  attendances,
-}: HomePageProps) => {
+const PortalHomePage = ({ pastEvents, upcomingEvents, liveEvents, attendances }: HomePageProps) => {
   return (
     <div className={styles.page}>
-      <div>
-        <h1>Portal Home Page</h1>
-        <pre>User Info: {JSON.stringify(user, null, 2)}</pre>
-      </div>
-
       {liveEvents.length > 0 && (
         <EventCarousel
           title="Live Events"
@@ -42,7 +30,7 @@ const PortalHomePage = ({
         <EventCarousel
           title="Upcoming Events"
           description="Mark your calendars! These events are just around the corner!"
-          events={upcomingEvents}
+          events={upcomingEvents.slice(0, 10)} // Slicing past events so the carousel doesn't balloon.
           attendances={attendances}
         />
       )}

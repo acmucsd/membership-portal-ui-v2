@@ -29,7 +29,7 @@ const EventCard = ({ event, attended, className }: EventCardProps) => {
       />
       <button
         type="button"
-        className={`${styles.container} ${className}`}
+        className={`${styles.container} ${className || ''}`}
         onClick={() => setExpanded(true)}
       >
         <div className={styles.image}>

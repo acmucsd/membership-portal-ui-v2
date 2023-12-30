@@ -1,8 +1,8 @@
 import { Carousel, Typography } from '@/components/common';
-import EventCard from '@/components/events/EventCard';
 import { config } from '@/lib';
 import { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import Link from 'next/link';
+import EventCard from '../EventCard';
 import styles from './style.module.scss';
 
 interface EventCarouselProps {
