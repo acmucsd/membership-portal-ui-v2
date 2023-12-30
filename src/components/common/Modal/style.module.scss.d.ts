@@ -1,5 +1,6 @@
 export type Styles = {
   close: string;
+  hasHeader: string;
   header: string;
   modal: string;
   modalBody: string;

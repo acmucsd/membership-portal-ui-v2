@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useRef } from 'react';
 import styles from './style.module.scss';
 
 interface ModalProps {
-  title: string;
+  title?: string;
   open: boolean;
   onClose: () => void;
   children?: ReactNode;
@@ -36,13 +36,15 @@ const Modal = ({ title, open, onClose, children }: ModalProps) => {
       }}
       onClose={onClose}
     >
-      <form method="dialog" className={styles.modalBody}>
-        <div className={styles.header}>
-          <h1>{title}</h1>
-          <button type="submit" className={styles.close} aria-label="Close">
-            <CloseIcon aria-hidden />
-          </button>
-        </div>
+      <form method="dialog" className={`${styles.modalBody} ${title ? styles.hasHeader : ''}`}>
+        {title && (
+          <div className={styles.header}>
+            <h1>{title}</h1>
+            <button type="submit" className={styles.close} aria-label="Close">
+              <CloseIcon aria-hidden />
+            </button>
+          </div>
+        )}
         {children}
       </form>
     </dialog>
