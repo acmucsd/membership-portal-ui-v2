@@ -1,9 +1,10 @@
 import { Typography } from '@/components/common';
-import { config } from '@/lib';
+import { showToast } from '@/lib';
+import { getOrder } from '@/lib/api/StoreAPI';
 import { PublicOrder, PublicOrderWithItems } from '@/lib/types/apiResponses';
 import { OrderStatus } from '@/lib/types/enums';
 import { formatDate, formatEventDate } from '@/lib/utils';
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import OrderSummary from '../OrderSummary';
 import styles from './style.module.scss';
 
@@ -31,18 +32,31 @@ export const orderStatusColor: { [_ in OrderStatus]: string } = {
 
 interface OrderCardProps {
   order: PublicOrder;
-  focusedOrder?: PublicOrderWithItems;
+  token: string;
 }
 
-const OrderCard = ({ order, focusedOrder }: OrderCardProps) => {
-  const isOrderFocused = focusedOrder?.uuid === order.uuid;
+const OrderCard = ({ order, token }: OrderCardProps) => {
+  const [open, setOpen] = useState(false);
+  const [orderData, setOrderData] = useState<PublicOrderWithItems | null>(null);
+  const orderOpen = open && orderData !== null;
+
+  useEffect(() => {
+    if (open && orderData === null) {
+      getOrder(token, order.uuid)
+        .then(data => setOrderData(data))
+        .catch(e => {
+          showToast(e.message);
+          setOrderData(null);
+        });
+    }
+  }, [open, order.uuid, orderData, token]);
 
   return (
     <div className={styles.card}>
-      <Link
-        className={`${styles.container} ${isOrderFocused && styles.focused}`}
-        href={isOrderFocused ? config.myOrdersRoute : `${config.myOrdersRoute}?order=${order.uuid}`}
-        scroll={false}
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className={`${styles.container} ${orderOpen && styles.focused}`}
       >
         <div className={styles.orderInfo}>
           <div className={styles.label}>
@@ -61,8 +75,8 @@ const OrderCard = ({ order, focusedOrder }: OrderCardProps) => {
         <div className={`${styles.orderStatus} ${orderStatusColor[order.status]}`}>
           <Typography variant="body/medium">{orderStatusName[order.status]}</Typography>
         </div>
-      </Link>
-      {isOrderFocused && <OrderSummary order={focusedOrder} />}
+      </button>
+      {orderOpen && <OrderSummary order={orderData} />}
     </div>
   );
 };

@@ -17,14 +17,12 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
 
     if (existingItem) {
       existingItem.quantity += 1;
-
-      itemMap.set(existingItem.option.uuid, existingItem);
     } else {
       itemMap.set(item.option.uuid, { ...item, quantity: 1 });
     }
   });
 
-  const updatedItems = Array.from(itemMap, ([, value]) => value);
+  const updatedItems = Array.from(itemMap.values());
 
   return (
     <div className={styles.container}>

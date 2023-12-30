@@ -1,21 +1,21 @@
 import { Typography } from '@/components/common';
 import OrderCard from '@/components/store/OrderCard';
-import { PublicOrder, PublicOrderWithItems } from '@/lib/types/apiResponses';
+import { PublicOrder } from '@/lib/types/apiResponses';
 import styles from './style.module.scss';
 
 interface OrdersDisplayProps {
   orders: PublicOrder[];
-  focusedOrder?: PublicOrderWithItems;
+  token: string;
 }
 
-const OrdersDisplay = ({ orders, focusedOrder }: OrdersDisplayProps) => {
+const OrdersDisplay = ({ orders, token }: OrdersDisplayProps) => {
   if (orders.length === 0) {
     return <Typography variant="body/large">No orders placed!</Typography>;
   }
   return (
     <div className={styles.container}>
       {orders.map(order => (
-        <OrderCard key={order.uuid} order={order} focusedOrder={focusedOrder} />
+        <OrderCard key={order.uuid} order={order} token={token} />
       ))}
     </div>
   );

@@ -1,3 +1,5 @@
+@use 'src/styles/vars.scss' as vars;
+
 .container {
   margin-top: 0.75rem;
 
@@ -49,6 +51,14 @@
 
     .totalDiamonds {
       font-size: 1.375rem;
+    }
+  }
+}
+
+@media screen and (width <= vars.$breakpoint-sm) {
+  .container {
+    .itemInfo {
+      flex-wrap: wrap;
     }
   }
 }

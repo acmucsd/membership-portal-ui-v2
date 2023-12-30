@@ -1,10 +1,9 @@
 import { Dropdown, Typography } from '@/components/common';
 import { Navbar, OrdersDisplay } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
-import { getOrder } from '@/lib/api/StoreAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import { PrivateProfile, PublicOrder, PublicOrderWithItems } from '@/lib/types/apiResponses';
+import { PrivateProfile, PublicOrder } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/StoreOrders.module.scss';
 import { GetServerSideProps } from 'next';
@@ -13,7 +12,7 @@ import { useState } from 'react';
 interface OrderPageProps {
   user: PrivateProfile;
   orders: PublicOrder[];
-  focusedOrder?: PublicOrderWithItems;
+  token: string;
 }
 
 const orderInFilter = (order: PublicOrder, filter: string): boolean => {
@@ -33,7 +32,7 @@ const orderInFilter = (order: PublicOrder, filter: string): boolean => {
   return new Date(order.orderedAt) >= lastDay;
 };
 
-const StoreOrderPage = ({ user: { credits }, orders, focusedOrder }: OrderPageProps) => {
+const StoreOrderPage = ({ user: { credits }, orders, token }: OrderPageProps) => {
   const [filter, setFilter] = useState('past-6-months');
 
   const filteredOrders = orders.filter(o => orderInFilter(o, filter));
@@ -61,7 +60,7 @@ const StoreOrderPage = ({ user: { credits }, orders, focusedOrder }: OrderPagePr
             />
           </div>
         </div>
-        <OrdersDisplay orders={filteredOrders} focusedOrder={focusedOrder} />
+        <OrdersDisplay orders={filteredOrders} token={token} />
       </div>
     </div>
   );
@@ -69,21 +68,12 @@ const StoreOrderPage = ({ user: { credits }, orders, focusedOrder }: OrderPagePr
 
 export default StoreOrderPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   const orders = await StoreAPI.getAllOrders(AUTH_TOKEN);
 
-  let focusedOrder = null;
-  if (query.order && typeof query.order === 'string') {
-    try {
-      focusedOrder = await getOrder(AUTH_TOKEN, query.order);
-    } catch {
-      focusedOrder = null;
-    }
-  }
-
-  return { props: { orders, focusedOrder } };
+  return { props: { orders, token: AUTH_TOKEN } };
 };
 
 export const getServerSideProps = withAccessType(
