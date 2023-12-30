@@ -1,8 +1,7 @@
 export type Styles = {
-  card: string;
-  description: string;
-  title: string;
-  wrapper: string;
+  eventDisplay: string;
+  eventDisplayHeader: string;
+  page: string;
 };
 
 export type ClassNames = keyof Styles;

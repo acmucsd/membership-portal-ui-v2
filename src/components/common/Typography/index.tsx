@@ -177,14 +177,14 @@ const v2WeightedWeights: Record<V2WeightedStyle, Record<V2Weight, Record<V2Size,
   },
   headline: {
     light: {
-      large: 300,
+      large: 400,
       medium: 400,
       small: 400,
     },
     heavy: {
       large: 600,
-      medium: 400,
-      small: 400,
+      medium: 600,
+      small: 600,
     },
   },
 };

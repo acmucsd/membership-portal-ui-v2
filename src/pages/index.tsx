@@ -1,34 +1,48 @@
-import EventDisplay from '@/components/events/EventDisplay';
+import EventCarousel from '@/components/events/EventCarousel';
 import { EventAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import type { PrivateProfile, PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
+import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import styles from '@/styles/pages/Home.module.scss';
 import { GetServerSideProps } from 'next';
 
 interface HomePageProps {
-  user: PrivateProfile;
   pastEvents: PublicEvent[];
-  futureEvents: PublicEvent[];
-  currentEvents: PublicEvent[];
+  upcomingEvents: PublicEvent[];
+  liveEvents: PublicEvent[];
   attendances: PublicAttendance[];
 }
 
-const PortalHomePage = ({
-  user,
-  pastEvents,
-  futureEvents,
-  currentEvents,
-  attendances,
-}: HomePageProps) => {
+const PortalHomePage = ({ pastEvents, upcomingEvents, liveEvents, attendances }: HomePageProps) => {
   return (
-    <div>
-      <h1>Portal Home Page</h1>
-      <pre>User Info: {JSON.stringify(user, null, 2)}</pre>
+    <div className={styles.page}>
+      {liveEvents.length > 0 && (
+        <EventCarousel
+          title="Live Events"
+          description="Blink and you'll miss it! These events are happening RIGHT NOW!"
+          events={liveEvents}
+          attendances={attendances}
+        />
+      )}
 
-      <EventDisplay events={currentEvents} attendances={attendances} />
-      <EventDisplay events={futureEvents} attendances={attendances} />
-      <EventDisplay events={pastEvents} attendances={attendances} />
+      {upcomingEvents.length > 0 && (
+        <EventCarousel
+          title="Upcoming Events"
+          description="Mark your calendars! These events are just around the corner!"
+          events={upcomingEvents.slice(0, 10)} // Slicing past events so the carousel doesn't balloon.
+          attendances={attendances}
+        />
+      )}
+
+      {pastEvents.length > 0 && (
+        <EventCarousel
+          title="Past Events"
+          description="Take a look at some of ACM's past events!"
+          events={pastEvents.slice(0, 10)} // Slicing past events so the carousel doesn't balloon.
+          attendances={attendances}
+        />
+      )}
     </div>
   );
 };
@@ -42,8 +56,8 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   const now = new Date();
   const pastEvents: PublicEvent[] = [];
-  const futureEvents: PublicEvent[] = [];
-  const currentEvents: PublicEvent[] = [];
+  const upcomingEvents: PublicEvent[] = [];
+  const liveEvents: PublicEvent[] = [];
 
   events.forEach(e => {
     const start = new Date(e.start);
@@ -51,13 +65,13 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
     if (end < now) {
       pastEvents.push(e);
     } else if (start > now) {
-      futureEvents.push(e);
+      upcomingEvents.push(e);
     } else {
-      currentEvents.push(e);
+      liveEvents.push(e);
     }
   });
 
-  return { props: { pastEvents, futureEvents, currentEvents, attendances } };
+  return { props: { pastEvents, upcomingEvents, liveEvents, attendances } };
 };
 
 export const getServerSideProps = withAccessType(
