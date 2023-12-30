@@ -14,7 +14,6 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
 
   order.items.forEach(item => {
     const existingItem = itemMap.get(item.option.uuid);
-
     if (existingItem) {
       existingItem.quantity += 1;
     } else {
@@ -23,6 +22,10 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
   });
 
   const updatedItems = Array.from(itemMap.values());
+
+  const totalCostWithoutDiscount = updatedItems.reduce((cost, item) => {
+    return cost + item.quantity * item.option.price;
+  }, 0);
 
   return (
     <div className={styles.container}>
@@ -41,7 +44,10 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
             <Typography variant="h4/bold">{item.option.item.itemName}</Typography>
             <div className={styles.label}>
               <Typography variant="h5/bold">Price: </Typography>
-              <Diamonds count={item.salePriceAtPurchase} />
+              <Diamonds
+                count={item.option.price * item.quantity}
+                discount={item.salePriceAtPurchase}
+              />
             </div>
             <div className={styles.label}>
               <Typography variant="h5/bold">Quantity: </Typography>
@@ -61,7 +67,11 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
       <hr className={styles.divider} />
       <div className={styles.totalPrice}>
         <Typography variant="h4/bold">Total: </Typography>
-        <Diamonds count={order.totalCost} className={styles.totalDiamonds} />
+        <Diamonds
+          count={totalCostWithoutDiscount}
+          discount={order.totalCost}
+          className={styles.totalDiamonds}
+        />
       </div>
     </div>
   );
