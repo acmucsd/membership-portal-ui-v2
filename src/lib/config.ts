@@ -71,6 +71,8 @@ const config = {
   eventsRoute: '/events',
   loginRoute: '/login',
   leaderboardRoute: '/leaderboard',
+  profileRoute: '/profile',
+  aboutRoute: '/about',
   userProfileRoute: '/u/',
   storeRoute: '/store',
   cartRoute: '/store/cart',

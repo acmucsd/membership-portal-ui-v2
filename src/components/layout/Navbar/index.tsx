@@ -73,7 +73,7 @@ const Navbar = ({ user }: NavbarProps) => {
           <div className={styles.bar1} data-open={menuOpen} />
           <div className={styles.bar2} data-open={menuOpen} />
         </button>
-        <Link href={config.homeRoute} className={styles.icon}>
+        <Link href={config.homeRoute} className={styles.icon} onClick={() => setMenuOpen(false)}>
           <Image src={LightModeLogo} alt="ACM Membership Home" width={48} height={48} />
         </Link>
         {/* Desktop Nav Links */}
@@ -102,44 +102,34 @@ const Navbar = ({ user }: NavbarProps) => {
         </nav>
       </div>
       {/* Mobile Menu Dropdown */}
-      <div className={styles.mobileNav} data-open={menuOpen} aria-hidden={!menuOpen}>
-        <Link
-          className={styles.mobileNavItem}
-          onClick={() => setMenuOpen(false)}
-          href={config.homeRoute}
-        >
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+      <div
+        className={styles.mobileNav}
+        data-open={menuOpen}
+        aria-hidden={!menuOpen}
+        onClick={e => (e.target as Element).closest('a') && setMenuOpen(false)}
+      >
+        <Link className={styles.mobileNavItem} href={config.homeRoute}>
           <HomeIcon className={styles.iconLink} />
           Home
         </Link>
-        <Link
-          className={styles.mobileNavItem}
-          onClick={() => setMenuOpen(false)}
-          href={config.eventsRoute}
-        >
+        <Link className={styles.mobileNavItem} href={config.eventsRoute}>
           <CalendarIcon className={styles.iconLink} />
           Events
         </Link>
-        <Link
-          className={styles.mobileNavItem}
-          onClick={() => setMenuOpen(false)}
-          href={config.leaderboardRoute}
-        >
+        <Link className={styles.mobileNavItem} href={config.leaderboardRoute}>
           <LeaderboardIcon className={styles.iconLink} />
           Leaderboard
         </Link>
-        <Link className={styles.mobileNavItem} onClick={() => setMenuOpen(false)} href="/profile">
+        <Link className={styles.mobileNavItem} href={config.profileRoute}>
           <ProfileIcon className={styles.iconLink} />
           Profile
         </Link>
-        <Link
-          onClick={() => setMenuOpen(false)}
-          className={styles.mobileNavItem}
-          href={config.storeRoute}
-        >
+        <Link className={styles.mobileNavItem} href={config.storeRoute}>
           <ShopIcon className={styles.iconLink} />
           Store
         </Link>
-        <Link onClick={() => setMenuOpen(false)} className={styles.mobileNavItem} href="/about">
+        <Link className={styles.mobileNavItem} href={config.aboutRoute}>
           <ACMIcon className={styles.iconLink} />
           About ACM
         </Link>
