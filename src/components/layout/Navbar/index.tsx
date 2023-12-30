@@ -6,7 +6,7 @@ import type { PrivateProfile } from '@/lib/types/apiResponses';
 import LightModeLogo from '@/public/assets/acm-logos/general/light-mode.png';
 import ACMIcon from '@/public/assets/icons/acm-icon.svg';
 import CalendarIcon from '@/public/assets/icons/calendar-icon.svg';
-import DashboardIcon from '@/public/assets/icons/dashboard-icon.svg';
+import HomeIcon from '@/public/assets/icons/home-icon.svg';
 import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
 import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
 import SettingsIcon from '@/public/assets/icons/setting-icon.svg';
@@ -78,12 +78,12 @@ const Navbar = ({ user }: NavbarProps) => {
         </Link>
         {/* Desktop Nav Links */}
         <nav className={styles.portalLinks}>
-          <Link href={config.homeRoute}>Dashboard</Link>
+          <Link href={config.homeRoute}>Home</Link>
           <p aria-hidden>·</p>
           <Link href={config.eventsRoute}>Events</Link>
           <p aria-hidden>·</p>
           <Link href="/leaderboard">Leaderboard</Link>
-          <span aria-hidden>·</span>
+          <p aria-hidden>·</p>
           <Link href="/about">About ACM</Link>
         </nav>
         <nav className={styles.iconLinks}>
@@ -108,8 +108,8 @@ const Navbar = ({ user }: NavbarProps) => {
           onClick={() => setMenuOpen(false)}
           href={config.homeRoute}
         >
-          <DashboardIcon className={styles.iconLink} />
-          Dashboard
+          <HomeIcon className={styles.iconLink} />
+          Home
         </Link>
         <Link
           className={styles.mobileNavItem}
