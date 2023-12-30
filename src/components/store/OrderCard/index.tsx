@@ -51,6 +51,9 @@ const OrderCard = ({ order, token }: OrderCardProps) => {
     }
   }, [open, order.uuid, orderData, token]);
 
+  const statusColor = orderStatusColor[order.status];
+  const statusName = orderStatusName[order.status];
+
   return (
     <div className={styles.card}>
       <button
@@ -59,11 +62,17 @@ const OrderCard = ({ order, token }: OrderCardProps) => {
         className={`${styles.container} ${orderOpen && styles.focused}`}
       >
         <div className={styles.orderInfo}>
-          <div className={styles.label}>
-            <Typography variant="label/small">ORDER PLACED</Typography>
-            <Typography variant="body/large" style={{ fontWeight: 700 }} suppressHydrationWarning>
-              {formatDate(order.orderedAt, true)}
-            </Typography>
+          <div className={styles.mobileHeader}>
+            {/* Header includes both ORDER PLACED and status for mobile. */}
+            <div className={styles.label}>
+              <Typography variant="label/small">ORDER PLACED</Typography>
+              <Typography variant="body/large" style={{ fontWeight: 700 }} suppressHydrationWarning>
+                {formatDate(order.orderedAt, true)}
+              </Typography>
+            </div>
+            <div className={`${styles.orderStatus} ${statusColor} ${styles.mobile}`}>
+              <Typography variant="body/medium">{statusName}</Typography>
+            </div>
           </div>
           <div className={styles.label}>
             <Typography variant="label/small">PICK UP</Typography>
@@ -72,8 +81,9 @@ const OrderCard = ({ order, token }: OrderCardProps) => {
             </Typography>
           </div>
         </div>
-        <div className={`${styles.orderStatus} ${orderStatusColor[order.status]}`}>
-          <Typography variant="body/medium">{orderStatusName[order.status]}</Typography>
+        {/* For desktop, status is located at the end of the row. */}
+        <div className={`${styles.orderStatus} ${statusColor} ${styles.desktop}`}>
+          <Typography variant="body/medium">{statusName}</Typography>
         </div>
       </button>
       {orderOpen && <OrderSummary order={orderData} />}
