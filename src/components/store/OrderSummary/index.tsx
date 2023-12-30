@@ -86,6 +86,7 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
       <hr className={styles.divider} />
       <div className={styles.footer}>
         <div className={styles.buttons}>
+          <Button onClick={() => {}}>Pickup Details</Button>
           {actionable && (
             <>
               <Button onClick={() => {}}>Reschedule Pickup</Button>
