@@ -1,7 +1,10 @@
 import { Typography } from '@/components/common';
-import { PublicOrder } from '@/lib/types/apiResponses';
+import { config } from '@/lib';
+import { PublicOrder, PublicOrderWithItems } from '@/lib/types/apiResponses';
 import { OrderStatus } from '@/lib/types/enums';
 import { formatDate, formatEventDate } from '@/lib/utils';
+import Link from 'next/link';
+import OrderSummary from '../OrderSummary';
 import styles from './style.module.scss';
 
 export const orderStatusName: { [_ in OrderStatus]: string } = {
@@ -28,28 +31,38 @@ export const orderStatusColor: { [_ in OrderStatus]: string } = {
 
 interface OrderCardProps {
   order: PublicOrder;
+  focusedOrder?: PublicOrderWithItems;
 }
 
-const OrderCard = ({ order }: OrderCardProps) => {
+const OrderCard = ({ order, focusedOrder }: OrderCardProps) => {
+  const isOrderFocused = focusedOrder?.uuid === order.uuid;
+
   return (
-    <div className={styles.container}>
-      <div className={styles.orderInfo}>
-        <div className={styles.label}>
-          <Typography variant="label/small">ORDER PLACED</Typography>
-          <Typography variant="body/large" style={{ fontWeight: 700 }}>
-            {formatDate(order.orderedAt, true)}
-          </Typography>
+    <div className={styles.card}>
+      <Link
+        className={`${styles.container} ${isOrderFocused && styles.focused}`}
+        href={isOrderFocused ? config.myOrdersRoute : `${config.myOrdersRoute}?order=${order.uuid}`}
+        scroll={false}
+      >
+        <div className={styles.orderInfo}>
+          <div className={styles.label}>
+            <Typography variant="label/small">ORDER PLACED</Typography>
+            <Typography variant="body/large" style={{ fontWeight: 700 }} suppressHydrationWarning>
+              {formatDate(order.orderedAt, true)}
+            </Typography>
+          </div>
+          <div className={styles.label}>
+            <Typography variant="label/small">PICK UP</Typography>
+            <Typography variant="body/large" style={{ fontWeight: 700 }} suppressHydrationWarning>
+              {formatEventDate(order.pickupEvent.start, order.pickupEvent.end, true)}
+            </Typography>
+          </div>
         </div>
-        <div className={styles.label}>
-          <Typography variant="label/small">PICK UP</Typography>
-          <Typography variant="body/large" style={{ fontWeight: 700 }}>
-            {formatEventDate(order.pickupEvent.start, order.pickupEvent.end, true)}
-          </Typography>
+        <div className={`${styles.orderStatus} ${orderStatusColor[order.status]}`}>
+          <Typography variant="body/medium">{orderStatusName[order.status]}</Typography>
         </div>
-      </div>
-      <div className={`${styles.orderStatus} ${orderStatusColor[order.status]}`}>
-        <Typography variant="body/medium">{orderStatusName[order.status]}</Typography>
-      </div>
+      </Link>
+      {isOrderFocused && <OrderSummary order={focusedOrder} />}
     </div>
   );
 };
