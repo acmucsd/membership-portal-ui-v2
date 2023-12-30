@@ -15,7 +15,7 @@ import { AxiosError } from 'axios';
 import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { BsDiscord, BsFacebook, BsGithub, BsInstagram, BsLinkedin } from 'react-icons/bs';
 
 /**
@@ -77,14 +77,28 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
     bio !== user.bio ||
     newPassword.length > 0;
 
+  // Warn if there are unsaved changes
+  useEffect(() => {
+    if (hasChange) {
+      const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+        e.preventDefault();
+        e.returnValue = true;
+      };
+      window.addEventListener('beforeunload', handleBeforeUnload);
+      return () => {
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+      };
+    }
+    return undefined;
+  }, [hasChange]);
+
   const [resumes, setResumes] = useState(initUser.resumes ?? []);
 
   const years = useMemo(() => {
     const years: number[] = [];
     const currentYear = new Date().getUTCFullYear();
-    // UCSD's 6-year graduation rate is 87%. Make sure the user's graduation year
-    // is listed in the dropdown (in case they're taking longer than expected to
-    // graduate)
+    // Ensure the user's graduation year is listed in the dropdown in case
+    // they're taking longer than expected to graduate
     for (
       let year = Math.min(user.graduationYear, currentYear - 2);
       year <= currentYear + 6;

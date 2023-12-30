@@ -112,7 +112,7 @@ export function useObjectUrl(file?: Blob | null): string {
 
   useEffect(() => {
     if (!file) {
-      return () => {};
+      return undefined;
     }
     const url = URL.createObjectURL(file);
     setUrl(url);

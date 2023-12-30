@@ -111,11 +111,12 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
           style={{ aspectRatio: `${aspectRatio}` }}
         />
       </div>
-      <div>
-        <label>
-          Zoom:{' '}
+      <div className={styles.controls}>
+        <label className={styles.zoomWrapper}>
+          Zoom:&nbsp;
           <input
             type="range"
+            className={styles.zoom}
             min={1}
             max={2}
             step="any"
@@ -132,6 +133,7 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
         </label>
         <button
           type="submit"
+          className={styles.upload}
           onClick={() => {
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');

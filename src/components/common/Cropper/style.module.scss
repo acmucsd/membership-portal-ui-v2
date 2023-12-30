@@ -31,3 +31,32 @@ $height: 200px;
     }
   }
 }
+
+.controls {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  .zoomWrapper {
+    align-items: center;
+    display: flex;
+    flex: auto;
+
+    .zoom {
+      flex: auto;
+      width: 0;
+    }
+  }
+
+  .upload {
+    background-color: var(--theme-primary-2);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    color: var(--theme-background);
+    font-size: 1rem;
+    font-weight: bold;
+    height: 2.5rem;
+    width: 6.5rem;
+  }
+}
