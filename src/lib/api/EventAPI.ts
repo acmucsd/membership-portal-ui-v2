@@ -4,10 +4,12 @@ import { Event } from '@/lib/types/apiRequests';
 import {
   CreateEventResponse,
   GetAllEventsResponse,
+  GetAttendancesForUserResponse,
   GetFutureEventsResponse,
   GetOneEventResponse,
   GetPastEventsResponse,
   PatchEventResponse,
+  PublicAttendance,
   PublicEvent,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
@@ -67,6 +69,18 @@ export const getAllEvents = async (): Promise<PublicEvent[]> => {
   const response = await axios.get<GetAllEventsResponse>(requestUrl);
 
   return response.data.events;
+};
+
+export const getAttendancesForUser = async (token: string): Promise<PublicAttendance[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance}`;
+
+  const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.attendances;
 };
 
 export const createEvent = async (token: string, event: Event): Promise<PublicEvent> => {

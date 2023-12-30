@@ -44,6 +44,10 @@
 
   --theme-mode-indicator: #{vars.$light-mode-indicator};
   --theme-mode-icon: #{vars.$black};
+
+  --theme-success-1: #{vars.$success-1};
+  --theme-success-2: #{vars.$success-2};
+  --theme-danger-1: #{vars.$danger-1};
 }
 
 [data-theme='dark'] {

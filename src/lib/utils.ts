@@ -47,6 +47,16 @@ export const trim = (text: string, len: number) => {
 };
 
 /**
+ * Given some text, returns a formatted string where the first letter is capitalized
+ * and all other letters are lowercase.
+ * @param text String text input
+ * @returns Formatted text
+ */
+export const capitalize = (text: string): string => {
+  return text.slice(0, 1).toUpperCase() + text.slice(1).toLowerCase();
+};
+
+/**
  * Helper function to map each user to a numeric value deterministically
  * TODO: Use the user's UUID to hash to a number since it will never change
  * @param user
@@ -104,3 +114,40 @@ export function useObjectUrl(file?: Blob | null): string {
 
   return url;
 }
+
+const dateFormat = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+});
+
+const dateFormatWithYear = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+});
+
+export const formatDate = (date: Date | string, year?: boolean): string => {
+  const format = year ? dateFormatWithYear : dateFormat;
+  return format.format(new Date(date));
+};
+
+export const formatEventDate = (
+  start: Date | string,
+  end: Date | string,
+  year?: boolean
+): string => {
+  const format = year ? dateFormatWithYear : dateFormat;
+  try {
+    return format.formatRange(new Date(start), new Date(end));
+  } catch {
+    return `Invalid date range: ${new Date(start)}, ${new Date(end)}`;
+  }
+};
+
+export const formatURLEventTitle = (title: string): string => {
+  return encodeURIComponent(title.toLowerCase().trim().replace(/ /g, '-'));
+};

@@ -5,6 +5,7 @@ import {
   FeedbackStatus,
   FeedbackType,
   OrderPickupEventStatus,
+  OrderStatus,
   UserAccessType,
   UserState,
 } from './enums';
@@ -214,11 +215,15 @@ export interface PublicOrderItem {
   notes?: string;
 }
 
+export interface PublicOrderItemWithQuantity extends PublicOrderItem {
+  quantity: number;
+}
+
 export interface PublicOrder {
   uuid: UUID;
   user: PublicProfile;
   totalCost: number;
-  status: string;
+  status: OrderStatus;
   orderedAt: Date;
   pickupEvent: PublicOrderPickupEvent;
 }
