@@ -1,12 +1,17 @@
 import Modal from '@/components/common/Modal';
 import { useObjectUrl } from '@/lib/utils';
 import Image from 'next/image';
-import { PointerEvent, useRef, useState } from 'react';
+import { PointerEvent, useCallback, useRef, useState } from 'react';
 import styles from './style.module.scss';
 
 /** Height of the preview square. */
 const HEIGHT = 200;
 
+type CropState = {
+  left: number;
+  top: number;
+  scale: number;
+};
 type DragState = {
   pointerId: number;
   offsetX: number;
@@ -44,6 +49,12 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
       dragState.current = null;
     }
   };
+  // onError callback needs to be memoized lest next/image reload the image
+  const handleImageError = useCallback(() => {
+    if (file !== null) {
+      onClose('invalid-image');
+    }
+  }, [file, onClose]);
 
   return (
     <Modal title="Edit image" open={loaded === file && file !== null} onClose={() => onClose(null)}>
@@ -95,11 +106,8 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
                 setLoaded(file);
               }
             }}
-            onError={() => {
-              if (file !== null) {
-                onClose('invalid-image');
-              }
-            }}
+            onError={handleImageError}
+            draggable={false}
             ref={image}
           />
         )}
@@ -117,7 +125,14 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
             max={2}
             step="any"
             value={scale}
-            onChange={e => setScale(+e.currentTarget.value)}
+            onChange={e => {
+              const newScale = +e.currentTarget.value;
+              const newLeft = WIDTH / 2 - ((WIDTH / 2 - left) / scale) * newScale;
+              const newTop = HEIGHT / 2 - ((HEIGHT / 2 - top) / scale) * newScale;
+              setScale(newScale);
+              setLeft(Math.max(Math.min(newLeft, 0), WIDTH - width * newScale));
+              setTop(Math.max(Math.min(newTop, 0), HEIGHT - height * newScale));
+            }}
           />
         </label>
         <button
