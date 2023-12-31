@@ -10,6 +10,7 @@ import { PrivateProfile, PublicMerchItemWithPurchaseLimits } from '@/lib/types/a
 import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/store/item.module.scss';
 import { GetServerSideProps } from 'next';
+import Image from 'next/image';
 import { useState } from 'react';
 
 interface ItemPageProps {
@@ -27,27 +28,35 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
   //   console.log(val);
   // });
 
+  console.log(item);
+
   const currOption =
     item.options.length <= 1
       ? item.options[0]
       : item.options[item.options.findIndex(val => val.metadata?.value === size)];
-  // console.log(currOption);
+  console.log(item.picture);
 
   return (
-    <div className={styles.container}>
-      <Navbar balance={credits} showBack />
-      <h1>Store Item Page {size}</h1>
-      {item.options.length > 1 && (
-        <SizeSelector currSize={size} setSize={setSize} options={item.options} />
-      )}
-      <ItemHeader itemName={item.itemName} cost={currOption?.price} />
+    <div className={styles.rowContainer}>
+      <Image src={item.picture || ''} alt="Picture of item " width={600} height={600} />
+      <div className={styles.container}>
+        <Navbar balance={credits} showBack />
+        <h1>Store Item Page {size}</h1>
+        {item.options.length > 1 && (
+          <SizeSelector currSize={size} setSize={setSize} options={item.options} />
+        )}
+        <ItemHeader itemName={item.itemName} cost={currOption?.price} />
 
-      <AddCartButton
-        inCart={inCart}
-        setInCart={setInCart}
-        currSize={size}
-        inStock={currOption?.quantity != null && currOption?.quantity >= 1}
-      />
+        <AddCartButton
+          inCart={inCart}
+          setInCart={setInCart}
+          currSize={size}
+          inStock={currOption?.quantity != null && currOption?.quantity >= 1}
+          lifetimeRemaining={item.lifetimeRemaining}
+          montlyRemaining={item.monthlyRemaining}
+        />
+        <p>{item.description}</p>
+      </div>
     </div>
   );
 };
@@ -69,22 +78,22 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
       },
     };
   } catch (err: any) {
-    console.log(req);
-    console.log('===================');
-    console.log('===================');
-    console.log('===================');
-    // console.log(res);
-    console.log('===================');
-    console.log('===================');
-    console.log('===================');
-    console.log(params);
-    console.log('===================');
-    console.log('===================');
-    console.log('===================');
-    console.error(err);
-    console.log('===================');
-    console.log('===================');
-    console.log('===================');
+    // console.log(req);
+    // console.log('===================');
+    // console.log('===================');
+    // console.log('===================');
+    // // console.log(res);
+    // console.log('===================');
+    // console.log('===================');
+    // console.log('===================');
+    // console.log(params);
+    // console.log('===================');
+    // console.log('===================');
+    // console.log('===================');
+    // console.error(err);
+    // console.log('===================');
+    // console.log('===================');
+    // console.log('===================');
     return { redirect: { destination: config.store.homeRoute, permanent: false } };
   }
 };

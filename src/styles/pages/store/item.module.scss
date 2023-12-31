@@ -3,3 +3,10 @@
   flex-direction: column;
   gap: 16px;
 }
+
+.rowContainer {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 79px;
+}

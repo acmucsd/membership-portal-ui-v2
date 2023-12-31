@@ -1,3 +1,4 @@
+import { Dropdown } from '@/components/common';
 import { useEffect, useId, useState } from 'react';
 import styles from './style.module.scss';
 
@@ -8,18 +9,25 @@ interface AddCartButtonProps {
   // eslint-disable-next-line no-unused-vars
   inStock: boolean;
   inCart: boolean;
+  lifetimeRemaining: number;
+  montlyRemaining: number;
   setInCart: (value: boolean) => void;
 }
 
-const AddCartButton = ({ currSize, inStock, inCart, setInCart }: AddCartButtonProps) => {
+const AddCartButton = ({
+  currSize,
+  inStock,
+  inCart,
+  setInCart,
+  lifetimeRemaining,
+  montlyRemaining,
+}: AddCartButtonProps) => {
   const [mounted, setMounted] = useState(false);
+  const [amount, setAmount] = useState<number>(1);
 
-  const smallId = `small${useId()}`;
-  const mediumId = `medium${useId()}`;
-  const largeId = `large${useId()}`;
-  const xlId = `XL${useId()}`;
+  const myID = useId();
 
-  // NEED TO CHANGE ACTUAL LABEL, NOT SOME EXTERNAL DIV. CAN'T USE + B/C OF ODD LINTING ERRORS
+  const maxCanBuy = Math.min(lifetimeRemaining, montlyRemaining);
 
   const currAltText = `TODO`;
 
@@ -40,19 +48,54 @@ const AddCartButton = ({ currSize, inStock, inCart, setInCart }: AddCartButtonPr
 
   const buttonStyle = inStock ? styles.buttonInStock : styles.buttonNoStock;
 
+  const optionArr: Array<{ value: string; label: string } | '---'> = [];
+
+  for (let i = 1; i <= maxCanBuy; i += 1) {
+    optionArr.push({ value: `${i}`, label: `${i}` });
+  }
+
+  // const selOptions = optionArr.map(num => (
+  //   <option value={num.value} key={`${num.value}${myID}`}>
+  //     {num.value}
+  //   </option>
+  // ));
+
+  optionArr.push('---');
+
   return (
     <div className={styles.addCartGroup}>
-      <p>You can buy up to XXXXX of this item.</p>
+      {maxCanBuy > 0 ? (
+        <p>You can buy up to {maxCanBuy} of this item.</p>
+      ) : (
+        <p>You can&apos;t buy any more of this item!.</p>
+      )}
       <p>{`In cart: ${inCart}`}</p>
       {currSize === undefined ? <p className={styles.error}>Please select a size.</p> : validText}
-      <input
-        className={`${buttonStyle} ${styles.button}`}
-        type="button"
-        value={inStock ? 'Add to Cart' : 'Out of Stock'}
-        onClick={() => {
-          setInCart(!inCart);
-        }}
-      />
+      <div className={styles.buttonRow}>
+        {/* <select name="Quantity" id="Quantity">
+          {selOptions}
+        </select> */}
+        <div className={styles.quantityColumn}>
+          <h4>Quantity</h4>
+          <Dropdown
+            name={`options${myID}`}
+            ariaLabel={`Dropdown to select the number of items to purchase for ${myID}`}
+            options={optionArr}
+            value={`${amount}`}
+            onChange={val => setAmount(Number(val))}
+          />
+        </div>
+
+        <input
+          className={`${buttonStyle} ${styles.button}`}
+          type="button"
+          value={inStock ? 'Add to Cart' : 'Out of Stock'}
+          onClick={() => {
+            setInCart(!inCart);
+          }}
+          disabled={!(inStock || maxCanBuy > 0)}
+        />
+      </div>
     </div>
   );
 };

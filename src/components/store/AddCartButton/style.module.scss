@@ -6,13 +6,27 @@ $button-roundness: 10px;
 .addCartGroup {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  overflow: auto;
+  gap: 1rem;
+  overflow: visible;
   // padding: 5px 3px;
 
   p {
     color: var(--theme-text-on-background-1);
     font-size: vars.$general-heading-4;
+  }
+
+  .buttonRow {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  .quantityColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 0.5rem;
   }
 
   .error {

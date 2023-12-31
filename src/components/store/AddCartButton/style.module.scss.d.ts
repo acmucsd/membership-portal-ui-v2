@@ -3,7 +3,9 @@ export type Styles = {
   button: string;
   buttonInStock: string;
   buttonNoStock: string;
+  buttonRow: string;
   error: string;
+  quantityColumn: string;
   valid: string;
 };
 

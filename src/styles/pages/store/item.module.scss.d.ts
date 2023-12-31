@@ -1,5 +1,6 @@
 export type Styles = {
   container: string;
+  rowContainer: string;
 };
 
 export type ClassNames = keyof Styles;
