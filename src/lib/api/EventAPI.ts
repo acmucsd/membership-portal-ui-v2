@@ -71,8 +71,23 @@ export const getAllEvents = async (): Promise<PublicEvent[]> => {
   return response.data.events;
 };
 
-export const getAttendancesForUser = async (token: string): Promise<PublicAttendance[]> => {
+export const getAttendancesForCurrentUser = async (token: string): Promise<PublicAttendance[]> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance}`;
+
+  const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.attendances;
+};
+
+export const getAttendanceForUser = async (
+  token: string,
+  user: string
+): Promise<PublicAttendance[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance}/user/${user}`;
 
   const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
     headers: {
