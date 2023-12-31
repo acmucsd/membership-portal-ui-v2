@@ -15,11 +15,10 @@
       border: 1px solid var(--theme-text-on-background-1);
       border-radius: 1rem;
       color: inherit;
-      font-size: 14px;
-      height: 2rem;
+      font-size: 1.5rem;
+      font-weight: bold;
       max-width: 18rem;
-      padding-left: 1.5rem;
-      padding-right: 0.5rem;
+      padding: 0.5rem;
       width: 100%;
 
       &::placeholder {
