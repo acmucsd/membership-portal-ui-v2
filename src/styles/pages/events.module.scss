@@ -29,6 +29,10 @@
       border: 1px solid var(--theme-text-on-background-1);
       border-radius: 1rem;
       padding: 0.5rem 1rem;
+
+      div > select {
+        font-size: 1.25rem;
+      }
     }
   }
 }

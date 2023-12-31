@@ -163,23 +163,6 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const events = await EventAPI.getAllEvents();
   const attendances = await EventAPI.getAttendancesForUser(authToken);
 
-  const now = new Date();
-  const pastEvents: PublicEvent[] = [];
-  const upcomingEvents: PublicEvent[] = [];
-  const liveEvents: PublicEvent[] = [];
-
-  events.forEach(e => {
-    const start = new Date(e.start);
-    const end = new Date(e.end);
-    if (end < now) {
-      pastEvents.push(e);
-    } else if (start > now) {
-      upcomingEvents.push(e);
-    } else {
-      liveEvents.push(e);
-    }
-  });
-
   return { props: { events, attendances } };
 };
 
