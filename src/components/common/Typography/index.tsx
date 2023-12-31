@@ -78,7 +78,7 @@ const v2StandardSizes: Record<V2StandardStyle, Record<V2Size, string>> = {
   label: {
     large: '1.25rem',
     medium: '1.125rem',
-    small: '1.3125rem',
+    small: '1rem',
   },
   body: {
     large: '1.125rem',
@@ -96,7 +96,7 @@ const v2StandardHeights: Record<V2StandardStyle, Record<V2Size, string>> = {
   label: {
     large: '1.625rem',
     medium: '1.5rem',
-    small: '1.875rem',
+    small: '1.375rem',
   },
   body: {
     large: '1.5rem',
@@ -119,7 +119,7 @@ const v2StandardSpacings: Partial<Record<V2StandardStyle, Partial<Record<V2Size,
 
 const v2StandardWeights: Record<V2StandardStyle, number> = {
   title: 400,
-  label: 500,
+  label: 400,
   body: 400,
 };
 
@@ -130,9 +130,9 @@ const v2WeightedSizes: Record<V2WeightedStyle, Record<V2Size, string>> = {
     small: '2.875rem',
   },
   headline: {
-    large: '2.5625rem',
-    medium: '2.25rem',
-    small: '2.625rem',
+    large: '2.625rem',
+    medium: '2.5625rem',
+    small: '2.25rem',
   },
 };
 
@@ -177,14 +177,14 @@ const v2WeightedWeights: Record<V2WeightedStyle, Record<V2Weight, Record<V2Size,
   },
   headline: {
     light: {
-      large: 300,
+      large: 400,
       medium: 400,
       small: 400,
     },
     heavy: {
       large: 600,
-      medium: 400,
-      small: 400,
+      medium: 600,
+      small: 600,
     },
   },
 };

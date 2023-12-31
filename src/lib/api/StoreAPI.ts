@@ -1,11 +1,14 @@
-/* eslint-disable import/prefer-default-export */
 import { config } from '@/lib';
 import { UUID } from '@/lib/types';
-import {
+import type {
   GetAllMerchCollectionsResponse,
+  GetMerchOrdersResponse,
   GetOneMerchItemResponse,
+  GetOneMerchOrderResponse,
   PublicMerchCollection,
   PublicMerchItemWithPurchaseLimits,
+  PublicOrder,
+  PublicOrderWithItems,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
 
@@ -40,4 +43,28 @@ export const getAllCollections = async (token: string): Promise<PublicMerchColle
   });
 
   return response.data.collections;
+};
+
+export const getAllOrders = async (token: string): Promise<PublicOrder[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.orders}`;
+
+  const response = await axios.get<GetMerchOrdersResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.orders;
+};
+
+export const getOrder = async (token: string, uuid: string): Promise<PublicOrderWithItems> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${uuid}`;
+
+  const response = await axios.get<GetOneMerchOrderResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.order;
 };
