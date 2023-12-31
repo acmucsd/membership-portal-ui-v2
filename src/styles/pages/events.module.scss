@@ -15,10 +15,9 @@
       border: 1px solid var(--theme-text-on-background-1);
       border-radius: 1rem;
       color: inherit;
-      font-size: 1.5rem;
-      font-weight: bold;
+      font-size: 1.25rem;
       max-width: 18rem;
-      padding: 0.5rem;
+      padding: 0.5rem 1rem;
       width: 100%;
 
       &::placeholder {
@@ -29,7 +28,7 @@
     .filterOption {
       border: 1px solid var(--theme-text-on-background-1);
       border-radius: 1rem;
-      padding: 0.5rem;
+      padding: 0.5rem 1rem;
     }
   }
 }
