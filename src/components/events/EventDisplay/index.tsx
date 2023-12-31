@@ -8,10 +8,9 @@ interface EventDisplayProps {
 }
 
 const EventDisplay = ({ events, attendances }: EventDisplayProps) => {
-  const displayedEvents = events.slice(0, 20);
   return (
     <div className={styles.container}>
-      {displayedEvents.map(event => (
+      {events.map(event => (
         <EventCard
           key={event.uuid}
           event={event}

@@ -126,3 +126,68 @@ export const formatEventDate = (
 export const formatURLEventTitle = (title: string): string => {
   return encodeURIComponent(title.toLowerCase().trim().replace(/ /g, '-'));
 };
+
+/** Year ACM was founded. */
+const START_YEAR = 2019;
+/** Number of seconds in a day. */
+const DAY_SECONDS = 86400;
+
+/**
+ * @returns The end of the current academic year.
+ */
+export const getEndYear = (): number => {
+  const today = new Date();
+  // Arbitrarily start the next academic year in August
+  return today.getMonth() < 7 ? today.getFullYear() : today.getFullYear() + 1;
+};
+
+/**
+ * @returns A list of all years that ACM has existed.
+ */
+export const getYears = () => {
+  const endYear = getEndYear();
+  const years = [];
+  for (let year = START_YEAR; year < endYear; year += 1) {
+    years.unshift({ value: String(year), label: `${year}–${year + 1}` });
+  }
+  return years;
+};
+
+/**
+ * Given a sort option, returns the range of times to filter events/attendances by.
+ * @param sort Either a year (2023, 2019, etc.) or a string option (past-week, all-time, etc.)
+ * @returns A range of times to filter results by.
+ */
+export const getDateRange = (sort: string | number) => {
+  const now = Date.now() / 1000;
+  let from;
+  let to;
+  switch (sort) {
+    case 'upcoming': {
+      from = now;
+      break;
+    }
+    case 'past-week': {
+      from = now - DAY_SECONDS * 7;
+      break;
+    }
+    case 'past-month': {
+      from = now - DAY_SECONDS * 28;
+      break;
+    }
+    case 'past-year': {
+      from = now - DAY_SECONDS * 365;
+      break;
+    }
+    case 'all-time': {
+      break;
+    }
+    default: {
+      const year = +sort;
+      // Arbitrarily academic years on August 1, which should be during the summer
+      from = new Date(year, 7, 1).getTime() / 1000;
+      to = new Date(year + 1, 7, 1).getTime() / 1000;
+    }
+  }
+  return { from, to };
+};

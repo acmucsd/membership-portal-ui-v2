@@ -1,0 +1,36 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .controls {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .search {
+      background: none;
+      border: 1px solid var(--theme-text-on-background-1);
+      border-radius: 1rem;
+      color: inherit;
+      font-size: 14px;
+      height: 2rem;
+      max-width: 18rem;
+      padding-left: 1.5rem;
+      padding-right: 0.5rem;
+      width: 100%;
+
+      &::placeholder {
+        color: var(--theme-text-on-background-3);
+      }
+    }
+
+    .filterOption {
+      border: 1px solid var(--theme-text-on-background-1);
+      border-radius: 1rem;
+      padding: 0.5rem;
+    }
+  }
+}
