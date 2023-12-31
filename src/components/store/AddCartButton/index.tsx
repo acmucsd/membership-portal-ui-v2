@@ -29,8 +29,6 @@ const AddCartButton = ({
 
   const maxCanBuy = Math.min(lifetimeRemaining, montlyRemaining);
 
-  const currAltText = `TODO`;
-
   useEffect(() => {
     // console.log(`currSize ${currSize} inStock ${inStock} inCart ${inCart}`);
     setMounted(true);
