@@ -28,25 +28,27 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
       : item.options[item.options.findIndex(val => val.metadata?.value === size)];
 
   return (
-    <div className={styles.rowContainer}>
-      <Image src={item.picture || ''} alt="Picture of item " width={600} height={600} />
-      <div className={styles.container}>
-        <Navbar balance={credits} showBack />
-        <h1>Store Item Page {size}</h1>
-        {item.options.length > 1 && (
-          <SizeSelector currSize={size} setSize={setSize} options={item.options} />
-        )}
-        <ItemHeader itemName={item.itemName} cost={currOption?.price} />
+    <div className={styles.navbarBodyDiv}>
+      <Navbar balance={credits} showBack />
+      <div className={styles.rowContainer}>
+        <Image src={item.picture || ''} alt="Picture of item " width={600} height={600} />
+        <div className={styles.container}>
+          <h1>Store Item Page {size}</h1>
+          {item.options.length > 1 && (
+            <SizeSelector currSize={size} setSize={setSize} options={item.options} />
+          )}
+          <ItemHeader itemName={item.itemName} cost={currOption?.price} />
 
-        <AddCartButton
-          inCart={inCart}
-          setInCart={setInCart}
-          currSize={size}
-          inStock={currOption?.quantity != null && currOption?.quantity >= 1}
-          lifetimeRemaining={item.lifetimeRemaining}
-          montlyRemaining={item.monthlyRemaining}
-        />
-        <p>{item.description}</p>
+          <AddCartButton
+            inCart={inCart}
+            setInCart={setInCart}
+            currSize={size}
+            inStock={currOption?.quantity != null && currOption?.quantity >= 1}
+            lifetimeRemaining={item.lifetimeRemaining}
+            montlyRemaining={item.monthlyRemaining}
+          />
+          <p>{item.description}</p>
+        </div>
       </div>
     </div>
   );
@@ -56,9 +58,6 @@ export default StoreItemPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
   const uuid = params?.uuid as string;
-  if (uuid == null) {
-    console.error('No UUID');
-  }
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   try {
