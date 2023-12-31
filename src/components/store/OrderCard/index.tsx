@@ -42,6 +42,7 @@ const OrderCard = ({ order, token }: OrderCardProps) => {
 
   useEffect(() => {
     if (open && orderData === null) {
+      // Only run if we haven't fetched the data yet (orderData === null)
       getOrder(token, order.uuid)
         .then(data => setOrderData(data))
         .catch(e => {

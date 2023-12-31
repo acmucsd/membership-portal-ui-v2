@@ -13,12 +13,12 @@ const Diamonds = ({ count, discount, className }: DiamondsProps) => {
   const discountActive = discount !== undefined && discount < count;
   return (
     <span className={className}>
-      <span style={discountActive ? { textDecoration: 'line-through' } : {}}>
+      <span className={`${styles.originalPrice} ${discountActive && styles.discount}`}>
         {(count >= 1e5 ? compactFormat : numberFormat).format(count)}
       </span>
       {discountActive && (
-        <span style={{ color: 'var(--theme-danger-1)' }}>
-          {' '}
+        <span className={styles.discountPrice}>
+          &nbsp;
           {(discount >= 1e5 ? compactFormat : numberFormat).format(discount)}
         </span>
       )}
