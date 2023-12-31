@@ -7,6 +7,13 @@ import styles from './style.module.scss';
 /** Height of the preview square. */
 const HEIGHT = 200;
 
+/** Promisified version of `HTMLCanvasElement.toBlob` */
+function toBlob(canvas: HTMLCanvasElement, type?: string, quality?: number): Promise<Blob | null> {
+  return new Promise(resolve => {
+    canvas.toBlob(resolve, type, quality);
+  });
+}
+
 type DragState = {
   pointerId: number;
   offsetX: number;
@@ -20,13 +27,22 @@ interface CropperProps {
   aspectRatio: number;
   circle?: boolean;
   maxFileHeight: number;
+  maxSize?: number;
   // eslint-disable-next-line no-unused-vars
-  onUpload: (file: Blob) => void;
+  onCrop: (file: Blob) => void;
   // eslint-disable-next-line no-unused-vars
-  onClose: (reason: 'invalid-image' | null) => void;
+  onClose: (reason: 'invalid-image' | 'cannot-compress' | null) => void;
 }
 
-const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }: CropperProps) => {
+const Cropper = ({
+  file,
+  aspectRatio,
+  circle,
+  maxFileHeight,
+  maxSize = Infinity,
+  onCrop,
+  onClose,
+}: CropperProps) => {
   const WIDTH = HEIGHT * aspectRatio;
 
   const url = useObjectUrl(file);
@@ -134,7 +150,7 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
         <button
           type="submit"
           className={styles.upload}
-          onClick={() => {
+          onClick={async () => {
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             if (!context || !image.current) {
@@ -155,14 +171,25 @@ const Cropper = ({ file, aspectRatio, circle, maxFileHeight, onUpload, onClose }
               fileHeight * aspectRatio,
               fileHeight
             );
-            canvas.toBlob(blob => {
-              if (blob) {
-                onUpload(blob);
-              }
-            });
+            const blob = await toBlob(canvas);
+            if (blob && blob.size <= maxSize) {
+              onCrop(blob);
+              return;
+            }
+            // Try compressing as JPG with various qualities, in parallel due to
+            // eslint(no-await-in-loop)
+            const blobs = await Promise.all(
+              [1, 0.9, 0.7, 0.4, 0].map(quality => toBlob(canvas, 'image/jpeg', quality))
+            );
+            const firstSmallEnough = blobs.find(blob => blob && blob.size <= maxSize);
+            if (firstSmallEnough) {
+              onCrop(firstSmallEnough);
+            } else {
+              onClose('cannot-compress');
+            }
           }}
         >
-          Upload
+          Apply
         </button>
       </div>
     </Modal>

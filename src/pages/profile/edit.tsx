@@ -467,7 +467,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
             aspectRatio={1}
             circle
             maxFileHeight={256}
-            onUpload={async file => {
+            onCrop={async file => {
               try {
                 const newUser = await UserAPI.uploadProfilePicture(authToken, file);
                 setUser(user => ({ ...user, ...newUser }));

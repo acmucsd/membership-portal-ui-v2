@@ -1,6 +1,6 @@
 import EventDetailsFormItem from '@/components/admin/event/EventDetailsFormItem';
 import NotionAutofill from '@/components/admin/event/NotionAutofill';
-import { Button } from '@/components/common';
+import { Button, Cropper } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { KlefkiAPI } from '@/lib/api';
 import { AdminEventManager } from '@/lib/managers';
@@ -9,8 +9,9 @@ import { FillInLater } from '@/lib/types';
 import { Event } from '@/lib/types/apiRequests';
 import { NotionEventDetails, NotionEventPreview, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getMessagesFromError } from '@/lib/utils';
+import { getMessagesFromError, useObjectUrl } from '@/lib/utils';
 import { DateTime } from 'luxon';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -75,7 +76,16 @@ const EventDetailsForm = (props: IProps) => {
 
   const resetForm = () => reset(initialValues);
 
+  const [selectedCover, setSelectedCover] = useState<File | null>(null);
+  const [cover, setCover] = useState<File | null>(null);
+  const coverUrl = useObjectUrl(cover);
+
   const createEvent: SubmitHandler<FillInLater> = formData => {
+    if (!cover) {
+      showToast('Event cover is required.');
+      return;
+    }
+
     setLoading(true);
     const { start: isoStart, end: isoEnd, ...event } = formData;
 
@@ -91,7 +101,7 @@ const EventDetailsForm = (props: IProps) => {
         start,
         end,
       },
-      cover: event.cover[0],
+      cover,
       onSuccessCallback: event => {
         setLoading(false);
         showToast('Event Created Successfully!', '', [
@@ -267,24 +277,48 @@ const EventDetailsForm = (props: IProps) => {
         {editing ? null : (
           <>
             <label htmlFor="cover">Cover Image</label>
-            <EventDetailsFormItem error={errors.cover?.message}>
+            <EventDetailsFormItem>
+              {coverUrl && (
+                <Image src={coverUrl} alt="Selected cover image" width={480} height={270} />
+              )}
               <input
                 type="file"
                 id="cover"
-                accept="image/png, image/gif, image/jpeg"
-                {...register('cover', {
-                  validate: cover => {
-                    const list = cover as FillInLater as FileList;
-                    if (list.length === 0) return 'Required';
-                    if (list.length > 1) return 'Only 1 image upload is allowed';
-                    if ((list.item(0)?.size ?? 0) >= config.file.MAX_EVENT_COVER_SIZE_KB * 1024) {
-                      return 'File is too large';
-                    }
-                    return true;
-                  },
-                })}
+                accept="image/*"
+                onChange={async e => {
+                  const file = e.currentTarget.files?.[0];
+                  e.currentTarget.value = '';
+                  if (file) {
+                    setSelectedCover(file);
+                  }
+                }}
               />
             </EventDetailsFormItem>
+            <Cropper
+              file={selectedCover}
+              aspectRatio={1920 / 1080}
+              maxFileHeight={1080}
+              maxSize={config.file.MAX_EVENT_COVER_SIZE_KB * 1024}
+              onCrop={async file => {
+                setCover(
+                  new File([file], selectedCover?.name ?? 'image', {
+                    type: file.type,
+                  })
+                );
+                setSelectedCover(null);
+              }}
+              onClose={reason => {
+                setSelectedCover(null);
+                if (reason === 'cannot-compress') {
+                  showToast(
+                    'Your image has too much detail and cannot be compressed.',
+                    'Try shrinking your image.'
+                  );
+                } else if (reason !== null) {
+                  showToast('This image format is not supported.');
+                }
+              }}
+            />
           </>
         )}
       </div>
