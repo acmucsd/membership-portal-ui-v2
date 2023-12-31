@@ -6,8 +6,8 @@ import {
   FeedbackType,
   OrderPickupEventStatus,
   OrderStatus,
+  SocialMediaType,
   UserAccessType,
-  UserState,
 } from './enums';
 
 // RESPONSE TYPES
@@ -49,6 +49,14 @@ export interface GetAllEmailsResponse extends ApiResponse {
 
 export interface SubmitAttendanceForUsersResponse extends ApiResponse {
   attendances: PublicAttendance[];
+}
+
+export interface ModifyUserAccessLevelResponse extends ApiResponse {
+  updatedUsers: PrivateProfile[];
+}
+
+export interface GetAllUserAccessLevelsResponse extends ApiResponse {
+  users: PrivateProfile[];
 }
 
 // ATTENDANCE
@@ -317,6 +325,8 @@ export interface PublicProfile {
   major: string;
   bio: string;
   points: number;
+  userSocialMedia?: PublicUserSocialMedia[];
+  isAttendancePublic: boolean;
 }
 
 export interface PrivateProfile extends PublicProfile {
@@ -337,8 +347,19 @@ export interface PublicFeedback {
   type: FeedbackType;
 }
 
+export interface PublicUserSocialMedia {
+  uuid: UUID;
+  user?: PublicProfile;
+  type: SocialMediaType;
+  url: URL;
+}
+
 export interface GetUserActivityStreamResponse extends ApiResponse {
   activity: PublicActivity[];
+}
+
+export interface GetVisibleResumesResponse extends ApiResponse {
+  resumes: PublicResume[];
 }
 
 export interface UpdateProfilePictureResponse extends ApiResponse {
@@ -372,6 +393,20 @@ export interface SubmitFeedbackResponse extends ApiResponse {
 export interface UpdateFeedbackStatusResponse extends ApiResponse {
   feedback: PublicFeedback;
 }
+
+export interface GetUserSocialMediaResponse extends ApiResponse {
+  userSocialMedia: PublicUserSocialMedia[];
+}
+
+export interface InsertSocialMediaResponse extends ApiResponse {
+  userSocialMedia: PublicUserSocialMedia;
+}
+
+export interface UpdateSocialMediaResponse extends ApiResponse {
+  userSocialMedia: PublicUserSocialMedia;
+}
+
+export interface DeleteSocialMediaResponse extends ApiResponse {}
 
 export interface PublicOrderPickupEvent {
   uuid: UUID;
@@ -421,6 +456,8 @@ export interface PublicResume {
 export interface PatchResumeResponse extends ApiResponse {
   resume: PublicResume;
 }
+
+export interface DeleteResumeResponse extends ApiResponse {}
 
 export interface NotionEventDetails {
   title: string;
