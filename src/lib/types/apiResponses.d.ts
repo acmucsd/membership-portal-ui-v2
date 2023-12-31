@@ -215,6 +215,10 @@ export interface PublicOrderItem {
   notes?: string;
 }
 
+export interface PublicOrderItemWithQuantity extends PublicOrderItem {
+  quantity: number;
+}
+
 export interface PublicOrder {
   uuid: UUID;
   user: PublicProfile;

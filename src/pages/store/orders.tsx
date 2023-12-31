@@ -12,6 +12,7 @@ import { useState } from 'react';
 interface OrderPageProps {
   user: PrivateProfile;
   orders: PublicOrder[];
+  token: string;
 }
 
 const orderInFilter = (order: PublicOrder, filter: string): boolean => {
@@ -31,7 +32,7 @@ const orderInFilter = (order: PublicOrder, filter: string): boolean => {
   return new Date(order.orderedAt) >= lastDay;
 };
 
-const StoreOrderPage = ({ user: { credits }, orders }: OrderPageProps) => {
+const StoreOrderPage = ({ user: { credits }, orders, token }: OrderPageProps) => {
   const [filter, setFilter] = useState('past-6-months');
 
   const filteredOrders = orders.filter(o => orderInFilter(o, filter));
@@ -59,7 +60,7 @@ const StoreOrderPage = ({ user: { credits }, orders }: OrderPageProps) => {
             />
           </div>
         </div>
-        <OrdersDisplay orders={filteredOrders} />
+        <OrdersDisplay orders={filteredOrders} token={token} />
       </div>
     </div>
   );
@@ -72,7 +73,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   const orders = await StoreAPI.getAllOrders(AUTH_TOKEN);
 
-  return { props: { orders } };
+  return { props: { orders, token: AUTH_TOKEN } };
 };
 
 export const getServerSideProps = withAccessType(

@@ -46,6 +46,16 @@ export const trim = (text: string, len: number) => {
 };
 
 /**
+ * Given some text, returns a formatted string where the first letter is capitalized
+ * and all other letters are lowercase.
+ * @param text String text input
+ * @returns Formatted text
+ */
+export const capitalize = (text: string): string => {
+  return text.slice(0, 1).toUpperCase() + text.slice(1).toLowerCase();
+};
+
+/**
  * Helper function to map each user to a numeric value deterministically
  * TODO: Use the user's UUID to hash to a number since it will never change
  * @param user

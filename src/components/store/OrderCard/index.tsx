@@ -1,7 +1,11 @@
 import { Typography } from '@/components/common';
-import { PublicOrder } from '@/lib/types/apiResponses';
+import { showToast } from '@/lib';
+import { getOrder } from '@/lib/api/StoreAPI';
+import { PublicOrder, PublicOrderWithItems } from '@/lib/types/apiResponses';
 import { OrderStatus } from '@/lib/types/enums';
 import { formatDate, formatEventDate } from '@/lib/utils';
+import { useEffect, useState } from 'react';
+import OrderSummary from '../OrderSummary';
 import styles from './style.module.scss';
 
 export const orderStatusName: { [_ in OrderStatus]: string } = {
@@ -28,28 +32,62 @@ export const orderStatusColor: { [_ in OrderStatus]: string } = {
 
 interface OrderCardProps {
   order: PublicOrder;
+  token: string;
 }
 
-const OrderCard = ({ order }: OrderCardProps) => {
+const OrderCard = ({ order, token }: OrderCardProps) => {
+  const [open, setOpen] = useState(false);
+  const [orderData, setOrderData] = useState<PublicOrderWithItems | null>(null);
+  const orderOpen = open && orderData !== null;
+
+  useEffect(() => {
+    if (open && orderData === null) {
+      // Only run if we haven't fetched the data yet (orderData === null)
+      getOrder(token, order.uuid)
+        .then(data => setOrderData(data))
+        .catch(e => {
+          showToast(e.message);
+          setOrderData(null);
+        });
+    }
+  }, [open, order.uuid, orderData, token]);
+
+  const statusColor = orderStatusColor[order.status];
+  const statusName = orderStatusName[order.status];
+
   return (
-    <div className={styles.container}>
-      <div className={styles.orderInfo}>
-        <div className={styles.label}>
-          <Typography variant="label/small">ORDER PLACED</Typography>
-          <Typography variant="body/large" style={{ fontWeight: 700 }}>
-            {formatDate(order.orderedAt, true)}
-          </Typography>
+    <div className={styles.card}>
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className={`${styles.container} ${orderOpen && styles.focused}`}
+      >
+        <div className={styles.orderInfo}>
+          <div className={styles.mobileHeader}>
+            {/* Header includes both ORDER PLACED and status for mobile. */}
+            <div className={styles.label}>
+              <Typography variant="label/small">ORDER PLACED</Typography>
+              <Typography variant="body/large" style={{ fontWeight: 700 }} suppressHydrationWarning>
+                {formatDate(order.orderedAt, true)}
+              </Typography>
+            </div>
+            <div className={`${styles.orderStatus} ${statusColor} ${styles.mobile}`}>
+              <Typography variant="body/medium">{statusName}</Typography>
+            </div>
+          </div>
+          <div className={styles.label}>
+            <Typography variant="label/small">PICK UP</Typography>
+            <Typography variant="body/large" style={{ fontWeight: 700 }} suppressHydrationWarning>
+              {formatEventDate(order.pickupEvent.start, order.pickupEvent.end, true)}
+            </Typography>
+          </div>
         </div>
-        <div className={styles.label}>
-          <Typography variant="label/small">PICK UP</Typography>
-          <Typography variant="body/large" style={{ fontWeight: 700 }}>
-            {formatEventDate(order.pickupEvent.start, order.pickupEvent.end, true)}
-          </Typography>
+        {/* For desktop, status is located at the end of the row. */}
+        <div className={`${styles.orderStatus} ${statusColor} ${styles.desktop}`}>
+          <Typography variant="body/medium">{statusName}</Typography>
         </div>
-      </div>
-      <div className={`${styles.orderStatus} ${orderStatusColor[order.status]}`}>
-        <Typography variant="body/medium">{orderStatusName[order.status]}</Typography>
-      </div>
+      </button>
+      {orderOpen && <OrderSummary order={orderData} />}
     </div>
   );
 };
