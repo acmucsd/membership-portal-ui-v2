@@ -19,22 +19,13 @@ interface ItemPageProps {
   item: PublicMerchItemWithPurchaseLimits;
 }
 const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
-  console.log(item.options.length);
   const [size, setSize] = useState<string | undefined>(item.options.length <= 1 ? 'Y' : undefined);
   const [inCart, setInCart] = useState<boolean>(false);
-  // const [inStock, setInStock] = useState<boolean>(false);
-  console.log(size);
-  // item.options.forEach(val => {
-  //   console.log(val);
-  // });
-
-  console.log(item);
 
   const currOption =
     item.options.length <= 1
       ? item.options[0]
       : item.options[item.options.findIndex(val => val.metadata?.value === size)];
-  console.log(item.picture);
 
   return (
     <div className={styles.rowContainer}>
@@ -78,22 +69,6 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
       },
     };
   } catch (err: any) {
-    // console.log(req);
-    // console.log('===================');
-    // console.log('===================');
-    // console.log('===================');
-    // // console.log(res);
-    // console.log('===================');
-    // console.log('===================');
-    // console.log('===================');
-    // console.log(params);
-    // console.log('===================');
-    // console.log('===================');
-    // console.log('===================');
-    // console.error(err);
-    // console.log('===================');
-    // console.log('===================');
-    // console.log('===================');
     return { redirect: { destination: config.store.homeRoute, permanent: false } };
   }
 };

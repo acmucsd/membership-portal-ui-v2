@@ -13,10 +13,6 @@ interface ItemHeaderProps {
 const ItemHeader = ({ itemName, cost }: ItemHeaderProps) => {
   const [mounted, setMounted] = useState(false);
 
-  // NEED TO CHANGE ACTUAL LABEL, NOT SOME EXTERNAL DIV. CAN'T USE + B/C OF ODD LINTING ERRORS
-
-  // const currAltText = `TODO`;
-
   useEffect(() => {
     setMounted(true);
   }, []);

@@ -13,16 +13,7 @@ interface SizeSelectorProps {
 
 const SizeSelector = ({ currSize, options, setSize }: SizeSelectorProps) => {
   const [mounted, setMounted] = useState(false);
-
-  // const smallId = `small${useId()}`;
-  // const mediumId = `medium${useId()}`;
-  // const largeId = `large${useId()}`;
-  // const xlId = `XL${useId()}`;
   const myID = `${useId()}`;
-
-  // NEED TO CHANGE ACTUAL LABEL, NOT SOME EXTERNAL DIV. CAN'T USE + B/C OF ODD LINTING ERRORS
-
-  // const currAltText = `TODO`;
 
   useEffect(() => {
     setMounted(true);
@@ -63,39 +54,3 @@ export default SizeSelector;
 
 // Links for knowledge:
 // https://medium.com/@vincent.bocquet/typescript-with-react-usestate-hook-f701309384a
-
-/* <input
-    id={smallId}
-    name="state-d"
-    type="radio"
-    defaultChecked={currSize === 'S'}
-    onClick={() => setSize('S')}
-  />
-  <label htmlFor={smallId}>S</label>
-
-  <input
-    id={mediumId}
-    name="state-d"
-    type="radio"
-    defaultChecked={currSize === 'M'}
-    onClick={() => setSize('M')}
-  />
-  <label htmlFor={mediumId}>M</label>
-
-  <input
-    id={largeId}
-    name="state-d"
-    type="radio"
-    defaultChecked={currSize === 'L'}
-    onClick={() => setSize('L')}
-  />
-  <label htmlFor={largeId}>L</label>
-
-  <input
-    id={xlId}
-    name="state-d"
-    type="radio"
-    defaultChecked={currSize === 'XL'}
-    onClick={() => setSize('XL')}
-  />
-  <label htmlFor={xlId}>XL</label> */

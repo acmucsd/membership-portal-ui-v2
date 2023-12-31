@@ -54,12 +54,6 @@ const AddCartButton = ({
     optionArr.push({ value: `${i}`, label: `${i}` });
   }
 
-  // const selOptions = optionArr.map(num => (
-  //   <option value={num.value} key={`${num.value}${myID}`}>
-  //     {num.value}
-  //   </option>
-  // ));
-
   optionArr.push('---');
 
   return (
@@ -72,9 +66,6 @@ const AddCartButton = ({
       <p>{`In cart: ${inCart}`}</p>
       {currSize === undefined ? <p className={styles.error}>Please select a size.</p> : validText}
       <div className={styles.buttonRow}>
-        {/* <select name="Quantity" id="Quantity">
-          {selOptions}
-        </select> */}
         <div className={styles.quantityColumn}>
           <h4>Quantity</h4>
           <Dropdown
