@@ -52,7 +52,7 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
         <div key={item.uuid} className={styles.itemInfo}>
           <div className={styles.image}>
             <Image
-              src={item.option.item.picture}
+              src={item.option.item.uploadedPhoto}
               style={{ objectFit: 'cover' }}
               sizes="9.375rem"
               alt="Store item picture"
