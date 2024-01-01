@@ -44,8 +44,6 @@ const AddCartButton = ({
     <p className={styles.error}>This item is out of stock.</p>
   );
 
-  const buttonStyle = inStock ? styles.buttonInStock : styles.buttonNoStock;
-
   const optionArr: Array<{ value: string; label: string } | '---'> = [];
 
   for (let i = 1; i <= maxCanBuy; i += 1) {
@@ -76,7 +74,7 @@ const AddCartButton = ({
         </div>
 
         <input
-          className={`${buttonStyle} ${styles.button}`}
+          className={`${inStock ? styles.buttonInStock : styles.buttonNoStock} ${styles.button}`}
           type="button"
           value={inStock ? 'Add to Cart' : 'Out of Stock'}
           onClick={() => {

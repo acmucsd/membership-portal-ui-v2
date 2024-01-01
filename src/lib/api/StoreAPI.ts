@@ -1,6 +1,6 @@
 import { config } from '@/lib';
 import { UUID } from '@/lib/types';
-import type { UUID } from '@/lib/types';
+import type {
   GetAllMerchCollectionsResponse,
   GetMerchOrdersResponse,
   GetOneMerchItemResponse,
