@@ -1,5 +1,12 @@
 import { Cropper } from '@/components/common';
-import { EditBlock, EditField, Preview, SingleField, Switch } from '@/components/profile';
+import {
+  EditBlock,
+  EditField,
+  Preview,
+  SingleField,
+  SocialMediaIcon,
+  Switch,
+} from '@/components/profile';
 import { config, showToast } from '@/lib';
 import { AuthAPI, ResumeAPI, UserAPI } from '@/lib/api';
 import majors from '@/lib/constants/majors.json';
@@ -8,7 +15,6 @@ import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, SocialMediaType } from '@/lib/types/enums';
 import { capitalize, getMessagesFromError, getProfilePicture, isSrcAGif } from '@/lib/utils';
-import DevpostIcon from '@/public/assets/icons/devpost-icon.svg';
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import DropdownIcon from '@/public/assets/icons/dropdown-arrow-1.svg';
 import styles from '@/styles/pages/profile/edit.module.scss';
@@ -16,10 +22,7 @@ import { AxiosError } from 'axios';
 import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useId, useMemo, useState } from 'react';
-import { AiOutlineLink } from 'react-icons/ai';
-import { BsFacebook, BsGithub, BsInstagram, BsLinkedin, BsTwitter } from 'react-icons/bs';
-import { IoMail } from 'react-icons/io5';
+import { FormEvent, useEffect, useId, useMemo, useState } from 'react';
 
 function reportError(title: string, error: unknown) {
   if (error instanceof AxiosError && error.response?.data?.error) {
@@ -88,20 +91,110 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
     () => new Map(initUser.userSocialMedia?.map(social => [social.type, social.url]) ?? [])
   );
 
-  const hasChange =
+  const profileChanged =
     firstName !== user.firstName ||
     lastName !== user.lastName ||
     handle !== user.handle ||
-    email !== user.email ||
     major !== user.major ||
     +graduationYear !== user.graduationYear ||
     bio !== user.bio ||
     isAttendancePublic !== user.isAttendancePublic ||
+    newPassword.length > 0;
+  const hasChange =
+    profileChanged ||
+    email !== user.email ||
     Array.from(socialMedia).some(
       ([type, url]) =>
         (user.userSocialMedia?.find(social => social.type === type)?.url ?? '') !== url
-    ) ||
-    newPassword.length > 0;
+    );
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    let changed = false;
+    if (profileChanged) {
+      try {
+        const newUser = await UserAPI.updateCurrentUserProfile(authToken, {
+          firstName: firstName !== user.firstName ? firstName : undefined,
+          lastName: lastName !== user.lastName ? lastName : undefined,
+          handle: handle !== user.handle ? handle : undefined,
+          major: major !== user.major ? major : undefined,
+          graduationYear: +graduationYear !== user.graduationYear ? +graduationYear : undefined,
+          bio: bio !== user.bio ? bio : undefined,
+          isAttendancePublic:
+            isAttendancePublic !== user.isAttendancePublic ? isAttendancePublic : undefined,
+          passwordChange:
+            newPassword.length > 0 ? { password, newPassword, confirmPassword } : undefined,
+        });
+        // Doesn't include the `resumes` field, so we need to preserve
+        // it
+        setUser(user => ({ ...user, ...newUser }));
+        changed = true;
+      } catch (error) {
+        reportError('Changes failed to save', error);
+      }
+    }
+    if (email !== user.email) {
+      try {
+        await AuthAPI.modifyEmail(authToken, email);
+        setUser(user => ({ ...user, email }));
+        changed = true;
+      } catch (error) {
+        reportError('Email failed to change', error);
+      }
+    }
+    await Promise.all(
+      Array.from(socialMedia, async ([type, url]) => {
+        const social = user.userSocialMedia?.find(social => social.type === type);
+        if (social?.url !== url) {
+          if (social) {
+            if (url) {
+              try {
+                const newSocial = await UserAPI.updateSocialMedia(authToken, social.uuid, { url });
+                setUser(user => ({
+                  ...user,
+                  userSocialMedia: user.userSocialMedia?.map(social =>
+                    social.type === type ? newSocial : social
+                  ) ?? [newSocial],
+                }));
+                changed = true;
+              } catch (error) {
+                reportError(`Failed to update ${capitalize(type)} URL`, error);
+              }
+            } else {
+              try {
+                await UserAPI.deleteSocialMedia(authToken, social.uuid);
+                setUser(user => ({
+                  ...user,
+                  userSocialMedia: user.userSocialMedia?.filter(social => social.type !== type),
+                }));
+                changed = true;
+              } catch (error) {
+                reportError(`Failed to remove ${capitalize(type)} URL`, error);
+              }
+            }
+          } else if (url) {
+            try {
+              const newSocial = await UserAPI.insertSocialMedia(authToken, {
+                type,
+                url,
+              });
+              setUser(user => ({
+                ...user,
+                userSocialMedia: [...(user.userSocialMedia ?? []), newSocial],
+              }));
+              changed = true;
+            } catch (error) {
+              reportError(`Failed to add ${capitalize(type)} URL`, error);
+            }
+          }
+        }
+      })
+    );
+    if (changed) {
+      showToast('Changes saved!');
+    }
+  };
 
   // Warn if there are unsaved changes
   useEffect(() => {
@@ -144,121 +237,11 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
             <h2>Current Profile</h2>
             <Preview user={user} pfpCacheBust={pfpCacheBust} />
           </section>
-          <form
-            className={styles.columnRight}
-            onSubmit={async e => {
-              e.preventDefault();
-
-              let changed = false;
-              if (
-                firstName !== user.firstName ||
-                lastName !== user.lastName ||
-                handle !== user.handle ||
-                email !== user.email ||
-                major !== user.major ||
-                +graduationYear !== user.graduationYear ||
-                bio !== user.bio ||
-                isAttendancePublic !== user.isAttendancePublic ||
-                newPassword.length > 0
-              ) {
-                try {
-                  const newUser = await UserAPI.updateCurrentUser(authToken, {
-                    firstName: firstName !== user.firstName ? firstName : undefined,
-                    lastName: lastName !== user.lastName ? lastName : undefined,
-                    handle: handle !== user.handle ? handle : undefined,
-                    major: major !== user.major ? major : undefined,
-                    graduationYear:
-                      +graduationYear !== user.graduationYear ? +graduationYear : undefined,
-                    bio: bio !== user.bio ? bio : undefined,
-                    isAttendancePublic:
-                      isAttendancePublic !== user.isAttendancePublic
-                        ? isAttendancePublic
-                        : undefined,
-                    passwordChange:
-                      newPassword.length > 0
-                        ? { password, newPassword, confirmPassword }
-                        : undefined,
-                  });
-                  // Doesn't include the `resumes` field, so we need to preserve
-                  // it
-                  setUser(user => ({ ...user, ...newUser }));
-                  changed = true;
-                } catch (error) {
-                  reportError('Changes failed to save', error);
-                }
-              }
-              if (email !== user.email) {
-                try {
-                  await AuthAPI.modifyEmail(authToken, email);
-                  setUser(user => ({ ...user, email }));
-                  changed = true;
-                } catch (error) {
-                  reportError('Email failed to change', error);
-                }
-              }
-              await Promise.all(
-                Array.from(socialMedia, async ([type, url]) => {
-                  const social = user.userSocialMedia?.find(social => social.type === type);
-                  if (social?.url !== url) {
-                    if (social) {
-                      if (url) {
-                        try {
-                          const newSocial = await UserAPI.updateSocialMedia(
-                            authToken,
-                            social.uuid,
-                            { url }
-                          );
-                          setUser(user => ({
-                            ...user,
-                            userSocialMedia: user.userSocialMedia?.map(social =>
-                              social.type === type ? newSocial : social
-                            ) ?? [newSocial],
-                          }));
-                          changed = true;
-                        } catch (error) {
-                          reportError(`Failed to update ${capitalize(type)} URL`, error);
-                        }
-                      } else {
-                        try {
-                          await UserAPI.deleteSocialMedia(authToken, social.uuid);
-                          setUser(user => ({
-                            ...user,
-                            userSocialMedia: user.userSocialMedia?.filter(
-                              social => social.type !== type
-                            ),
-                          }));
-                          changed = true;
-                        } catch (error) {
-                          reportError(`Failed to remove ${capitalize(type)} URL`, error);
-                        }
-                      }
-                    } else if (url) {
-                      try {
-                        const newSocial = await UserAPI.insertSocialMedia(authToken, {
-                          type,
-                          url,
-                        });
-                        setUser(user => ({
-                          ...user,
-                          userSocialMedia: [...(user.userSocialMedia ?? []), newSocial],
-                        }));
-                        changed = true;
-                      } catch (error) {
-                        reportError(`Failed to add ${capitalize(type)} URL`, error);
-                      }
-                    }
-                  }
-                })
-              );
-              if (changed) {
-                showToast('Changes saved!');
-              }
-            }}
-          >
+          <form className={styles.columnRight} onSubmit={handleSubmit}>
             <details open>
               <summary>
                 <h2>Basic Info</h2>
-                <DropdownIcon />
+                <DropdownIcon aria-hidden />
               </summary>
               <div className={styles.section}>
                 <EditBlock title="Profile Photo">
@@ -297,7 +280,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                           className={styles.fileInput}
                           type="file"
                           accept="image/*"
-                          onChange={async e => {
+                          onChange={e => {
                             const file = e.currentTarget.files?.[0];
                             e.currentTarget.value = '';
                             if (file) {
@@ -336,7 +319,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
             <details open>
               <summary>
                 <h2>Account Management</h2>
-                <DropdownIcon />
+                <DropdownIcon aria-hidden />
               </summary>
               <div className={styles.section}>
                 <EditField
@@ -381,7 +364,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
             <details open>
               <summary>
                 <h2>About Me</h2>
-                <DropdownIcon />
+                <DropdownIcon aria-hidden />
               </summary>
               <div className={styles.section}>
                 <EditField
@@ -486,11 +469,11 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
             <details open>
               <summary>
                 <h2>External Links</h2>
-                <DropdownIcon />
+                <DropdownIcon aria-hidden />
               </summary>
               <div className={styles.section}>
                 <EditField
-                  icon={<BsLinkedin className={styles.icon} aria-hidden />}
+                  icon={<SocialMediaIcon type={SocialMediaType.LINKEDIN} hidden />}
                   label="LinkedIn"
                   type="url"
                   name="linkedin"
@@ -504,7 +487,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   onBlur={url => fixUrl(url, 'linkedin.com/in')}
                 />
                 <EditField
-                  icon={<BsGithub className={styles.icon} aria-hidden />}
+                  icon={<SocialMediaIcon type={SocialMediaType.GITHUB} hidden />}
                   label="GitHub"
                   type="url"
                   name="github"
@@ -518,7 +501,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   onBlur={url => fixUrl(url, 'github.com')}
                 />
                 <EditField
-                  icon={<DevpostIcon className={styles.icon} aria-hidden />}
+                  icon={<SocialMediaIcon type={SocialMediaType.DEVPOST} hidden />}
                   label="Devpost"
                   type="url"
                   name="devpost"
@@ -532,7 +515,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   onBlur={url => fixUrl(url, 'devpost.com')}
                 />
                 <EditField
-                  icon={<AiOutlineLink className={styles.icon} aria-hidden />}
+                  icon={<SocialMediaIcon type={SocialMediaType.PORTFOLIO} hidden />}
                   label="Portfolio"
                   type="url"
                   name="website"
@@ -546,7 +529,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   onBlur={fixUrl}
                 />
                 <EditField
-                  icon={<BsFacebook className={styles.icon} aria-hidden />}
+                  icon={<SocialMediaIcon type={SocialMediaType.FACEBOOK} hidden />}
                   label="Facebook"
                   type="url"
                   name="facebook"
@@ -560,7 +543,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   onBlur={url => fixUrl(url, 'facebook.com')}
                 />
                 <EditField
-                  icon={<BsTwitter className={styles.icon} aria-hidden />}
+                  icon={<SocialMediaIcon type={SocialMediaType.TWITTER} hidden />}
                   label="Twitter"
                   type="url"
                   name="twitter"
@@ -574,7 +557,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   onBlur={url => fixUrl(url, 'twitter.com')}
                 />
                 <EditField
-                  icon={<BsInstagram className={styles.icon} aria-hidden />}
+                  icon={<SocialMediaIcon type={SocialMediaType.INSTAGRAM} hidden />}
                   label="Instagram"
                   type="url"
                   name="instagram"
@@ -588,7 +571,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   onBlur={url => fixUrl(url, 'instagram.com')}
                 />
                 <EditField
-                  icon={<IoMail className={styles.icon} aria-hidden />}
+                  icon={<SocialMediaIcon type={SocialMediaType.EMAIL} hidden />}
                   label="Email"
                   type="email"
                   placeholder="you@example.com"

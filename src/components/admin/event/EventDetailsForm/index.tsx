@@ -285,7 +285,7 @@ const EventDetailsForm = (props: IProps) => {
                 type="file"
                 id="cover"
                 accept="image/*"
-                onChange={async e => {
+                onChange={e => {
                   const file = e.currentTarget.files?.[0];
                   e.currentTarget.value = '';
                   if (file) {

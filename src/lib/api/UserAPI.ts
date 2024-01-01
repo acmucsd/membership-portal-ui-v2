@@ -86,7 +86,7 @@ export const uploadProfilePicture = async (
  * @param user Profile changes
  * @returns User's full profile
  */
-export const updateCurrentUser = async (
+export const updateCurrentUserProfile = async (
   token: string,
   user: UserPatches
 ): Promise<PrivateProfile> => {
