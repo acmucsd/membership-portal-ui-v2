@@ -318,13 +318,13 @@ export interface PublicActivity {
 
 export interface PublicProfile {
   uuid: UUID;
-  handle: string;
+  handle: string | null;
   firstName: string;
   lastName: string;
-  profilePicture: string;
+  profilePicture: string | null;
   graduationYear: number;
   major: string;
-  bio: string;
+  bio: string | null;
   points: number;
   userSocialMedia?: PublicUserSocialMedia[];
   isAttendancePublic: boolean;

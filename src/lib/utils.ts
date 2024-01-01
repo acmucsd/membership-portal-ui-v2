@@ -104,7 +104,7 @@ export const getUserRank = (user: PublicProfile): string => {
  * @param src - source of the image
  * @returns whether or not the source is a gif
  */
-export const isSrcAGif = (src: string): boolean => /\.gif($|&)/.test(src);
+export const isSrcAGif = (src: string | null): boolean => src !== null && /\.gif($|&)/.test(src);
 
 /**
  * A React hook for calling `URL.createObjectURL` on the given file. Avoids

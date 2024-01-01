@@ -72,11 +72,11 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
 
   const [firstName, setFirstName] = useState(initUser.firstName);
   const [lastName, setLastName] = useState(initUser.lastName);
-  const [handle, setHandle] = useState(initUser.handle);
+  const [handle, setHandle] = useState(initUser.handle ?? '');
   const [email, setEmail] = useState(initUser.email);
   const [major, setMajor] = useState(initUser.major);
   const [graduationYear, setGraduationYear] = useState(String(initUser.graduationYear));
-  const [bio, setBio] = useState(initUser.bio);
+  const [bio, setBio] = useState(initUser.bio ?? '');
 
   const [isAttendancePublic, setIsAttendancePublic] = useState(initUser.isAttendancePublic);
   const [isResumeVisible, setIsResumeVisible] = useState(
@@ -94,10 +94,10 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
   const profileChanged =
     firstName !== user.firstName ||
     lastName !== user.lastName ||
-    handle !== user.handle ||
+    handle !== (user.handle ?? '') ||
     major !== user.major ||
     +graduationYear !== user.graduationYear ||
-    bio !== user.bio ||
+    bio !== (user.bio ?? '') ||
     isAttendancePublic !== user.isAttendancePublic ||
     newPassword.length > 0;
   const hasChange =
@@ -117,10 +117,10 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
         const newUser = await UserAPI.updateCurrentUserProfile(authToken, {
           firstName: firstName !== user.firstName ? firstName : undefined,
           lastName: lastName !== user.lastName ? lastName : undefined,
-          handle: handle !== user.handle ? handle : undefined,
+          handle: handle !== (user.handle ?? '') ? handle : undefined,
           major: major !== user.major ? major : undefined,
           graduationYear: +graduationYear !== user.graduationYear ? +graduationYear : undefined,
-          bio: bio !== user.bio ? bio : undefined,
+          bio: bio !== (user.bio ?? '') ? bio : undefined,
           isAttendancePublic:
             isAttendancePublic !== user.isAttendancePublic ? isAttendancePublic : undefined,
           passwordChange:
