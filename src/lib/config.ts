@@ -12,6 +12,7 @@ const config = {
         activity: '/user/activity',
         profilepicture: '/user/picture',
         handle: '/user/handle',
+        socialMedia: '/user/socialMedia',
       },
       activity: '/activity',
       resume: '/resume',

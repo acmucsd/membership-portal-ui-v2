@@ -22,6 +22,7 @@ export const EditBlock = ({ icon, title, wrapper: Wrapper = 'div', children }: E
 interface EditFieldProps {
   icon?: React.ReactNode;
   label: string;
+  name?: string;
   placeholder?: string;
   description?: string;
   prefix?: string;
@@ -38,6 +39,7 @@ interface EditFieldProps {
 export const EditField = ({
   icon,
   label,
+  name,
   placeholder,
   description,
   prefix,
@@ -56,6 +58,7 @@ export const EditField = ({
         <Input
           className={styles.field}
           type={type}
+          name={name}
           placeholder={placeholder}
           disabled={disabled}
           value={value}

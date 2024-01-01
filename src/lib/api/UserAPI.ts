@@ -1,12 +1,23 @@
 import { config } from '@/lib';
-import { PatchUserRequest, UserPatches } from '@/lib/types/apiRequests';
+import { UUID } from '@/lib/types';
+import {
+  InsertUserSocialMediaRequest,
+  PatchUserRequest,
+  SocialMedia,
+  SocialMediaPatches,
+  UpdateUserSocialMediaRequest,
+  UserPatches,
+} from '@/lib/types/apiRequests';
 import type {
   GetCurrentUserResponse,
   GetUserResponse,
+  InsertSocialMediaResponse,
   PatchUserResponse,
   PrivateProfile,
   PublicProfile,
+  PublicUserSocialMedia,
   UpdateProfilePictureResponse,
+  UpdateSocialMediaResponse,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
 
@@ -90,4 +101,67 @@ export const updateCurrentUser = async (
   });
 
   return response.data.user;
+};
+
+/**
+ * Create a new social media URL
+ * @param token Authorization bearer token
+ * @param socialMedia The URL and social media platform to add
+ * @returns The social media entry that was inserted
+ */
+export const insertSocialMedia = async (
+  token: string,
+  socialMedia: SocialMedia
+): Promise<PublicUserSocialMedia> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}`;
+
+  const requestBody: InsertUserSocialMediaRequest = { socialMedia };
+
+  const response = await axios.post<InsertSocialMediaResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.userSocialMedia;
+};
+
+/**
+ * Update a social media URL
+ * @param token Authorization bearer token
+ * @param uuid The ID of the social media entry
+ * @param socialMedia The new URL
+ * @returns The social media entry that was updated
+ */
+export const updateSocialMedia = async (
+  token: string,
+  uuid: UUID,
+  socialMedia: SocialMediaPatches
+): Promise<PublicUserSocialMedia> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}/${uuid}`;
+
+  const requestBody: UpdateUserSocialMediaRequest = { socialMedia };
+
+  const response = await axios.patch<UpdateSocialMediaResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.userSocialMedia;
+};
+
+/**
+ * Delete a social media URL
+ * @param token Authorization bearer token
+ * @param uuid The ID of the social media entry
+ */
+export const deleteSocialMedia = async (token: string, uuid: UUID): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}/${uuid}`;
+
+  await axios.delete(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };

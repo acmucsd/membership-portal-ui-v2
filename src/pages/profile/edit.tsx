@@ -6,8 +6,8 @@ import majors from '@/lib/constants/majors.json';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
-import { getMessagesFromError, getProfilePicture, isSrcAGif } from '@/lib/utils';
+import { CookieType, SocialMediaType } from '@/lib/types/enums';
+import { capitalize, getMessagesFromError, getProfilePicture, isSrcAGif } from '@/lib/utils';
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import DropdownIcon from '@/public/assets/icons/dropdown-arrow-1.svg';
 import styles from '@/styles/pages/profile/edit.module.scss';
@@ -16,7 +16,7 @@ import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useId, useMemo, useState } from 'react';
-import { BsDiscord, BsFacebook, BsGithub, BsInstagram, BsLinkedin } from 'react-icons/bs';
+import { BsFacebook, BsGithub, BsInstagram, BsLinkedin } from 'react-icons/bs';
 
 function reportError(title: string, error: unknown) {
   if (error instanceof AxiosError && error.response?.data?.error) {
@@ -56,7 +56,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
   const [graduationYear, setGraduationYear] = useState(String(initUser.graduationYear));
   const [bio, setBio] = useState(initUser.bio);
 
-  const [canSeeAttendance, setCanSeeAttendance] = useState(false); // TEMP
+  const [isAttendancePublic, setIsAttendancePublic] = useState(initUser.isAttendancePublic);
   const [isResumeVisible, setIsResumeVisible] = useState(
     initUser.resumes?.some(resume => resume.isResumeVisible) || initUser.resumes?.length === 0
   );
@@ -64,6 +64,10 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [socialMedia, setSocialMedia] = useState(
+    () => new Map(initUser.userSocialMedia?.map(social => [social.type, social.url]) ?? [])
+  );
 
   const hasChange =
     firstName !== user.firstName ||
@@ -73,6 +77,11 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
     major !== user.major ||
     +graduationYear !== user.graduationYear ||
     bio !== user.bio ||
+    isAttendancePublic !== user.isAttendancePublic ||
+    Array.from(socialMedia).some(
+      ([type, url]) =>
+        (user.userSocialMedia?.find(social => social.type === type)?.url ?? '') !== url
+    ) ||
     newPassword.length > 0;
 
   // Warn if there are unsaved changes
@@ -130,6 +139,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 major !== user.major ||
                 +graduationYear !== user.graduationYear ||
                 bio !== user.bio ||
+                isAttendancePublic !== user.isAttendancePublic ||
                 newPassword.length > 0
               ) {
                 try {
@@ -141,6 +151,10 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                     graduationYear:
                       +graduationYear !== user.graduationYear ? +graduationYear : undefined,
                     bio: bio !== user.bio ? bio : undefined,
+                    isAttendancePublic:
+                      isAttendancePublic !== user.isAttendancePublic
+                        ? isAttendancePublic
+                        : undefined,
                     passwordChange:
                       newPassword.length > 0
                         ? { password, newPassword, confirmPassword }
@@ -163,6 +177,60 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   reportError('Email failed to change', error);
                 }
               }
+              await Promise.all(
+                Array.from(socialMedia, async ([type, url]) => {
+                  const social = user.userSocialMedia?.find(social => social.type === type);
+                  if (social?.url !== url) {
+                    if (social) {
+                      if (url) {
+                        try {
+                          const newSocial = await UserAPI.updateSocialMedia(
+                            authToken,
+                            social.uuid,
+                            { url }
+                          );
+                          setUser(user => ({
+                            ...user,
+                            userSocialMedia: user.userSocialMedia?.map(social =>
+                              social.type === type ? newSocial : social
+                            ) ?? [newSocial],
+                          }));
+                          changed = true;
+                        } catch (error) {
+                          reportError(`Failed to update ${capitalize(type)} URL`, error);
+                        }
+                      } else {
+                        try {
+                          await UserAPI.deleteSocialMedia(authToken, social.uuid);
+                          setUser(user => ({
+                            ...user,
+                            userSocialMedia: user.userSocialMedia?.filter(
+                              social => social.type !== type
+                            ),
+                          }));
+                          changed = true;
+                        } catch (error) {
+                          reportError(`Failed to remove ${capitalize(type)} URL`, error);
+                        }
+                      }
+                    } else if (url) {
+                      try {
+                        const newSocial = await UserAPI.insertSocialMedia(authToken, {
+                          type,
+                          url,
+                        });
+                        setUser(user => ({
+                          ...user,
+                          userSocialMedia: [...(user.userSocialMedia ?? []), newSocial],
+                        }));
+                        changed = true;
+                      } catch (error) {
+                        reportError(`Failed to add ${capitalize(type)} URL`, error);
+                      }
+                    }
+                  }
+                })
+              );
               if (changed) {
                 showToast('Changes saved!');
               }
@@ -390,7 +458,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   </p>
                 </EditBlock>
                 <EditBlock title="Attendance">
-                  <Switch checked={canSeeAttendance} onCheck={setCanSeeAttendance} disabled>
+                  <Switch checked={isAttendancePublic} onCheck={setIsAttendancePublic}>
                     Display my ACM attendance history on my profile
                   </Switch>
                 </EditBlock>
@@ -406,46 +474,53 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   icon={<BsLinkedin className={styles.icon} aria-hidden />}
                   label="LinkedIn"
                   type="url"
+                  name="linkedin"
                   placeholder="linkedin.com/in/"
-                  value=""
-                  onChange={() => {}}
-                  disabled
+                  value={socialMedia.get(SocialMediaType.LINKEDIN) ?? ''}
+                  onChange={url =>
+                    setSocialMedia(
+                      new Map([...Array.from(socialMedia), [SocialMediaType.LINKEDIN, url]])
+                    )
+                  }
                 />
                 <EditField
                   icon={<BsGithub className={styles.icon} aria-hidden />}
                   label="GitHub"
                   type="url"
+                  name="github"
                   placeholder="github.com/"
-                  value=""
-                  onChange={() => {}}
-                  disabled
-                />
-                <EditField
-                  icon={<BsDiscord className={styles.icon} aria-hidden />}
-                  label="Discord"
-                  type="url"
-                  placeholder="discord.com/"
-                  value=""
-                  onChange={() => {}}
-                  disabled
+                  value={socialMedia.get(SocialMediaType.GITHUB) ?? ''}
+                  onChange={url =>
+                    setSocialMedia(
+                      new Map([...Array.from(socialMedia), [SocialMediaType.GITHUB, url]])
+                    )
+                  }
                 />
                 <EditField
                   icon={<BsFacebook className={styles.icon} aria-hidden />}
                   label="Facebook"
                   type="url"
+                  name="facebook"
                   placeholder="facebook.com/"
-                  value=""
-                  onChange={() => {}}
-                  disabled
+                  value={socialMedia.get(SocialMediaType.FACEBOOK) ?? ''}
+                  onChange={url =>
+                    setSocialMedia(
+                      new Map([...Array.from(socialMedia), [SocialMediaType.FACEBOOK, url]])
+                    )
+                  }
                 />
                 <EditField
                   icon={<BsInstagram className={styles.icon} aria-hidden />}
                   label="Instagram"
                   type="url"
+                  name="instagram"
                   placeholder="instagram.com/"
-                  value=""
-                  onChange={() => {}}
-                  disabled
+                  value={socialMedia.get(SocialMediaType.INSTAGRAM) ?? ''}
+                  onChange={url =>
+                    setSocialMedia(
+                      new Map([...Array.from(socialMedia), [SocialMediaType.INSTAGRAM, url]])
+                    )
+                  }
                 />
               </div>
             </details>
