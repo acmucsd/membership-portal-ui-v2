@@ -2,7 +2,7 @@ import { Carousel } from '@/components/common';
 import ItemCard from '@/components/store/ItemCard';
 import { config } from '@/lib';
 import { PublicMerchItem } from '@/lib/types/apiResponses';
-import NoImage from '@/public/assets/graphics/cat404.png';
+import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from './style.module.scss';
 
 interface CollectionSliderProps {
@@ -20,7 +20,7 @@ const CollectionSlider = ({ title, description, items }: CollectionSliderProps) 
         {items.map(item => (
           <ItemCard
             className={styles.card}
-            image={item.picture ?? NoImage.src}
+            image={getDefaultMerchItemPhoto(item)}
             title={item.itemName}
             href={`${config.store.itemRoute}${item.uuid}`}
             cost={item.options[0]?.price ?? 0}
