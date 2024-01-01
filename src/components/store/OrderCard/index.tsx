@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import OrderSummary from '../OrderSummary';
 import styles from './style.module.scss';
 
-export const orderStatusName: { [_ in OrderStatus]: string } = {
+export const orderStatusName: Record<OrderStatus, string> = {
   [OrderStatus.FULFILLED]: 'Fulfilled',
   [OrderStatus.CANCELLED]: 'Cancelled',
   [OrderStatus.PLACED]: 'Placed',
@@ -17,7 +17,7 @@ export const orderStatusName: { [_ in OrderStatus]: string } = {
   [OrderStatus.PICKUP_CANCELLED]: 'Pickup Cancelled',
 };
 
-export const orderStatusColor: { [_ in OrderStatus]: string } = {
+export const orderStatusColor: Record<OrderStatus, string> = {
   // Green: Order completed and picked up.
   [OrderStatus.FULFILLED]: styles.green,
   // Gray: Order completed, no further action needed.
@@ -52,8 +52,8 @@ const OrderCard = ({ order, token }: OrderCardProps) => {
     }
   }, [open, order.uuid, orderData, token]);
 
-  const statusColor = orderStatusColor[order.status];
-  const statusName = orderStatusName[order.status];
+  const statusColor = orderStatusColor[order.status as keyof Record<OrderStatus, string>];
+  const statusName = orderStatusName[order.status as keyof Record<OrderStatus, string>];
 
   return (
     <div className={styles.card}>
