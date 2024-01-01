@@ -1,3 +1,4 @@
+import { MerchItemPhoto } from '@/lib/types/apiRequests';
 import { MerchItemOptionMetadata, URL, UUID } from '.';
 import {
   ActivityScope,
@@ -168,7 +169,7 @@ export interface PublicMerchItem {
   uuid: UUID;
   itemName: string;
   collection?: PublicMerchCollection;
-  picture: string | null;
+  merchPhotos: MerchItemPhoto[];
   description: string;
   monthlyLimit: number;
   lifetimeLimit: number;
