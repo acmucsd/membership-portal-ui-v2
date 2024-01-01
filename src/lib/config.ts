@@ -12,6 +12,7 @@ const config = {
         activity: '/user/activity',
         profilepicture: '/user/picture',
         handle: '/user/handle',
+        attendanceByUUID: '/attendance/user',
       },
       activity: '/activity',
       auth: {

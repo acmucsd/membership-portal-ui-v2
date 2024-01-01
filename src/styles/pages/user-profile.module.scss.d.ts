@@ -1,16 +1,21 @@
 export type Styles = {
-  about: string;
+  aboutMeSection: string;
+  aboutSection: string;
   banner: string;
-  cardHalf: string;
+  card: string;
+  cardName: string;
+  cardRank: string;
   cardWrapper: string;
-  horizontal: string;
-  iconBox: string;
+  icon: string;
   inner: string;
+  points: string;
   profileCard: string;
   profilePage: string;
   profilePic: string;
   progressBar: string;
   progressInfo: string;
+  progressSection: string;
+  rank: string;
   section: string;
 };
 

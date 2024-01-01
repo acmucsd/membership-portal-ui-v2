@@ -75,18 +75,37 @@ export const getProfilePicture = (user: PublicProfile): URL => {
   if (user.profilePicture) return user.profilePicture;
 
   const NUM_IMAGES = defaultProfilePictures.length;
-  const index = hashUser(user) % NUM_IMAGES;
+  const index = ((hashUser(user) % NUM_IMAGES) + NUM_IMAGES) % NUM_IMAGES;
   const path = defaultProfilePictures[index]?.src ?? '';
 
   return path;
 };
 
-// TODO: Define all ranks and logic for this
-export const getUserRank = (user: PublicProfile): string => {
-  const ranks = ['Polynomial Pita', 'Factorial Flatbread'];
-  const index = user.points % 2;
-
-  return ranks[index] ?? '';
+/**
+ * Get a user's level and rank based on how many points they have
+ * @param points
+ * @returns [numeric level, rank name]
+ */
+export const getRank = (points: number): [number, string] => {
+  const ranks = [
+    'Factorial Flatbread',
+    'Exponential Eclair',
+    'Polynomial Pita',
+    'Cubic Croissant',
+    'Quadratic Qornbread',
+    'Linear Loaf',
+    'nlog Naan',
+    'Constant Cornbread',
+    'Binary Baguette',
+    'Blessed Boba',
+    'Super Snu',
+    'Soon(TM)',
+    'Later(TM)',
+    'Sometime(TM)',
+    'We Ran Out Of Ranks',
+  ] as const;
+  const index = Math.min(ranks.length - 1, Math.floor(points / 100));
+  return [index + 1, ranks[index] as string];
 };
 
 /**

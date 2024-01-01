@@ -107,6 +107,8 @@ $wainbow-height: 22.5rem;
       .iconLink {
         color: var(--theme-text-on-background-1);
         cursor: pointer;
+        height: 24px;
+        width: 24px;
       }
     }
   }
@@ -151,6 +153,11 @@ $wainbow-height: 22.5rem;
 
       &:hover {
         background-color: var(--theme-surface-1);
+      }
+
+      svg {
+        height: 24px;
+        width: 24px;
       }
     }
   }

@@ -1,8 +1,11 @@
 import { config } from '@/lib';
+import { UUID } from '@/lib/types';
 import type {
+  GetAttendancesForUserResponse,
   GetCurrentUserResponse,
   GetUserResponse,
   PrivateProfile,
+  PublicAttendance,
   PublicProfile,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
@@ -32,6 +35,48 @@ export const getCurrentUser = async (token: string): Promise<PrivateProfile> => 
  */
 export const getUserByHandle = async (token: string, handle: string): Promise<PublicProfile> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.handle}/${handle}`;
+
+  const response = await axios.get<GetUserResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.user;
+};
+
+export const getAttendancesForCurrentUser = async (token: string): Promise<PublicAttendance[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance}`;
+
+  const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.attendances;
+};
+
+export const getAttendancesForUserByUUID = async (
+  token: string,
+  uuid: UUID
+): Promise<PublicAttendance[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.attendanceByUUID}/${uuid}`;
+
+  const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.attendances;
+};
+
+export const getPublicUserProfileByUUID = async (
+  token: string,
+  uuid: UUID
+): Promise<PublicProfile> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user}/${uuid}`;
 
   const response = await axios.get<GetUserResponse>(requestUrl, {
     headers: {

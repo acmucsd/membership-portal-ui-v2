@@ -5,7 +5,7 @@ import {
   FeedbackStatus,
   FeedbackType,
   OrderPickupEventStatus,
-  OrderStatus,
+  SocialMediaType,
   UserAccessType,
   UserState,
 } from './enums';
@@ -215,10 +215,6 @@ export interface PublicOrderItem {
   notes?: string;
 }
 
-export interface PublicOrderItemWithQuantity extends PublicOrderItem {
-  quantity: number;
-}
-
 export interface PublicOrder {
   uuid: UUID;
   user: PublicProfile;
@@ -307,6 +303,12 @@ export interface PublicActivity {
   timestamp: Date;
 }
 
+export interface PublicSocialMedia {
+  uuid: UUID;
+  type: SocialMediaType;
+  url: string;
+}
+
 export interface PublicProfile {
   uuid: UUID;
   handle: string;
@@ -318,6 +320,8 @@ export interface PublicProfile {
   bio: string;
   points: number;
   credits: number;
+  userSocialMedia: PublicSocialMedia[];
+  isAttendancePublic: boolean;
 }
 
 export interface PrivateProfile extends PublicProfile {
