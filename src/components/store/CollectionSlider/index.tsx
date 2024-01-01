@@ -3,7 +3,6 @@ import ItemCard from '@/components/store/ItemCard';
 import { config } from '@/lib';
 import { PublicMerchItem } from '@/lib/types/apiResponses';
 import { getDefaultMerchItemPhoto } from '@/lib/utils';
-import NoImage from '@/public/assets/graphics/cat404.png';
 import styles from './style.module.scss';
 
 interface CollectionSliderProps {
@@ -21,7 +20,7 @@ const CollectionSlider = ({ title, description, items }: CollectionSliderProps) 
         {items.map(item => (
           <ItemCard
             className={styles.card}
-            image={getDefaultMerchItemPhoto(item) ?? NoImage.src}
+            image={getDefaultMerchItemPhoto(item)}
             title={item.itemName}
             href={`${config.itemRoute}${item.uuid}`}
             cost={item.options[0]?.price ?? 0}

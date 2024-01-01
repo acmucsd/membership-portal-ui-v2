@@ -6,7 +6,6 @@ import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getDefaultMerchItemPhoto } from '@/lib/utils';
-import NoImage from '@/public/assets/graphics/cat404.png';
 import styles from '@/styles/pages/store/index.module.scss';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
@@ -44,7 +43,7 @@ const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) 
           <div className={styles.collections}>
             {collections.map(collection => (
               <ItemCard
-                image={getDefaultMerchItemPhoto(collection.items[0]) ?? NoImage.src}
+                image={getDefaultMerchItemPhoto(collection.items[0])}
                 title={collection.title}
                 description={collection.description}
                 href={`${config.collectionRoute}${collection.uuid}`}
