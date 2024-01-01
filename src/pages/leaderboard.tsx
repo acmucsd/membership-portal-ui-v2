@@ -7,7 +7,7 @@ import { CookieService, PermissionService } from '@/lib/services';
 import { SlidingLeaderboardQueryParams } from '@/lib/types/apiRequests';
 import { PrivateProfile, PublicProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getProfilePicture, getUserRank } from '@/lib/utils';
+import { getProfilePicture, getRank } from '@/lib/utils';
 import MyPositionIcon from '@/public/assets/icons/my-position-icon.svg';
 import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
@@ -158,7 +158,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             <TopThreeCard
               key={user.uuid}
               position={user.position}
-              rank={getUserRank(user)}
+              rank={getRank(user.points)[1]}
               name={`${user.firstName} ${user.lastName}`}
               url={`${config.userProfileRoute}${user.handle}`}
               points={user.points}
@@ -174,7 +174,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
               <LeaderboardRow
                 key={user.uuid}
                 position={user.position}
-                rank={getUserRank(user)}
+                rank={getRank(user.points)[1]}
                 name={`${user.firstName} ${user.lastName}`}
                 url={`${config.userProfileRoute}${user.handle}`}
                 points={user.points}

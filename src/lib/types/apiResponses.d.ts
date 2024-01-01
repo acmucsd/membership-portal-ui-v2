@@ -225,6 +225,10 @@ export interface PublicOrder {
   pickupEvent: PublicOrderPickupEvent;
 }
 
+export interface PublicOrderItemWithQuantity extends PublicOrderItem {
+  quantity: number;
+}
+
 export interface PublicOrderWithItems extends PublicOrder {
   items: PublicOrderItem[];
 }

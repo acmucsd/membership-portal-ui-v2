@@ -42,7 +42,6 @@ const UserProfilePage = ({ user, attendances, signedInAttendances }: UserProfile
   // animate the progress bar
   const [progress, setProgress] = useState<Number>(0);
   useEffect(() => setProgress(user.points % 100), [user.points]);
-  console.log(user);
 
   return (
     <div className={styles.profilePage}>
