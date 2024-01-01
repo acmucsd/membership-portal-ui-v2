@@ -32,9 +32,7 @@ interface EditFieldProps {
   maxLength?: number;
   disabled?: boolean;
   value: string;
-  // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
-  // eslint-disable-next-line no-unused-vars
   onBlur?: (value: string) => string;
 }
 
@@ -101,7 +99,6 @@ interface SingleFieldProps {
   placeholder?: string;
   type?: string;
   value: string;
-  // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
 }
 

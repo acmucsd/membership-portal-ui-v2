@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 export enum CookieType {
   USER = 'USER',
   ACCESS_TOKEN = 'ACCESS_TOKEN',

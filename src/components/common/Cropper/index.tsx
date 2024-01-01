@@ -28,9 +28,7 @@ interface CropperProps {
   circle?: boolean;
   maxFileHeight: number;
   maxSize?: number;
-  // eslint-disable-next-line no-unused-vars
   onCrop: (file: Blob) => void;
-  // eslint-disable-next-line no-unused-vars
   onClose: (reason: 'invalid-image' | 'cannot-compress' | null) => void;
 }
 

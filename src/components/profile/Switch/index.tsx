@@ -3,7 +3,6 @@ import styles from './style.module.scss';
 
 interface SwitchProps {
   checked: boolean;
-  // eslint-disable-next-line no-unused-vars
   onCheck: (checked: boolean) => void;
   disabled?: boolean;
   children: ReactNode;
