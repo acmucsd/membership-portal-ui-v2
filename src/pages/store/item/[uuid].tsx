@@ -8,6 +8,7 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchItemWithPurchaseLimits } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/store/item.module.scss';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
@@ -31,7 +32,12 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
     <div className={styles.navbarBodyDiv}>
       <Navbar balance={credits} showBack />
       <div className={styles.rowContainer}>
-        <Image src={item.picture || ''} alt="Picture of item " width={600} height={600} />
+        <Image
+          src={getDefaultMerchItemPhoto(item) || ''}
+          alt="Picture of item "
+          width={600}
+          height={600}
+        />
         <div className={styles.container}>
           <h1>Store Item Page {size}</h1>
           {item.options.length > 1 && (
