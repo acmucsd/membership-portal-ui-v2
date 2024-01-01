@@ -22,6 +22,9 @@
     "test": "yarn cypress run",
     "test:ui": "yarn cypress open"
   },
+  "resolutions": {
+    "@types/react": "18.0.21"
+  },
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
