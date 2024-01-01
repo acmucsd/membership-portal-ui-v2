@@ -40,10 +40,10 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
         />
         <div className={styles.container}>
           <h1>Store Item Page {size}</h1>
+          <ItemHeader itemName={item.itemName} cost={currOption?.price} />
           {item.options.length > 1 && (
             <SizeSelector currSize={size} setSize={setSize} options={item.options} />
           )}
-          <ItemHeader itemName={item.itemName} cost={currOption?.price} />
 
           <AddCartButton
             inCart={inCart}
