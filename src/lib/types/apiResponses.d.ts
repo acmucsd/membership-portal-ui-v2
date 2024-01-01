@@ -1,4 +1,4 @@
-import { MerchItemOptionMetadata, UUID } from '.';
+import { MerchItemOptionMetadata, URL, UUID } from '.';
 import {
   ActivityScope,
   ActivityType,
@@ -279,7 +279,7 @@ export interface EditMerchItemResponse extends ApiResponse {
 
 export interface DeleteMerchItemResponse extends ApiResponse {}
 
-export interface CreateMerchPhotoResponse extends ApiResponse {
+export interface CreateMerchItemPhotoResponse extends ApiResponse {
   merchPhoto: PublicMerchItemPhoto;
 }
 
