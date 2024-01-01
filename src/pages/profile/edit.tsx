@@ -8,6 +8,7 @@ import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, SocialMediaType } from '@/lib/types/enums';
 import { capitalize, getMessagesFromError, getProfilePicture, isSrcAGif } from '@/lib/utils';
+import DevpostIcon from '@/public/assets/icons/devpost-icon.svg';
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import DropdownIcon from '@/public/assets/icons/dropdown-arrow-1.svg';
 import styles from '@/styles/pages/profile/edit.module.scss';
@@ -16,7 +17,9 @@ import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useId, useMemo, useState } from 'react';
-import { BsFacebook, BsGithub, BsInstagram, BsLinkedin } from 'react-icons/bs';
+import { AiOutlineLink } from 'react-icons/ai';
+import { BsFacebook, BsGithub, BsInstagram, BsLinkedin, BsTwitter } from 'react-icons/bs';
+import { IoMail } from 'react-icons/io5';
 
 function reportError(title: string, error: unknown) {
   if (error instanceof AxiosError && error.response?.data?.error) {
@@ -515,6 +518,34 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   onBlur={url => fixUrl(url, 'github.com')}
                 />
                 <EditField
+                  icon={<DevpostIcon className={styles.icon} aria-hidden />}
+                  label="Devpost"
+                  type="url"
+                  name="devpost"
+                  placeholder="devpost.com/"
+                  value={socialMedia.get(SocialMediaType.DEVPOST) ?? ''}
+                  onChange={url =>
+                    setSocialMedia(
+                      new Map([...Array.from(socialMedia), [SocialMediaType.DEVPOST, url]])
+                    )
+                  }
+                  onBlur={url => fixUrl(url, 'devpost.com')}
+                />
+                <EditField
+                  icon={<AiOutlineLink className={styles.icon} aria-hidden />}
+                  label="Portfolio"
+                  type="url"
+                  name="website"
+                  placeholder="example.com"
+                  value={socialMedia.get(SocialMediaType.PORTFOLIO) ?? ''}
+                  onChange={url =>
+                    setSocialMedia(
+                      new Map([...Array.from(socialMedia), [SocialMediaType.PORTFOLIO, url]])
+                    )
+                  }
+                  onBlur={fixUrl}
+                />
+                <EditField
                   icon={<BsFacebook className={styles.icon} aria-hidden />}
                   label="Facebook"
                   type="url"
@@ -529,6 +560,20 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   onBlur={url => fixUrl(url, 'facebook.com')}
                 />
                 <EditField
+                  icon={<BsTwitter className={styles.icon} aria-hidden />}
+                  label="Twitter"
+                  type="url"
+                  name="twitter"
+                  placeholder="twitter.com/"
+                  value={socialMedia.get(SocialMediaType.TWITTER) ?? ''}
+                  onChange={url =>
+                    setSocialMedia(
+                      new Map([...Array.from(socialMedia), [SocialMediaType.TWITTER, url]])
+                    )
+                  }
+                  onBlur={url => fixUrl(url, 'twitter.com')}
+                />
+                <EditField
                   icon={<BsInstagram className={styles.icon} aria-hidden />}
                   label="Instagram"
                   type="url"
@@ -541,6 +586,18 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                     )
                   }
                   onBlur={url => fixUrl(url, 'instagram.com')}
+                />
+                <EditField
+                  icon={<IoMail className={styles.icon} aria-hidden />}
+                  label="Email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={socialMedia.get(SocialMediaType.EMAIL) ?? ''}
+                  onChange={url =>
+                    setSocialMedia(
+                      new Map([...Array.from(socialMedia), [SocialMediaType.EMAIL, url]])
+                    )
+                  }
                 />
               </div>
             </details>

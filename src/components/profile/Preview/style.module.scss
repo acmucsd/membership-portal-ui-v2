@@ -34,4 +34,17 @@
   .bio {
     white-space: pre-wrap;
   }
+
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 3rem;
+
+    .icon {
+      height: 2rem;
+      width: 2rem;
+    }
+  }
 }
