@@ -253,7 +253,6 @@ export interface CommonMerchItemProperties {
   itemName: string;
   collection: string;
   description: string;
-  picture?: string;
   hidden?: boolean;
   monthlyLimit?: number;
   lifetimeLimit?: number;
@@ -273,8 +272,14 @@ export interface MerchItemOption {
   metadata?: MerchItemOptionMetadata;
 }
 
+export interface MerchItemPhoto {
+  uploadedPhoto: string;
+  position: number;
+}
+
 export interface MerchItem extends CommonMerchItemProperties {
   options: MerchItemOption[];
+  merchPhotos: MerchItemPhoto[];
 }
 
 export interface MerchItemOptionEdit {
