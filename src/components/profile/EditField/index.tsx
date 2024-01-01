@@ -34,6 +34,8 @@ interface EditFieldProps {
   value: string;
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
+  // eslint-disable-next-line no-unused-vars
+  onBlur?: (value: string) => string;
 }
 
 export const EditField = ({
@@ -50,6 +52,7 @@ export const EditField = ({
   disabled,
   value,
   onChange,
+  onBlur,
 }: EditFieldProps) => {
   return (
     <EditBlock icon={icon} title={label} wrapper="label">
@@ -63,6 +66,14 @@ export const EditField = ({
           disabled={disabled}
           value={value}
           onChange={e => onChange(e.currentTarget.value)}
+          onBlur={() => {
+            if (onBlur) {
+              const newValue = onBlur(value);
+              if (value !== newValue) {
+                onChange(newValue);
+              }
+            }
+          }}
         >
           {options?.map(option => (
             <option value={option} key={option}>

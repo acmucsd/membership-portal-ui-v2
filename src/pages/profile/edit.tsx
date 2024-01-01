@@ -28,6 +28,22 @@ function reportError(title: string, error: unknown) {
   }
 }
 
+function fixUrl(input: string, prefix?: string): string {
+  if (!input || input.startsWith('https://')) {
+    return input;
+  }
+  // Encourage https://
+  if (prefix && input.startsWith('http://')) {
+    return input.replace('http', 'https');
+  }
+  // If the user typed in their username
+  if (prefix && /^[\w.-]+(?<!\.com)\/?$/.test(input)) {
+    return `https://${prefix}/${input}`;
+  }
+  // Add https:// if it was left out
+  return `https://${input}`;
+}
+
 interface EditProfileProps {
   user: PrivateProfile;
   authToken: string;
@@ -482,6 +498,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                       new Map([...Array.from(socialMedia), [SocialMediaType.LINKEDIN, url]])
                     )
                   }
+                  onBlur={url => fixUrl(url, 'linkedin.com/in')}
                 />
                 <EditField
                   icon={<BsGithub className={styles.icon} aria-hidden />}
@@ -495,6 +512,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                       new Map([...Array.from(socialMedia), [SocialMediaType.GITHUB, url]])
                     )
                   }
+                  onBlur={url => fixUrl(url, 'github.com')}
                 />
                 <EditField
                   icon={<BsFacebook className={styles.icon} aria-hidden />}
@@ -508,6 +526,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                       new Map([...Array.from(socialMedia), [SocialMediaType.FACEBOOK, url]])
                     )
                   }
+                  onBlur={url => fixUrl(url, 'facebook.com')}
                 />
                 <EditField
                   icon={<BsInstagram className={styles.icon} aria-hidden />}
@@ -521,6 +540,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                       new Map([...Array.from(socialMedia), [SocialMediaType.INSTAGRAM, url]])
                     )
                   }
+                  onBlur={url => fixUrl(url, 'instagram.com')}
                 />
               </div>
             </details>
