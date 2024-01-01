@@ -467,3 +467,23 @@ export interface PatchResumeResponse extends ApiResponse {
 }
 
 export interface DeleteResumeResponse extends ApiResponse {}
+
+export interface NotionEventDetails {
+  title: string;
+  community: string;
+  location: string;
+  description: string;
+  checkin: string;
+  start: string;
+  end: string;
+  acmurl: string;
+}
+
+export interface NotionEventPreview {
+  title: string;
+  date: {
+    start: string;
+    end: string;
+  };
+  url: URL;
+}
