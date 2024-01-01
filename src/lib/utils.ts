@@ -1,6 +1,11 @@
 import defaultProfilePictures from '@/lib/constants/profilePictures';
 import { URL } from '@/lib/types';
-import type { CustomErrorBody, PublicProfile, ValidatorError } from '@/lib/types/apiResponses';
+import type {
+  CustomErrorBody,
+  PublicMerchItem,
+  PublicProfile,
+  ValidatorError,
+} from '@/lib/types/apiResponses';
 
 /**
  * Get next `num` years from today in a number array to generate dropdown options for future selections
@@ -125,4 +130,15 @@ export const formatEventDate = (
 
 export const formatURLEventTitle = (title: string): string => {
   return encodeURIComponent(title.toLowerCase().trim().replace(/ /g, '-'));
+};
+
+export const getDefaultMerchItemPhoto = (item: PublicMerchItem | undefined): string | undefined => {
+  if (item && item.merchPhotos.length > 0) {
+    // Get the photo with the smallest position.
+    const defaultPhoto = item.merchPhotos.reduce((prevImage, currImage) => {
+      return prevImage.position < currImage.position ? prevImage : currImage;
+    });
+    return defaultPhoto.uploadedPhoto;
+  }
+  return undefined;
 };
