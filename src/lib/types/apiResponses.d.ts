@@ -6,8 +6,8 @@ import {
   FeedbackType,
   OrderPickupEventStatus,
   OrderStatus,
-  SocialMediaType,
   UserAccessType,
+  UserState,
 } from './enums';
 
 // RESPONSE TYPES
@@ -49,14 +49,6 @@ export interface GetAllEmailsResponse extends ApiResponse {
 
 export interface SubmitAttendanceForUsersResponse extends ApiResponse {
   attendances: PublicAttendance[];
-}
-
-export interface ModifyUserAccessLevelResponse extends ApiResponse {
-  updatedUsers: PrivateProfile[];
-}
-
-export interface GetAllUserAccessLevelsResponse extends ApiResponse {
-  users: PrivateProfile[];
 }
 
 // ATTENDANCE
@@ -279,11 +271,9 @@ export interface EditMerchItemResponse extends ApiResponse {
 
 export interface DeleteMerchItemResponse extends ApiResponse {}
 
-export interface CreateMerchItemPhotoResponse extends ApiResponse {
-  merchPhoto: PublicMerchItemPhoto;
+export interface UpdateMerchPhotoResponse extends ApiResponse {
+  item: PublicMerchItem;
 }
-
-export interface DeleteMerchItemPhotoResponse extends ApiResponse {}
 
 export interface CreateMerchItemOptionResponse extends ApiResponse {
   option: PublicMerchItemOption;
@@ -334,8 +324,6 @@ export interface PublicProfile {
   major: string;
   bio: string;
   points: number;
-  userSocialMedia?: PublicUserSocialMedia[];
-  isAttendancePublic: boolean;
 }
 
 export interface PrivateProfile extends PublicProfile {
@@ -343,7 +331,6 @@ export interface PrivateProfile extends PublicProfile {
   accessType: UserAccessType;
   state: UserState;
   credits: number;
-  resumes?: PublicResume[];
 }
 
 export interface PublicFeedback {
@@ -356,19 +343,8 @@ export interface PublicFeedback {
   type: FeedbackType;
 }
 
-export interface PublicUserSocialMedia {
-  uuid: Uuid;
-  user?: PublicProfile;
-  type: SocialMediaType;
-  url: string;
-}
-
 export interface GetUserActivityStreamResponse extends ApiResponse {
   activity: PublicActivity[];
-}
-
-export interface GetVisibleResumesResponse extends ApiResponse {
-  resumes: PublicResume[];
 }
 
 export interface UpdateProfilePictureResponse extends ApiResponse {
@@ -402,20 +378,6 @@ export interface SubmitFeedbackResponse extends ApiResponse {
 export interface UpdateFeedbackStatusResponse extends ApiResponse {
   feedback: PublicFeedback;
 }
-
-export interface GetUserSocialMediaResponse extends ApiResponse {
-  userSocialMedia: PublicUserSocialMedia[];
-}
-
-export interface InsertSocialMediaResponse extends ApiResponse {
-  userSocialMedia: PublicUserSocialMedia;
-}
-
-export interface UpdateSocialMediaResponse extends ApiResponse {
-  userSocialMedia: PublicUserSocialMedia;
-}
-
-export interface DeleteSocialMediaResponse extends ApiResponse {}
 
 export interface PublicOrderPickupEvent {
   uuid: UUID;
@@ -456,7 +418,7 @@ export interface CancelAllPendingOrdersResponse extends ApiResponse {}
 
 export interface PublicResume {
   uuid: UUID;
-  user?: PublicProfile;
+  user: UUID;
   isResumeVisible: boolean;
   url: string;
   lastUpdated: Date;
@@ -465,8 +427,6 @@ export interface PublicResume {
 export interface PatchResumeResponse extends ApiResponse {
   resume: PublicResume;
 }
-
-export interface DeleteResumeResponse extends ApiResponse {}
 
 export interface NotionEventDetails {
   title: string;
