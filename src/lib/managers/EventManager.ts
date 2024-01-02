@@ -1,6 +1,6 @@
 import { EventAPI } from '@/lib/api';
 import type { APIHandlerProps, AuthAPIHandlerProps } from '@/lib/types';
-import type { GetEventRequest } from '@/lib/types/apiRequests';
+import type { AttendEventRequest, GetEventRequest } from '@/lib/types/apiRequests';
 import type { PublicEvent } from '@/lib/types/apiResponses';
 
 /**
@@ -37,6 +37,21 @@ export const getAllEvents = async (data: APIHandlerProps): Promise<PublicEvent[]
 
     onSuccessCallback?.(eventArray);
     return eventArray;
+  } catch (e: any) {
+    onFailCallback?.(e.response.data.error);
+    return undefined;
+  }
+};
+
+export const attendEvent = async (
+  data: AttendEventRequest & AuthAPIHandlerProps
+): Promise<PublicEvent | undefined> => {
+  const { token, attendanceCode, onSuccessCallback, onFailCallback } = data;
+
+  try {
+    const response = await EventAPI.attendEvent(token, attendanceCode);
+    onSuccessCallback?.(response);
+    return response.event;
   } catch (e: any) {
     onFailCallback?.(e.response.data.error);
     return undefined;

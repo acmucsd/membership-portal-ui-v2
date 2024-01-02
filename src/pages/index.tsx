@@ -2,13 +2,17 @@ import { EventCarousel } from '@/components/events';
 import Hero from '@/components/home/Hero';
 import { showToast } from '@/lib';
 import { EventAPI } from '@/lib/api';
-import { attendEvent } from '@/lib/api/EventAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
+import { attendEvent } from '@/lib/managers/EventManager';
 import { CookieService, PermissionService } from '@/lib/services';
-import type { PrivateProfile, PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
+import type {
+  CustomErrorBody,
+  PrivateProfile,
+  PublicAttendance,
+  PublicEvent,
+} from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/Home.module.scss';
-import { AxiosError } from 'axios';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -22,25 +26,16 @@ interface HomePageProps {
   attendances: PublicAttendance[];
 }
 
-const checkin = async (token: string, code: string) => {
-  try {
-    const response = await attendEvent(token, code);
-    if (response.event) {
-      const title = `Checked in to ${response.event.title}!`;
-      const subtitle = `Thanks for checking in! You earned ${response.event.pointValue} points.`;
-      showToast(title, subtitle);
-    } else if (response.error) {
-      showToast('Unable to checkin!', response.error.message);
-    }
-  } catch (e) {
-    if (e instanceof AxiosError) {
-      showToast('Unable to checkin!', e.response?.data.error.message);
-    } else if (e instanceof Error) {
-      showToast('Unable to checkin!', e.message);
-    } else {
-      showToast('Unable to checkin!');
-    }
-  }
+const checkin = async (token: string, attendanceCode: string): Promise<void> => {
+  const onSuccessCallback = (event: PublicEvent) => {
+    const title = `Checked in to ${event.title}!`;
+    const subtitle = `Thanks for checking in! You earned ${event.pointValue} points.`;
+    showToast(title, subtitle);
+  };
+  const onFailCallback = (error: CustomErrorBody) => {
+    showToast('Unable to checkin!', error.message);
+  };
+  await attendEvent({ token, attendanceCode, onSuccessCallback, onFailCallback });
 };
 
 const PortalHomePage = ({
