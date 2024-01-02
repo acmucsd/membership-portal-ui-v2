@@ -55,7 +55,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
   // user presses the button multiple times
   const [scrollIntoView, setScrollIntoView] = useState(0);
 
-  const years = useMemo(() => getYears(), []);
+  const years = useMemo(getYears, []);
 
   const { allRows, myIndex } = useMemo(() => {
     const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
