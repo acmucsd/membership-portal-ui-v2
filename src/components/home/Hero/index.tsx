@@ -19,7 +19,7 @@ const Hero = ({ user, checkin }: HeroProps) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (checkinCode !== ' ') {
+    if (checkinCode !== '') {
       checkin(checkinCode);
     }
   };
