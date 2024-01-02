@@ -1,4 +1,5 @@
 import { Button, Typography } from '@/components/common';
+import Modal from '@/components/common/Modal';
 import EventCard from '@/components/events/EventCard';
 import { Diamonds, Navbar } from '@/components/store';
 import { config } from '@/lib';
@@ -125,6 +126,7 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
     console.log(cart);
     console.log(pickupEvents);
   });
+
   const { credits } = user;
 
   const calculateOrderTotal = (cart: ClientCartItem[]): number => {
@@ -135,6 +137,10 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
   const [pickupIndex, setPickupIndex] = useState(0);
   const [cartState, setCartState] = useState(CartState.PRECHECKOUT);
   const [orderTotal, setOrderTotal] = useState(calculateOrderTotal(savedCart));
+
+  useEffect(() => {
+    console.log(cartState);
+  }, [cartState]);
 
   // update the cart cookie
   useEffect(() => {
@@ -154,9 +160,7 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
         <Typography variant="h1/bold" component="h1">
           Your Cart
         </Typography>
-        {cart.length === 0 && cartState !== CartState.CONFIRMED ? (
-          <div />
-        ) : (
+        {cart.length > 0 && cartState !== CartState.CONFIRMED ? (
           <button
             type="button"
             className={`${styles.checkoutButton} ${
@@ -173,7 +177,30 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
           >
             Place Order
           </button>
+        ) : (
+          <div />
         )}
+        <Modal
+          title="Please confirm you can pick up your order at this event:"
+          open={cartState === CartState.CONFIRMING}
+          onClose={() =>
+            setCartState(state =>
+              state <= CartState.CONFIRMING ? CartState.PRECHECKOUT : CartState.CONFIRMED
+            )
+          }
+        >
+          <div className={styles.checkoutModal}>
+            <EventCard event={pickupEvents[pickupIndex]} attended={false} />
+            <div className={styles.checkoutOptions}>
+              <button type="button" onClick={() => setCartState(CartState.CONFIRMED)}>
+                <Typography variant="h4/medium">Confirm</Typography>
+              </button>
+              <button type="button" onClick={() => setCartState(CartState.PRECHECKOUT)}>
+                <Typography variant="h4/medium">Go back</Typography>
+              </button>
+            </div>
+          </div>
+        </Modal>
         {/* Cart Items */}
         <div>
           <div className={styles.cartSection}>

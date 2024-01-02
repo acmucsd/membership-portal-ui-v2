@@ -5,6 +5,8 @@ export type Styles = {
   cartItemPrice: string;
   cartSection: string;
   checkoutButton: string;
+  checkoutModal: string;
+  checkoutOptions: string;
   confirming: string;
   container: string;
   content: string;
