@@ -11,9 +11,10 @@ interface EventCardProps {
   event: PublicEvent;
   attended: boolean;
   className?: string;
+  showYear?: boolean;
 }
 
-const EventCard = ({ event, attended, className }: EventCardProps) => {
+const EventCard = ({ event, attended, className, showYear }: EventCardProps) => {
   const { cover, title, start, end, location } = event;
   const [expanded, setExpanded] = useState(false);
 
@@ -57,7 +58,7 @@ const EventCard = ({ event, attended, className }: EventCardProps) => {
                 style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
                 suppressHydrationWarning
               >
-                {formatEventDate(start, end)}
+                {formatEventDate(start, end, showYear)}
               </Typography>
               <Typography
                 variant="body/small"

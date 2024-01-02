@@ -70,6 +70,16 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
   const filteredEvents = events.filter(e =>
     filterEvent(e, attendances, { query, communityFilter, dateFilter, attendedFilter })
   );
+
+  filteredEvents.sort((a, b) => {
+    if (dateFilter === 'upcoming') {
+      // For upcoming events, sort from soonest to latest
+      return new Date(a.start).getTime() - new Date(b.start).getTime();
+    }
+    // For all other events, sort from most recent to least recent
+    return new Date(b.start).getTime() - new Date(a.start).getTime();
+  });
+
   const displayedEvents = filteredEvents.slice(page * ROWS_PER_PAGE, (page + 1) * ROWS_PER_PAGE);
 
   return (
