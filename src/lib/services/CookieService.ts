@@ -35,6 +35,10 @@ export const deleteServerCookie = (key: string, options: OptionsType): void => {
   deleteCookie(key, options);
 };
 
+export const clearClientCookies = (): void => {
+  Object.keys(CookieType).forEach(key => deleteClientCookie(key));
+};
+
 export const clearServerCookies = (options: OptionsType): void => {
   Object.keys(CookieType).forEach(key => deleteServerCookie(key, options));
 };

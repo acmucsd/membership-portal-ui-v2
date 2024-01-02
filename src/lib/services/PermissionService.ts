@@ -21,18 +21,17 @@ export const canViewAdminPage = (): UserAccessType[] => {
 };
 
 /**
- * @returns Array of all possible user access types
- */
-export const allUserTypes = (): UserAccessType[] => {
-  const values = Object.values(UserAccessType) as UserAccessType[];
-  return values;
-};
-
-/**
  * @param types to exclude from array
  * @returns Array with all user access types except exclusions
  */
 export const allUserTypesExcept = (types: UserAccessType[]): UserAccessType[] => {
   const values = Object.keys(UserAccessType) as UserAccessType[];
   return values.filter(value => !types.includes(value));
+};
+
+/**
+ * @returns Valid logged in user types
+ */
+export const loggedInUser = (): UserAccessType[] => {
+  return allUserTypesExcept([UserAccessType.RESTRICTED]);
 };
