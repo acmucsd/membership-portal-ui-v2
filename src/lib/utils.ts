@@ -147,3 +147,13 @@ export const getDefaultMerchItemPhoto = (item: PublicMerchItem | undefined): str
   }
   return NoImage.src;
 };
+
+/**
+ * Format a string so exactly its first character is capitalized.
+ * @param str
+ * @returns sentence case version of `str`
+ */
+export const toSentenceCase = (str: string) => {
+  if (str.length === 0) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};

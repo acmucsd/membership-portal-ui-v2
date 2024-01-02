@@ -2,8 +2,10 @@ import { config } from '@/lib';
 import type {
   GetAllMerchCollectionsResponse,
   GetMerchOrdersResponse,
+  GetOneMerchItemResponse,
   GetOneMerchOrderResponse,
   PublicMerchCollection,
+  PublicMerchItem,
   PublicOrder,
   PublicOrderWithItems,
 } from '@/lib/types/apiResponses';
@@ -43,4 +45,16 @@ export const getOrder = async (token: string, uuid: string): Promise<PublicOrder
   });
 
   return response.data.order;
+};
+
+export const getItem = async (token: string, uuid: string): Promise<PublicMerchItem> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.item}/${uuid}`;
+
+  const response = await axios.get<GetOneMerchItemResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.item;
 };
