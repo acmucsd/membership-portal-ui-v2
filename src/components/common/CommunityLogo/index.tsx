@@ -14,7 +14,9 @@ const CommunityLogo = ({ community, size }: CommunityLogoProps) => {
   if (!Object.values(Community).includes(formattedName))
     return <Image src={communityLogos.General} width={size} alt="ACM General Logo" />;
 
-  return <Image src={communityLogos[formattedName]} width={size} alt={`ACM ${community} Logo`} />;
+  return (
+    <Image src={communityLogos[formattedName]} width={size} alt={`ACM ${formattedName} Logo`} />
+  );
 };
 
 export default CommunityLogo;
