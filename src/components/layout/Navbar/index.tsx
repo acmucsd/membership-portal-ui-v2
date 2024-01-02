@@ -2,7 +2,7 @@ import ThemeToggle from '@/components/common/ThemeToggle';
 import { config } from '@/lib';
 import { useWindowSize } from '@/lib/hooks/useWindowSize';
 import { PermissionService } from '@/lib/services';
-import type { PrivateProfile } from '@/lib/types/apiResponses';
+import { UserAccessType } from '@/lib/types/enums';
 import LightModeLogo from '@/public/assets/acm-logos/general/light-mode.png';
 import ACMIcon from '@/public/assets/icons/acm-icon.svg';
 import CalendarIcon from '@/public/assets/icons/calendar-icon.svg';
@@ -17,9 +17,9 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import styles from './style.module.scss';
 
 interface NavbarProps {
-  user?: PrivateProfile;
+  accessType?: UserAccessType;
 }
-const Navbar = ({ user }: NavbarProps) => {
+const Navbar = ({ accessType }: NavbarProps) => {
   const size = useWindowSize();
   const headerRef = useRef<HTMLHeadElement>(null);
 
@@ -48,7 +48,7 @@ const Navbar = ({ user }: NavbarProps) => {
     if (!isMobile) setMenuOpen(false);
   }, [isMobile]);
 
-  if (!user) {
+  if (!accessType) {
     return (
       <header className={styles.header}>
         <div className={styles.content}>
@@ -63,7 +63,7 @@ const Navbar = ({ user }: NavbarProps) => {
     );
   }
 
-  const isAdmin = PermissionService.canViewAdminPage().includes(user.accessType);
+  const isAdmin = PermissionService.canViewAdminPage().includes(accessType);
 
   return (
     <header className={styles.header} ref={headerRef}>

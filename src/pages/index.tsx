@@ -51,8 +51,10 @@ export default PortalHomePage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  const events = await EventAPI.getAllEvents();
-  const attendances = await EventAPI.getAttendancesForUser(authToken);
+  const getEvents = EventAPI.getAllEvents();
+  const getAttendances = EventAPI.getAttendancesForUser(authToken);
+
+  const [events, attendances] = await Promise.all([getEvents, getAttendances]);
 
   const now = new Date();
   const pastEvents: PublicEvent[] = [];
