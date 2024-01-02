@@ -107,16 +107,6 @@
     &.mobile {
       display: none;
     }
-
-    @media screen and (width <= vars.$breakpoint-md) {
-      &.mobile {
-        display: block;
-      }
-
-      &.desktop {
-        display: none;
-      }
-    }
   }
 }
 
