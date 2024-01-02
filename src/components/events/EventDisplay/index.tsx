@@ -19,6 +19,7 @@ const EventDisplay = ({ events, attendances }: EventDisplayProps) => {
           key={event.uuid}
           event={event}
           attended={attendances.some(a => a.event.uuid === event.uuid)}
+          showYear
         />
       ))}
     </div>
