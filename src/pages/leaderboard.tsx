@@ -1,7 +1,7 @@
 import { Dropdown, PaginationControls } from '@/components/common';
 import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { config } from '@/lib';
-import { LeaderboardAPI, UserAPI } from '@/lib/api';
+import { LeaderboardAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { SlidingLeaderboardQueryParams } from '@/lib/types/apiRequests';
@@ -174,13 +174,10 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
   const sort = typeof query.sort === 'string' ? query.sort : getEndYear() - 1;
 
-  const getLeaderboard = LeaderboardAPI.getLeaderboard(AUTH_TOKEN, getLeaderboardRange(sort));
-  const getUser = UserAPI.getCurrentUser(AUTH_TOKEN);
-
-  const [leaderboard, user] = await Promise.all([getLeaderboard, getUser]);
+  const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN, getLeaderboardRange(sort));
 
   return {
-    props: { sort, leaderboard, user },
+    props: { sort, leaderboard },
   };
 };
 
