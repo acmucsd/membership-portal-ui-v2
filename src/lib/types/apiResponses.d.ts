@@ -1,4 +1,3 @@
-import { MerchItemPhoto } from '@/lib/types/apiRequests';
 import { MerchItemOptionMetadata, URL, UUID } from '.';
 import {
   ActivityScope,
@@ -169,12 +168,12 @@ export interface PublicMerchItem {
   uuid: UUID;
   itemName: string;
   collection?: PublicMerchCollection;
-  merchPhotos: MerchItemPhoto[];
   description: string;
   monthlyLimit: number;
   lifetimeLimit: number;
   hidden: boolean;
   hasVariantsEnabled: boolean;
+  merchPhotos: PublicMerchItemPhoto[];
   options: PublicMerchItemOption[];
 }
 
@@ -186,7 +185,7 @@ export interface PublicMerchItemWithPurchaseLimits extends PublicMerchItem {
 export interface PublicCartMerchItem {
   uuid: UUID;
   itemName: string;
-  picture: string;
+  uploadedPhoto: string;
   description: string;
 }
 
@@ -196,6 +195,13 @@ export interface PublicMerchItemOption {
   quantity: number;
   discountPercentage: number;
   metadata: MerchItemOptionMetadata;
+}
+
+export interface PublicMerchItemPhoto {
+  uuid: Uuid;
+  uploadedPhoto: string;
+  position: number;
+  uploadedAt: Date;
 }
 
 export interface PublicOrderMerchItemOption {
