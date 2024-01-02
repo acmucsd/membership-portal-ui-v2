@@ -1,0 +1,154 @@
+@use 'src/styles/vars.scss' as vars;
+
+.inline {
+  display: inline;
+}
+
+.hero {
+  /* Header height: 4.25 rem, padding: 2 rem */
+  min-height: min(vars.$min-content-height, calc(1080px - 6.25rem));
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    height: 100%;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      .headline {
+        display: inline;
+      }
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: fit-content;
+
+      .checkin {
+        background-color: var(--theme-accent-line-2-transparent);
+        border-radius: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 2rem;
+        transition: box-shadow 0.2s;
+
+        &:hover {
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .checkinButtons {
+          display: flex;
+          flex-direction: row;
+          gap: 1rem;
+          justify-content: space-between;
+          width: 100%;
+
+          .checkinInput {
+            border: 0;
+            border-radius: 1rem;
+            box-shadow: 0 4px 4px var(--theme-shadow);
+            flex: 1;
+            font: inherit;
+            overflow: hidden;
+            padding: 1rem 1.5rem;
+          }
+
+          .submit {
+            align-items: center;
+            background-color: var(--theme-primary-3);
+            border-radius: 100%;
+            box-shadow: 0 4px 4px var(--theme-shadow);
+            display: flex;
+            height: 50px;
+            justify-content: center;
+            width: 50px;
+          }
+        }
+      }
+
+      .link {
+        align-items: center;
+        background-color: var(--theme-accent-line-2-transparent);
+        border-radius: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        min-width: fit-content;
+        padding: 1rem 1.5rem;
+        transition: box-shadow 0.2s;
+
+        &:hover {
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+      }
+    }
+  }
+
+  .image {
+    margin: 0 auto;
+    max-height: 1080px;
+    max-width: 1920px;
+    object-fit: cover;
+    object-position: 100% 0;
+    z-index: 0;
+
+    &.mobile {
+      display: none;
+    }
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      &.mobile {
+        display: block;
+      }
+
+      &.desktop {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (width <= vars.$breakpoint-md) {
+  .hero {
+    .header {
+      .headline {
+        font-size: 3rem !important;
+        line-height: 4rem !important;
+      }
+    }
+
+    .image {
+      &.mobile {
+        display: block;
+      }
+
+      &.desktop {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (width <= vars.$breakpoint-sm) {
+  .actions {
+    .checkin {
+      .checkinButtons {
+        .submit {
+          display: none !important;
+        }
+      }
+    }
+  }
+}
