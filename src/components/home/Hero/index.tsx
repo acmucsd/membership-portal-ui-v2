@@ -24,22 +24,20 @@ const Hero = ({ user, checkin }: HeroProps) => {
 
   return (
     <div className={styles.hero}>
-      <div style={{ height: '100%' }}>
-        <Image
-          className={`${styles.image} ${styles.desktop}`}
-          src="/assets/graphics/portal/raccoon-waves.svg"
-          alt="Landing page graphic"
-          priority
-          fill
-        />
-        <Image
-          className={`${styles.image} ${styles.mobile}`}
-          src="/assets/graphics/portal/waves.svg"
-          alt="Landing page graphic"
-          priority
-          fill
-        />
-      </div>
+      <Image
+        className={`${styles.image} ${styles.desktop}`}
+        src="/assets/graphics/portal/raccoon-waves.svg"
+        alt="Landing page graphic"
+        priority
+        fill
+      />
+      <Image
+        className={`${styles.image} ${styles.mobile}`}
+        src="/assets/graphics/portal/waves.svg"
+        alt="Landing page graphic"
+        priority
+        fill
+      />
       <div className={styles.content}>
         <div className={styles.header}>
           <div>

@@ -5,8 +5,9 @@
 }
 
 .hero {
-  /* Header height: 4.25 rem, padding: 2 rem */
   min-height: min(vars.$min-content-height, calc(1080px - 6.25rem));
+  /* Header height: 4.25 rem, padding: 2 rem */
+  position: relative;
 
   .content {
     display: flex;
@@ -32,6 +33,7 @@
       flex-direction: column;
       gap: 1rem;
       max-width: fit-content;
+      padding-bottom: 2rem;
 
       .checkin {
         background-color: var(--theme-accent-line-2-transparent);
@@ -101,11 +103,19 @@
     max-height: 1080px;
     max-width: 1920px;
     object-fit: cover;
-    object-position: 100% 0;
+    object-position: 100% 100%;
+    // We have to manually add width since it's taking the width of the container, which is padded.
+    width: calc(100% + 4rem) !important;
     z-index: 0;
 
     &.mobile {
       display: none;
+    }
+
+    @media screen and (width <= 1920px) {
+      // This helps center the image when we have to manually add width to it.
+      // If the whole image is being displayed (width > 1920px), we don't need this.
+      margin-left: -2rem;
     }
   }
 }
