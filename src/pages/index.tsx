@@ -1,4 +1,4 @@
-import EventCarousel from '@/components/events/EventCarousel';
+import EventCarousel from '@/components/events';
 import { EventAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';

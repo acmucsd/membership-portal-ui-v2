@@ -1,9 +1,9 @@
 import { Dropdown, PaginationControls, Typography } from '@/components/common';
-import EventDisplay from '@/components/events/EventDisplay';
+import { EventDisplay } from '@/components/events';
 import { EventAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
+import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getDateRange, getYears } from '@/lib/utils';
 import styles from '@/styles/pages/events.module.scss';
@@ -27,12 +27,15 @@ const filterEvent = (
   attendances: PublicAttendance[],
   { query, communityFilter, dateFilter, attendedFilter }: FilterOptions
 ): boolean => {
+  // Filter search query
   if (query !== '' && !event.title.toLowerCase().includes(query)) {
     return false;
   }
+  // Filter by community
   if (communityFilter !== 'all' && event.committee.toLowerCase() !== communityFilter) {
     return false;
   }
+  // Filter by date
   const { from, to } = getDateRange(dateFilter);
   if (from !== undefined && new Date(event.start) < new Date(from * 1000)) {
     return false;
@@ -40,11 +43,10 @@ const filterEvent = (
   if (to !== undefined && new Date(event.end) > new Date(to * 1000)) {
     return false;
   }
-
+  // Filter by attendance
   if (attendedFilter === 'all') {
     return true;
   }
-
   const attended = attendances.some(a => a.event.uuid === event.uuid);
   if (attendedFilter === 'attended' && !attended) {
     return false;
@@ -63,7 +65,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
   const [attendedFilter, setAttendedFilter] = useState('all');
   const [query, setQuery] = useState('');
 
-  const years = useMemo(() => getYears(), []);
+  const years = useMemo(getYears, []);
 
   const filteredEvents = events.filter(e =>
     filterEvent(e, attendances, { query, communityFilter, dateFilter, attendedFilter })
