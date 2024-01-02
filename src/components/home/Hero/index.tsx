@@ -66,7 +66,7 @@ const Hero = ({ user, checkin }: HeroProps) => {
           </div>
         </div>
         <div className={styles.actions}>
-          <form className={styles.checkin} onSubmit={handleSubmit}>
+          <form className={styles.checkin} onSubmit={handleSubmit} action="">
             <Typography variant="h1/regular">Check in to an event</Typography>
             <div className={styles.checkinButtons}>
               <input
