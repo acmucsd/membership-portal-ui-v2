@@ -68,7 +68,7 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
                   variant="title/medium"
                   suppressHydrationWarning
                 >
-                  {formatEventDate(start, end)}
+                  {formatEventDate(start, end, true)}
                 </Typography>
                 <Typography className={styles.eventInfo} variant="title/medium">
                   {location}
