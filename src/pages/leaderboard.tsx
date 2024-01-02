@@ -1,4 +1,5 @@
 import { Dropdown, PaginationControls } from '@/components/common';
+import { DIVIDER } from '@/components/common/Dropdown';
 import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { config } from '@/lib';
 import { LeaderboardAPI } from '@/lib/api';
@@ -106,7 +107,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             { value: 'past-month', label: 'Past month' },
             { value: 'past-year', label: 'Past year' },
             { value: 'all-time', label: 'All time' },
-            '---',
+            DIVIDER,
             ...years,
           ]}
           value={sort}

@@ -1,4 +1,5 @@
 import { Dropdown, PaginationControls, Typography } from '@/components/common';
+import { DIVIDER } from '@/components/common/Dropdown';
 import { EventDisplay } from '@/components/events';
 import { EventAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -127,7 +128,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
               { value: 'past-month', label: 'Past month' },
               { value: 'past-year', label: 'Past year' },
               { value: 'all-time', label: 'All time' },
-              '---',
+              DIVIDER,
               ...years,
             ]}
             value={dateFilter}
