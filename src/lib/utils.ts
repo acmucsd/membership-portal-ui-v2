@@ -56,6 +56,14 @@ export const capitalize = (text: string): string => {
 };
 
 /**
+ * Given text, removes all non alphanumeric characters.
+ * This makes search terms more lenient.
+ */
+export const formatSearch = (text: string): string => {
+  return text.toLowerCase().replace(/[^0-9a-zA-Z]/g, '');
+};
+
+/**
  * Helper function to map each user to a numeric value deterministically
  * TODO: Use the user's UUID to hash to a number since it will never change
  * @param user

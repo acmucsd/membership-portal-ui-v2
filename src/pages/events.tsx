@@ -5,7 +5,7 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getDateRange, getYears } from '@/lib/utils';
+import { formatSearch, getDateRange, getYears } from '@/lib/utils';
 import styles from '@/styles/pages/events.module.scss';
 import type { GetServerSideProps } from 'next';
 import { useMemo, useState } from 'react';
@@ -28,7 +28,7 @@ const filterEvent = (
   { query, communityFilter, dateFilter, attendedFilter }: FilterOptions
 ): boolean => {
   // Filter search query
-  if (query !== '' && !event.title.toLowerCase().includes(query)) {
+  if (query !== '' && !formatSearch(event.title).includes(formatSearch(query))) {
     return false;
   }
   // Filter by community
