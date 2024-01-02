@@ -48,7 +48,7 @@ export default function MyApp({ Component, pageProps }: AppProps<InitialPropInte
       <ThemeProvider>
         <ToastContainer />
         <PageLayout user={user}>
-          <Component {...pageProps} user={user} />
+          <Component user={user} {...pageProps} />
         </PageLayout>
       </ThemeProvider>
     </>
