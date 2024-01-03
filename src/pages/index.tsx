@@ -74,6 +74,7 @@ const PortalHomePage = ({
       // In dev mode, this runs twice because of reactStrictMode in nextConfig.
       // This will only be run once in prod or deployment.
       processCheckInResponse(checkInResponse);
+      window.history.replaceState(null, '', '/');
     }
   }, [checkInResponse]);
 
