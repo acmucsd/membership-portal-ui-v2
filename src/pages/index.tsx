@@ -18,7 +18,6 @@ import { useEffect, useState } from 'react';
 
 interface HomePageProps {
   user: PrivateProfile;
-  authToken: string;
   pastEvents: PublicEvent[];
   upcomingEvents: PublicEvent[];
   liveEvents: PublicEvent[];
@@ -42,7 +41,6 @@ const processCheckInResponse = (
 
 const PortalHomePage = ({
   user,
-  authToken,
   pastEvents,
   upcomingEvents,
   liveEvents,
@@ -52,20 +50,22 @@ const PortalHomePage = ({
   const [points, setPoints] = useState<number>(user.points);
   const [attendance, setAttendance] = useState<PublicAttendance[]>(attendances);
 
-  const checkin = async (token: string, attendanceCode: string): Promise<void> => {
+  const checkin = async (attendanceCode: string): Promise<void> => {
+    const token = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
     const response = await attendEvent({ token, attendanceCode });
     const event = processCheckInResponse(response);
     if (event) {
-      // This client side code prevents us from having to refetch user and attendance from the API.
+      // This client side code prevents us from having to refetch
+      // user and attendance from the API after a successful checkin.
       setPoints(p => p + event.pointValue);
-      const a: PublicAttendance = {
+      const newAttendance: PublicAttendance = {
         user: user,
         event,
         timestamp: new Date(),
         asStaff: false,
         feedback: [],
       };
-      setAttendance(prevAttendance => [...prevAttendance, a]);
+      setAttendance(prevAttendances => [...prevAttendances, newAttendance]);
     }
   };
 
@@ -81,7 +81,7 @@ const PortalHomePage = ({
 
   return (
     <div className={styles.page}>
-      <Hero firstName={user.firstName} points={points} checkin={code => checkin(authToken, code)} />
+      <Hero firstName={user.firstName} points={points} checkin={code => checkin(code)} />
 
       {liveEvents.length > 0 && (
         <EventCarousel
@@ -160,7 +160,6 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
       upcomingEvents,
       liveEvents,
       attendances,
-      authToken,
       checkInResponse: checkInResponse,
     },
   };

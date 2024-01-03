@@ -25,7 +25,7 @@ function isStandardVariant(variant: V2Variant): variant is V2StandardVariant {
 // shared
 type Variant = V1Variant | V2Variant;
 
-type ComponentType = Heading | 'p' | 'span' | 'div';
+type ComponentType = Heading | 'p' | 'span' | 'div' | 'a';
 
 function isV1Variant(variant: Variant): variant is V1Variant {
   return HEADINGS.some(h => h === variant.split('/')[0]);
@@ -35,6 +35,8 @@ interface TypographyProps extends HTMLAttributes<HTMLElement> {
   variant: Variant;
   component?: ComponentType;
   style?: CSSProperties;
+  // This is used if/when the component is 'a'.
+  href?: string;
 }
 
 // Implements styles from https://www.figma.com/file/ihJGLgfFTURKCgl9KNUPcA/Website-%26-Portal%3A-Design-System?node-id=1561%3A263&mode=dev
