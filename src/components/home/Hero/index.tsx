@@ -1,6 +1,5 @@
 import { Typography } from '@/components/common';
 import { config } from '@/lib';
-import type { PrivateProfile } from '@/lib/types/apiResponses';
 import CheckMark from '@/public/assets/icons/check-mark.svg';
 import InfoIcon from '@/public/assets/icons/info-icon.svg';
 import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
@@ -11,11 +10,12 @@ import { FormEvent, useState } from 'react';
 import styles from './style.module.scss';
 
 interface HeroProps {
-  user: PrivateProfile;
+  firstName: string;
+  points: number;
   checkin: (code: string) => void;
 }
 
-const Hero = ({ user, checkin }: HeroProps) => {
+const Hero = ({ firstName, points, checkin }: HeroProps) => {
   const [checkinCode, setCheckinCode] = useState('');
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -51,7 +51,7 @@ const Hero = ({ user, checkin }: HeroProps) => {
                 className={styles.heading}
                 component="span"
               >
-                {user.firstName}
+                {firstName}
               </Typography>
             </Link>
             !
@@ -59,7 +59,7 @@ const Hero = ({ user, checkin }: HeroProps) => {
           <Typography variant="h4/regular" component="span" className={styles.subheading}>
             {'You have '}
             <Typography variant="h4/bold" component="span" className={styles.subheading}>
-              {user.points}
+              {points}
             </Typography>
             {' membership points.'}
           </Typography>

@@ -1,7 +1,7 @@
 import { EventAPI } from '@/lib/api';
 import type { APIHandlerProps, AuthAPIHandlerProps } from '@/lib/types';
 import type { AttendEventRequest, GetEventRequest } from '@/lib/types/apiRequests';
-import type { PublicEvent } from '@/lib/types/apiResponses';
+import type { CustomErrorBody, PublicEvent } from '@/lib/types/apiResponses';
 
 /**
  * Get details for a single ACM event
@@ -45,15 +45,15 @@ export const getAllEvents = async (data: APIHandlerProps): Promise<PublicEvent[]
 
 export const attendEvent = async (
   data: AttendEventRequest & AuthAPIHandlerProps
-): Promise<PublicEvent | undefined> => {
+): Promise<PublicEvent | CustomErrorBody> => {
   const { token, attendanceCode, onSuccessCallback, onFailCallback } = data;
 
   try {
     const response = await EventAPI.attendEvent(token, attendanceCode);
-    onSuccessCallback?.(response);
+    onSuccessCallback?.(response.event);
     return response.event;
   } catch (e: any) {
     onFailCallback?.(e.response.data.error);
-    return undefined;
+    return e.response.data.error;
   }
 };
