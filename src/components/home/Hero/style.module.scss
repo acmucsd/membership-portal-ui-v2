@@ -5,8 +5,10 @@
 }
 
 .hero {
-  min-height: min(vars.$min-content-height, calc(1080px - 6.25rem));
+  margin: 0 -4rem;
   /* Header height: 4.25 rem, padding: 2 rem */
+  min-height: min(vars.$min-content-height, calc(1080px - 6.25rem));
+  padding: 0 4rem;
   position: relative;
 
   .content {
@@ -18,13 +20,22 @@
     position: relative;
     z-index: 1;
 
+    @media screen and (width <= vars.$breakpoint-md) {
+      gap: 3rem;
+    }
+
     .header {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.5rem;
 
       .headline {
         display: inline;
+
+        @media screen and (width <= vars.$breakpoint-md) {
+          font-size: 2.5rem !important;
+          line-height: 3rem !important;
+        }
       }
     }
 
@@ -38,16 +49,12 @@
       .checkin {
         background-color: var(--theme-accent-line-2-transparent);
         border-radius: 1rem;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 5px var(--theme-shadow);
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
-        padding: 2rem;
+        padding: 1.5rem;
         transition: box-shadow 0.2s;
-
-        &:hover {
-          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-        }
 
         .checkinButtons {
           display: flex;
@@ -75,6 +82,10 @@
             height: 50px;
             justify-content: center;
             width: 50px;
+
+            @media screen and (width <= vars.$breakpoint-sm) {
+              display: none;
+            }
           }
         }
       }
@@ -83,7 +94,7 @@
         align-items: center;
         background-color: var(--theme-accent-line-2-transparent);
         border-radius: 1rem;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 5px var(--theme-shadow);
         display: flex;
         flex-direction: row;
         gap: 1rem;
@@ -92,7 +103,7 @@
         transition: box-shadow 0.2s;
 
         &:hover {
-          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 5px 10px var(--theme-shadow);
         }
       }
     }
@@ -105,31 +116,14 @@
     object-fit: cover;
     object-position: 100% 100%;
     // We have to manually add width since it's taking the width of the container, which is padded.
-    width: calc(100% + 4rem) !important;
+    // width: calc(100% + 4rem) !important;
     z-index: 0;
 
     &.mobile {
       display: none;
     }
 
-    @media screen and (width <= 1920px) {
-      // This helps center the image when we have to manually add width to it.
-      // If the whole image is being displayed (width > 1920px), we don't need this.
-      margin-left: -2rem;
-    }
-  }
-}
-
-@media screen and (width <= vars.$breakpoint-md) {
-  .hero {
-    .header {
-      .headline {
-        font-size: 3rem !important;
-        line-height: 4rem !important;
-      }
-    }
-
-    .image {
+    @media screen and (width <= vars.$breakpoint-md) {
       &.mobile {
         display: block;
       }
@@ -138,17 +132,11 @@
         display: none;
       }
     }
-  }
-}
 
-@media screen and (width <= vars.$breakpoint-sm) {
-  .actions {
-    .checkin {
-      .checkinButtons {
-        .submit {
-          display: none !important;
-        }
-      }
+    @media screen and (width <= 1920px) {
+      // This helps center the image when we have to manually add width to it.
+      // If the whole image is being displayed (width > 1920px), we don't need this.
+      margin-left: -2rem;
     }
   }
 }

@@ -2,6 +2,7 @@ import { Typography } from '@/components/common';
 import { config } from '@/lib';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import CheckMark from '@/public/assets/icons/check-mark.svg';
+import InfoIcon from '@/public/assets/icons/info-icon.svg';
 import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
 import ShopIcon from '@/public/assets/icons/shop-icon.svg';
 import Image from 'next/image';
@@ -42,34 +43,22 @@ const Hero = ({ user, checkin }: HeroProps) => {
       />
       <div className={styles.content}>
         <div className={styles.header}>
-          <div>
-            <Typography variant="display/light/large" className={styles.headline}>
-              {'Welcome to ACM, '}
-            </Typography>
+          <Typography variant="display/light/medium" className={styles.headline}>
+            Welcome to ACM,&nbsp;
             <Link href={config.profileRoute}>
-              <Typography variant="display/heavy/large" className={styles.headline}>
-                {user.firstName}
-              </Typography>
+              <strong>{user.firstName}</strong>
             </Link>
-            <Typography variant="display/light/large" className={styles.headline}>
-              !
-            </Typography>
-          </div>
-          <div>
-            <Typography variant="h3/regular" className={styles.inline}>
-              {'You have '}
-            </Typography>
-            <Typography variant="h3/bold" className={styles.inline}>
-              {user.points}
-            </Typography>
-            <Typography variant="h3/regular" className={styles.inline}>
-              {' membership points.'}
-            </Typography>
-          </div>
+            !
+          </Typography>
+          <Typography variant="h4/regular">
+            You have&nbsp;
+            <strong>{user.points}</strong>
+            &nbsp;membership points.
+          </Typography>
         </div>
         <div className={styles.actions}>
           <form className={styles.checkin} onSubmit={handleSubmit} action="">
-            <Typography variant="h1/regular">Check in to an event</Typography>
+            <Typography variant="h4/regular">Check in to an event</Typography>
             <div className={styles.checkinButtons}>
               <input
                 type="text"
@@ -84,12 +73,16 @@ const Hero = ({ user, checkin }: HeroProps) => {
             </div>
           </form>
           <Link href={config.storeRoute} className={styles.link}>
-            <LeaderboardIcon />
+            <ShopIcon />
             <Typography variant="h4/regular">Spend points on merch</Typography>
           </Link>
           <Link href={config.leaderboardRoute} className={styles.link}>
-            <ShopIcon />
+            <LeaderboardIcon />
             <Typography variant="h4/regular">Compete with friends</Typography>
+          </Link>
+          <Link href={config.aboutRoute} className={styles.link}>
+            <InfoIcon />
+            <Typography variant="h4/regular">Learn more about ACM</Typography>
           </Link>
         </div>
       </div>
