@@ -12,10 +12,10 @@
 }
 
 .hero {
-  margin: 0 -4rem;
+  margin: 0 -2rem;
   /* Header height: 4.25 rem, padding: 2 rem */
   min-height: min(vars.$min-content-height, calc(1080px - 6.25rem));
-  padding: 0 4rem;
+  padding: 0 2rem;
   position: relative;
 
   .content {
@@ -133,8 +133,6 @@
     max-width: 1920px;
     object-fit: cover;
     object-position: 100% 100%;
-    // We have to manually add width since it's taking the width of the container, which is padded.
-    // width: calc(100% + 4rem) !important;
     z-index: 0;
 
     &.mobile {
@@ -145,12 +143,6 @@
       &.mobile {
         display: none;
       }
-    }
-
-    @media screen and (width <= 1920px) {
-      // This helps center the image when we have to manually add width to it.
-      // If the whole image is being displayed (width > 1920px), we don't need this.
-      margin-left: -2rem;
     }
   }
 }
