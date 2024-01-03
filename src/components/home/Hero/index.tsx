@@ -43,22 +43,32 @@ const Hero = ({ user, checkin }: HeroProps) => {
       />
       <div className={styles.content}>
         <div className={styles.header}>
-          <Typography variant="display/light/medium" className={styles.headline}>
-            Welcome to ACM,&nbsp;
+          <Typography variant="display/light/medium" className={styles.heading} component="span">
+            {'Welcome to ACM, '}
             <Link href={config.profileRoute}>
-              <strong>{user.firstName}</strong>
+              <Typography
+                variant="display/heavy/medium"
+                className={styles.heading}
+                component="span"
+              >
+                {user.firstName}
+              </Typography>
             </Link>
             !
           </Typography>
-          <Typography variant="h4/regular">
-            You have&nbsp;
-            <strong>{user.points}</strong>
-            &nbsp;membership points.
+          <Typography variant="h4/regular" component="span" className={styles.subheading}>
+            {'You have '}
+            <Typography variant="h4/bold" component="span" className={styles.subheading}>
+              {user.points}
+            </Typography>
+            {' membership points.'}
           </Typography>
         </div>
         <div className={styles.actions}>
           <form className={styles.checkin} onSubmit={handleSubmit} action="">
-            <Typography variant="h4/regular">Check in to an event</Typography>
+            <Typography variant="h4/regular" className={styles.subheading}>
+              Check in to an event
+            </Typography>
             <div className={styles.checkinButtons}>
               <input
                 type="text"
@@ -74,15 +84,21 @@ const Hero = ({ user, checkin }: HeroProps) => {
           </form>
           <Link href={config.storeRoute} className={styles.link}>
             <ShopIcon />
-            <Typography variant="h4/regular">Spend points on merch</Typography>
+            <Typography variant="h4/regular" className={styles.subheading}>
+              Spend points on merch
+            </Typography>
           </Link>
           <Link href={config.leaderboardRoute} className={styles.link}>
             <LeaderboardIcon />
-            <Typography variant="h4/regular">Compete with friends</Typography>
+            <Typography variant="h4/regular" className={styles.subheading}>
+              Compete with friends
+            </Typography>
           </Link>
           <Link href={config.aboutRoute} className={styles.link}>
             <InfoIcon />
-            <Typography variant="h4/regular">Learn more about ACM</Typography>
+            <Typography variant="h4/regular" className={styles.subheading}>
+              Learn more about ACM
+            </Typography>
           </Link>
         </div>
       </div>

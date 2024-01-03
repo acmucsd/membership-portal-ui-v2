@@ -6,12 +6,13 @@ export type Styles = {
   content: string;
   desktop: string;
   header: string;
-  headline: string;
+  heading: string;
   hero: string;
   image: string;
   inline: string;
   link: string;
   mobile: string;
+  subheading: string;
   submit: string;
 };
 

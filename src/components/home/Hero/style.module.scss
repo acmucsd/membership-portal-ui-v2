@@ -4,6 +4,13 @@
   display: inline;
 }
 
+@media screen and (width <= vars.$breakpoint-md) {
+  .subheading {
+    font-size: 1rem !important;
+    line-height: 1.25rem !important;
+  }
+}
+
 .hero {
   margin: 0 -4rem;
   /* Header height: 4.25 rem, padding: 2 rem */
@@ -21,7 +28,7 @@
     z-index: 1;
 
     @media screen and (width <= vars.$breakpoint-md) {
-      gap: 3rem;
+      gap: 2rem;
     }
 
     .header {
@@ -29,12 +36,12 @@
       flex-direction: column;
       gap: 0.5rem;
 
-      .headline {
+      .heading {
         display: inline;
 
         @media screen and (width <= vars.$breakpoint-md) {
-          font-size: 2.5rem !important;
-          line-height: 3rem !important;
+          font-size: 2rem !important;
+          line-height: 2.5rem !important;
         }
       }
     }
@@ -68,9 +75,16 @@
             border-radius: 1rem;
             box-shadow: 0 4px 4px var(--theme-shadow);
             flex: 1;
-            font: inherit;
+            font-size: 1rem;
+            line-height: 1.25rem;
             overflow: hidden;
             padding: 1rem 1.5rem;
+
+            @media screen and (width <= vars.$breakpoint-md) {
+              font-size: 0.8rem;
+              line-height: 1rem;
+              padding: 0.5rem 1rem;
+            }
           }
 
           .submit {
@@ -82,6 +96,11 @@
             height: 50px;
             justify-content: center;
             width: 50px;
+
+            @media screen and (width <= vars.$breakpoint-md) {
+              height: 36px;
+              width: 36px;
+            }
 
             @media screen and (width <= vars.$breakpoint-sm) {
               display: none;
