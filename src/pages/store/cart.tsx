@@ -3,7 +3,7 @@ import Modal from '@/components/common/Modal';
 import EventCard from '@/components/events/EventCard';
 import { Diamonds, Navbar } from '@/components/store';
 import { config } from '@/lib';
-import { EventAPI } from '@/lib/api';
+import { getAllFutureEvents } from '@/lib/api/EventAPI';
 import { getItem } from '@/lib/api/StoreAPI';
 import { getCurrentUser } from '@/lib/api/UserAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -66,9 +66,11 @@ const clientCartToCookie = (items: ClientCartItem[]): string =>
 const StoreCartItem = ({
   item,
   removeItem,
+  removable,
 }: {
   item: ClientCartItem;
   removeItem(optionUUID: UUID): void;
+  removable: boolean;
 }) => {
   const itemPage = `${config.itemRoute}${item.uuid}`;
 
@@ -104,16 +106,17 @@ const StoreCartItem = ({
             {item.quantity}
           </Typography>
         </Typography>
-        {/* // todo onclick for remove item button */}
-        <button
-          type="button"
-          className={styles.removeBtn}
-          onClick={() => removeItem(item.option.uuid)}
-        >
-          <Typography variant="h5/regular" component="span">
-            Remove Item
-          </Typography>
-        </button>
+        {removable && (
+          <button
+            type="button"
+            className={styles.removeBtn}
+            onClick={() => removeItem(item.option.uuid)}
+          >
+            <Typography variant="h5/regular" component="span">
+              Remove Item
+            </Typography>
+          </button>
+        )}
       </div>
       <Diamonds count={item.option?.price ?? 0} className={styles.cartItemPrice} />
     </div>
@@ -157,9 +160,12 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
     <div className={styles.container}>
       <Navbar balance={credits} />
       <div className={styles.content}>
+        {/* Title */}
         <Typography variant="h1/bold" component="h1">
-          Your Cart
+          {cartState !== CartState.CONFIRMED ? 'Your Cart' : 'Order Confirmation'}
         </Typography>
+
+        {/* Place Order Button */}
         {cart.length > 0 && cartState !== CartState.CONFIRMED ? (
           <button
             type="button"
@@ -201,8 +207,35 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
             </div>
           </div>
         </Modal>
-        {/* Cart Items */}
-        <div>
+
+        {/* Main Quarter */}
+        <div className={styles.main}>
+          {cartState === CartState.CONFIRMED && (
+            <div className={`${styles.cartSection} ${styles.confirmation}`}>
+              <Typography variant="h3/regular" component="p">
+                You will receive a confirmation email with your order details soon.
+                <br />
+                Please pick up your items on the date you selected. Thank you!
+              </Typography>
+              <div>
+                <Link href={config.storeRoute}>
+                  <button type="button">
+                    <Typography variant="h5/bold" component="span">
+                      Continue Shopping
+                    </Typography>
+                  </button>
+                </Link>
+                <Link href={config.myOrdersRoute}>
+                  <button type="button">
+                    <Typography variant="h5/bold" component="span">
+                      My Orders
+                    </Typography>
+                  </button>
+                </Link>
+              </div>
+            </div>
+          )}
+
           <div className={styles.cartSection}>
             <div className={styles.cartHeader}>
               <Typography variant="h4/bold" component="h2">
@@ -210,7 +243,12 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
               </Typography>
             </div>
             {cart.map(item => (
-              <StoreCartItem key={item.option.uuid} item={item} removeItem={removeItem} />
+              <StoreCartItem
+                key={item.option.uuid}
+                item={item}
+                removeItem={removeItem}
+                removable={cartState !== CartState.CONFIRMED}
+              />
             ))}
             {cart.length === 0 && (
               <div className={styles.emptyCart}>
@@ -225,12 +263,16 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
             )}
           </div>
         </div>
+
+        {/* Sidebar */}
         <div className={styles.sidebar}>
-          {cart.length > 0 && orderTotal <= credits && cartState !== CartState.CONFIRMED && (
+          {cart.length > 0 && orderTotal <= credits && (
             <div className={`${styles.cartSection} ${styles.pickupSection}`}>
               <div className={styles.cartHeader}>
                 <Typography variant="h4/bold" component="h2">
-                  Choose Pickup Event
+                  {cartState !== CartState.CONFIRMED
+                    ? 'Choose Pickup Event'
+                    : 'Pickup Event Details'}
                 </Typography>
               </div>
               <div className={styles.temp2}>
@@ -245,40 +287,42 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
               </div>
 
               {/* <EventCard event={pickupEvents[pickupIndex]} /> */}
-              <div className={styles.eventNavigation}>
-                <button
-                  type="button"
-                  onClick={() => setPickupIndex(i => (i > 0 ? i - 1 : 0))}
-                  aria-label="Previous Event"
-                  disabled={pickupIndex <= 0}
-                >
-                  <ArrowLeft />
-                </button>
-                <Typography variant="h5/regular" component="p">{`${pickupIndex + 1}/${
-                  pickupEvents.length
-                }`}</Typography>
-                <button
-                  type="button"
-                  onClick={() => setPickupIndex(i => Math.min(i + 1, pickupEvents.length - 1))}
-                  aria-label="Next Event"
-                  disabled={pickupIndex >= pickupEvents.length - 1}
-                >
-                  <ArrowRight />
-                </button>
-              </div>
+              {cartState !== CartState.CONFIRMED && (
+                <div className={styles.eventNavigation}>
+                  <button
+                    type="button"
+                    onClick={() => setPickupIndex(i => (i > 0 ? i - 1 : 0))}
+                    aria-label="Previous Event"
+                    disabled={pickupIndex <= 0}
+                  >
+                    <ArrowLeft />
+                  </button>
+                  <Typography variant="h5/regular" component="p">{`${pickupIndex + 1}/${
+                    pickupEvents.length
+                  }`}</Typography>
+                  <button
+                    type="button"
+                    onClick={() => setPickupIndex(i => Math.min(i + 1, pickupEvents.length - 1))}
+                    aria-label="Next Event"
+                    disabled={pickupIndex >= pickupEvents.length - 1}
+                  >
+                    <ArrowRight />
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
           <div className={`${styles.cartSection}`}>
             <div className={styles.cartHeader}>
               <Typography variant="h4/bold" component="h2">
-                Membership Points
+                {cartState !== CartState.CONFIRMED ? 'Membership Points' : 'Balance Details'}
               </Typography>
             </div>
             <div className={styles.pointsSection}>
               <div>
                 <Typography variant="h5/bold" component="p">
-                  Current Balance
+                  {cartState !== CartState.CONFIRMED ? 'Current' : 'Previous'} Balance
                 </Typography>
                 <Diamonds count={credits} />
               </div>
@@ -365,7 +409,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   ).then((items): ClientCartItem[] => items.filter(item => item !== undefined) as ClientCartItem[]);
 
   // TODO: replace placeholder events with pickup events
-  const pickupEventsPromise = EventAPI.getAllFutureEvents();
+  const pickupEventsPromise = getAllFutureEvents();
   const userPromise = getCurrentUser(AUTH_TOKEN);
 
   // gather the API request promises and await them concurrently

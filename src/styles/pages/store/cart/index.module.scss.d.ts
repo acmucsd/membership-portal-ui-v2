@@ -7,11 +7,13 @@ export type Styles = {
   checkoutButton: string;
   checkoutModal: string;
   checkoutOptions: string;
+  confirmation: string;
   confirming: string;
   container: string;
   content: string;
   emptyCart: string;
   eventNavigation: string;
+  main: string;
   pickupSection: string;
   pointsSection: string;
   removeBtn: string;

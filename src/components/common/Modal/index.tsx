@@ -34,19 +34,27 @@ const Modal = ({ title, open, onClose, children }: ModalProps) => {
           e.currentTarget.close();
         }
       }}
-      onClose={onClose}
+      onClose={e => {
+        e.stopPropagation();
+        onClose();
+      }}
     >
-      <form method="dialog" className={`${styles.modalBody} ${title ? styles.hasHeader : ''}`}>
+      <div className={`${styles.modalBody} ${title ? styles.hasHeader : ''}`}>
         {title && (
           <div className={styles.header}>
             <h1>{title}</h1>
-            <button type="submit" className={styles.close} aria-label="Close">
+            <button
+              type="button"
+              onClick={() => ref.current?.close()}
+              className={styles.close}
+              aria-label="Close"
+            >
               <CloseIcon aria-hidden />
             </button>
           </div>
         )}
         {children}
-      </form>
+      </div>
     </dialog>
   );
 };
