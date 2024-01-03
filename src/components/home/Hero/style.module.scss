@@ -139,15 +139,11 @@
     z-index: 0;
 
     &.mobile {
-      display: none;
+      z-index: 1;
     }
 
     @media screen and (width <= vars.$breakpoint-md) {
       &.mobile {
-        display: block;
-      }
-
-      &.desktop {
         display: none;
       }
     }

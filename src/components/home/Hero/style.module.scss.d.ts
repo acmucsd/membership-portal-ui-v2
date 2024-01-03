@@ -4,7 +4,6 @@ export type Styles = {
   checkinButtons: string;
   checkinInput: string;
   content: string;
-  desktop: string;
   header: string;
   heading: string;
   hero: string;
