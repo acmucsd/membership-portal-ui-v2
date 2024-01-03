@@ -56,6 +56,7 @@ const PortalHomePage = ({
     const response = await attendEvent({ token, attendanceCode });
     const event = processCheckInResponse(response);
     if (event) {
+      // This client side code prevents us from having to refetch user and attendance from the API.
       setPoints(p => p + event.pointValue);
       const a: PublicAttendance = {
         user: user,
