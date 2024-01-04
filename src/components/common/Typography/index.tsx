@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { CSSProperties, HTMLAttributes, PropsWithChildren } from 'react';
 
 // v1 variants
@@ -35,6 +36,8 @@ interface TypographyProps extends HTMLAttributes<HTMLElement> {
   variant: Variant;
   component?: ComponentType;
   style?: CSSProperties;
+  // This is used if/when the component is 'a'.
+  href?: string;
 }
 
 // Implements styles from https://www.figma.com/file/ihJGLgfFTURKCgl9KNUPcA/Website-%26-Portal%3A-Design-System?node-id=1561%3A263&mode=dev
@@ -229,6 +232,21 @@ const variantToCSS = (variant: Variant): CSSProperties => {
  */
 const Typography = (props: PropsWithChildren<TypographyProps>) => {
   const { variant, component, style, children, ...restProps } = props;
+
+  if (restProps.href) {
+    return (
+      <Link
+        href={restProps.href}
+        style={{
+          ...variantToCSS(variant),
+          ...style, // other styles can be customized via style prop
+        }}
+        {...restProps}
+      >
+        {children}
+      </Link>
+    );
+  }
 
   const Component = component || 'div';
 
