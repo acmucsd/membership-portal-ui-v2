@@ -111,7 +111,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
           ]}
           value={sort}
           onChange={sort => {
-            router.push(`${config.leaderboardRoute}?sort=${sort}`);
+            router.push(`${config.leaderboardRoute}?sort=${sort}`, undefined, { shallow: true });
             setPage(0);
             setScrollIntoView(0);
           }}

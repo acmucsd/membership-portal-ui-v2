@@ -1,6 +1,6 @@
 import { EventCarousel } from '@/components/events';
 import Hero from '@/components/home/Hero';
-import { showToast } from '@/lib';
+import { config, showToast } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { attendEvent } from '@/lib/managers/EventManager';
@@ -14,6 +14,7 @@ import type {
 import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/Home.module.scss';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 interface HomePageProps {
@@ -69,15 +70,17 @@ const PortalHomePage = ({
     }
   };
 
+  const router = useRouter();
+
   useEffect(() => {
     if (checkInResponse) {
       // In dev mode, this runs twice because of reactStrictMode in nextConfig.
       // This will only be run once in prod or deployment.
       processCheckInResponse(checkInResponse);
       // Clear the query params without re-triggering getServerSideProps.
-      window.history.replaceState(null, '', '/');
+      router.push(`${config.homeRoute}`, undefined, { shallow: true });
     }
-  }, [checkInResponse]);
+  }, [checkInResponse, router]);
 
   return (
     <div className={styles.page}>
