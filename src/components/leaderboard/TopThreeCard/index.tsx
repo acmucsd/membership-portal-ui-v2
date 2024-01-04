@@ -1,4 +1,4 @@
-import { trim } from '@/lib/utils';
+import { isSrcAGif, trim } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './style.module.scss';
@@ -24,6 +24,7 @@ const TopThreeCard = ({ position, rank, name, url, points, image }: UserCardProp
           alt="User Profile Pic"
           width={80}
           height={80}
+          unoptimized={isSrcAGif(image)}
         />
         <span className={styles.cardText}>{trim(name, 25)}</span>
         <span className={styles.cardText}>{rank}</span>

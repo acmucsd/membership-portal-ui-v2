@@ -88,6 +88,7 @@ const CalendarButtons = ({ event }: CalendarButtonProps) => {
           className={styles.calendarLink}
           href={appleCalInfo.href}
           download={appleCalInfo.download}
+          suppressHydrationWarning
         >
           <AppleCalendarLogo className={styles.appleCalLogo} alt="apple calendar" />
           <Typography variant="h6/bold">Add to Apple Calendar</Typography>
