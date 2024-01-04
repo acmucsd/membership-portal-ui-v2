@@ -8,7 +8,6 @@ export type Styles = {
   heading: string;
   hero: string;
   image: string;
-  inline: string;
   link: string;
   mobile: string;
   subheading: string;

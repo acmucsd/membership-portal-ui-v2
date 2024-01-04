@@ -45,21 +45,14 @@ const Hero = ({ firstName, points, checkin }: HeroProps) => {
         <div className={styles.header}>
           <Typography variant="display/light/medium" className={styles.heading} component="span">
             {'Welcome to ACM, '}
-            <Typography
-              variant="display/heavy/medium"
-              className={styles.heading}
-              component="a"
-              href={config.profileRoute}
-            >
-              {firstName}
-            </Typography>
+            <strong>
+              <Link href={config.profileRoute}>{firstName}</Link>
+            </strong>
             !
           </Typography>
           <Typography variant="h4/regular" component="span" className={styles.subheading}>
             {'You have '}
-            <Typography variant="h4/bold" component="span" className={styles.subheading}>
-              {points}
-            </Typography>
+            <strong>{points}</strong>
             {' membership points.'}
           </Typography>
         </div>

@@ -1,9 +1,5 @@
 @use 'src/styles/vars.scss' as vars;
 
-.inline {
-  display: inline;
-}
-
 @media screen and (width <= vars.$breakpoint-md) {
   .subheading {
     font-size: 1rem !important;
@@ -37,8 +33,6 @@
       gap: 0.5rem;
 
       .heading {
-        display: inline;
-
         @media screen and (width <= vars.$breakpoint-md) {
           font-size: 2rem !important;
           line-height: 2.5rem !important;

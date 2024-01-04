@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { CSSProperties, HTMLAttributes, PropsWithChildren } from 'react';
 
 // v1 variants
@@ -25,7 +26,7 @@ function isStandardVariant(variant: V2Variant): variant is V2StandardVariant {
 // shared
 type Variant = V1Variant | V2Variant;
 
-type ComponentType = Heading | 'p' | 'span' | 'div' | 'a';
+type ComponentType = Heading | 'p' | 'span' | 'div';
 
 function isV1Variant(variant: Variant): variant is V1Variant {
   return HEADINGS.some(h => h === variant.split('/')[0]);
@@ -231,6 +232,21 @@ const variantToCSS = (variant: Variant): CSSProperties => {
  */
 const Typography = (props: PropsWithChildren<TypographyProps>) => {
   const { variant, component, style, children, ...restProps } = props;
+
+  if (restProps.href) {
+    return (
+      <Link
+        href={restProps.href}
+        style={{
+          ...variantToCSS(variant),
+          ...style, // other styles can be customized via style prop
+        }}
+        {...restProps}
+      >
+        {children}
+      </Link>
+    );
+  }
 
   const Component = component || 'div';
 
