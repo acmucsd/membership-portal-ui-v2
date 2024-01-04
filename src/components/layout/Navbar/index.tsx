@@ -126,11 +126,17 @@ const Navbar = ({ user }: NavbarProps) => {
           <ShopIcon className={styles.iconLink} />
           Store
         </Link>
+        {isAdmin ? (
+          <Link className={styles.mobileNavItem} href={config.admin.homeRoute}>
+            <SettingsIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
+            Admin Settings
+          </Link>
+        ) : null}
         <div>
           <ThemeToggle />
         </div>
+        <hr className={styles.wainbow} />
       </div>
-      <hr className={styles.wainbow} />
     </header>
   );
 };
