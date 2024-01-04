@@ -96,7 +96,7 @@ const PortalHomePage = ({
         <EventCarousel
           title="Upcoming Events"
           description="Mark your calendars! These events are just around the corner!"
-          events={upcomingEvents.slice(0, 10)} // Slicing past events so the carousel doesn't balloon.
+          events={upcomingEvents} // Slicing past events so the carousel doesn't balloon.
           attendances={attendance}
         />
       )}
@@ -105,7 +105,7 @@ const PortalHomePage = ({
         <EventCarousel
           title="Past Events"
           description="Take a look at some of ACM's past events!"
-          events={pastEvents.slice(-10).reverse()} // Slicing past events so the carousel doesn't balloon.
+          events={pastEvents} // Slicing past events so the carousel doesn't balloon.
           attendances={attendance}
         />
       )}
@@ -156,8 +156,8 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
   return {
     props: {
       user,
-      pastEvents,
-      upcomingEvents,
+      pastEvents: pastEvents.slice(-10).reverse(),
+      upcomingEvents: upcomingEvents.slice(0, 10),
       liveEvents,
       attendances,
       checkInResponse: checkInResponse,
