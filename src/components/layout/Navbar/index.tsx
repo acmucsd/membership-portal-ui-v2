@@ -62,7 +62,7 @@ const Navbar = ({ user }: NavbarProps) => {
     );
   }
 
-  const isAdmin = PermissionService.canViewAdminPage().includes(user.accessType);
+  const isAdmin = PermissionService.canViewAdminPage.includes(user.accessType);
 
   return (
     <header className={styles.header} ref={headerRef}>

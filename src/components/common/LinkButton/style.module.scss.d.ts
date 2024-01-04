@@ -1,6 +1,5 @@
 export type Styles = {
-  subtitle: string;
-  title: string;
+  button: string;
 };
 
 export type ClassNames = keyof Styles;

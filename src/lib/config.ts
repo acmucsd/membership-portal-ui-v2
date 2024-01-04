@@ -81,6 +81,15 @@ const config = {
   itemRoute: '/store/item/',
   admin: {
     homeRoute: '/admin',
+    awardPoints: '/admin/points',
+    grantPastAttendance: '/admin/attendance',
+    awardMilestone: '/admin/milestone',
+    viewResumes: '/admin/resumes',
+    store: {
+      items: '/admin/store/items',
+      pickupEvents: '/admin/store/pickupEvents',
+      homeRoute: '/admin/store',
+    },
     events: {
       homeRoute: '/admin/event',
       editRoute: '/admin/event/edit',
