@@ -1,4 +1,4 @@
-import { trim } from '@/lib/utils';
+import { isSrcAGif, trim } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './style.module.scss';
