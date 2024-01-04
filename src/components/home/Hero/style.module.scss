@@ -47,6 +47,10 @@
       max-width: fit-content;
       padding-bottom: 2rem;
 
+      @media screen and (width <= vars.$breakpoint-sm) {
+        max-width: 100%;
+      }
+
       .checkin {
         background-color: var(--theme-accent-line-2-transparent);
         border-radius: 1rem;
