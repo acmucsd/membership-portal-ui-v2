@@ -33,7 +33,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
       <Navbar balance={credits} showBack />
       <div className={styles.rowContainer}>
         <Image
-          src={getDefaultMerchItemPhoto(item) || ''}
+          src={getDefaultMerchItemPhoto(item)}
           alt="Picture of item "
           width={600}
           height={600}
