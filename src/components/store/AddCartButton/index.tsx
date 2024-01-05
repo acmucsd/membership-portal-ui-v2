@@ -69,7 +69,7 @@ const AddCartButton = ({
       )}
       {currSize === undefined ? <p className={styles.error}>Please select a size.</p> : validText}
 
-      {currSize === undefined || maxCanBuy === 0 ? null : (
+      {currSize === undefined ? null : (
         <div className={styles.buttonRow}>
           {!inStock || maxCanBuy === 0 ? null : (
             <div className={styles.quantityColumn}>
@@ -85,7 +85,9 @@ const AddCartButton = ({
           )}
 
           <button
-            className={`${inStock ? styles.buttonInStock : styles.buttonNoStock} ${styles.button}`}
+            className={`${inStock && maxCanBuy > 0 ? styles.buttonInStock : styles.buttonNoStock} ${
+              styles.button
+            }`}
             type="button"
             title={`${buyButtonText} Button`}
             value={buyButtonText}

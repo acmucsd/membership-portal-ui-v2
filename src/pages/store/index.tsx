@@ -6,7 +6,7 @@ import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getDefaultMerchItemPhoto } from '@/lib/utils';
-import styles from '@/styles/pages/store/index.module.scss';
+import styles from '@/styles/pages/StoreHomePage.module.scss';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useState } from 'react';

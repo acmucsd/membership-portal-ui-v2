@@ -9,7 +9,7 @@ import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchItemWithPurchaseLimits } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getDefaultMerchItemPhoto } from '@/lib/utils';
-import styles from '@/styles/pages/store/item.module.scss';
+import styles from '@/styles/pages/StoreItemPage.module.scss';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useState } from 'react';
