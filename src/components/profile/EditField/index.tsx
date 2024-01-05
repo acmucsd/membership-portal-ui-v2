@@ -31,6 +31,7 @@ interface EditFieldProps {
   options?: string[];
   maxLength?: number;
   disabled?: boolean;
+  changed?: boolean;
   value: string;
   onChange: (value: string) => void;
   onBlur?: (value: string) => string;
@@ -48,13 +49,18 @@ export const EditField = ({
   element: Input = 'input',
   options,
   disabled,
+  changed,
   value,
   onChange,
   onBlur,
 }: EditFieldProps) => {
   return (
     <EditBlock icon={icon} title={label} wrapper="label">
-      <div className={`${styles.fieldBorder} ${disabled ? styles.disabled : ''}`}>
+      <div
+        className={`${styles.fieldBorder} ${changed ? styles.unsaved : ''} ${
+          disabled ? styles.disabled : ''
+        }`}
+      >
         {prefix && <span className={styles.prefix}>{prefix}</span>}
         <Input
           className={styles.field}
@@ -98,15 +104,23 @@ interface SingleFieldProps {
   label: string;
   placeholder?: string;
   type?: string;
+  changed?: boolean;
   value: string;
   onChange: (value: string) => void;
 }
 
-export const SingleField = ({ label, placeholder, type, value, onChange }: SingleFieldProps) => {
+export const SingleField = ({
+  label,
+  placeholder,
+  type,
+  changed,
+  value,
+  onChange,
+}: SingleFieldProps) => {
   return (
     <label className={styles.singleField}>
       <h4 className={styles.singleLabel}>{label}</h4>
-      <div className={styles.fieldBorder}>
+      <div className={`${styles.fieldBorder} ${changed ? styles.unsaved : ''}`}>
         <input
           className={styles.field}
           type={type}

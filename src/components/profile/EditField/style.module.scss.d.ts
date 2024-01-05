@@ -11,6 +11,7 @@ export type Styles = {
   prefix: string;
   singleField: string;
   singleLabel: string;
+  unsaved: string;
 };
 
 export type ClassNames = keyof Styles;

@@ -72,6 +72,7 @@ const config = {
   homeRoute: '/',
   eventsRoute: '/events',
   loginRoute: '/login',
+  logoutRoute: '/logout',
   leaderboardRoute: '/leaderboard',
   profileRoute: '/profile',
   aboutRoute: '/about',

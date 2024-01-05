@@ -10,6 +10,7 @@ import {
 import { config, showToast } from '@/lib';
 import { AuthAPI, ResumeAPI, UserAPI } from '@/lib/api';
 import majors from '@/lib/constants/majors.json';
+import socialMediaTypes from '@/lib/constants/socialMediaTypes';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
@@ -238,7 +239,15 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
 
   return (
     <>
-      <h1 className={styles.title}>Edit Profile</h1>
+      <div className={styles.title}>
+        <h1>Edit Profile</h1>
+        <Link
+          href={config.logoutRoute}
+          className={`${styles.button} ${styles.dangerBtn} ${styles.smaller}`}
+        >
+          Log out
+        </Link>
+      </div>
       <div className={styles.mainContent}>
         <div className={styles.columns}>
           <section className={styles.columnLeft}>
@@ -305,12 +314,14 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   <SingleField
                     label="First"
                     placeholder="John"
+                    changed={firstNameChanged}
                     value={firstName}
                     onChange={setFirstName}
                   />
                   <SingleField
                     label="Last"
                     placeholder="Doe"
+                    changed={lastNameChanged}
                     value={lastName}
                     onChange={setLastName}
                   />
@@ -329,6 +340,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   description="This will be your unique URL on the Membership Portal."
                   prefix="members.acmucsd.com/u/"
                   maxLength={30}
+                  changed={handleChanged}
                   value={handle}
                   onChange={setHandle}
                 />
@@ -337,6 +349,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   placeholder="jdoe@ucsd.edu"
                   description="Enter an email for login to your account."
                   type="email"
+                  changed={emailChanged}
                   value={email}
                   onChange={setEmail}
                 />
@@ -350,6 +363,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   <SingleField
                     label="New Password"
                     type="password"
+                    changed={passwordChanged}
                     value={newPassword}
                     onChange={setNewPassword}
                   />
@@ -372,6 +386,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   label="Major"
                   element="select"
                   options={majors.majors}
+                  changed={majorChanged}
                   value={major}
                   onChange={setMajor}
                 />
@@ -379,6 +394,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   label="Graduation Year"
                   element="select"
                   options={years.map(String)}
+                  changed={graduationYearChanged}
                   value={graduationYear}
                   onChange={setGraduationYear}
                 />
@@ -386,6 +402,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   label="Biography"
                   maxLength={200}
                   element="textarea"
+                  changed={bioChanged}
                   value={bio}
                   onChange={setBio}
                 />
@@ -480,6 +497,9 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 <EditBlock title="Attendance">
                   <Switch checked={isAttendancePublic} onCheck={setIsAttendancePublic}>
                     Display my ACM attendance history on my profile
+                    {isAttendancePublicChanged && (
+                      <span className={styles.unsavedChange}> (unsaved change)</span>
+                    )}
                   </Switch>
                 </EditBlock>
               </div>
@@ -490,116 +510,38 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 <DropdownIcon aria-hidden />
               </summary>
               <div className={styles.section}>
-                <EditField
-                  icon={<SocialMediaIcon type={SocialMediaType.LINKEDIN} hidden />}
-                  label="LinkedIn"
-                  type="url"
-                  name="linkedin"
-                  placeholder="linkedin.com/in/"
-                  value={socialMedia.get(SocialMediaType.LINKEDIN) ?? ''}
-                  onChange={url =>
-                    setSocialMedia(
-                      new Map([...Array.from(socialMedia), [SocialMediaType.LINKEDIN, url]])
-                    )
-                  }
-                  onBlur={url => fixUrl(url, 'linkedin.com/in')}
-                />
-                <EditField
-                  icon={<SocialMediaIcon type={SocialMediaType.GITHUB} hidden />}
-                  label="GitHub"
-                  type="url"
-                  name="github"
-                  placeholder="github.com/"
-                  value={socialMedia.get(SocialMediaType.GITHUB) ?? ''}
-                  onChange={url =>
-                    setSocialMedia(
-                      new Map([...Array.from(socialMedia), [SocialMediaType.GITHUB, url]])
-                    )
-                  }
-                  onBlur={url => fixUrl(url, 'github.com')}
-                />
-                <EditField
-                  icon={<SocialMediaIcon type={SocialMediaType.DEVPOST} hidden />}
-                  label="Devpost"
-                  type="url"
-                  name="devpost"
-                  placeholder="devpost.com/"
-                  value={socialMedia.get(SocialMediaType.DEVPOST) ?? ''}
-                  onChange={url =>
-                    setSocialMedia(
-                      new Map([...Array.from(socialMedia), [SocialMediaType.DEVPOST, url]])
-                    )
-                  }
-                  onBlur={url => fixUrl(url, 'devpost.com')}
-                />
-                <EditField
-                  icon={<SocialMediaIcon type={SocialMediaType.PORTFOLIO} hidden />}
-                  label="Portfolio"
-                  type="url"
-                  name="website"
-                  placeholder="example.com"
-                  value={socialMedia.get(SocialMediaType.PORTFOLIO) ?? ''}
-                  onChange={url =>
-                    setSocialMedia(
-                      new Map([...Array.from(socialMedia), [SocialMediaType.PORTFOLIO, url]])
-                    )
-                  }
-                  onBlur={fixUrl}
-                />
-                <EditField
-                  icon={<SocialMediaIcon type={SocialMediaType.FACEBOOK} hidden />}
-                  label="Facebook"
-                  type="url"
-                  name="facebook"
-                  placeholder="facebook.com/"
-                  value={socialMedia.get(SocialMediaType.FACEBOOK) ?? ''}
-                  onChange={url =>
-                    setSocialMedia(
-                      new Map([...Array.from(socialMedia), [SocialMediaType.FACEBOOK, url]])
-                    )
-                  }
-                  onBlur={url => fixUrl(url, 'facebook.com')}
-                />
-                <EditField
-                  icon={<SocialMediaIcon type={SocialMediaType.TWITTER} hidden />}
-                  label="Twitter"
-                  type="url"
-                  name="twitter"
-                  placeholder="twitter.com/"
-                  value={socialMedia.get(SocialMediaType.TWITTER) ?? ''}
-                  onChange={url =>
-                    setSocialMedia(
-                      new Map([...Array.from(socialMedia), [SocialMediaType.TWITTER, url]])
-                    )
-                  }
-                  onBlur={url => fixUrl(url, 'twitter.com')}
-                />
-                <EditField
-                  icon={<SocialMediaIcon type={SocialMediaType.INSTAGRAM} hidden />}
-                  label="Instagram"
-                  type="url"
-                  name="instagram"
-                  placeholder="instagram.com/"
-                  value={socialMedia.get(SocialMediaType.INSTAGRAM) ?? ''}
-                  onChange={url =>
-                    setSocialMedia(
-                      new Map([...Array.from(socialMedia), [SocialMediaType.INSTAGRAM, url]])
-                    )
-                  }
-                  onBlur={url => fixUrl(url, 'instagram.com')}
-                />
-                <EditField
-                  icon={<SocialMediaIcon type={SocialMediaType.EMAIL} hidden />}
-                  label="Email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={socialMedia.get(SocialMediaType.EMAIL) ?? ''}
-                  onChange={url =>
-                    setSocialMedia(
-                      new Map([...Array.from(socialMedia), [SocialMediaType.EMAIL, url]])
-                    )
-                  }
-                />
+                {[
+                  SocialMediaType.LINKEDIN,
+                  SocialMediaType.GITHUB,
+                  SocialMediaType.DEVPOST,
+                  SocialMediaType.PORTFOLIO,
+                  SocialMediaType.FACEBOOK,
+                  SocialMediaType.TWITTER,
+                  SocialMediaType.INSTAGRAM,
+                  SocialMediaType.EMAIL,
+                ].map(socialType => (
+                  <EditField
+                    key={socialType}
+                    icon={<SocialMediaIcon type={socialType} hidden />}
+                    label={socialMediaTypes[socialType].label}
+                    type={socialType === SocialMediaType.EMAIL ? 'email' : 'url'}
+                    name={socialType.toLowerCase()}
+                    placeholder={socialMediaTypes[socialType].domain}
+                    changed={
+                      (user.userSocialMedia?.find(social => social.type === socialType)?.url ??
+                        '') !== (socialMedia.get(socialType) ?? '')
+                    }
+                    value={socialMedia.get(socialType) ?? ''}
+                    onChange={url =>
+                      setSocialMedia(new Map([...Array.from(socialMedia), [socialType, url]]))
+                    }
+                    onBlur={
+                      socialType !== SocialMediaType.EMAIL
+                        ? url => fixUrl(url, socialMediaTypes[socialType].domain)
+                        : undefined
+                    }
+                  />
+                ))}
               </div>
             </details>
             <div className={`${styles.submitBtns} ${hasChange ? styles.unsavedChanges : ''}`}>
@@ -649,10 +591,12 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
 
 export default EditProfilePage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
+const getServerSidePropsFunc: GetServerSideProps<EditProfileProps> = async ({ req, res }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+  // Ensure `user` is up-to-date
+  const user = await UserAPI.getCurrentUser(AUTH_TOKEN);
 
-  return { props: { authToken: AUTH_TOKEN } };
+  return { props: { authToken: AUTH_TOKEN, user } };
 };
 
 export const getServerSideProps = withAccessType(

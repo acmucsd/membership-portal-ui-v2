@@ -18,7 +18,7 @@ const Switch = ({ checked, onCheck, disabled, children }: SwitchProps) => {
         onChange={e => onCheck(e.currentTarget.checked)}
         disabled={disabled}
       />
-      <span className={styles.switch} /> <span className={styles.label}>{children}</span>
+      <span className={styles.switch} /> <span>{children}</span>
     </label>
   );
 };

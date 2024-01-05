@@ -45,9 +45,14 @@
       border-radius: 4px;
       display: flex;
       overflow: hidden;
+      transition: border-color 0.2s;
 
       &.disabled {
         opacity: 0.5;
+      }
+
+      &.unsaved {
+        border-color: vars.$light-primary-2;
       }
 
       .prefix {
@@ -82,6 +87,10 @@
           @media (max-width: vars.$breakpoint-md) {
             padding: 0.75rem;
           }
+        }
+
+        option {
+          background-color: var(--theme-background);
         }
       }
     }

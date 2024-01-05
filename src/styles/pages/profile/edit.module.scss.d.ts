@@ -22,6 +22,7 @@ export type Styles = {
   smaller: string;
   submitBtns: string;
   title: string;
+  unsavedChange: string;
   unsavedChanges: string;
 };
 

@@ -4,7 +4,6 @@
   "plugins": ["prettier", "node", "@typescript-eslint", "import", "jsdoc"],
   "rules": {
     "prettier/prettier": "error",
-    "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ["warn", { "varsIgnorePattern": "^_$" }],
     "no-console": "error",
     "func-names": "off",
