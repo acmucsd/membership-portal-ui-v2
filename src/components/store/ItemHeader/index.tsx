@@ -1,4 +1,4 @@
-import BlueDiamond from '@/public/assets/icons/blue-diamond.svg';
+import Diamonds from '@/components/store/Diamonds';
 import styles from './style.module.scss';
 
 interface ItemHeaderProps {
@@ -11,8 +11,7 @@ const ItemHeader = ({ itemName, cost }: ItemHeaderProps) => {
     <div className={styles.itemHeaderGroup}>
       <h1>{itemName}</h1>
       <div className={styles.price}>
-        <p>{cost || 'Select Size Option First'}</p>
-        <BlueDiamond />
+        {cost === undefined ? <p>Select Size Option First For Price</p> : <Diamonds count={cost} />}
       </div>
     </div>
   );
