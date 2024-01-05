@@ -1,8 +1,5 @@
 @use 'src/styles/vars.scss' as vars;
 $indicator-size: 30px;
-$switch-gap: 127%;
-$switch-gap-num: calc($switch-gap / 100%);
-$switch-start: 15%;
 $component-roundness: 10px;
 
 .sizeSelector {
@@ -10,7 +7,6 @@ $component-roundness: 10px;
   flex-direction: column;
   gap: 12px;
   overflow: auto;
-  // padding: 5px 3px;
 
   h4 {
     color: var(--theme-text-on-background-1);
@@ -25,9 +21,6 @@ $component-roundness: 10px;
     display: flex;
     float: left;
     gap: 12px;
-    // border-style: solid;
-    // border-width: 1px;
-
     position: relative;
 
     label {
@@ -52,7 +45,6 @@ $component-roundness: 10px;
       position: absolute;
     }
 
-    //https://markheath.net/post/customize-radio-button-css
     input:checked {
       border-color: var(--size-selector-border);
     }
@@ -62,7 +54,6 @@ $component-roundness: 10px;
     }
 
     input:checked + label {
-      // background-color: var(--size-selector-border);
       border-color: var(--size-selector-border);
       color: var(--size-selector-border);
     }
@@ -71,3 +62,4 @@ $component-roundness: 10px;
 
 // INFO LINKS
 // https://stackoverflow.com/questions/19417081/doing-math-on-variable-argument-sass-mixins
+// https://markheath.net/post/customize-radio-button-css

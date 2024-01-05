@@ -1,19 +1,20 @@
 import styles from '@/components/store/SizeSelector/style.module.scss';
 import { PublicMerchItemOption } from '@/lib/types/apiResponses';
-import { useEffect, useId, useState } from 'react';
+import { Fragment, useEffect, useId, useState } from 'react';
 
 interface SizeSelectorProps {
   currSize: string | undefined;
+  uuid: string;
   options: PublicMerchItemOption[];
   // Justification for disabling rules: This seems to be a false positive.
   // https://stackoverflow.com/q/63767199/
   // eslint-disable-next-line no-unused-vars
-  setSize: (value: string) => void;
+  onSizeChange: (currSize: string) => void;
 }
 
-const SizeSelector = ({ currSize, options, setSize }: SizeSelectorProps) => {
+const SizeSelector = ({ currSize, options, onSizeChange: setSize, uuid }: SizeSelectorProps) => {
   const [mounted, setMounted] = useState(false);
-  const myID = `${useId()}`;
+  const myID = useId();
 
   useEffect(() => {
     setMounted(true);
@@ -41,16 +42,13 @@ const SizeSelector = ({ currSize, options, setSize }: SizeSelectorProps) => {
 
   return (
     <div className={styles.sizeSelector}>
-      {options.length > 1 && (
-        <>
+      {options.length > 1 ? (
+        <Fragment key={uuid}>
           <h4>Size</h4>
           <form className={styles.switch}>{myOptions}</form>
-        </>
-      )}
+        </Fragment>
+      ) : null}
     </div>
   );
 };
 export default SizeSelector;
-
-// Links for knowledge:
-// https://medium.com/@vincent.bocquet/typescript-with-react-usestate-hook-f701309384a

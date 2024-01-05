@@ -39,19 +39,23 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
           height={600}
         />
         <div className={styles.optionsContainer}>
-          <h1>Store Item Page {size}</h1>
           <ItemHeader itemName={item.itemName} cost={currOption?.price} />
           {item.options.length > 1 && (
-            <SizeSelector currSize={size} setSize={setSize} options={item.options} />
+            <SizeSelector
+              currSize={size}
+              onSizeChange={setSize}
+              options={item.options}
+              uuid={item.uuid}
+            />
           )}
 
           <AddCartButton
             inCart={inCart}
-            setInCart={setInCart}
+            onCartChange={setInCart}
             currSize={size}
             inStock={currOption?.quantity != null && currOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
-            montlyRemaining={item.monthlyRemaining}
+            monthlyRemaining={item.monthlyRemaining}
           />
           <p>{item.description}</p>
         </div>
