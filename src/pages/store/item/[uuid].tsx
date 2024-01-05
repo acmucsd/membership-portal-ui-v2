@@ -38,7 +38,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
           width={600}
           height={600}
         />
-        <div className={styles.container}>
+        <div className={styles.optionsContainer}>
           <h1>Store Item Page {size}</h1>
           <ItemHeader itemName={item.itemName} cost={currOption?.price} />
           {item.options.length > 1 && (

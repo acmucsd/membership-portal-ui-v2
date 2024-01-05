@@ -1,6 +1,6 @@
 export type Styles = {
-  container: string;
   navbarBodyDiv: string;
+  optionsContainer: string;
   rowContainer: string;
 };
 
