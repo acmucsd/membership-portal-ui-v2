@@ -26,7 +26,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
   const currOption =
     item.options.length <= 1
       ? item.options[0]
-      : item.options[item.options.findIndex(val => val.metadata?.value === size)];
+      : item.options.find(val => val.metadata?.value === size);
 
   return (
     <div className={styles.navbarBodyDiv}>
