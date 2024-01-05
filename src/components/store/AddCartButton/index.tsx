@@ -50,6 +50,10 @@ const AddCartButton = ({
 
   const optionArr: Array<{ value: string; label: string } | '---'> = [];
 
+  if (maxCanBuy === 0) {
+    optionArr.push({ value: `0`, label: `0` });
+  }
+
   for (let i = 1; i <= maxCanBuy; i += 1) {
     optionArr.push({ value: `${i}`, label: `${i}` });
   }
