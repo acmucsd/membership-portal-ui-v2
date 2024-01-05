@@ -13,7 +13,7 @@ import axios from 'axios';
  * @param token Authorization bearer token
  * @param file The resume file
  * @param isResumeVisible Whether to share the resume with ACM sponsors (default: false)
- * @returns User's full profile
+ * @returns The resume
  */
 export const uploadResume = async (
   token: string,
@@ -38,11 +38,11 @@ export const uploadResume = async (
 };
 
 /**
- * Update a resume
+ * Update a resume's visibility
  * @param token Authorization bearer token
  * @param uuid The resume UUID
  * @param isResumeVisible Whether to share the resume with ACM sponsors
- * @returns User's full profile
+ * @returns The resume
  */
 export const uploadResumeVisibility = async (
   token: string,
@@ -53,7 +53,7 @@ export const uploadResumeVisibility = async (
 
   const requestBody: PatchResumeRequest = { resume: { isResumeVisible } };
 
-  const response = await axios.post<PatchResumeResponse>(requestUrl, requestBody, {
+  const response = await axios.patch<PatchResumeResponse>(requestUrl, requestBody, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -66,7 +66,6 @@ export const uploadResumeVisibility = async (
  * Delete a resume
  * @param token Authorization bearer token
  * @param uuid The resume UUID
- * @returns User's full profile
  */
 export const deleteResume = async (token: string, uuid: UUID): Promise<void> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.resume}/${uuid}`;

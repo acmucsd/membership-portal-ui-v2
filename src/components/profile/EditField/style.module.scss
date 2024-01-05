@@ -71,7 +71,7 @@
         }
 
         &::placeholder {
-          color: vars.$light-text-on-background-2;
+          color: var(--theme-text-on-background-2);
         }
 
         &:is(textarea) {
@@ -109,7 +109,7 @@
       }
 
       .chars {
-        color: vars.$light-text-on-background-2;
+        color: var(--theme-text-on-background-2);
         font-size: 0.625rem;
         margin-left: auto;
       }

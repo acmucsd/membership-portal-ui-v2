@@ -91,18 +91,27 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
     () => new Map(initUser.userSocialMedia?.map(social => [social.type, social.url]) ?? [])
   );
 
+  const firstNameChanged = firstName !== user.firstName;
+  const lastNameChanged = lastName !== user.lastName;
+  const handleChanged = handle !== (user.handle ?? '');
+  const emailChanged = email !== user.email;
+  const majorChanged = major !== user.major;
+  const graduationYearChanged = +graduationYear !== user.graduationYear;
+  const bioChanged = bio !== (user.bio ?? '');
+  const isAttendancePublicChanged = isAttendancePublic !== user.isAttendancePublic;
+  const passwordChanged = newPassword.length > 0;
   const profileChanged =
-    firstName !== user.firstName ||
-    lastName !== user.lastName ||
-    handle !== (user.handle ?? '') ||
-    major !== user.major ||
-    +graduationYear !== user.graduationYear ||
-    bio !== (user.bio ?? '') ||
-    isAttendancePublic !== user.isAttendancePublic ||
-    newPassword.length > 0;
+    firstNameChanged ||
+    lastNameChanged ||
+    handleChanged ||
+    majorChanged ||
+    graduationYearChanged ||
+    bioChanged ||
+    isAttendancePublicChanged ||
+    passwordChanged;
   const hasChange =
     profileChanged ||
-    email !== user.email ||
+    emailChanged ||
     Array.from(socialMedia).some(
       ([type, url]) =>
         (user.userSocialMedia?.find(social => social.type === type)?.url ?? '') !== url
@@ -115,14 +124,13 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
     if (profileChanged) {
       try {
         const newUser = await UserAPI.updateCurrentUserProfile(authToken, {
-          firstName: firstName !== user.firstName ? firstName : undefined,
-          lastName: lastName !== user.lastName ? lastName : undefined,
-          handle: handle !== (user.handle ?? '') ? handle : undefined,
-          major: major !== user.major ? major : undefined,
-          graduationYear: +graduationYear !== user.graduationYear ? +graduationYear : undefined,
-          bio: bio !== (user.bio ?? '') ? bio : undefined,
-          isAttendancePublic:
-            isAttendancePublic !== user.isAttendancePublic ? isAttendancePublic : undefined,
+          firstName: firstNameChanged ? firstName : undefined,
+          lastName: lastNameChanged ? lastName : undefined,
+          handle: handleChanged ? handle : undefined,
+          major: majorChanged ? major : undefined,
+          graduationYear: graduationYearChanged ? +graduationYear : undefined,
+          bio: bioChanged ? bio : undefined,
+          isAttendancePublic: isAttendancePublicChanged ? isAttendancePublic : undefined,
           passwordChange:
             newPassword.length > 0 ? { password, newPassword, confirmPassword } : undefined,
         });
@@ -290,13 +298,6 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                         />
                         Upload New
                       </label>
-                      <button
-                        className={`${styles.button} ${styles.dangerBtn} ${styles.smaller}`}
-                        type="button"
-                        disabled
-                      >
-                        Delete
-                      </button>
                     </div>
                   </div>
                 </EditBlock>
@@ -451,7 +452,24 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                       Upload New
                     </label>
                   </div>
-                  <Switch checked={isResumeVisible} onCheck={setIsResumeVisible}>
+                  <Switch
+                    checked={isResumeVisible}
+                    onCheck={checked => {
+                      resumes.forEach(async resume => {
+                        try {
+                          const { isResumeVisible } = await ResumeAPI.uploadResumeVisibility(
+                            authToken,
+                            resume.uuid,
+                            checked
+                          );
+                          setIsResumeVisible(isResumeVisible);
+                          showToast('Resume visibility preference saved!');
+                        } catch (error) {
+                          reportError('Failed to update resume visibility', error);
+                        }
+                      });
+                    }}
+                  >
                     Share my resume with recruiters from ACM sponsor companies
                   </Switch>
                   <p>
@@ -584,7 +602,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 />
               </div>
             </details>
-            <div className={styles.submitBtns}>
+            <div className={`${styles.submitBtns} ${hasChange ? styles.unsavedChanges : ''}`}>
               <Link className={`${styles.button} ${styles.cancelBtn}`} href={config.profile.route}>
                 Cancel
               </Link>

@@ -213,11 +213,24 @@
       }
 
       .submitBtns {
+        align-items: center;
+        background-color: var(--theme-background);
+        border-top: 1px solid vars.$light-primary-2;
+        bottom: -5rem;
         display: flex;
         gap: 1rem;
+        height: 5rem;
         justify-content: flex-end;
+        margin: 0 -2rem;
+        padding: 0 2rem;
+        position: sticky;
+        transition: bottom 0.2s, border-color 0.2s;
         @media (max-width: vars.$breakpoint-md) {
           justify-content: center;
+        }
+
+        &.unsavedChanges {
+          bottom: 0;
         }
       }
     }

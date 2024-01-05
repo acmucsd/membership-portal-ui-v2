@@ -9,7 +9,7 @@ const UserProfilePage: NextPage = () => {
     <>
       <h1>Portal Profile Page</h1>
       <Link href={config.profile.editRoute} style={{ color: '#62b0ff' }}>
-        Edit profile
+        Manage Account
       </Link>
     </>
   );
