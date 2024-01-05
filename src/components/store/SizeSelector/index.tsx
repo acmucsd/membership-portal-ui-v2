@@ -12,7 +12,7 @@ interface SizeSelectorProps {
   onSizeChange: (currSize: string) => void;
 }
 
-const SizeSelector = ({ currSize, options, onSizeChange: setSize, uuid }: SizeSelectorProps) => {
+const SizeSelector = ({ currSize, options, onSizeChange, uuid }: SizeSelectorProps) => {
   const [mounted, setMounted] = useState(false);
   const myID = useId();
 
@@ -33,7 +33,7 @@ const SizeSelector = ({ currSize, options, onSizeChange: setSize, uuid }: SizeSe
           name="state-d"
           type="radio"
           defaultChecked={currSize === val.metadata?.value}
-          onClick={() => setSize(val.metadata?.value)}
+          onClick={() => onSizeChange(val.metadata?.value)}
         />
         <label htmlFor={tempId}>{val.metadata?.value}</label>
       </>

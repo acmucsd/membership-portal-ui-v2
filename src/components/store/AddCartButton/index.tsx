@@ -20,13 +20,13 @@ const AddCartButton = ({
   inCart,
   onCartChange: setInCart,
   lifetimeRemaining,
-  monthlyRemaining: montlyRemaining,
+  monthlyRemaining,
 }: AddCartButtonProps) => {
   const [amount, setAmount] = useState<number>(1);
 
   const myID = useId();
 
-  const maxCanBuy = Math.min(lifetimeRemaining, montlyRemaining);
+  const maxCanBuy = Math.min(lifetimeRemaining, monthlyRemaining);
 
   const validText = inStock ? (
     <p className={styles.valid}>This item is in stock.</p>
@@ -38,8 +38,10 @@ const AddCartButton = ({
 
   if (inCart) {
     buyButtonText = 'Remove from Cart';
+  } else if (maxCanBuy === 0) {
+    buyButtonText = 'Limit Reached';
   } else if (currSize === undefined) {
-    buyButtonText = 'Select a Size First';
+    buyButtonText = 'Select a Size';
   } else if (inStock) {
     buyButtonText = 'Add to Cart';
   } else {
@@ -61,9 +63,9 @@ const AddCartButton = ({
       ) : (
         <p>You can&apos;t buy any more of this item!.</p>
       )}
-      <p>In cart: {inCart}</p>
       {currSize === undefined ? <p className={styles.error}>Please select a size.</p> : validText}
-      {currSize === undefined ? null : (
+
+      {currSize === undefined || maxCanBuy === 0 ? null : (
         <div className={styles.buttonRow}>
           {!inStock || maxCanBuy === 0 ? null : (
             <div className={styles.quantityColumn}>
