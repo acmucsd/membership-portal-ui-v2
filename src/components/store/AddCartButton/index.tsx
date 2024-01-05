@@ -59,7 +59,7 @@ const AddCartButton = ({
       ) : (
         <p>You can&apos;t buy any more of this item!.</p>
       )}
-      <p>{`In cart: ${inCart}`}</p>
+      <p>In cart: {inCart}</p>
       {currSize === undefined ? <p className={styles.error}>Please select a size.</p> : validText}
       <div className={styles.buttonRow}>
         <div className={styles.quantityColumn}>
