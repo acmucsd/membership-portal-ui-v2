@@ -1,10 +1,11 @@
 @use 'src/styles/vars.scss' as vars;
 
 .image {
+  aspect-ratio: 1920 / 1080;
   flex-shrink: 0;
-  height: 11.5rem;
   overflow: hidden;
   position: relative;
+  width: 100%;
 }
 
 .contents {

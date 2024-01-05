@@ -19,7 +19,10 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
   const { cover, title, start, end, location, description, eventLink } = event;
 
   const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
-  const displayEventLink = eventLink || `https://acmucsd.com/events/${event.uuid}`;
+  const formattedEventLink = eventLink?.includes('https://') ? eventLink : `https://${eventLink}`;
+  const displayEventLink = eventLink
+    ? formattedEventLink
+    : `https://acmucsd.com/events/${event.uuid}`;
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -44,7 +47,7 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
                 variant="title/medium"
                 suppressHydrationWarning
               >
-                {formatEventDate(start, end)}
+                {formatEventDate(start, end, true)}
               </Typography>
               <Typography className={styles.eventInfo} variant="title/medium">
                 {location}
