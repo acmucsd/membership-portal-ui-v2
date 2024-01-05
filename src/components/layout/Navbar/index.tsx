@@ -4,7 +4,6 @@ import { useWindowSize } from '@/lib/hooks/useWindowSize';
 import { PermissionService } from '@/lib/services';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import LightModeLogo from '@/public/assets/acm-logos/general/light-mode.png';
-import ACMIcon from '@/public/assets/icons/acm-icon.svg';
 import CalendarIcon from '@/public/assets/icons/calendar-icon.svg';
 import HomeIcon from '@/public/assets/icons/home-icon.svg';
 import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
@@ -83,8 +82,6 @@ const Navbar = ({ user }: NavbarProps) => {
           <Link href={config.eventsRoute}>Events</Link>
           <p aria-hidden>·</p>
           <Link href="/leaderboard">Leaderboard</Link>
-          <p aria-hidden>·</p>
-          <Link href="/about">About ACM</Link>
         </nav>
         <nav className={styles.iconLinks}>
           <ThemeToggle />
@@ -132,10 +129,6 @@ const Navbar = ({ user }: NavbarProps) => {
         >
           <ShopIcon className={styles.iconLink} />
           Store
-        </Link>
-        <Link className={styles.mobileNavItem} href={config.aboutRoute}>
-          <ACMIcon className={styles.iconLink} />
-          About ACM
         </Link>
         <div>
           <ThemeToggle />

@@ -21,7 +21,7 @@ const EventCarousel = ({ title, description, events, attendances }: EventCarouse
           <Typography variant="body/medium">{description}</Typography>
         </div>
         <Link className={styles.viewToggle} href={config.eventsRoute}>
-          See all events
+          See all events &gt;
         </Link>
       </div>
       <Carousel>

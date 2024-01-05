@@ -20,7 +20,10 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
   const { cover, title, start, end, location, description, eventLink } = event;
 
   const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
-  const displayEventLink = eventLink || `https://acmucsd.com/events/${event.uuid}`;
+  const formattedEventLink = eventLink?.includes('https://') ? eventLink : `https://${eventLink}`;
+  const displayEventLink = eventLink
+    ? formattedEventLink
+    : `https://acmucsd.com/events/${event.uuid}`;
 
   const ref = useRef<HTMLDialogElement>(null);
 
