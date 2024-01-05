@@ -34,7 +34,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
       <div className={styles.rowContainer}>
         <Image
           src={getDefaultMerchItemPhoto(item)}
-          alt="Picture of item "
+          alt={`Picture of ${item.itemName}`}
           width={600}
           height={600}
         />
