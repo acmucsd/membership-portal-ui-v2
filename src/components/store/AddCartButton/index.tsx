@@ -88,7 +88,6 @@ const AddCartButton = ({
               styles.button
             }`}
             type="button"
-            title={`${buyButtonText} Button`}
             value={buyButtonText}
             onClick={() => {
               onCartChange(!inCart);
