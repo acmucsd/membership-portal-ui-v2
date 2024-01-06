@@ -1,5 +1,5 @@
 import defaultProfilePictures from '@/lib/constants/profilePictures';
-import { URL } from '@/lib/types';
+import type { URL } from '@/lib/types';
 import type {
   CustomErrorBody,
   PublicMerchItem,
@@ -7,6 +7,7 @@ import type {
   ValidatorError,
 } from '@/lib/types/apiResponses';
 import NoImage from '@/public/assets/graphics/cat404.png';
+import { useEffect, useState } from 'react';
 
 /**
  * Get next `num` years from today in a number array to generate dropdown options for future selections
@@ -89,6 +90,15 @@ export const getProfilePicture = (user: PublicProfile): URL => {
   return path;
 };
 
+/**
+ * Retrieves the level from the number of points.
+ * @param {number} points The number of the points the user has.
+ * @return {number} The current level of the user.
+ */
+export const getLevel = (points: number): number => {
+  return Math.floor(points / 100) + 1;
+};
+
 // TODO: Define all ranks and logic for this
 export const getUserRank = (user: PublicProfile): string => {
   const ranks = ['Polynomial Pita', 'Factorial Flatbread'];
@@ -102,7 +112,31 @@ export const getUserRank = (user: PublicProfile): string => {
  * @param src - source of the image
  * @returns whether or not the source is a gif
  */
-export const isSrcAGif = (src: string): boolean => /\.gif($|&)/.test(src);
+export const isSrcAGif = (src: string | null): boolean => src !== null && /\.gif($|&)/.test(src);
+
+/**
+ * A React hook for calling `URL.createObjectURL` on the given file. Avoids
+ * re-generating the URL on re-render, and frees memory by revoking the old URL
+ * when unmounted or the file changes.
+ * @param file - `File` or `Blob` object to create a URL for.
+ * @returns The object URL. Defaults an empty string if `file` is empty.
+ */
+export function useObjectUrl(file?: Blob | null): string {
+  const [url, setUrl] = useState('');
+
+  useEffect(() => {
+    if (!file) {
+      return undefined;
+    }
+    const url = URL.createObjectURL(file);
+    setUrl(url);
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [file]);
+
+  return url;
+}
 
 const dateFormat = new Intl.DateTimeFormat('en-US', {
   month: 'short',

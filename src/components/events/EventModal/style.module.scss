@@ -1,90 +1,41 @@
 @use 'src/styles/vars.scss' as vars;
 
-.modal {
-  background-color: var(--theme-accent-line-1-transparent);
-  border: 0;
+.image {
+  aspect-ratio: 1920 / 1080;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.contents {
   display: flex;
-  height: 100vh;
-  left: 0;
-  opacity: 0;
-  overscroll-behavior: contain;
-  padding: 2rem;
-  pointer-events: none;
-  position: fixed;
-  top: 0;
-  transition: all 0.2s;
-  user-select: none;
-  visibility: hidden;
-  width: 100vw;
-  z-index: 1000; // Just one above the header's 999
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 70rem;
+  padding: 2.5rem;
+  width: 70vw;
 
-  &[open] {
-    opacity: 1;
-    pointer-events: unset;
-    user-select: text;
-    visibility: visible;
+  .header {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
 
-    .modalBody {
-      transform: none;
-    }
-  }
-
-  &:modal {
-    max-height: unset;
-    max-width: unset;
-  }
-
-  &::backdrop {
-    background: none;
-  }
-
-  .modalBody {
-    background-color: var(--theme-background);
-    border-radius: 10px;
-    margin: auto;
-    max-width: 100%;
-    overflow: hidden;
-    transform: scale(0.95);
-    transition: transform 0.2s;
-
-    .image {
-      aspect-ratio: 1920 / 1080;
-      flex-shrink: 0;
-      overflow: hidden;
-      position: relative;
-      width: 100%;
-    }
-
-    .contents {
+    .eventDetails {
+      align-items: center;
       display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
-      max-width: 70rem;
-      padding: 2.5rem;
-      width: 70vw;
-
-      .header {
-        display: flex;
-        flex-direction: row;
-        gap: 1rem;
-        justify-content: space-between;
-
-        .eventDetails {
-          align-items: center;
-          display: flex;
-          flex-direction: row;
-          gap: 1rem;
-        }
-      }
-
-      .link {
-        color: var(--theme-primary-2);
-        display: flex;
-        flex-direction: row;
-        gap: 0.5rem;
-        text-decoration: underline;
-      }
+      flex-direction: row;
+      gap: 1rem;
     }
+  }
+
+  .link {
+    color: var(--theme-primary-2);
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    text-decoration: underline;
   }
 }
 
@@ -111,13 +62,7 @@
 }
 
 @media screen and (width <= vars.$breakpoint-sm) {
-  .modal {
-    padding: 3rem 0;
-
-    .modalBody {
-      .contents {
-        width: 100vw;
-      }
-    }
+  .contents {
+    width: 100vw;
   }
 }
