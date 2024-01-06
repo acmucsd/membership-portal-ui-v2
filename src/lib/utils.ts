@@ -26,7 +26,8 @@ export const getNextNYears = (num: number) => {
  */
 export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
   // if error has no suberrors, just return top level error message
-  if (!errBody.errors) return [errBody.message];
+  console.log(errBody);
+  if (!errBody?.errors) return [errBody?.message];
 
   // recursive function to get all error messages into one list
   const getAllErrMessages = (err: ValidatorError): string[] => [

@@ -1,9 +1,5 @@
 export type Styles = {
-  cartHeader: string;
-  cartItem: string;
-  cartItemInfo: string;
-  cartItemPrice: string;
-  cartSection: string;
+  cartCard: string;
   checkoutButton: string;
   checkoutModal: string;
   checkoutOptions: string;
@@ -12,14 +8,10 @@ export type Styles = {
   container: string;
   content: string;
   emptyCart: string;
-  eventNavigation: string;
+  header: string;
   main: string;
-  pickupSection: string;
   pointsSection: string;
-  removeBtn: string;
   sidebar: string;
-  temp: string;
-  temp2: string;
   warning: string;
 };
 

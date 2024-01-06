@@ -1,0 +1,43 @@
+.eventPicker {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  .window {
+    height: 270px;
+    overflow: hidden;
+    position: relative;
+    width: 320px;
+
+    .slider {
+      display: flex;
+      position: absolute;
+      transition: transform 0.3s ease-in-out;
+    }
+  }
+
+  .eventNavigation {
+    align-items: center;
+    align-self: stretch;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      background-color: var(--theme-surface-1);
+      border-radius: 0.9375rem;
+      display: flex;
+      height: 1.875rem;
+      margin: 0.5rem 1rem;
+      padding: 0;
+      width: 1.875rem;
+
+      svg {
+        transition: color 0.25s ease;
+      }
+
+      &:disabled > svg {
+        color: transparent;
+      }
+    }
+  }
+}

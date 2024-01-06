@@ -10,7 +10,7 @@
   .content {
     display: grid;
     gap: 2rem;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 1fr 22.75rem;
     grid-template-rows: auto 1fr;
 
     @media screen and (max-width: vars.$breakpoint-md) {
@@ -22,9 +22,10 @@
       background: var(--primaries-primary-2, #62B0FF);
       border: 1px solid var(--theme-accent-line-2, #E4E4E4);
       border-radius: 10px;
-      color: var(--theme-background);
+      color: vars.$light-background;
       font-size: 20px;
       font-weight: 700;
+      height: 2.5rem;
 
       &:disabled {
         background-color: transparent;
@@ -75,11 +76,11 @@
       background: vars.$success-1;
     }
 
-    .cartSection {
+    @mixin cartCard {
       border-radius: 0.625rem;
       box-shadow: 0 4px 4px 0 var(--theme-shadow);
 
-      .cartHeader {
+      .header {
         align-items: center;
         background-color: var(--theme-surface-1);
         border-top-left-radius: 0.625rem;
@@ -88,39 +89,14 @@
         height: 3.75rem;
         padding: 1.5rem 1rem;
       }
+    }
 
-      .cartItem {
-        align-items: flex-start;
-        align-self: stretch;
-        display: flex;
-        gap: 24px;
-        justify-content: flex-start;
-        padding: 12px 16px;
+    .cartCard { @include cartCard; }
 
-        .cartItemInfo {
-          align-self: stretch;
-          display: flex;
-          flex-direction: column;
-          flex-grow: 1;
-          gap: 0.5rem;
-
-          h3:hover {
-            text-decoration: underline;
-          }
-
-          .removeBtn {
-            background-color: transparent;
-            color: var(--theme-danger-1);
-            margin-top: auto;
-            padding: 0;
-            width: fit-content;
-          }
-        }
-
-        .cartItemPrice {
-          justify-self: flex-end;
-        }
-      }
+    .main {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
 
       .emptyCart {
         align-items: center;
@@ -131,14 +107,9 @@
         text-align: center;
         width: 100%;
       }
-    }
-
-    .main {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
 
       .confirmation {
+        @include cartCard();
         align-items: center;
         background-color: var(--theme-surface-1);
         display: flex;
@@ -167,50 +138,9 @@
       flex-direction: column;
       gap: 0.5rem;
 
-      .pickupSection {
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-
-        .temp2 {
-          height:270px;
-          overflow:hidden;
-          position:relative;
-          width: 320px;
-        }
-
-        .temp {
-          display: flex;
-          position: absolute;
-          transition: transform 0.3s ease-in-out;
-        }
-
-        .eventNavigation {
-          align-items: center;
-          display: flex;
-          justify-content: space-between;
-
-          button {
-            background-color: var(--theme-surface-1);
-            border-radius: 0.9375rem;
-            display: flex;
-            height: 1.875rem;
-            margin: 0.5rem 1rem;
-            padding: 0;
-            width: 1.875rem;
-
-            svg {
-              transition: color 0.25s ease;
-            }
-
-            &:disabled > svg {
-              color: transparent;
-            }
-          }
-        }
-      }
-
       .pointsSection {
+        @include cartCard();
+
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
@@ -218,6 +148,7 @@
         padding: 0.5rem 0.625rem;
   
         > div {
+          align-items: baseline;
           display: flex;
           justify-content: space-between;
   
@@ -231,10 +162,11 @@
         }
       }
 
-      .warning {
-        color: var(--theme-danger-1);
-        margin-top: 2rem;
-      }
+      
+    }
+
+    .warning {
+      color: var(--theme-danger-1);
     }
   }
 }

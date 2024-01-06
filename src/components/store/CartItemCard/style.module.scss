@@ -1,0 +1,68 @@
+@use 'src/styles/vars.scss' as vars;
+
+.cartItem {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.75rem 1rem;
+
+  .removeBtn {
+    background-color: transparent;
+    color: var(--theme-danger-1);
+    padding: 0;
+    width: fit-content;
+  }
+
+  .leftCol {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: space-between;
+
+    .imageWrapper {
+      height: 150px;
+      position: relative;
+      width: 150px;
+  
+      @media (max-width: vars.$breakpoint-md) {
+        height: 100px;
+        width: 100px;
+      }
+    }
+  }
+  
+  .rightCol {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .cartItemInfo {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 0.5rem;
+  
+      .title {
+        align-items: baseline;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+  
+        @media (max-width: vars.$breakpoint-md) {
+          flex-direction: column;
+        }
+  
+        h3:hover {
+          text-decoration: underline;
+        }
+  
+        .price {
+          justify-self: flex-end;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
