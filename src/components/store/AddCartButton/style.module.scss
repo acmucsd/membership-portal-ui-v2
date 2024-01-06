@@ -37,9 +37,6 @@ $button-roundness: 10px;
   }
 
   .button {
-    border-color: var(--theme-accent-line-2);
-    border-radius: $button-roundness;
-    border-width: 1px;
     font-size: vars.$input-text-medium;
     font-weight: bold;
     height: 40px;
@@ -53,6 +50,10 @@ $button-roundness: 10px;
 
   .buttonNoStock {
     background-color: var(--theme-background);
+    border: solid;
+    border-color: var(--theme-accent-line-2);
+    border-radius: $button-roundness;
+    border-width: 1px;
     color: vars.$disabled;
   }
 }
