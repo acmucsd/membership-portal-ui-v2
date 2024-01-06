@@ -6,8 +6,6 @@ export type Styles = {
   header: string;
   image: string;
   link: string;
-  modal: string;
-  modalBody: string;
 };
 
 export type ClassNames = keyof Styles;

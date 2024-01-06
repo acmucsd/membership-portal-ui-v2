@@ -86,7 +86,7 @@ $dark-accent-line-1-transparent: rgba(0, 0, 0, 0.5);
 $dark-accent-line-2-transparent: rgba(24, 24, 24, 0.5);
 
 $dark-text-on-background-1: #fff;
-$dark-text-on-background-2: #fff;
+$dark-text-on-background-2: #fff8;
 $dark-text-on-background-3: #fff;
 
 $dark-text-on-surface-1: #fff;
@@ -258,3 +258,15 @@ $button-height: 49px;
 
 $light-mode-indicator: #b8b8b8;
 $dark-mode-indicator: #9f9f9f;
+
+// https://accessibility.18f.gov/hidden-content/
+@mixin accessibly-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}

@@ -93,7 +93,7 @@ const Navbar = ({ user }: NavbarProps) => {
           <Link href="/store" className={styles.iconLink}>
             <ShopIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
           </Link>
-          <Link href="/profile" className={styles.iconLink}>
+          <Link href={config.profile.route} className={styles.iconLink}>
             <ProfileIcon color="var(--theme-text-on-background-1)" />
           </Link>
         </nav>

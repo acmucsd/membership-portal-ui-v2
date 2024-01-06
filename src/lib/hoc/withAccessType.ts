@@ -51,19 +51,21 @@ export default function withAccessType(
       return loginRedirect;
     }
 
-    let user: PrivateProfile = JSON.parse(userCookie);
-    let userAccessLevel = user.accessType;
+    let user: PrivateProfile;
+    let userAccessLevel: UserAccessType;
 
-    // If no user cookie, try to re-generate one
-    if (!userCookie || !userAccessLevel) {
-      try {
+    try {
+      user = JSON.parse(userCookie);
+      userAccessLevel = user.accessType;
+      // If no user cookie, try to re-generate one
+      if (!userCookie || !userAccessLevel) {
         user = await UserAPI.getCurrentUser(authTokenCookie);
         userAccessLevel = user.accessType;
         userCookie = JSON.stringify(user);
         CookieService.setServerCookie(CookieType.USER, JSON.stringify(userCookie), { req, res });
-      } catch (err: any) {
-        return loginRedirect;
       }
+    } catch (err: any) {
+      return loginRedirect;
     }
 
     /* If the user does not have the right access, redirect as specified */
