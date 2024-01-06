@@ -22,6 +22,7 @@ interface ItemPageProps {
 const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
   const [size, setSize] = useState<string | undefined>(item.options.length <= 1 ? 'Y' : undefined);
   const [inCart, setInCart] = useState<boolean>(false);
+  const [amount, setAmount] = useState<number>(1);
 
   const currOption =
     item.options.length <= 1
@@ -56,6 +57,8 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
             inStock={currOption?.quantity != null && currOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}
+            amountToBuy={amount}
+            onAmountChange={setAmount}
           />
           <p>{item.description}</p>
         </div>

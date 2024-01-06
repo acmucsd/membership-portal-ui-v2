@@ -1,5 +1,5 @@
 import { Dropdown } from '@/components/common';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import styles from './style.module.scss';
 
 interface AddCartButtonProps {
@@ -8,22 +8,23 @@ interface AddCartButtonProps {
   inCart: boolean;
   lifetimeRemaining: number;
   monthlyRemaining: number;
-  // Justification for disabling rules: This seems to be a false positive.
-  // https://stackoverflow.com/q/63767199/
+  amountToBuy: number;
   // eslint-disable-next-line no-unused-vars
   onCartChange: (inCart: boolean) => void;
+  // eslint-disable-next-line no-unused-vars
+  onAmountChange: (amountToBuy: number) => void;
 }
 
 const AddCartButton = ({
   currSize,
   inStock,
   inCart,
-  onCartChange: setInCart,
+  onCartChange,
   lifetimeRemaining,
   monthlyRemaining,
+  amountToBuy,
+  onAmountChange,
 }: AddCartButtonProps) => {
-  const [amount, setAmount] = useState<number>(1);
-
   const myID = useId();
 
   const maxCanBuy = Math.min(lifetimeRemaining, monthlyRemaining);
@@ -71,15 +72,15 @@ const AddCartButton = ({
 
       {currSize === undefined ? null : (
         <div className={styles.buttonRow}>
-          {!inStock || maxCanBuy === 0 ? null : (
+          {!inStock || maxCanBuy <= 1 ? null : (
             <div className={styles.quantityColumn}>
               <h4>Quantity</h4>
               <Dropdown
                 name={`options${myID}`}
                 ariaLabel={`Dropdown to select the number of items to purchase for ${myID}`}
                 options={optionArr}
-                value={`${amount}`}
-                onChange={val => setAmount(Number(val))}
+                value={`${amountToBuy}`}
+                onChange={val => onAmountChange(Number(val))}
               />
             </div>
           )}
@@ -92,7 +93,7 @@ const AddCartButton = ({
             title={`${buyButtonText} Button`}
             value={buyButtonText}
             onClick={() => {
-              setInCart(!inCart);
+              onCartChange(!inCart);
             }}
             disabled={!inStock || maxCanBuy === 0}
           >
