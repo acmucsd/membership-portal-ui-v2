@@ -1,7 +1,4 @@
 @use 'src/styles/vars.scss' as vars;
-$indicator-size: 30px;
-$switch-start: 15%;
-$button-roundness: 10px;
 
 .addCartGroup {
   display: flex;
@@ -37,6 +34,7 @@ $button-roundness: 10px;
   }
 
   .button {
+    border-radius: 10px;
     font-size: vars.$input-text-medium;
     font-weight: bold;
     height: 40px;
@@ -45,18 +43,15 @@ $button-roundness: 10px;
 
   .buttonInStock {
     background-color: var(--theme-primary-2);
-    color: var(--theme-text-on-background1); // or var(--theme-background);
+    color: var(--theme-text-on-background1);
   }
 
   .buttonNoStock {
     background-color: var(--theme-background);
     border: solid;
     border-color: var(--theme-accent-line-2);
-    border-radius: $button-roundness;
+
     border-width: 1px;
     color: vars.$disabled;
   }
 }
-
-// INFO LINKS
-// https://stackoverflow.com/questions/19417081/doing-math-on-variable-argument-sass-mixins
