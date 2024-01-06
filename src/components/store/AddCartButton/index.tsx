@@ -9,9 +9,7 @@ interface AddCartButtonProps {
   lifetimeRemaining: number;
   monthlyRemaining: number;
   amountToBuy: number;
-  // eslint-disable-next-line no-unused-vars
   onCartChange: (inCart: boolean) => void;
-  // eslint-disable-next-line no-unused-vars
   onAmountChange: (amountToBuy: number) => void;
 }
 

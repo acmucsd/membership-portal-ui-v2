@@ -6,7 +6,6 @@ interface SizeSelectorProps {
   currSize: string | undefined;
   uuid: string;
   options: PublicMerchItemOption[];
-  // eslint-disable-next-line no-unused-vars
   onSizeChange: (currSize: string) => void;
 }
 
