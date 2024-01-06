@@ -1,6 +1,6 @@
 import styles from '@/components/store/SizeSelector/style.module.scss';
 import { PublicMerchItemOption } from '@/lib/types/apiResponses';
-import { Fragment, useEffect, useId, useState } from 'react';
+import { Fragment, useId } from 'react';
 
 interface SizeSelectorProps {
   currSize: string | undefined;
@@ -10,16 +10,7 @@ interface SizeSelectorProps {
 }
 
 const SizeSelector = ({ currSize, options, onSizeChange, uuid }: SizeSelectorProps) => {
-  const [mounted, setMounted] = useState(false);
   const myID = useId();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
-  }
 
   const myOptions = options.map(val => {
     const tempId = val.metadata?.value ? `${val.metadata.value}${myID}` : `${val.uuid}${myID}`;

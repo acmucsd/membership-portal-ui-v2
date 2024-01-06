@@ -10,9 +10,7 @@ const ItemHeader = ({ itemName, cost }: ItemHeaderProps) => {
   return (
     <div className={styles.itemHeaderGroup}>
       <h1>{itemName}</h1>
-      <div className={styles.price}>
-        {cost === undefined ? <p>Select Size Option First For Price</p> : <Diamonds count={cost} />}
-      </div>
+      <div className={styles.price}>{cost === undefined ? null : <Diamonds count={cost} />}</div>
     </div>
   );
 };

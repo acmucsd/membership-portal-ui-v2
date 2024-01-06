@@ -1,15 +1,6 @@
 import { config } from '@/lib';
-import { UUID } from '@/lib/types';
-import type {
-  GetAllMerchCollectionsResponse,
-  GetMerchOrdersResponse,
-  GetOneMerchItemResponse,
-  GetOneMerchOrderResponse,
-  PublicMerchCollection,
-  PublicMerchItemWithPurchaseLimits,
-  PublicOrder,
-  PublicOrderWithItems,
-} from '@/lib/types/apiResponses';
+import type { UUID } from '@/lib/types';
+
 import axios from 'axios';
 
 /**
