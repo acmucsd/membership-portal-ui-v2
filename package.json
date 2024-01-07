@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "yarn@1.22.19",
   "engines": {
-    "node": ">=20",
+    "node": ">=18",
     "yarn": ">=1.22",
     "npm": "use-yarn-not-npm"
   },
@@ -51,7 +51,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.191",
     "@types/luxon": "^3.3.0",
-    "@types/node": "^20.10",
+    "@types/node": "18.8.1",
     "@types/react": "18.0.21",
     "@types/totp-generator": "^0.0.5",
     "@types/validator": "^13.7.14",
@@ -63,6 +63,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.13.2",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsdoc": "^39.3.13",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
