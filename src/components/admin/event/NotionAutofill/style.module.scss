@@ -1,0 +1,23 @@
+.autofill {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  select {
+    height: 2rem;
+    width: 100%;
+  }
+
+  .row {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+
+    input {
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      flex-grow: 1;
+      padding: 4px;
+    }
+  }
+}

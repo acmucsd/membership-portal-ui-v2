@@ -1,0 +1,22 @@
+@use 'src/styles/vars.scss' as vars;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .title {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+
+  .description {
+    margin: 0;
+  }
+
+  .card {
+    flex: none;
+    max-width: calc(100vw - 6rem);
+    width: 25rem;
+  }
+}

@@ -1,3 +1,5 @@
+import Cat from '@/public/assets/graphics/cat404.png';
+
 const env = process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
 
@@ -9,8 +11,11 @@ const config = {
         user: '/user',
         activity: '/user/activity',
         profilepicture: '/user/picture',
+        handle: '/user/handle',
+        socialMedia: '/user/socialMedia',
       },
       activity: '/activity',
+      resume: '/resume',
       auth: {
         register: '/auth/registration',
         login: '/auth/login',
@@ -47,9 +52,61 @@ const config = {
       },
     },
   },
+  klefki: {
+    baseUrl: process.env.NEXT_PUBLIC_KLEFKI_API_URL ?? '',
+    key: process.env.NEXT_PUBLIC_TOTP_KEY ?? '',
+    endpoints: {
+      notion: {
+        page: '/notion/page/',
+        events: '/notion/events/upcoming',
+      },
+      discord: {
+        event: '/discord/event',
+      },
+    },
+  },
+  defaultEventImage: Cat,
+  cssVars: {
+    breakpointMd: 768,
+  },
   homeRoute: '/',
+  eventsRoute: '/events',
   loginRoute: '/login',
+  logoutRoute: '/logout',
+  leaderboardRoute: '/leaderboard',
+  profileRoute: '/profile',
+  aboutRoute: '/about',
+  userProfileRoute: '/u/',
+  storeRoute: '/store',
+  cartRoute: '/store/cart',
+  myOrdersRoute: '/store/orders',
+  collectionRoute: '/store/collection/',
+  itemRoute: '/store/item/',
+  profile: {
+    route: '/profile',
+    editRoute: '/profile/edit',
+  },
+  admin: {
+    homeRoute: '/admin',
+    awardPoints: '/admin/points',
+    grantPastAttendance: '/admin/attendance',
+    awardMilestone: '/admin/milestone',
+    viewResumes: '/admin/resumes',
+    store: {
+      items: '/admin/store/items',
+      pickupEvents: '/admin/store/pickupEvents',
+      homeRoute: '/admin/store',
+    },
+    events: {
+      homeRoute: '/admin/event',
+      editRoute: '/admin/event/edit',
+      createRoute: '/admin/event/create',
+    },
+  },
   isDevelopment,
+  file: {
+    MAX_EVENT_COVER_SIZE_KB: isDevelopment ? 256 : 2048,
+  },
 };
 
 export default config;
