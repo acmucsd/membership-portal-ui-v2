@@ -4,7 +4,6 @@ import { useWindowSize } from '@/lib/hooks/useWindowSize';
 import { PermissionService } from '@/lib/services';
 import { UserAccessType } from '@/lib/types/enums';
 import LightModeLogo from '@/public/assets/acm-logos/general/light-mode.png';
-import ACMIcon from '@/public/assets/icons/acm-icon.svg';
 import CalendarIcon from '@/public/assets/icons/calendar-icon.svg';
 import HomeIcon from '@/public/assets/icons/home-icon.svg';
 import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
@@ -63,7 +62,7 @@ const Navbar = ({ accessType }: NavbarProps) => {
     );
   }
 
-  const isAdmin = PermissionService.canViewAdminPage().includes(accessType);
+  const isAdmin = PermissionService.canViewAdminPage.includes(accessType);
 
   return (
     <header className={styles.header} ref={headerRef}>
@@ -83,8 +82,6 @@ const Navbar = ({ accessType }: NavbarProps) => {
           <Link href={config.eventsRoute}>Events</Link>
           <p aria-hidden>·</p>
           <Link href="/leaderboard">Leaderboard</Link>
-          <p aria-hidden>·</p>
-          <Link href="/about">About ACM</Link>
         </nav>
         <nav className={styles.iconLinks}>
           <ThemeToggle />
@@ -96,7 +93,7 @@ const Navbar = ({ accessType }: NavbarProps) => {
           <Link href="/store" className={styles.iconLink}>
             <ShopIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
           </Link>
-          <Link href="/profile" className={styles.iconLink}>
+          <Link href={config.profile.route} className={styles.iconLink}>
             <ProfileIcon color="var(--theme-text-on-background-1)" />
           </Link>
         </nav>
@@ -129,15 +126,17 @@ const Navbar = ({ accessType }: NavbarProps) => {
           <ShopIcon className={styles.iconLink} />
           Store
         </Link>
-        <Link className={styles.mobileNavItem} href={config.aboutRoute}>
-          <ACMIcon className={styles.iconLink} />
-          About ACM
-        </Link>
+        {isAdmin ? (
+          <Link className={styles.mobileNavItem} href={config.admin.homeRoute}>
+            <SettingsIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
+            Admin Settings
+          </Link>
+        ) : null}
         <div>
           <ThemeToggle />
         </div>
+        <hr className={styles.wainbow} />
       </div>
-      <hr className={styles.wainbow} />
     </header>
   );
 };

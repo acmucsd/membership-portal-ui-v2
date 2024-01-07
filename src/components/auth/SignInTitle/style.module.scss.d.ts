@@ -1,4 +1,5 @@
 export type Styles = {
+  subtitle: string;
   title: string;
 };
 

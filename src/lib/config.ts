@@ -12,8 +12,10 @@ const config = {
         activity: '/user/activity',
         profilepicture: '/user/picture',
         handle: '/user/handle',
+        socialMedia: '/user/socialMedia',
       },
       activity: '/activity',
+      resume: '/resume',
       auth: {
         register: '/auth/registration',
         login: '/auth/login',
@@ -70,6 +72,7 @@ const config = {
   homeRoute: '/',
   eventsRoute: '/events',
   loginRoute: '/login',
+  logoutRoute: '/logout',
   leaderboardRoute: '/leaderboard',
   profileRoute: '/profile',
   aboutRoute: '/about',
@@ -79,8 +82,21 @@ const config = {
   myOrdersRoute: '/store/orders',
   collectionRoute: '/store/collection/',
   itemRoute: '/store/item/',
+  profile: {
+    route: '/profile',
+    editRoute: '/profile/edit',
+  },
   admin: {
     homeRoute: '/admin',
+    awardPoints: '/admin/points',
+    grantPastAttendance: '/admin/attendance',
+    awardMilestone: '/admin/milestone',
+    viewResumes: '/admin/resumes',
+    store: {
+      items: '/admin/store/items',
+      pickupEvents: '/admin/store/pickupEvents',
+      homeRoute: '/admin/store',
+    },
     events: {
       homeRoute: '/admin/event',
       editRoute: '/admin/event/edit',

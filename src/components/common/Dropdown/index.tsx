@@ -14,9 +14,6 @@ interface DropdownProps {
   ariaLabel: string;
   options: (Option | typeof DIVIDER)[];
   value: string;
-  // Justification for disabling rules: This seems to be a false positive.
-  // https://stackoverflow.com/q/63767199/
-  // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
 }
 

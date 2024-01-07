@@ -1,7 +1,8 @@
 import { config } from '@/lib';
 import { FillInLater, UUID } from '@/lib/types';
-import { Event } from '@/lib/types/apiRequests';
+import { AttendEventRequest, Event } from '@/lib/types/apiRequests';
 import {
+  AttendEventResponse,
   CreateEventResponse,
   GetAllEventsResponse,
   GetAttendancesForUserResponse,
@@ -81,6 +82,23 @@ export const getAttendancesForUser = async (token: string): Promise<PublicAttend
   });
 
   return response.data.attendances;
+};
+
+export const attendEvent = async (
+  token: string,
+  attendanceCode: string
+): Promise<AttendEventResponse> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance}`;
+
+  const requestBody = { attendanceCode, asStaff: false } as AttendEventRequest;
+
+  const response = await axios.post<AttendEventResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
 };
 
 export const createEvent = async (token: string, event: Event): Promise<PublicEvent> => {
