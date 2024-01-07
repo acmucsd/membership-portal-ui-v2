@@ -51,7 +51,7 @@ describe('Login Page', () => {
       cy.get('button').contains('Sign In').click();
 
       cy.location('pathname').should('equal', '/login');
-      cy.get('p').contains('Required').should('exist');
+      cy.contains('p', 'Required').should('exist');
     });
   });
 
@@ -63,7 +63,7 @@ describe('Login Page', () => {
       cy.get('button').contains('Sign In').click();
 
       cy.location('pathname').should('equal', '/login');
-      cy.get('p').get('Required').should('exist');
+      cy.contains('p', 'Required').should('exist');
     });
   });
 
