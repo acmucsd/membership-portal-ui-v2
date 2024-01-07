@@ -35,6 +35,7 @@
     "ics": "^3.7.2",
     "luxon": "^3.3.0",
     "next": "^13.2.5-canary.30",
+    "next-pwa": "^5.6.0",
     "next-themes": "^0.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -48,11 +49,11 @@
     "validator": "^13.9.0"
   },
   "devDependencies": {
-    "@types/totp-generator": "^0.0.5",
     "@types/lodash": "^4.14.191",
     "@types/luxon": "^3.3.0",
     "@types/node": "18.8.1",
     "@types/react": "18.0.21",
+    "@types/totp-generator": "^0.0.5",
     "@types/validator": "^13.7.14",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "eslint": "8.24.0",
