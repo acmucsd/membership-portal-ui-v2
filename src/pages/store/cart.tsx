@@ -1,4 +1,4 @@
-import { Button, Typography } from '@/components/common';
+import { Typography } from '@/components/common';
 import EventCard from '@/components/events/EventCard';
 import { CartItemCard, Diamonds, Navbar, PickupEventPicker, StoreModal } from '@/components/store';
 import { config } from '@/lib';
@@ -14,16 +14,14 @@ import { ClientCartItem, CookieCartItem } from '@/lib/types/client';
 import { CookieType } from '@/lib/types/enums';
 import EmptyCartIcon from '@/public/assets/icons/empty-cart.svg';
 import styles from '@/styles/pages/store/cart/index.module.scss';
-import utilStyles from '@/styles/utils.module.scss';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface CartPageProps {
   user: PrivateProfile;
   savedCart: ClientCartItem[];
   pickupEvents: PublicEvent[];
-  token: string;
 }
 
 enum CartState {
@@ -41,7 +39,7 @@ const clientCartToCookie = (items: ClientCartItem[]): string =>
     }))
   );
 
-const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) => {
+const StoreCartPage = ({ user, savedCart, pickupEvents }: CartPageProps) => {
   const { credits } = user;
 
   const calculateOrderTotal = (cart: ClientCartItem[]): number => {
@@ -64,44 +62,12 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
     setCart(cart => cart.filter(item => item.option.uuid !== optionUUID));
   };
 
-  // in a useMemo since its location changes in mobile
-  const EventPickerCard = useMemo(
-    () => (
-      <div className={styles.cartCard}>
-        <div className={styles.header}>
-          <Typography variant="h4/bold" component="h2">
-            {cartState !== CartState.CONFIRMED ? 'Choose Pickup Event' : 'Pickup Event Details'}
-          </Typography>
-        </div>
-        <PickupEventPicker
-          events={pickupEvents}
-          eventIndex={pickupIndex}
-          setEventIndex={setPickupIndex}
-          active={cartState !== CartState.CONFIRMED}
-        />
-      </div>
-    ),
-    [pickupEvents, pickupIndex, setPickupIndex, cartState]
-  );
-
-  // in a useMemo since its location changes in mobile
-  const Warning = useMemo(
-    () =>
-      credits < orderTotal && (
-        <Typography variant="h5/regular" component="p" className={styles.warning}>
-          You do not have enough membership points to checkout. Earn more membership points by
-          attending ACM events!
-        </Typography>
-      ),
-    [credits, orderTotal]
-  );
-
   return (
     <div className={styles.container}>
       <Navbar balance={credits} />
       <div className={styles.content}>
         {/* Title */}
-        <Typography variant="h1/bold" component="h1">
+        <Typography variant="h1/bold" component="h1" className={styles.title}>
           {cartState !== CartState.CONFIRMED ? 'Your Cart' : 'Order Confirmation'}
         </Typography>
 
@@ -112,7 +78,7 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
             opener={
               <button
                 type="button"
-                className={`${styles.checkoutButton} ${
+                className={`${styles.placeOrder} ${
                   cartState === CartState.CONFIRMING ? styles.confirming : ''
                 }`}
                 onClick={() => {
@@ -136,103 +102,120 @@ const StoreCartPage = ({ user, savedCart, pickupEvents, token }: CartPageProps) 
           <div />
         )}
 
-        {/* Main Quarter */}
-        <div className={styles.main}>
-          {cartState === CartState.CONFIRMED && (
-            <div className={`${styles.cartCard} ${styles.confirmation}`}>
-              <Typography variant="h3/regular" component="p">
-                You will receive a confirmation email with your order details soon.
-                <br />
-                Please pick up your items on the date you selected. Thank you!
+        {/* Confirmation */}
+        {cartState === CartState.CONFIRMED ? (
+          <div className={`${styles.cartCard} ${styles.confirmation}`}>
+            <Typography variant="h3/regular" component="p">
+              You will receive a confirmation email with your order details soon.
+              <br />
+              Please pick up your items on the date you selected. Thank you!
+            </Typography>
+            <div>
+              <Link href={config.storeRoute}>
+                <button type="button" className={styles.storeButton}>
+                  <Typography variant="h5/bold" component="span">
+                    Continue Shopping
+                  </Typography>
+                </button>
+              </Link>
+              <Link href={config.myOrdersRoute}>
+                <button type="button" className={styles.storeButton}>
+                  <Typography variant="h5/bold" component="span">
+                    My Orders
+                  </Typography>
+                </button>
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div />
+        )}
+
+        {/* Items */}
+        <div className={`${styles.cartCard} ${styles.items}`}>
+          <div className={styles.header}>
+            <Typography variant="h4/bold" component="h2">
+              {cart.length} {cart.length === 1 ? 'Item' : 'Items'}
+            </Typography>
+          </div>
+          {cart.map(item => (
+            <CartItemCard
+              key={item.option.uuid}
+              item={item}
+              removeItem={removeItem}
+              removable={cartState !== CartState.CONFIRMED}
+            />
+          ))}
+          {cart.length === 0 && (
+            <div className={styles.emptyCart}>
+              <EmptyCartIcon />
+              <Typography variant="h6/regular" component="p">
+                Your cart is empty. Visit the ACM Store to add items!
               </Typography>
-              <div>
-                <Link href={config.storeRoute}>
-                  <button type="button">
-                    <Typography variant="h5/bold" component="span">
-                      Continue Shopping
-                    </Typography>
-                  </button>
-                </Link>
-                <Link href={config.myOrdersRoute}>
-                  <button type="button">
-                    <Typography variant="h5/bold" component="span">
-                      My Orders
-                    </Typography>
-                  </button>
-                </Link>
-              </div>
+              <Link href={config.storeRoute}>
+                <button type="button" className={styles.storeButton}>
+                  <Typography variant="h5/medium" component="span">
+                    Go to Store
+                  </Typography>
+                </button>
+              </Link>
             </div>
           )}
-          <div className={utilStyles.shownMobile}>
-            {Warning}
-            {cart.length > 0 && orderTotal <= credits && EventPickerCard}
-          </div>
+        </div>
 
-          <div className={styles.cartCard}>
+        {/* Event Picker */}
+        {cart.length > 0 && credits >= orderTotal && (
+          <div className={`${styles.cartCard} ${styles.eventPicker}`}>
             <div className={styles.header}>
               <Typography variant="h4/bold" component="h2">
-                {cart.length} {cart.length === 1 ? 'Item' : 'Items'}
+                {cartState !== CartState.CONFIRMED ? 'Choose Pickup Event' : 'Pickup Event Details'}
               </Typography>
             </div>
-            {cart.map(item => (
-              <CartItemCard
-                key={item.option.uuid}
-                item={item}
-                removeItem={removeItem}
-                removable={cartState !== CartState.CONFIRMED}
-              />
-            ))}
-            {cart.length === 0 && (
-              <div className={styles.emptyCart}>
-                <EmptyCartIcon />
-                <Typography variant="h6/regular" component="p">
-                  Your cart is empty. Visit the ACM Store to add items!
-                </Typography>
-                <Link href={config.storeRoute}>
-                  <Button onClick={() => {}}>Go to Store</Button>
-                </Link>
+            <PickupEventPicker
+              events={pickupEvents}
+              eventIndex={pickupIndex}
+              setEventIndex={setPickupIndex}
+              active={cartState !== CartState.CONFIRMED}
+            />
+          </div>
+        )}
+
+        {/* Points Summary */}
+        <div className={`${styles.cartCard} ${styles.pointsCard}`}>
+          <Typography variant="h4/bold" component="h2" className={styles.header}>
+            {cartState !== CartState.CONFIRMED ? 'Membership Points' : 'Balance Details'}
+          </Typography>
+          <div className={styles.points}>
+            <div>
+              <Typography variant="h5/bold" component="p">
+                {cartState !== CartState.CONFIRMED ? 'Current' : 'Previous'} Balance
+              </Typography>
+              <Diamonds count={credits} />
+            </div>
+            <div>
+              <Typography variant="h5/bold" component="p">
+                Order Total
+              </Typography>
+              <div>
+                - <Diamonds count={orderTotal} />
               </div>
-            )}
+            </div>
+            <hr />
+            <div>
+              <Typography variant="h5/bold" component="p">
+                Remaining Balance
+              </Typography>
+              <Diamonds count={credits - orderTotal} />
+            </div>
           </div>
         </div>
 
-        {/* Sidebar */}
-        <div className={styles.sidebar}>
-          {cart.length > 0 && orderTotal <= credits && (
-            <div className={utilStyles.shownDesktop}>{EventPickerCard}</div>
-          )}
-          <div className={styles.cartCard}>
-            <Typography variant="h4/bold" component="h2" className={styles.header}>
-              {cartState !== CartState.CONFIRMED ? 'Membership Points' : 'Balance Details'}
-            </Typography>
-            <div className={styles.pointsSection}>
-              <div>
-                <Typography variant="h5/bold" component="p">
-                  {cartState !== CartState.CONFIRMED ? 'Current' : 'Previous'} Balance
-                </Typography>
-                <Diamonds count={credits} />
-              </div>
-              <div>
-                <Typography variant="h5/bold" component="p">
-                  Order Total
-                </Typography>
-                <div>
-                  - <Diamonds count={orderTotal} />
-                </div>
-              </div>
-              <hr />
-              <div>
-                <Typography variant="h5/bold" component="p">
-                  Remaining Balance
-                </Typography>
-                <Diamonds count={credits - orderTotal} />
-              </div>
-            </div>
-          </div>
-          <div className={utilStyles.shownDesktop} style={{ marginTop: '2rem' }}>
-            {Warning}
-          </div>
-        </div>
+        {credits < orderTotal && (
+          <Typography variant="h5/regular" component="p" className={styles.warning}>
+            You do not have enough membership points to checkout. Earn more membership points by
+            attending ACM events!
+          </Typography>
+        )}
       </div>
     </div>
   );
@@ -317,7 +300,6 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
       user,
       savedCart,
       pickupEvents,
-      token: AUTH_TOKEN,
     },
   };
 };

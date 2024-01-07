@@ -1,6 +1,8 @@
 export type Styles = {
   body: string;
   card: string;
+  confirm: string;
+  goBack: string;
   header: string;
   options: string;
 };

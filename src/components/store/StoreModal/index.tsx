@@ -55,11 +55,16 @@ const StoreModal = ({
                   setOpen(false);
                   onConfirm();
                 }}
+                className={styles.confirm}
               >
-                <Typography variant="h4/medium">Confirm</Typography>
+                <Typography variant="h4/medium" component="span">
+                  Confirm
+                </Typography>
               </button>
-              <button type="button" onClick={onClose}>
-                <Typography variant="h4/medium">Go back</Typography>
+              <button type="button" onClick={onClose} className={styles.goBack}>
+                <Typography variant="h4/medium" component="span">
+                  Go back
+                </Typography>
               </button>
             </div>
           </div>

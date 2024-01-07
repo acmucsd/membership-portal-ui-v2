@@ -1,17 +1,18 @@
 export type Styles = {
   cartCard: string;
-  checkoutButton: string;
-  checkoutModal: string;
-  checkoutOptions: string;
   confirmation: string;
   confirming: string;
   container: string;
   content: string;
   emptyCart: string;
+  eventPicker: string;
   header: string;
-  main: string;
-  pointsSection: string;
-  sidebar: string;
+  items: string;
+  placeOrder: string;
+  points: string;
+  pointsCard: string;
+  storeButton: string;
+  title: string;
   warning: string;
 };
 

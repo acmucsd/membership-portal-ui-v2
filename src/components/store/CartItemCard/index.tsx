@@ -5,10 +5,8 @@ import { config, cssVars } from '@/lib';
 import { UUID } from '@/lib/types';
 import { ClientCartItem } from '@/lib/types/client';
 import { toSentenceCase } from '@/lib/utils';
-import utilStyles from '@/styles/utils.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo } from 'react';
 import styles from './style.module.scss';
 
 interface CartItemCardProps {
@@ -19,29 +17,6 @@ interface CartItemCardProps {
 
 const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
   const itemPage = `${config.itemRoute}${item.uuid}`;
-
-  // in a useMemo because its position changes in mobile
-  const removeButton = useMemo(
-    () =>
-      removable && (
-        <StoreModal
-          opener={
-            <button type="button" className={styles.removeBtn}>
-              <Typography variant="h5/regular" component="span">
-                Remove Item
-              </Typography>
-            </button>
-          }
-          title="Are you sure you want to remove this item?"
-          onConfirm={() => {
-            setTimeout(() => removeItem && removeItem(item.option.uuid), 100);
-          }}
-        >
-          <CartItemCard item={item} removable={false} />
-        </StoreModal>
-      ),
-    [removable, item, removeItem]
-  );
 
   return (
     <div className={styles.cartItem}>
@@ -57,7 +32,6 @@ const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
               />
             </div>
           </Link>
-          <div className={utilStyles.shownMobile}>{removeButton}</div>
         </div>
       )}
       <div className={styles.rightCol}>
@@ -86,8 +60,24 @@ const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
             </Typography>
           </Typography>
         </div>
-        <div className={utilStyles.shownDesktop}>{removeButton}</div>
       </div>
+      {removable && (
+        <StoreModal
+          opener={
+            <button type="button" className={styles.removeBtn}>
+              <Typography variant="h5/regular" component="span">
+                Remove Item
+              </Typography>
+            </button>
+          }
+          title="Are you sure you want to remove this item?"
+          onConfirm={() => {
+            setTimeout(() => removeItem && removeItem(item.option.uuid), 100);
+          }}
+        >
+          <CartItemCard item={item} removable={false} />
+        </StoreModal>
+      )}
     </div>
   );
 };

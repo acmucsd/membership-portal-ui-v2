@@ -41,7 +41,7 @@
     background-color: var(--theme-background);
     border-radius: 10px;
     margin: auto;
-    max-width: 100%;
+    max-width: calc(100% - 3rem);
     overflow: hidden;
     transform: scale(0.95);
     transition: transform 0.2s;
