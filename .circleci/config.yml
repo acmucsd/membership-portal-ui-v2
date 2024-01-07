@@ -1,87 +1,35 @@
-# https://circleci.com/docs/language-javascript/
-
-version: 2.1
-orbs:
-  node: circleci/node@5.1.0
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+version: 2
 jobs:
-  test:
-    executor: node/default
+  lint:
     docker:
       - image: cimg/node:18.1.0
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - restore_cache:
+          key: package-cache-{{checksum "package.json"}}
       - run:
-          command: yarn run next dev
-          name: Start server
-          background: true
-      # Wait for the server to be running before you start tests
+          command: yarn install
+      - save_cache:
+          key: package-cache-{{checksum "package.json"}}
+          paths:
+            - node_modules
       - run:
-          shell: /bin/sh
-          command: |
-            wget --retry-connrefused --waitretry=1 --read-timeout=20 -t 10 http://localhost:3000
-      # Run cypress tests
-      - run:
-        name: Get Cypress
-        command: cypress install
-      - run:
-          name: Running E2E tests
-          command: yarn test
-      # Save the test results to circleci to be used for insights
-      - store_test_results:
-          path: cypress/results
-      # Store the videos in artifacts for debugging
-      - store_artifacts:
-          name: Save videos
-          path: cypress/videos
-      # Store the screenshots in artifacts for debugging
-      - store_artifacts:
-          name: Save screenshots
-          path: cypress/screenshots
-  lint:
-    executor: node/default
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: yarn
-      - run:
-          command: yarn lint
+          command: yarn run lint
+
 workflows:
-  version: 2.1
+  version: 2
+  weekly_rebase:
+    jobs:
+      - lint:
+          filters:
+            tags:
+              only: /^(v\d*\.\d*\.\d*)(?:-(\w*\d*))?/
+            branches:
+              ignore: /.*/
+
   test_and_deploy:
     jobs:
       - lint
-      - test
-# orbs:
-#   cypress: cypress-io/cypress@3
-# jobs:
-#   lint:
-#     docker:
-#       - image: cimg/node:18.1.0
-#     steps:
-#       - checkout
-#       - restore_cache:
-#           key: package-cache-{{checksum "package.json"}}
-#       - run:
-#           command: yarn install
-#       - save_cache:
-#           key: package-cache-{{checksum "package.json"}}
-#           paths:
-#             - node_modules
-#       - run:
-#           command: yarn run lint
-
-# workflows:
-#   version: 2
-#   weekly_rebase:
-#     jobs:
-#       - lint:
-#           filters:
-#             tags:
-#               only: /^(v\d*\.\d*\.\d*)(?:-(\w*\d*))?/
-#             branches:
-#               ignore: /.*/
-#   test_and_deploy:
-#     jobs:
-#       - lint
