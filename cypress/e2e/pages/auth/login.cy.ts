@@ -37,7 +37,7 @@ describe('Login Page', () => {
       cy.get('button').contains('Sign In').click();
 
       cy.location('pathname').should('equal', '/login');
-      cy.get('Required').should('be.hidden');
+      cy.get('Required').should('not.exist');
     });
   });
 
