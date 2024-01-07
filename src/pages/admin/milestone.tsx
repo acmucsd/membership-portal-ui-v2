@@ -27,7 +27,7 @@ const AwardPointsPage: NextPage = () => {
     <VerticalForm onEnterPress={handleSubmit(onSubmit)}>
       <SignInTitle
         text="Create Milestone"
-        description="Creating a Milestone Will Award Points to All User Active Accounts"
+        description="Award points to all active users (e.g. for ACM's 8 year anniversary)"
       />
       <SignInFormItem
         icon={<AiOutlineMail />}
