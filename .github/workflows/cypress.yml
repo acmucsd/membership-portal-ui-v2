@@ -13,6 +13,6 @@ jobs:
         env:
           NEXT_PUBLIC_ACM_API_URL: https://testing.api.acmucsd.com/api/v2
         with:
-          start: yarn dev
+          start: yarn dev:start
           wait-on: 'http://localhost:3000'
           install-command: yarn install
