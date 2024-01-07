@@ -1,7 +1,7 @@
 {
   "parser": "@typescript-eslint/parser",
   "extends": ["airbnb", "prettier", "next", "next/core-web-vitals", "plugin:cypress/recommended"],
-  "plugins": ["prettier", "node", "@typescript-eslint", "import", "jsdoc"],
+  "plugins": ["prettier", "node", "@typescript-eslint", "import"],
   "rules": {
     "prettier/prettier": "error",
     "@typescript-eslint/no-unused-vars": ["warn", { "varsIgnorePattern": "^_$" }],

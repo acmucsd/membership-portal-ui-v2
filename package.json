@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "yarn@1.22.19",
   "engines": {
-    "node": ">=18",
+    "node": ">=21",
     "yarn": ">=1.22",
     "npm": "use-yarn-not-npm"
   },
@@ -63,7 +63,6 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.13.2",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsdoc": "^39.3.13",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
