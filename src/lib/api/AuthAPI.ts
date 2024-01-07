@@ -1,6 +1,12 @@
 import { config } from '@/lib';
-import type { LoginRequest, PasswordResetRequest, UserRegistration } from '@/lib/types/apiRequests';
 import type {
+  EmailModificationRequest,
+  LoginRequest,
+  PasswordResetRequest,
+  UserRegistration,
+} from '@/lib/types/apiRequests';
+import type {
+  EmailModificationResponse,
   LoginResponse,
   PrivateProfile,
   RegistrationResponse,
@@ -72,8 +78,25 @@ export const verifyEmail = async (accessCode: string): Promise<void> => {
  * Resets password for account by accessCode to new password provided
  * @param data Request data of the user object with new password and access code
  */
-export const resetPassword = async (data: PasswordResetRequest): Promise<void> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.auth.resetPassword}/${data.user.code}`;
+export const resetPassword = async (code: string, data: PasswordResetRequest): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.auth.resetPassword}/${code}`;
 
   await axios.post<ResetPasswordResponse>(requestUrl, data);
+};
+
+/**
+ * Modifies account email
+ * @param token Authorization bearer token
+ * @param accessCode The new email
+ */
+export const modifyEmail = async (token: string, email: string): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.auth.emailModification}`;
+
+  const requestBody: EmailModificationRequest = { email };
+
+  await axios.post<EmailModificationResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
