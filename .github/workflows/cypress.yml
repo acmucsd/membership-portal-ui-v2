@@ -1,0 +1,18 @@
+name: E2E Cypress tests
+on: push
+jobs:
+  cypress-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      # Install npm dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        env:
+          NEXT_PUBLIC_ACM_API_URL: https://testing.api.acmucsd.com/api/v2
+        with:
+          start: yarn dev
+          wait-on: 'http://localhost:3000'
+          install-command: yarn install
