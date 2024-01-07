@@ -3,30 +3,26 @@ import { UserAccessType } from '@/lib/types/enums';
 /**
  * Wrapper class to manage permissions by helping setting restrictions and validating permissions across the application
  */
-export const canEditMerchItems = (): UserAccessType[] => {
-  return [UserAccessType.ADMIN, UserAccessType.MERCH_STORE_MANAGER];
-};
+export const canEditMerchItems = [UserAccessType.ADMIN, UserAccessType.MERCH_STORE_MANAGER];
 
-export const canManageEvents = (): UserAccessType[] => {
-  return [UserAccessType.ADMIN, UserAccessType.MARKETING];
-};
+export const canManageEvents = [UserAccessType.ADMIN, UserAccessType.MARKETING];
 
-export const canViewAdminPage = (): UserAccessType[] => {
-  return [
-    UserAccessType.ADMIN,
-    UserAccessType.MARKETING,
-    UserAccessType.MERCH_STORE_MANAGER,
-    UserAccessType.MERCH_STORE_DISTRIBUTOR,
-  ];
-};
+export const canAwardPoints = [UserAccessType.ADMIN];
+
+// will add sponsorship role here soon
+export const canViewResumes = [UserAccessType.ADMIN];
+
+export const canViewAdminPage = [
+  UserAccessType.ADMIN,
+  UserAccessType.MARKETING,
+  UserAccessType.MERCH_STORE_MANAGER,
+  UserAccessType.MERCH_STORE_DISTRIBUTOR,
+];
 
 /**
  * @returns Array of all possible user access types
  */
-export const allUserTypes = (): UserAccessType[] => {
-  const values = Object.values(UserAccessType) as UserAccessType[];
-  return values;
-};
+export const allUserTypes = () => Object.values(UserAccessType) as UserAccessType[];
 
 /**
  * @param types to exclude from array
