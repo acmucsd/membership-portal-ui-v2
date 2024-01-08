@@ -122,6 +122,11 @@
         &:hover {
           box-shadow: 0 5px 10px var(--theme-shadow);
         }
+
+        svg {
+          height: 1.5rem;
+          width: 1.5rem;
+        }
       }
     }
   }
