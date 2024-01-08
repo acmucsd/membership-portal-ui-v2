@@ -17,7 +17,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { AiOutlineLink } from 'react-icons/ai';
 import { IoMail } from 'react-icons/io5';
-import styles from './index.module.scss';
+import styles from './style.module.scss';
 
 export interface UserProfilePageProps {
   user: PublicProfile;
