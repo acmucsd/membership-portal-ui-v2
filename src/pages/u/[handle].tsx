@@ -1,6 +1,6 @@
 import {
-  HandleNotFoundPage,
-  HandleNotFoundPageProps,
+  HandleNotFound,
+  HandleNotFoundProps,
   UserProfilePage,
   UserProfilePageProps,
 } from '@/components/profile';
@@ -11,15 +11,15 @@ import { CookieService, PermissionService } from '@/lib/services';
 import { CookieType } from '@/lib/types/enums';
 import type { GetServerSideProps } from 'next/types';
 
-type UserHandlePageProps = HandleNotFoundPageProps | UserProfilePageProps;
+type UserHandlePageProps = HandleNotFoundProps | UserProfilePageProps;
 
-const isHandleNotFound = (props: UserHandlePageProps): props is HandleNotFoundPageProps =>
+const isHandleNotFound = (props: UserHandlePageProps): props is HandleNotFoundProps =>
   'handle' in props;
 
 const UserHandlePage = (props: UserHandlePageProps) => {
   if (isHandleNotFound(props)) {
     const { handle } = props;
-    return <HandleNotFoundPage handle={handle} />;
+    return <HandleNotFound handle={handle} />;
   }
 
   return <UserProfilePage {...props} />;
@@ -38,7 +38,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
       UserAPI.getAttendancesForCurrentUser(token),
     ]);
 
-    // render HandleNotFoundPage
+    // render HandleNotFoundPage when user with handle is not retrieved
     if (user === null) return { props: { handle } };
 
     const isSignedInUser = user.uuid === signedInUser.uuid;

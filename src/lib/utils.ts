@@ -72,7 +72,6 @@ export const formatSearch = (text: string): string => {
 
 /**
  * Helper function to map each user to a numeric value deterministically
- * TODO: Use the user's UUID to hash to a number since it will never change
  * @param user
  * @returns A 32-bit integer
  * @see https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
@@ -106,11 +105,11 @@ export const getLevel = (points: number): number => {
 };
 
 /**
- * Get a user's level and rank based on how many points they have
+ * Get a user's rank based on how many points they have
  * @param points
- * @returns [numeric level, rank name]
+ * @returns rank name
  */
-export const getUserRank = (points: number): [number, string] => {
+export const getUserRank = (points: number): string => {
   const ranks = [
     'Factorial Flatbread',
     'Exponential Eclair',
@@ -128,9 +127,8 @@ export const getUserRank = (points: number): [number, string] => {
     'Sometime(TM)',
     'We Ran Out Of Ranks',
   ] as const;
-  const level = Math.floor(points / 100) + 1;
-  const index = Math.min(ranks.length - 1, level - 1);
-  return [level, ranks[index] as string];
+  const index = Math.min(ranks.length, getLevel(points)) - 1;
+  return ranks[index] as string;
 };
 
 /**

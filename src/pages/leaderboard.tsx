@@ -123,7 +123,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             <TopThreeCard
               key={user.uuid}
               position={user.position}
-              rank={getUserRank(user.points)[1]}
+              rank={getUserRank(user.points)}
               name={`${user.firstName} ${user.lastName}`}
               url={`${config.userProfileRoute}${user.handle}`}
               points={user.points}
@@ -139,7 +139,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
               <LeaderboardRow
                 key={user.uuid}
                 position={user.position}
-                rank={getUserRank(user.points)[1]}
+                rank={getUserRank(user.points)}
                 name={`${user.firstName} ${user.lastName}`}
                 url={`${config.userProfileRoute}${user.handle}`}
                 points={user.points}
