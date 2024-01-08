@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react';
 import { AiOutlineLink } from 'react-icons/ai';
 import { IoMail } from 'react-icons/io5';
 
-interface UserProfilePageProps {
+export interface UserProfilePageProps {
   user: PublicProfile;
   isSignedInUser: boolean;
   signedInAttendances: PublicAttendance[];
@@ -36,7 +36,7 @@ const socialMediaIcons = {
   EMAIL: IoMail,
 };
 
-const UserProfilePage = ({
+export const UserProfilePage = ({
   user,
   attendances,
   signedInAttendances,
@@ -160,5 +160,3 @@ const UserProfilePage = ({
     </div>
   );
 };
-
-export default UserProfilePage;
