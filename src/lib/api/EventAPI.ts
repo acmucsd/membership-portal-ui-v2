@@ -73,7 +73,7 @@ export const getAllEvents = async (): Promise<PublicEvent[]> => {
 };
 
 export const getAttendancesForUser = async (token: string): Promise<PublicAttendance[]> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance}`;
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.attendance}`;
 
   const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
     headers: {
@@ -88,7 +88,7 @@ export const attendEvent = async (
   token: string,
   attendanceCode: string
 ): Promise<AttendEventResponse> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance}`;
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.attendance}`;
 
   const requestBody = { attendanceCode, asStaff: false } as AttendEventRequest;
 

@@ -1,11 +1,7 @@
 import { Carousel, Typography } from '@/components/common';
 import EventCard from '@/components/events/EventCard';
 import { config } from '@/lib';
-import { UserAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
 import { PublicAttendance, type PublicProfile } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
 import { getProfilePicture, getUserRank } from '@/lib/utils';
 import DevpostIcon from '@/public/assets/icons/devpost-icon.svg';
 import EditIcon from '@/public/assets/icons/edit.svg';
@@ -19,7 +15,6 @@ import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
 import styles from '@/styles/pages/u/index.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { GetServerSideProps } from 'next/types';
 import { useEffect, useState } from 'react';
 import { AiOutlineLink } from 'react-icons/ai';
 import { IoMail } from 'react-icons/io5';
@@ -167,39 +162,3 @@ const UserProfilePage = ({
 };
 
 export default UserProfilePage;
-
-const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
-  const handle = params?.handle as string;
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-
-  try {
-    const [user, signedInUser, signedInAttendances] = await Promise.all([
-      UserAPI.getUserByHandle(token, handle),
-      UserAPI.getCurrentUser(token),
-      UserAPI.getAttendancesForCurrentUser(token),
-    ]);
-    const isSignedInUser = user.uuid === signedInUser.uuid;
-
-    if (!user.isAttendancePublic || isSignedInUser) {
-      return { props: { user, isSignedInUser, signedInAttendances } };
-    }
-
-    const attendances = await UserAPI.getAttendancesForUserByUUID(token, user.uuid);
-
-    return {
-      props: {
-        user,
-        isSignedInUser,
-        signedInAttendances,
-        attendances,
-      },
-    };
-  } catch (err: any) {
-    return { redirect: { destination: config.homeRoute, permanent: false } };
-  }
-};
-
-export const getServerSideProps = withAccessType(
-  getServerSidePropsFunc,
-  PermissionService.allUserTypes()
-);

@@ -1,0 +1,201 @@
+@use 'src/styles/vars.scss' as vars;
+
+.profilePage {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: auto;
+  max-width: vars.$breakpoint-md;
+  width: 100%;
+
+  .cardWrapper {
+    padding-top: 3rem;
+    position: relative;
+
+    .banner {
+      background-color: vars.$pink-2;
+      border-radius: 0.5rem;
+      height: 90%;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    .profileCard {
+      background-color: var(--theme-background);
+      border-radius: 0.25rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+      display: flex;
+      gap: 1rem;
+      margin: 0 2rem;
+      padding: 1rem 2rem;
+      position: relative;
+
+      @media (max-width: vars.$breakpoint-md) {
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .profilePic {
+        border-radius: 4rem;
+        flex-shrink: 0;
+        height: 7rem;
+        overflow: hidden;
+        position: relative;
+        width: 7rem;
+      }
+
+      .cardName {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        @media (max-width: vars.$breakpoint-md) {
+          align-items: center;
+          flex-direction: column;
+        }
+      }
+
+      .cardRank {
+        align-items: flex-end;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: flex-end;
+
+        @media (max-width: vars.$breakpoint-md) {
+          align-items: center;
+          flex-direction: column;
+        }
+
+        .rank {
+          color: var(--theme-text-on-background-1);
+          display: flex;
+          font-size: 1.25rem;
+          font-weight: 500;
+          text-align: center;
+        }
+
+        .points {
+          color: var(--theme-text-on-background-1);
+          font-size: 1.125rem;
+          font-weight: 400;
+          line-height: 150%;
+          text-align: center;
+
+          svg {
+            height: 1.125rem;
+            width: 1.125rem;
+          }
+        }
+      }
+    }
+  }
+
+  .section {
+    border: 2px solid #808184;
+    border-radius: 0.75rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .progressSection {
+    display: 'flex';
+    flex-direction: column;
+    gap: 1rem;
+
+    .progressInfo {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+
+    .progressBar {
+      background-color: var(--theme-text-on-background-3);
+      border-radius: 0.5rem;
+      height: 1.25rem;
+      width: 100%;
+
+      .inner {
+        background-color: var(--theme-primary-2);
+        border-radius: 0.5rem;
+        height: 100%;
+        transition: width 1s ease;
+      }
+    }
+
+    p {
+      @media (max-width: vars.$breakpoint-md) {
+        text-align: center;
+      }
+    }
+  }
+
+  .aboutSection {
+    display: grid;
+    grid-template-columns: 20rem 1fr;
+    position: relative;
+
+    @media (max-width: vars.$breakpoint-md) {
+      display: flex;
+      flex-direction: column;
+      gap: 1.875rem;
+    }
+
+    .aboutMeSection {
+      display: grid;
+      gap: 0.56rem;
+      grid-template-columns: auto 1fr;
+      margin: 0.81rem 0;
+
+      .icon {
+        height: 1.313rem;
+        width: 1.313rem;
+      }
+
+    }
+
+    svg {
+      height: 2rem;
+      width: 2rem;
+    }
+
+    .bioSection {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+
+  .card {
+    flex: none;
+    width: 20rem;
+  }
+
+  .editWrapper {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+
+      div {
+        align-items: center;
+        background: var(--theme-background);
+        border: 1px solid var(--theme-accent-1-transparent);
+        border-radius: 0.625rem;
+        box-shadow: 0 0.0625rem 0.25rem 0 var(--theme-shadow);
+        display: flex;
+        height: 2.375rem;
+        justify-content: center;
+        transition: all 0.3s;
+        width: 2.75rem;
+  
+        &:hover {
+          transform: scale(1.1);
+        }
+  
+        svg {
+          height: 1.625rem;
+          width: 1.625rem;
+        }
+      }
+  }
+}

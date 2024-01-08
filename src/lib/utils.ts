@@ -74,17 +74,23 @@ export const formatSearch = (text: string): string => {
  * Helper function to map each user to a numeric value deterministically
  * TODO: Use the user's UUID to hash to a number since it will never change
  * @param user
- * @returns
+ * @returns A 32-bit integer
+ * @see https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
  */
-const hashUser = (user: PublicProfile) => {
-  return user.points;
+const hashUser = ({ uuid }: PublicProfile) => {
+  return uuid.split('').reduce((hash, char) => {
+    /* eslint-disable no-bitwise */
+    const hash1 = (hash << 5) - hash + char.charCodeAt(0);
+    return hash1 | 0; // Convert to 32bit integer
+    /* eslint-enable no-bitwise */
+  }, 0);
 };
 
 export const getProfilePicture = (user: PublicProfile): URL => {
   if (user.profilePicture) return user.profilePicture;
 
   const NUM_IMAGES = defaultProfilePictures.length;
-  const index = hashUser(user) % NUM_IMAGES;
+  const index = ((hashUser(user) % NUM_IMAGES) + NUM_IMAGES) % NUM_IMAGES;
   const path = defaultProfilePictures[index]?.src ?? '';
 
   return path;
@@ -99,12 +105,32 @@ export const getLevel = (points: number): number => {
   return Math.floor(points / 100) + 1;
 };
 
-// TODO: Define all ranks and logic for this
-export const getUserRank = (user: PublicProfile): string => {
-  const ranks = ['Polynomial Pita', 'Factorial Flatbread'];
-  const index = user.points % 2;
-
-  return ranks[index] ?? '';
+/**
+ * Get a user's level and rank based on how many points they have
+ * @param points
+ * @returns [numeric level, rank name]
+ */
+export const getUserRank = (points: number): [number, string] => {
+  const ranks = [
+    'Factorial Flatbread',
+    'Exponential Eclair',
+    'Polynomial Pita',
+    'Cubic Croissant',
+    'Quadratic Qornbread',
+    'Linear Loaf',
+    'nlog Naan',
+    'Constant Cornbread',
+    'Binary Baguette',
+    'Blessed Boba',
+    'Super Snu',
+    'Soon(TM)',
+    'Later(TM)',
+    'Sometime(TM)',
+    'We Ran Out Of Ranks',
+  ] as const;
+  const level = Math.floor(points / 100) + 1;
+  const index = Math.min(ranks.length - 1, level - 1);
+  return [level, ranks[index] as string];
 };
 
 /**
