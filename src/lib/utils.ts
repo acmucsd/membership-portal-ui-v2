@@ -1,5 +1,5 @@
 import defaultProfilePictures from '@/lib/constants/profilePictures';
-import ranks from '@/lib/constants/ranks.json';
+import ranks from '@/lib/constants/ranks';
 import type { URL } from '@/lib/types';
 import type {
   CustomErrorBody,
@@ -8,7 +8,11 @@ import type {
   ValidatorError,
 } from '@/lib/types/apiResponses';
 import NoImage from '@/public/assets/graphics/cat404.png';
-import { StaticImageData, StaticImport, StaticRequire } from 'next/dist/shared/lib/get-img-props';
+import {
+  type StaticImageData,
+  type StaticImport,
+  type StaticRequire,
+} from 'next/dist/shared/lib/get-img-props';
 import { useEffect, useState } from 'react';
 
 /**

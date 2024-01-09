@@ -10,7 +10,7 @@ import {
 } from '@/components/profile';
 import { config, showToast } from '@/lib';
 import { AuthAPI, ResumeAPI, UserAPI } from '@/lib/api';
-import majors from '@/lib/constants/majors.json';
+import majors from '@/lib/constants/majors';
 import socialMediaTypes from '@/lib/constants/socialMediaTypes';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
@@ -384,7 +384,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 <EditField
                   label="Major"
                   element="select"
-                  options={majors.majors}
+                  options={majors}
                   changed={majorChanged}
                   value={major}
                   onChange={setMajor}

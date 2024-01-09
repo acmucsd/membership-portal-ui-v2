@@ -115,7 +115,7 @@ export const UserProfilePage = ({
           </div>
         </div>
         <Typography variant="h5/regular" component="p">
-          {isSignedInUser ? 'You need' : `${handleUser.firstName} needs`}{' '}
+          {isSignedInUser ? 'You need ' : `${handleUser.firstName} needs `}
           {100 - (handleUser.points % 100)} more points to level up to
           <Typography variant="h5/bold" component="span">
             &nbsp;{getUserRank(handleUser.points + 100)}
