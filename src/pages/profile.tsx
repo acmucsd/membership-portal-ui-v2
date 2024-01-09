@@ -15,7 +15,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   return {
     redirect: {
-      destination: `${config.userProfileRoute}/${user.handle}`,
+      destination: `${config.userProfileRoute}${user.handle}`,
       permanent: false,
     },
   };

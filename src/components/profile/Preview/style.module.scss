@@ -2,7 +2,9 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  position: sticky;
   text-align: center;
+  top: 4rem;
 
   .pfp {
     border-radius: 50%;
