@@ -7,6 +7,7 @@ import type {
   ValidatorError,
 } from '@/lib/types/apiResponses';
 import NoImage from '@/public/assets/graphics/cat404.png';
+import { StaticImageData, StaticImport, StaticRequire } from 'next/dist/shared/lib/get-img-props';
 import { useEffect, useState } from 'react';
 
 /**
@@ -132,11 +133,17 @@ export const getUserRank = (points: number): string => {
 };
 
 /**
- * Checks whether an image source is a gif
+ * Checks whether a next/image Image source is a gif
  * @param src - source of the image
  * @returns whether or not the source is a gif
  */
-export const isSrcAGif = (src: string | null): boolean => src !== null && /\.gif($|&)/.test(src);
+export const isSrcAGif = (src: string | StaticImport): boolean => {
+  const srcString =
+    (typeof src === 'string' && src) ||
+    (src as StaticRequire).default?.src ||
+    (src as StaticImageData).src;
+  return /\.gif($|&)/.test(srcString);
+};
 
 /**
  * A React hook for calling `URL.createObjectURL` on the given file. Avoids

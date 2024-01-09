@@ -1,4 +1,5 @@
 import { Carousel, Typography } from '@/components/common';
+import GifSafeImage from '@/components/common/GifSafeImage';
 import EventCard from '@/components/events/EventCard';
 import { config } from '@/lib';
 import { PublicAttendance, type PublicProfile } from '@/lib/types/apiResponses';
@@ -12,7 +13,6 @@ import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
 import LinkedinIcon from '@/public/assets/icons/linkedin-icon.svg';
 import MajorIcon from '@/public/assets/icons/major-icon.svg';
 import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { AiOutlineLink } from 'react-icons/ai';
@@ -52,7 +52,7 @@ export const UserProfilePage = ({
         <div className={styles.banner} />
         <div className={styles.profileCard}>
           <div className={styles.profilePic}>
-            <Image
+            <GifSafeImage
               src={getProfilePicture(user)}
               alt="Profile Picture"
               fill

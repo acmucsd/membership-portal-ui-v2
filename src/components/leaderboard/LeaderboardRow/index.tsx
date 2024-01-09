@@ -1,5 +1,4 @@
-import { isSrcAGif } from '@/lib/utils';
-import Image from 'next/image';
+import GifSafeImage from '@/components/common/GifSafeImage';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import styles from './style.module.scss';
@@ -52,14 +51,13 @@ const LeaderboardRow = ({
   return (
     <Link href={url} className={styles.row} ref={ref}>
       <span className={styles.position}>{position}</span>
-      <Image
+      <GifSafeImage
         src={image}
         width={36}
         height={36}
         quality={10}
         alt={`Profile picture for ${name}`}
         className={styles.profilePicture}
-        unoptimized={isSrcAGif(image)}
       />
       <div className={styles.nameRank}>
         <span className={styles.name}>
