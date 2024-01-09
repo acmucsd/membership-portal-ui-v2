@@ -1,5 +1,5 @@
 import { Carousel, Typography } from '@/components/common';
-import EventCard from '@/components/events/EventCard';
+import { EventCard } from '@/components/events';
 import { config } from '@/lib';
 import { PublicAttendance, type PublicProfile } from '@/lib/types/apiResponses';
 import { getLevel, getProfilePicture, getUserRank } from '@/lib/utils';
