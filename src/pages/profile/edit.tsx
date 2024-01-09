@@ -375,7 +375,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 </EditBlock>
               </div>
             </details>
-            <details open>
+            <details open id="about">
               <summary>
                 <h2>About Me</h2>
                 <DropdownIcon aria-hidden />

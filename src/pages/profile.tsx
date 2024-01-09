@@ -3,9 +3,7 @@ import { CookieService, PermissionService } from '@/lib/services';
 import { CookieType } from '@/lib/types/enums';
 import type { GetServerSideProps, NextPage } from 'next';
 
-const UserProfilePage: NextPage = () => {
-  return <h1>Portal Profile Page</h1>;
-};
+const UserProfilePage: NextPage = () => null;
 
 export default UserProfilePage;
 

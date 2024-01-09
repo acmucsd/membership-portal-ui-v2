@@ -1,4 +1,5 @@
 import defaultProfilePictures from '@/lib/constants/profilePictures';
+import ranks from '@/lib/constants/ranks.json';
 import type { URL } from '@/lib/types';
 import type {
   CustomErrorBody,
@@ -111,23 +112,6 @@ export const getLevel = (points: number): number => {
  * @returns rank name
  */
 export const getUserRank = (points: number): string => {
-  const ranks = [
-    'Factorial Flatbread',
-    'Exponential Eclair',
-    'Polynomial Pita',
-    'Cubic Croissant',
-    'Quadratic Qornbread',
-    'Linear Loaf',
-    'nlog Naan',
-    'Constant Cornbread',
-    'Binary Baguette',
-    'Blessed Boba',
-    'Super Snu',
-    'Soon(TM)',
-    'Later(TM)',
-    'Sometime(TM)',
-    'We Ran Out Of Ranks',
-  ] as const;
   const index = Math.min(ranks.length, getLevel(points)) - 1;
   return ranks[index] as string;
 };

@@ -32,27 +32,26 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   try {
-    const [user, signedInUser, signedInAttendances] = await Promise.all([
+    const [handleUser, user, signedInAttendances] = await Promise.all([
       UserAPI.getUserByHandle(token, handle).catch(() => null),
       UserAPI.getCurrentUser(token),
       UserAPI.getAttendancesForCurrentUser(token),
     ]);
 
     // render HandleNotFoundPage when user with handle is not retrieved
-    if (user === null) return { props: { handle } };
+    if (handleUser === null) return { props: { handle } };
 
-    const isSignedInUser = user.uuid === signedInUser.uuid;
+    const isSignedInUser = handleUser.uuid === user.uuid;
 
-    // UserProfilePage without separate user attendance
-    if (!user.isAttendancePublic || isSignedInUser) {
-      return { props: { user, isSignedInUser, signedInAttendances } };
-    }
+    const attendances =
+      !handleUser.isAttendancePublic || isSignedInUser
+        ? null
+        : await UserAPI.getAttendancesForUserByUUID(token, user.uuid);
 
-    // UserProfilePage with separate user and signed-in attendances
-    const attendances = await UserAPI.getAttendancesForUserByUUID(token, user.uuid);
+    // render UserProfilePage
     return {
       props: {
-        user,
+        handleUser,
         isSignedInUser,
         signedInAttendances,
         attendances,
