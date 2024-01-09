@@ -1,6 +1,6 @@
 import { Carousel, Typography } from '@/components/common';
 import GifSafeImage from '@/components/common/GifSafeImage';
-import EventCard from '@/components/events/EventCard';
+import { EventCard } from '@/components/events';
 import { config } from '@/lib';
 import { PublicAttendance, type PublicProfile } from '@/lib/types/apiResponses';
 import { getLevel, getProfilePicture, getUserRank } from '@/lib/utils';
