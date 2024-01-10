@@ -1,27 +1,18 @@
 import { Carousel, Typography } from '@/components/common';
 import GifSafeImage from '@/components/common/GifSafeImage';
 import { EventCard } from '@/components/events';
+import SocialMediaIcon from '@/components/profile/SocialMediaIcon';
 import { config, showToast } from '@/lib';
-import {
-  PublicAttendance,
-  PublicUserSocialMedia,
-  type PublicProfile,
-} from '@/lib/types/apiResponses';
-import { copy, getLevel, getProfilePicture, getUserRank } from '@/lib/utils';
-import DevpostIcon from '@/public/assets/icons/devpost-icon.svg';
+import { PublicAttendance, type PublicProfile } from '@/lib/types/apiResponses';
+import { SocialMediaType } from '@/lib/types/enums';
+import { copy, fixUrl, getLevel, getProfilePicture, getUserRank } from '@/lib/utils';
 import EditIcon from '@/public/assets/icons/edit.svg';
-import FacebookIcon from '@/public/assets/icons/facebook-icon.svg';
-import GithubIcon from '@/public/assets/icons/github-icon.svg';
-import InstagramIcon from '@/public/assets/icons/instagram.svg';
 import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
-import LinkedinIcon from '@/public/assets/icons/linkedin-icon.svg';
 import MajorIcon from '@/public/assets/icons/major-icon.svg';
 import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
 import { Tooltip } from '@mui/material';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { AiOutlineLink } from 'react-icons/ai';
-import { IoMail } from 'react-icons/io5';
 import styles from './style.module.scss';
 
 export interface UserProfilePageProps {
@@ -30,16 +21,6 @@ export interface UserProfilePageProps {
   signedInAttendances: PublicAttendance[];
   attendances?: PublicAttendance[];
 }
-
-const socialMediaIcons = {
-  LINKEDIN: LinkedinIcon,
-  GITHUB: GithubIcon,
-  DEVPOST: DevpostIcon,
-  PORTFOLIO: AiOutlineLink,
-  FACEBOOK: FacebookIcon,
-  INSTAGRAM: InstagramIcon,
-  EMAIL: IoMail,
-};
 
 export const UserProfilePage = ({
   handleUser,
@@ -89,7 +70,7 @@ export const UserProfilePage = ({
             <div className={styles.rank}>{getUserRank(handleUser.points)}</div>
             <div className={styles.points}>
               <LeaderboardIcon /> &nbsp;
-              {handleUser.points.toLocaleString()} All-Time Leaderboard Points
+              {handleUser.points.toLocaleString()} Leaderboard Points
             </div>
           </div>
           {isSignedInUser && (
@@ -133,18 +114,18 @@ export const UserProfilePage = ({
             <Typography variant="h4/regular">{handleUser.major}</Typography>
           </div>
           <div>
-            {handleUser.userSocialMedia &&
-              Object.entries(socialMediaIcons)?.map(([key, Icon]) => {
-                const matchingSocialMedia = handleUser.userSocialMedia.find(
-                  (obj: PublicUserSocialMedia) => obj.type === key
-                );
-                if (!matchingSocialMedia) return null;
-                return (
-                  <a key={key} href={matchingSocialMedia.url}>
-                    <Icon />
-                  </a>
-                );
-              })}
+            {handleUser.userSocialMedia?.map(social => (
+              <a
+                href={
+                  social.type === SocialMediaType.EMAIL
+                    ? `mailto:${social.url}`
+                    : fixUrl(social.url)
+                }
+                key={social.type}
+              >
+                <SocialMediaIcon type={social.type} />
+              </a>
+            ))}
           </div>
         </div>
         <div className={styles.bioSection}>

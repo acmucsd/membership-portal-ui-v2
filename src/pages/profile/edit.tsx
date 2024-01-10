@@ -36,7 +36,8 @@ function reportError(title: string, error: unknown) {
 }
 
 function fixUrl(input: string, prefix?: string): string {
-  if (!input || input.startsWith('https://')) {
+  // Return input as-is if it's blank or includes a protocol
+  if (!input || input.includes('://')) {
     return input;
   }
   // Encourage https://

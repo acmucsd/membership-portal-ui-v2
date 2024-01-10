@@ -3,10 +3,8 @@ import GifSafeImage from '@/components/common/GifSafeImage';
 import SocialMediaIcon from '@/components/profile/SocialMediaIcon';
 import { PublicProfile } from '@/lib/types/apiResponses';
 import { SocialMediaType } from '@/lib/types/enums';
-import { getLevel, getProfilePicture } from '@/lib/utils';
+import { fixUrl, getLevel, getProfilePicture } from '@/lib/utils';
 import styles from './style.module.scss';
-
-const fixUrl = (url: string) => (url.includes('://') ? url : `http://${url}`);
 
 interface PreviewStatProps {
   title: string;

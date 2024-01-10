@@ -3,11 +3,11 @@ import { Typography, VerticalForm } from '@/components/common';
 import Cat404 from '@/public/assets/graphics/cat404.png';
 import Image from 'next/image';
 
-export interface HandleNotFoundProps {
+export interface UserHandleNotFoundProps {
   handle: string;
 }
 
-export const HandleNotFound = ({ handle }: HandleNotFoundProps) => (
+export const UserHandleNotFound = ({ handle }: UserHandleNotFoundProps) => (
   <VerticalForm style={{ alignItems: 'center', margin: 'auto' }}>
     <Typography variant="h1/medium" style={{ textAlign: 'center' }}>
       No user with handle &lsquo;{handle}&rsquo; was found.

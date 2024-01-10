@@ -1,6 +1,6 @@
 import {
-  HandleNotFound,
-  HandleNotFoundProps,
+  UserHandleNotFound,
+  UserHandleNotFoundProps,
   UserProfilePage,
   UserProfilePageProps,
 } from '@/components/profile';
@@ -8,18 +8,19 @@ import { config } from '@/lib';
 import { UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
+import { setServerCookie } from '@/lib/services/CookieService';
 import { CookieType } from '@/lib/types/enums';
 import type { GetServerSideProps } from 'next/types';
 
-type UserHandlePageProps = HandleNotFoundProps | UserProfilePageProps;
+type UserHandlePageProps = UserHandleNotFoundProps | UserProfilePageProps;
 
-const isHandleNotFound = (props: UserHandlePageProps): props is HandleNotFoundProps =>
+const isUserHandleNotFound = (props: UserHandlePageProps): props is UserHandleNotFoundProps =>
   'handle' in props;
 
 const UserHandlePage = (props: UserHandlePageProps) => {
-  if (isHandleNotFound(props)) {
+  if (isUserHandleNotFound(props)) {
     const { handle } = props;
-    return <HandleNotFound handle={handle} />;
+    return <UserHandleNotFound handle={handle} />;
   }
 
   return <UserProfilePage {...props} />;
@@ -37,8 +38,9 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
       UserAPI.getCurrentUser(token),
       UserAPI.getAttendancesForCurrentUser(token),
     ]);
+    setServerCookie(CookieType.USER, JSON.stringify(user), { req, res });
 
-    // render HandleNotFoundPage when user with handle is not retrieved
+    // render UserHandleNotFoundPage when user with handle is not retrieved
     if (handleUser === null) return { props: { handle } };
 
     const isSignedInUser = handleUser.uuid === user.uuid;
@@ -46,7 +48,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
     const attendances =
       !handleUser.isAttendancePublic || isSignedInUser
         ? null
-        : await UserAPI.getAttendancesForUserByUUID(token, user.uuid);
+        : (await UserAPI.getAttendancesForUserByUUID(token, user.uuid)).slice(0, 10);
 
     // render UserProfilePage
     return {

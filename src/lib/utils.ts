@@ -273,3 +273,10 @@ export const getDefaultMerchItemPhoto = (item: PublicMerchItem | undefined): str
   }
   return NoImage.src;
 };
+
+/**
+ * Prepend 'http://' to a url if a protocol isn't specified
+ * @param url url to be fixed
+ * @returns url begnning with http://
+ */
+export const fixUrl = (url: string) => (url.includes('://') ? url : `http://${url}`);

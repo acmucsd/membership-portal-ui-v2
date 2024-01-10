@@ -55,7 +55,7 @@
           align-items: center;
           flex-direction: column;
           
-          h1 {
+          h1, div {
             text-align: center;
           }
         }
@@ -80,9 +80,11 @@
           display: flex;
           font-size: 1.25rem;
           font-weight: 500;
+          margin-top: calc(2.375rem + 0.5rem); // give space for edit button
 
           @media (max-width: vars.$breakpoint-md) {
-            text-align: center
+            margin-top: 0;
+            text-align: center;
           }
         }
 
@@ -99,7 +101,8 @@
 
           svg {
             height: 1.125rem;
-            width: 1.125rem;
+            transform: translateY(calc((1.125rem * 1.25) - 1.125rem) * 0.5); // center the trophy icon
+            width: 1.125rem
           }
         }
       }
@@ -124,7 +127,7 @@
     }
 
     .progressBar {
-      background-color: var(--theme-text-on-background-3);
+      background-color: var(--theme-accent-line-2);
       border-radius: 0.5rem;
       height: 1.25rem;
       width: 100%;
@@ -156,6 +159,7 @@
     }
 
     .aboutMeSection {
+      align-items: center;
       display: grid;
       gap: 0.56rem;
       grid-template-columns: auto 1fr;
@@ -177,6 +181,8 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
   }
 
