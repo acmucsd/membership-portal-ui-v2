@@ -1,5 +1,4 @@
-import { Typography } from '@/components/common';
-import GifSafeImage from '@/components/common/GifSafeImage';
+import { GifSafeImage, Typography } from '@/components/common';
 import SocialMediaIcon from '@/components/profile/SocialMediaIcon';
 import { PublicProfile } from '@/lib/types/apiResponses';
 import { SocialMediaType } from '@/lib/types/enums';

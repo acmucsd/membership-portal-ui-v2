@@ -1,5 +1,4 @@
-import { Carousel, Typography } from '@/components/common';
-import GifSafeImage from '@/components/common/GifSafeImage';
+import { Carousel, GifSafeImage, Typography } from '@/components/common';
 import { EventCard } from '@/components/events';
 import SocialMediaIcon from '@/components/profile/SocialMediaIcon';
 import { config, showToast } from '@/lib';

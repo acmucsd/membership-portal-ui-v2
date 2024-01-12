@@ -1,5 +1,4 @@
-import { Cropper } from '@/components/common';
-import GifSafeImage from '@/components/common/GifSafeImage';
+import { Cropper, GifSafeImage } from '@/components/common';
 import {
   EditBlock,
   EditField,

@@ -1,4 +1,4 @@
-import GifSafeImage from '@/components/common/GifSafeImage';
+import { GifSafeImage } from '@/components/common';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import styles from './style.module.scss';

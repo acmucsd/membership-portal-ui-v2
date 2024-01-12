@@ -1,4 +1,4 @@
-import GifSafeImage from '@/components/common/GifSafeImage';
+import { GifSafeImage } from '@/components/common';
 import { trim } from '@/lib/utils';
 import Link from 'next/link';
 import styles from './style.module.scss';
