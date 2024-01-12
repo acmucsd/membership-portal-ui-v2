@@ -53,7 +53,7 @@ export const UserProfilePage = ({
               component="h1"
             >{`${handleUser.firstName} ${handleUser.lastName}`}</Typography>
             <Tooltip title="Copy profile link" arrow>
-              <div>
+              <div className={styles.handle}>
                 <Typography
                   variant="h5/medium"
                   onClick={() => {

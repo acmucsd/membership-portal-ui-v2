@@ -8,6 +8,7 @@ export type Styles = {
   cardRank: string;
   cardWrapper: string;
   editWrapper: string;
+  handle: string;
   icon: string;
   inner: string;
   points: string;
