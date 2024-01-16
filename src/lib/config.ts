@@ -34,7 +34,10 @@ const config = {
         future: '/event/future',
         picture: '/event/picture',
       },
-      attendance: '/attendance',
+      attendance: {
+        attendance: '/attendance',
+        expressCheckIn: '/attendance/expressCheckin',
+      },
       leaderboard: '/leaderboard',
       store: {
         collection: '/merch/collection',
@@ -71,6 +74,7 @@ const config = {
   },
   homeRoute: '/',
   eventsRoute: '/events',
+  expressCheckin: '/express',
   loginRoute: '/login',
   logoutRoute: '/logout',
   leaderboardRoute: '/leaderboard',

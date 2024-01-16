@@ -188,6 +188,11 @@ export interface AttendEventRequest {
   asStaff?: boolean;
 }
 
+export interface ExpressCheckInRequest {
+  attendanceCode: string;
+  email: string;
+}
+
 export interface SubmitEventFeedbackRequest {
   feedback: string[];
 }

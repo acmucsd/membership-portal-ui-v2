@@ -81,6 +81,10 @@ export interface AttendEventResponse extends ApiResponse {
   event: PublicEvent;
 }
 
+export interface ExpressCheckInResponse extends ApiResponse {
+  event: PublicEvent;
+}
+
 // AUTH
 
 export interface RegistrationResponse extends ApiResponse {

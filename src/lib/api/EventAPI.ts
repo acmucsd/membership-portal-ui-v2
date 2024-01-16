@@ -4,6 +4,7 @@ import { AttendEventRequest, Event } from '@/lib/types/apiRequests';
 import {
   AttendEventResponse,
   CreateEventResponse,
+  ExpressCheckInResponse,
   GetAllEventsResponse,
   GetAttendancesForUserResponse,
   GetFutureEventsResponse,
@@ -73,7 +74,7 @@ export const getAllEvents = async (): Promise<PublicEvent[]> => {
 };
 
 export const getAttendancesForUser = async (token: string): Promise<PublicAttendance[]> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance}`;
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.attendance}`;
 
   const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
     headers: {
@@ -88,7 +89,7 @@ export const attendEvent = async (
   token: string,
   attendanceCode: string
 ): Promise<AttendEventResponse> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance}`;
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.attendance}`;
 
   const requestBody = { attendanceCode, asStaff: false } as AttendEventRequest;
 
@@ -97,6 +98,20 @@ export const attendEvent = async (
       Authorization: `Bearer ${token}`,
     },
   });
+
+  return response.data;
+};
+
+export const expressCheckin = async (
+  attendanceCode: string,
+  email: string
+): Promise<ExpressCheckInResponse> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.expressCheckIn}`;
+  console.log('requestUrL', requestUrl);
+
+  const requestBody = { attendanceCode, email } as AttendEventRequest;
+
+  const response = await axios.post<ExpressCheckInResponse>(requestUrl, requestBody);
 
   return response.data;
 };
