@@ -107,7 +107,6 @@ export const expressCheckin = async (
   email: string
 ): Promise<ExpressCheckInResponse> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.expressCheckIn}`;
-  console.log('requestUrL', requestUrl);
 
   const requestBody = { attendanceCode, email } as AttendEventRequest;
 
