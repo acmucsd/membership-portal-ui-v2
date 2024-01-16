@@ -23,7 +23,6 @@ const AwardPointsPage: NextPage = () => {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async ({ email, description, points }) => {
-    // TODO
     const token = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
     const response = await EventAPI.awardBonusPoints(token, email, points, description);
     showToast(`Successfully awarded bonus points for ${JSON.stringify(response.emails)}`);
