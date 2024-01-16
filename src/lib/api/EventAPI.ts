@@ -1,8 +1,9 @@
 import { config } from '@/lib';
 import { FillInLater, UUID } from '@/lib/types';
-import { AttendEventRequest, Event } from '@/lib/types/apiRequests';
+import { AttendEventRequest, CreateBonusRequest, Event } from '@/lib/types/apiRequests';
 import {
   AttendEventResponse,
+  CreateBonusResponse,
   CreateEventResponse,
   GetAllEventsResponse,
   GetAttendancesForUserResponse,
@@ -158,4 +159,29 @@ export const uploadEventImage = async (
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+export const awardBonusPoints = async (
+  token: string,
+  user: string,
+  points: number,
+  description: string
+): Promise<CreateBonusResponse> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.admin.bonus}`;
+
+  const requestBody: CreateBonusRequest = {
+    bonus: {
+      users: [user],
+      description,
+      points,
+    },
+  };
+
+  const response = await axios.post<CreateBonusResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
 };
