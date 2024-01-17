@@ -47,6 +47,7 @@ const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) 
                 title={collection.title}
                 description={collection.description}
                 href={`${config.collectionRoute}${collection.uuid}`}
+                editUrl={`${config.collectionRoute}${collection.uuid}/edit`}
                 key={collection.uuid}
               />
             ))}
@@ -57,6 +58,7 @@ const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) 
               title={collection.title}
               description={collection.description}
               items={collection.items}
+              editUrl={`${config.collectionRoute}${collection.uuid}/edit`}
               key={collection.uuid}
             />
           ))

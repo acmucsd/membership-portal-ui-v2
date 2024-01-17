@@ -6,8 +6,29 @@
   gap: 0.5rem;
 
   .title {
+    align-items: center;
+    display: flex;
     font-size: 1.25rem;
+    gap: 1rem;
     margin: 0;
+
+    .edit {
+      background-color: var(--theme-primary-2);
+      border-radius: 50%;
+      color: var(--theme-background);
+      display: flex;
+      padding: 0.5rem;
+      transition: box-shadow 0.2s;
+
+      &:hover {
+        box-shadow: 0 2px 5px var(--theme-shadow);
+      }
+
+      svg {
+        height: 1.5rem;
+        width: 1.5rem;
+      }
+    }
   }
 
   .description {
