@@ -1,0 +1,64 @@
+@use 'src/styles/vars.scss' as vars;
+$indicator-size: 30px;
+$component-roundness: 10px;
+
+.sizeSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+
+  h4 {
+    color: var(--theme-text-on-background-1);
+    font-size: vars.$general-heading-3-4;
+    font-weight: bold;
+  }
+
+  .switch {
+    align-items: center;
+    border-color: #9f9f9f;
+    border-radius: $component-roundness;
+    display: flex;
+    float: left;
+    gap: 12px;
+    position: relative;
+
+    label {
+      align-items: center;
+      background-color: var(--theme-surface-2);
+      border-radius: $component-roundness;
+      border-style: solid;
+      border-width: 1px;
+      color: var(--theme-text-on-background-1);
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      float: left;
+      height: $indicator-size;
+      justify-content: center;
+      margin: 2px;
+      width: #{$indicator-size * 2};
+    }
+
+    input {
+      opacity: 0;
+      position: absolute;
+    }
+
+    input:checked {
+      border-color: var(--size-selector-border);
+    }
+
+    input:hover + label {
+      border-color: var(--size-selector-border);
+    }
+
+    input:checked + label {
+      border-color: var(--size-selector-border);
+      color: var(--size-selector-border);
+    }
+  }
+}
+
+// INFO LINKS
+// https://markheath.net/post/customize-radio-button-css

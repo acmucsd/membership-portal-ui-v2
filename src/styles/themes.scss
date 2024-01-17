@@ -44,6 +44,7 @@
 
   --theme-mode-indicator: #{vars.$light-mode-indicator};
   --theme-mode-icon: #{vars.$black};
+  --size-selector-border: #{vars.$light-primary-4};
 
   --theme-success-1: #{vars.$success-1};
   --theme-success-2: #{vars.$success-2};
@@ -91,6 +92,7 @@
 
   --theme-mode-indicator: #{vars.$dark-mode-indicator};
   --theme-mode-icon: #{vars.$white};
+  --size-selector-border: #{vars.$dark-primary-4};
 }
 
 html,

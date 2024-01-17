@@ -122,7 +122,7 @@ const Navbar = ({ user }: NavbarProps) => {
           <ProfileIcon className={styles.iconLink} />
           Profile
         </Link>
-        <Link className={styles.mobileNavItem} href={config.storeRoute}>
+        <Link className={styles.mobileNavItem} href={config.store.homeRoute}>
           <ShopIcon className={styles.iconLink} />
           Store
         </Link>

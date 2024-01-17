@@ -77,11 +77,13 @@ const config = {
   profileRoute: '/profile',
   aboutRoute: '/about',
   userProfileRoute: '/u/',
-  storeRoute: '/store',
-  cartRoute: '/store/cart',
-  myOrdersRoute: '/store/orders',
-  collectionRoute: '/store/collection/',
-  itemRoute: '/store/item/',
+  store: {
+    homeRoute: '/store',
+    cartRoute: '/store/cart',
+    myOrdersRoute: '/store/orders',
+    collectionRoute: '/store/collection/',
+    itemRoute: '/store/item/',
+  },
   profile: {
     route: '/profile',
     editRoute: '/profile/edit',

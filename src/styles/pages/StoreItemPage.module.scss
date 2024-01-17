@@ -1,0 +1,39 @@
+.optionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rowContainer {
+  align-items: flex-start;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  gap: 5rem;
+  justify-content: center;
+  overflow: auto;
+
+  @media (max-width: 600px) {
+    // could also do display: flex; flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+.navbarBodyDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.coverContainer {
+  height: 37.5rem;
+  position: relative;
+  width: 100%;
+
+  .cover {
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+}

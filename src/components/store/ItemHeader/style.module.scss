@@ -1,0 +1,51 @@
+@use 'src/styles/vars.scss' as vars;
+
+.price {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.itemHeaderGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  h1 {
+    font-size: vars.$general-heading-1;
+    font-weight: bold;
+  }
+
+  p {
+    color: var(--theme-text-on-background-1);
+    font-size: vars.$general-heading-4;
+  }
+
+  .error {
+    color: vars.$danger-1;
+  }
+
+  .valid {
+    color: vars.$success-1;
+  }
+
+  .button {
+    border-color: var(--theme-accent-line-2);
+    border-radius: 10px;
+    border-width: 1px;
+    font-size: vars.$input-text-medium;
+    font-weight: bold;
+    height: 40px;
+    width: 200px;
+  }
+
+  .buttonInStock {
+    background-color: var(--theme-primary-2);
+    color: var(--theme-text-on-background1);
+  }
+
+  .buttonNoStock {
+    background-color: var(--theme-background);
+    color: vars.$disabled;
+  }
+}

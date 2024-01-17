@@ -32,8 +32,8 @@ const CollectionSlider = ({ title, description, items, editUrl }: CollectionSlid
             className={styles.card}
             image={getDefaultMerchItemPhoto(item)}
             title={item.itemName}
-            href={`${config.itemRoute}${item.uuid}`}
-            editUrl={editUrl ? `${config.itemRoute}${item.uuid}/edit` : null}
+            href={`${config.store.itemRoute}${item.uuid}`}
+            editUrl={editUrl ? `${config.store.itemRoute}${item.uuid}/edit` : null}
             cost={item.options[0]?.price ?? 0}
             key={item.uuid}
           />
