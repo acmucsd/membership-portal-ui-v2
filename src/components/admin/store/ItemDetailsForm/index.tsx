@@ -4,7 +4,7 @@ import { config, showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import { AdminEventManager } from '@/lib/managers';
 import { CookieService } from '@/lib/services';
-import { FillInLater } from '@/lib/types';
+import { MerchItem } from '@/lib/types/apiRequests';
 import { PublicMerchItem } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { reportError } from '@/lib/utils';
@@ -13,6 +13,8 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import style from './style.module.scss';
 
+type FormValues = Omit<MerchItem, 'uuid' | 'merchPhotos' | 'options'>;
+
 interface IProps {
   mode: 'create' | 'edit';
   defaultData?: Partial<PublicMerchItem>;
@@ -20,16 +22,16 @@ interface IProps {
 
 const ItemDetailsForm = ({ mode, defaultData = {} }: IProps) => {
   const router = useRouter();
-  const initialValues: Omit<PublicMerchItem, 'uuid'> = {
+  const initialValues: FormValues = {
     itemName: defaultData.itemName ?? '',
-    collection: defaultData.collection,
+    collection: defaultData.collection?.uuid ?? '',
     description: defaultData.description ?? '',
     monthlyLimit: defaultData.monthlyLimit ?? 1,
     lifetimeLimit: defaultData.lifetimeLimit ?? 1,
     hidden: defaultData.hidden ?? false,
     hasVariantsEnabled: defaultData.hasVariantsEnabled ?? false,
-    merchPhotos: defaultData.merchPhotos ?? [],
-    options: defaultData.options ?? [],
+    // merchPhotos: defaultData.merchPhotos ?? [],
+    // options: defaultData.options ?? [],
   };
 
   const {
@@ -37,19 +39,23 @@ const ItemDetailsForm = ({ mode, defaultData = {} }: IProps) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<PublicMerchItem>({ defaultValues: initialValues });
+  } = useForm({ defaultValues: initialValues });
 
   const [loading, setLoading] = useState<boolean>(false);
 
   const resetForm = () => reset(initialValues);
 
-  const createItem: SubmitHandler<FillInLater> = async formData => {
+  const createItem: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
 
     const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
 
     try {
-      const { uuid } = await StoreAPI.createItem(AUTH_TOKEN, formData);
+      const { uuid } = await StoreAPI.createItem(AUTH_TOKEN, {
+        ...formData,
+        merchPhotos: [],
+        options: [],
+      });
       showToast('Item created successfully!', '', [
         {
           text: 'View public item page',
@@ -64,13 +70,14 @@ const ItemDetailsForm = ({ mode, defaultData = {} }: IProps) => {
     }
   };
 
-  const editItem: SubmitHandler<FillInLater> = async formData => {
+  const editItem: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
 
+    const uuid = defaultData.uuid ?? '';
     const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
 
     try {
-      const { uuid } = await StoreAPI.editItem(AUTH_TOKEN, defaultData.uuid ?? '', formData);
+      await StoreAPI.editItem(AUTH_TOKEN, uuid, formData);
       showToast('Item details saved!', '', [
         {
           text: 'View public item page',
@@ -111,6 +118,63 @@ const ItemDetailsForm = ({ mode, defaultData = {} }: IProps) => {
             required: 'Required',
           })}
         />
+      </EventDetailsFormItem>
+
+      <label htmlFor="description">Description</label>
+      <EventDetailsFormItem error={errors.description?.message}>
+        <textarea
+          id="description"
+          {...register('description', {
+            required: 'Required',
+          })}
+        />
+      </EventDetailsFormItem>
+
+      <label htmlFor="monthlyLimit">Monthly limit</label>
+      <EventDetailsFormItem error={errors.monthlyLimit?.message}>
+        <input
+          type="number"
+          id="monthlyLimit"
+          {...register('monthlyLimit', {
+            required: 'Required',
+          })}
+        />
+      </EventDetailsFormItem>
+
+      <label htmlFor="lifetimeLimit">Lifetime limit</label>
+      <EventDetailsFormItem error={errors.lifetimeLimit?.message}>
+        <input
+          type="number"
+          id="lifetimeLimit"
+          {...register('lifetimeLimit', {
+            required: 'Required',
+          })}
+        />
+      </EventDetailsFormItem>
+
+      <EventDetailsFormItem error={errors.hidden?.message}>
+        <label>
+          <input
+            type="checkbox"
+            {...register('hidden', {
+              required: 'Required',
+            })}
+          />
+          &nbsp;Hidden?
+        </label>
+      </EventDetailsFormItem>
+
+      <EventDetailsFormItem error={errors.hasVariantsEnabled?.message}>
+        <label>
+          <input
+            type="checkbox"
+            id="hasVariantsEnabled"
+            {...register('hasVariantsEnabled', {
+              required: 'Required',
+            })}
+          />
+          &nbsp;Has variants?
+        </label>
       </EventDetailsFormItem>
 
       <div className={style.submitButtons}>

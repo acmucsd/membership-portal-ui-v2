@@ -11,7 +11,7 @@
     }
   }
 
-  input,
+  input:not([type='checkbox']),
   textarea,
   select {
     border: 1px solid #bbb;
