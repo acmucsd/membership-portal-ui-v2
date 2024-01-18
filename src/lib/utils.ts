@@ -1,4 +1,5 @@
 import defaultProfilePictures from '@/lib/constants/profilePictures';
+import showToast from '@/lib/showToast';
 import type { URL } from '@/lib/types';
 import type {
   CustomErrorBody,
@@ -7,6 +8,7 @@ import type {
   ValidatorError,
 } from '@/lib/types/apiResponses';
 import NoImage from '@/public/assets/graphics/cat404.png';
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
 /**
@@ -36,6 +38,16 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
 
   return errBody.errors.map(err => getAllErrMessages(err)).flat();
 };
+
+export function reportError(title: string, error: unknown) {
+  if (error instanceof AxiosError && error.response?.data?.error) {
+    showToast(title, getMessagesFromError(error.response.data.error).join('\n\n'));
+  } else if (error instanceof Error) {
+    showToast(title, error.message);
+  } else {
+    showToast(title, 'Unknown error');
+  }
+}
 
 export const copy = async (text: string): Promise<void> => {
   if (window === undefined) return;

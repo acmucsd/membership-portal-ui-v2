@@ -1,0 +1,6 @@
+@use 'src/styles/vars.scss' as vars;
+
+.submitButtons {
+  display: flex;
+  gap: 1rem;
+}

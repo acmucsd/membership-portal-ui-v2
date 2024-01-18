@@ -15,25 +15,14 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, SocialMediaType } from '@/lib/types/enums';
-import { capitalize, getMessagesFromError, getProfilePicture, isSrcAGif } from '@/lib/utils';
+import { capitalize, getProfilePicture, isSrcAGif, reportError } from '@/lib/utils';
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import DropdownIcon from '@/public/assets/icons/dropdown-arrow-1.svg';
 import styles from '@/styles/pages/profile/edit.module.scss';
-import { AxiosError } from 'axios';
 import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FormEvent, useEffect, useId, useMemo, useState } from 'react';
-
-function reportError(title: string, error: unknown) {
-  if (error instanceof AxiosError && error.response?.data?.error) {
-    showToast(title, getMessagesFromError(error.response.data.error).join('\n\n'));
-  } else if (error instanceof Error) {
-    showToast(title, error.message);
-  } else {
-    showToast(title, 'Unknown error');
-  }
-}
 
 function fixUrl(input: string, prefix?: string): string {
   if (!input || input.startsWith('https://')) {

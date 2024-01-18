@@ -4,15 +4,17 @@ import style from './style.module.scss';
 interface IProps {
   variant?: 'primary' | 'secondary';
   destructive?: boolean;
+  type?: 'button' | 'submit';
   disabled?: boolean;
   size?: 'default' | 'small';
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const Button = (props: PropsWithChildren<IProps>) => {
   const {
     variant = 'primary',
     destructive = false,
+    type = 'button',
     disabled = false,
     size = 'default',
     onClick,
@@ -22,7 +24,7 @@ const Button = (props: PropsWithChildren<IProps>) => {
   return (
     <button
       className={style.button}
-      type="button"
+      type={type === 'submit' ? 'submit' : 'button'}
       disabled={disabled}
       onClick={onClick}
       data-variant={variant}
