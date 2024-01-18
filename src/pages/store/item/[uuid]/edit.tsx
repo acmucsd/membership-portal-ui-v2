@@ -4,7 +4,7 @@ import { StoreAPI } from '@/lib/api';
 import config from '@/lib/config';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import { PrivateProfile, PublicMerchItem } from '@/lib/types/apiResponses';
+import { PrivateProfile, PublicMerchCollection, PublicMerchItem } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/StoreItemEditPage.module.scss';
 import { GetServerSideProps } from 'next';
@@ -12,12 +12,13 @@ import { GetServerSideProps } from 'next';
 interface ItemEditPageProps {
   user: PrivateProfile;
   item: PublicMerchItem;
+  collections: PublicMerchCollection[];
 }
-const ItemEditPage = ({ user: { credits }, item }: ItemEditPageProps) => {
+const ItemEditPage = ({ user: { credits }, item, collections }: ItemEditPageProps) => {
   return (
     <div className={styles.container}>
       <Navbar balance={credits} showBack />
-      <ItemDetailsForm mode="edit" defaultData={item} />
+      <ItemDetailsForm mode="edit" defaultData={item} collections={collections} />
     </div>
   );
 };
@@ -29,12 +30,11 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   try {
-    const item = await StoreAPI.getItem(uuid, token);
-    return {
-      props: {
-        item,
-      },
-    };
+    const [item, collections] = await Promise.all([
+      StoreAPI.getItem(uuid, token),
+      StoreAPI.getAllCollections(token),
+    ]);
+    return { props: { item, collections } };
   } catch (err: any) {
     return { redirect: { destination: config.store.homeRoute, permanent: false } };
   }

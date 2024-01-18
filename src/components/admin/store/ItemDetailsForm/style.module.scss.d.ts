@@ -1,4 +1,5 @@
 export type Styles = {
+  form: string;
   submitButtons: string;
 };
 

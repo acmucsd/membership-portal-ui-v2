@@ -1,5 +1,12 @@
 @use 'src/styles/vars.scss' as vars;
 
+.form {
+  column-gap: 8px;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  row-gap: 1rem;
+}
+
 .submitButtons {
   display: flex;
   gap: 1rem;

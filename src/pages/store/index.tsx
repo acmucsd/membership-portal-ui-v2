@@ -13,13 +13,32 @@ import { useState } from 'react';
 
 type View = 'collections' | 'all-items';
 
+function getPath(view: View, previewPublic: boolean): string {
+  const params = new URLSearchParams();
+  if (view === 'all-items') {
+    params.set('view', 'all');
+  }
+  if (previewPublic) {
+    params.set('preview', 'public');
+  }
+  return params.size > 0 ? `${config.store.homeRoute}?${params}` : config.store.homeRoute;
+}
+
 interface HomePageProps {
   user: PrivateProfile;
   view: View;
   collections: PublicMerchCollection[];
+  previewPublic: boolean;
 }
-const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) => {
+const StoreHomePage = ({
+  user: { credits, accessType },
+  view,
+  collections,
+  previewPublic,
+}: HomePageProps) => {
   const [helpOpen, setHelpOpen] = useState(false);
+
+  const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
 
   return (
     <>
@@ -31,11 +50,14 @@ const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) 
       <div className={styles.container}>
         <div className={styles.header}>
           <h2>{view === 'collections' ? 'Browse our collections' : 'Browse all items'}</h2>
+          {canManageStore && (
+            <Link className={styles.viewToggle} href={getPath(view, true)}>
+              View store as member
+            </Link>
+          )}
           <Link
             className={styles.viewToggle}
-            href={
-              view === 'collections' ? `${config.store.homeRoute}?view=all` : config.store.homeRoute
-            }
+            href={getPath(view === 'collections' ? 'all-items' : 'collections', previewPublic)}
             scroll={false}
           >
             {view === 'collections' ? 'See all items' : 'See collections'}
@@ -49,7 +71,9 @@ const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) 
                 title={collection.title}
                 description={collection.description}
                 href={`${config.store.collectionRoute}${collection.uuid}`}
-                editUrl={`${config.store.collectionRoute}${collection.uuid}/edit`}
+                editUrl={
+                  canManageStore ? `${config.store.collectionRoute}${collection.uuid}/edit` : null
+                }
                 key={collection.uuid}
               />
             ))}
@@ -60,7 +84,9 @@ const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) 
               title={collection.title}
               description={collection.description}
               items={collection.items}
-              editUrl={`${config.collectionRoute}${collection.uuid}/edit`}
+              editUrl={
+                canManageStore ? `${config.store.collectionRoute}${collection.uuid}/edit` : null
+              }
               key={collection.uuid}
             />
           ))
@@ -81,6 +107,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
     props: {
       view: query.view === 'all' ? 'all-items' : 'collections',
       collections,
+      previewPublic: query.preview === 'public',
     },
   };
 };

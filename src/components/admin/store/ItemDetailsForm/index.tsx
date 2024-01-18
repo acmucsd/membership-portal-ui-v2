@@ -2,10 +2,9 @@ import EventDetailsFormItem from '@/components/admin/event/EventDetailsFormItem'
 import { Button } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
-import { AdminEventManager } from '@/lib/managers';
 import { CookieService } from '@/lib/services';
 import { MerchItem } from '@/lib/types/apiRequests';
-import { PublicMerchItem } from '@/lib/types/apiResponses';
+import { PublicMerchCollection, PublicMerchItem } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { reportError } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
@@ -18,9 +17,10 @@ type FormValues = Omit<MerchItem, 'uuid' | 'merchPhotos' | 'options'>;
 interface IProps {
   mode: 'create' | 'edit';
   defaultData?: Partial<PublicMerchItem>;
+  collections: PublicMerchCollection[];
 }
 
-const ItemDetailsForm = ({ mode, defaultData = {} }: IProps) => {
+const ItemDetailsForm = ({ mode, defaultData = {}, collections }: IProps) => {
   const router = useRouter();
   const initialValues: FormValues = {
     itemName: defaultData.itemName ?? '',
@@ -59,10 +59,10 @@ const ItemDetailsForm = ({ mode, defaultData = {} }: IProps) => {
       showToast('Item created successfully!', '', [
         {
           text: 'View public item page',
-          onClick: () => router.push(`${config.admin.store.items}/${uuid}`),
+          onClick: () => router.push(`${config.store.itemRoute}/${uuid}`),
         },
       ]);
-      router.push(`${config.admin.store.items}/${uuid}/edit`);
+      router.push(`${config.store.itemRoute}/${uuid}/edit`);
     } catch (error) {
       reportError('Could not create item', error);
     } finally {
@@ -81,10 +81,9 @@ const ItemDetailsForm = ({ mode, defaultData = {} }: IProps) => {
       showToast('Item details saved!', '', [
         {
           text: 'View public item page',
-          onClick: () => router.push(`${config.admin.store.items}/${uuid}`),
+          onClick: () => router.push(`${config.store.itemRoute}/${uuid}`),
         },
       ]);
-      router.push(`${config.admin.store.items}/${uuid}/edit`);
     } catch (error) {
       reportError('Could not save changes', error);
     } finally {
@@ -92,87 +91,102 @@ const ItemDetailsForm = ({ mode, defaultData = {} }: IProps) => {
     }
   };
 
-  const deleteItem = () => {
+  const deleteItem = async () => {
     setLoading(true);
     const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
-    AdminEventManager.deleteEvent({
-      event: defaultData.uuid ?? '',
-      token: AUTH_TOKEN,
-      onSuccessCallback: () => {
-        setLoading(false);
-        router.push(config.admin.events.homeRoute);
-      },
-    });
+    try {
+      await StoreAPI.deleteItem(AUTH_TOKEN, defaultData.uuid ?? '');
+      showToast('Item details saved!', '', [
+        {
+          text: 'View public item page',
+          onClick: () => router.push(config.store.homeRoute),
+        },
+      ]);
+      router.push(config.store.homeRoute);
+    } catch (error) {
+      reportError('Could not delete item', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(mode === 'edit' ? editItem : createItem)}>
       <h1>{mode === 'edit' ? 'Modify' : 'Create'} store item</h1>
-      <label htmlFor="name">Item name</label>
-      <EventDetailsFormItem error={errors.itemName?.message}>
-        <input
-          type="text"
-          id="name"
-          placeholder="ACM Cafe"
-          {...register('itemName', {
-            required: 'Required',
-          })}
-        />
-      </EventDetailsFormItem>
 
-      <label htmlFor="description">Description</label>
-      <EventDetailsFormItem error={errors.description?.message}>
-        <textarea
-          id="description"
-          {...register('description', {
-            required: 'Required',
-          })}
-        />
-      </EventDetailsFormItem>
-
-      <label htmlFor="monthlyLimit">Monthly limit</label>
-      <EventDetailsFormItem error={errors.monthlyLimit?.message}>
-        <input
-          type="number"
-          id="monthlyLimit"
-          {...register('monthlyLimit', {
-            required: 'Required',
-          })}
-        />
-      </EventDetailsFormItem>
-
-      <label htmlFor="lifetimeLimit">Lifetime limit</label>
-      <EventDetailsFormItem error={errors.lifetimeLimit?.message}>
-        <input
-          type="number"
-          id="lifetimeLimit"
-          {...register('lifetimeLimit', {
-            required: 'Required',
-          })}
-        />
-      </EventDetailsFormItem>
-
-      <EventDetailsFormItem error={errors.hidden?.message}>
-        <label>
+      <div className={style.form}>
+        <label htmlFor="name">Item name</label>
+        <EventDetailsFormItem error={errors.itemName?.message}>
           <input
-            type="checkbox"
-            {...register('hidden', {
+            type="text"
+            id="name"
+            placeholder="ACM Cafe"
+            {...register('itemName', {
               required: 'Required',
             })}
           />
+        </EventDetailsFormItem>
+
+        <label htmlFor="description">Description</label>
+        <EventDetailsFormItem error={errors.description?.message}>
+          <textarea
+            id="description"
+            {...register('description', {
+              required: 'Required',
+            })}
+          />
+        </EventDetailsFormItem>
+
+        <label htmlFor="collection">Collection</label>
+        <EventDetailsFormItem error={errors.collection?.message}>
+          <select
+            id="collection"
+            placeholder="General"
+            {...register('collection', {
+              required: 'Required',
+            })}
+          >
+            {collections.map(collection => (
+              <option key={collection.uuid} value={collection.uuid}>
+                {collection.title}
+              </option>
+            ))}
+          </select>
+        </EventDetailsFormItem>
+
+        <label htmlFor="monthlyLimit">Monthly limit</label>
+        <EventDetailsFormItem error={errors.monthlyLimit?.message}>
+          <input
+            type="number"
+            id="monthlyLimit"
+            {...register('monthlyLimit', {
+              required: 'Required',
+            })}
+          />
+        </EventDetailsFormItem>
+
+        <label htmlFor="lifetimeLimit">Lifetime limit</label>
+        <EventDetailsFormItem error={errors.lifetimeLimit?.message}>
+          <input
+            type="number"
+            id="lifetimeLimit"
+            {...register('lifetimeLimit', {
+              required: 'Required',
+            })}
+          />
+        </EventDetailsFormItem>
+      </div>
+
+      <EventDetailsFormItem error={errors.hidden?.message}>
+        <label>
+          <input type="checkbox" {...register('hidden')} />
           &nbsp;Hidden?
         </label>
       </EventDetailsFormItem>
 
       <EventDetailsFormItem error={errors.hasVariantsEnabled?.message}>
         <label>
-          <input
-            type="checkbox"
-            id="hasVariantsEnabled"
-            {...register('hasVariantsEnabled', {
-              required: 'Required',
-            })}
-          />
+          <input type="checkbox" id="hasVariantsEnabled" {...register('hasVariantsEnabled')} />
           &nbsp;Has variants?
         </label>
       </EventDetailsFormItem>
