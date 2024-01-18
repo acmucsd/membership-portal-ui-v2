@@ -1,4 +1,5 @@
 import { Carousel } from '@/components/common';
+import CreateItemCard from '@/components/store/CreateItemCard';
 import ItemCard from '@/components/store/ItemCard';
 import { config } from '@/lib';
 import { PublicMerchItem } from '@/lib/types/apiResponses';
@@ -8,13 +9,14 @@ import Link from 'next/link';
 import styles from './style.module.scss';
 
 interface CollectionSliderProps {
+  uuid: string;
   title: string;
   description: string;
   items: PublicMerchItem[];
   editUrl?: string | null;
 }
 
-const CollectionSlider = ({ title, description, items, editUrl }: CollectionSliderProps) => {
+const CollectionSlider = ({ uuid, title, description, items, editUrl }: CollectionSliderProps) => {
   return (
     <div className={styles.wrapper}>
       <h3 className={styles.title}>
@@ -38,6 +40,13 @@ const CollectionSlider = ({ title, description, items, editUrl }: CollectionSlid
             key={item.uuid}
           />
         ))}
+        {editUrl && (
+          <CreateItemCard
+            className={styles.card}
+            href={`${config.store.createItemRoute}?collection=${uuid}`}
+            label="Add an item"
+          />
+        )}
       </Carousel>
     </div>
   );

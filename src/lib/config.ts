@@ -82,7 +82,9 @@ const config = {
     cartRoute: '/store/cart',
     myOrdersRoute: '/store/orders',
     collectionRoute: '/store/collection/',
+    createCollectionRoute: '/store/collection/new',
     itemRoute: '/store/item/',
+    createItemRoute: '/store/item/new',
   },
   profile: {
     route: '/profile',

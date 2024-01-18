@@ -1,4 +1,5 @@
 import { CollectionSlider, HelpModal, Hero, ItemCard, Navbar } from '@/components/store';
+import CreateItemCard from '@/components/store/CreateItemCard';
 import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -10,6 +11,7 @@ import styles from '@/styles/pages/StoreHomePage.module.scss';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useState } from 'react';
+import { BsPlus } from 'react-icons/bs';
 
 type View = 'collections' | 'all-items';
 
@@ -77,19 +79,32 @@ const StoreHomePage = ({
                 key={collection.uuid}
               />
             ))}
+            {canManageStore && (
+              <CreateItemCard
+                href={config.store.createCollectionRoute}
+                label="Create a collection"
+              />
+            )}
           </div>
         ) : (
-          collections.map(collection => (
-            <CollectionSlider
-              title={collection.title}
-              description={collection.description}
-              items={collection.items}
-              editUrl={
-                canManageStore ? `${config.store.collectionRoute}${collection.uuid}/edit` : null
-              }
-              key={collection.uuid}
-            />
-          ))
+          <>
+            {collections.map(collection => (
+              <CollectionSlider
+                uuid={collection.uuid}
+                title={collection.title}
+                description={collection.description}
+                items={collection.items}
+                editUrl={
+                  canManageStore ? `${config.store.collectionRoute}${collection.uuid}/edit` : null
+                }
+                key={collection.uuid}
+              />
+            ))}
+            <Link className={styles.createCollection} href={config.store.createCollectionRoute}>
+              <BsPlus aria-hidden />
+              Create a collection
+            </Link>
+          </>
         )}
       </div>
     </>

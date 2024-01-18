@@ -16,7 +16,9 @@ type FormValues = Omit<MerchItem, 'uuid' | 'merchPhotos' | 'options'>;
 
 interface IProps {
   mode: 'create' | 'edit';
-  defaultData?: Partial<PublicMerchItem>;
+  defaultData?: Omit<Partial<PublicMerchItem>, 'collection'> & {
+    collection?: string | PublicMerchCollection;
+  };
   collections: PublicMerchCollection[];
 }
 
@@ -24,7 +26,10 @@ const ItemDetailsForm = ({ mode, defaultData = {}, collections }: IProps) => {
   const router = useRouter();
   const initialValues: FormValues = {
     itemName: defaultData.itemName ?? '',
-    collection: defaultData.collection?.uuid ?? '',
+    collection:
+      typeof defaultData.collection === 'string'
+        ? defaultData.collection
+        : defaultData.collection?.uuid ?? '',
     description: defaultData.description ?? '',
     monthlyLimit: defaultData.monthlyLimit ?? 1,
     lifetimeLimit: defaultData.lifetimeLimit ?? 1,
@@ -112,7 +117,7 @@ const ItemDetailsForm = ({ mode, defaultData = {}, collections }: IProps) => {
 
   return (
     <form onSubmit={handleSubmit(mode === 'edit' ? editItem : createItem)}>
-      <h1>{mode === 'edit' ? 'Modify' : 'Create'} store item</h1>
+      <h1>{mode === 'edit' ? 'Modify' : 'Create'} Store Item</h1>
 
       <div className={style.form}>
         <label htmlFor="name">Item name</label>

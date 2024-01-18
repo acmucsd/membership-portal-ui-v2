@@ -11,14 +11,14 @@ import { GetServerSideProps } from 'next';
 
 interface CreateItemPageProps {
   user: PrivateProfile;
-  item: PublicMerchItem;
+  item: PublicMerchItem | { collection: string } | null;
   collections: PublicMerchCollection[];
 }
 const CreateItemPage = ({ user: { credits }, item, collections }: CreateItemPageProps) => {
   return (
     <div className={styles.container}>
       <Navbar balance={credits} showBack />
-      <ItemDetailsForm mode="create" defaultData={item} collections={collections} />
+      <ItemDetailsForm mode="create" defaultData={item ?? undefined} collections={collections} />
     </div>
   );
 };
@@ -30,7 +30,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
   const [item, collections] = await Promise.all([
     typeof query.duplicate === 'string'
       ? StoreAPI.getItem(query.duplicate, token)
-      : { collection: typeof query.collection === 'string' ? query.collection : undefined },
+      : { collection: typeof query.collection === 'string' ? query.collection : null },
     StoreAPI.getAllCollections(token),
   ]);
   return { props: { item, collections } };

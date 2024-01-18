@@ -1,9 +1,6 @@
 export type Styles = {
-  collections: string;
-  container: string;
-  createCollection: string;
-  header: string;
-  viewToggle: string;
+  icon: string;
+  itemCard: string;
 };
 
 export type ClassNames = keyof Styles;
