@@ -1,17 +1,24 @@
 import { config } from '@/lib';
 import type { UUID } from '@/lib/types';
 import {
+  CreateMerchCollectionRequest,
   CreateMerchItemRequest,
+  EditMerchCollectionRequest,
   EditMerchItemRequest,
+  MerchCollection,
   MerchItem,
   MerchItemEdit,
 } from '@/lib/types/apiRequests';
 import type {
+  CreateMerchCollectionResponse,
   CreateMerchItemResponse,
+  DeleteMerchCollectionResponse,
   DeleteMerchItemResponse,
+  EditMerchCollectionResponse,
   EditMerchItemResponse,
   GetAllMerchCollectionsResponse,
   GetMerchOrdersResponse,
+  GetOneMerchCollectionResponse,
   GetOneMerchItemResponse,
   GetOneMerchOrderResponse,
   PublicMerchCollection,
@@ -44,7 +51,7 @@ export const getItem = async (
 };
 
 /**
- * Create a single item by UUID
+ * Create a single store item by UUID
  * @param token Bearer token
  * @param merchandise Item info
  * @returns Item info
@@ -67,7 +74,7 @@ export const createItem = async (
 };
 
 /**
- * Edit a single item by UUID
+ * Edit a single store item by UUID
  * @param token Bearer token
  * @param uuid Merch item UUID
  * @param merchandise Item info
@@ -92,15 +99,95 @@ export const editItem = async (
 };
 
 /**
- * Delete a single item by UUID
+ * Delete a single store item by UUID
  * @param token Bearer token
  * @param uuid Merch item UUID
- * @returns Item info
  */
 export const deleteItem = async (token: string, uuid: UUID): Promise<void> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.item}/${uuid}`;
 
   await axios.delete<DeleteMerchItemResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+/**
+ * Get a single collection by UUID
+ * @param uuid Collection UUID
+ * @param token Bearer token
+ * @returns Collection info
+ */
+export const getCollection = async (uuid: UUID, token: string): Promise<PublicMerchCollection> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collection}/${uuid}`;
+
+  const response = await axios.get<GetOneMerchCollectionResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.collection;
+};
+
+/**
+ * Create a single collection by UUID
+ * @param token Bearer token
+ * @param collection Collection info
+ * @returns Collection info
+ */
+export const createCollection = async (
+  token: string,
+  collection: MerchCollection
+): Promise<PublicMerchCollection> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collection}`;
+
+  const requestBody: CreateMerchCollectionRequest = { collection };
+
+  const response = await axios.post<CreateMerchCollectionResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.collection;
+};
+
+/**
+ * Edit a single collection by UUID
+ * @param token Bearer token
+ * @param uuid Collection UUID
+ * @param collection Collection info
+ * @returns Collection info
+ */
+export const editCollection = async (
+  token: string,
+  uuid: UUID,
+  collection: MerchCollection
+): Promise<PublicMerchCollection> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collection}/${uuid}`;
+
+  const requestBody: EditMerchCollectionRequest = { collection };
+
+  const response = await axios.patch<EditMerchCollectionResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.collection;
+};
+
+/**
+ * Delete a single collection by UUID
+ * @param token Bearer token
+ * @param uuid Merch collection UUID
+ */
+export const deleteCollection = async (token: string, uuid: UUID): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collection}/${uuid}`;
+
+  await axios.delete<DeleteMerchCollectionResponse>(requestUrl, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

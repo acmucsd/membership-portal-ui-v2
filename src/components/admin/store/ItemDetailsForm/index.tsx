@@ -101,12 +101,7 @@ const ItemDetailsForm = ({ mode, defaultData = {}, collections }: IProps) => {
     const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
     try {
       await StoreAPI.deleteItem(AUTH_TOKEN, defaultData.uuid ?? '');
-      showToast('Item details saved!', '', [
-        {
-          text: 'View public item page',
-          onClick: () => router.push(config.store.homeRoute),
-        },
-      ]);
+      showToast('Item deleted successfully');
       router.push(config.store.homeRoute);
     } catch (error) {
       reportError('Could not delete item', error);

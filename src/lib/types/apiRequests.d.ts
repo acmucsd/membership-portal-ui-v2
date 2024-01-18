@@ -240,6 +240,7 @@ export interface RescheduleOrderPickupRequest {
 
 export interface MerchCollection {
   title: string;
+  /** 6 digits, starts with `#` */
   themeColorHex?: string;
   description: string;
   archived?: boolean;
