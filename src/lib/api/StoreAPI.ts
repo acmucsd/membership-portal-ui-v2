@@ -2,16 +2,20 @@ import { config } from '@/lib';
 import type { UUID } from '@/lib/types';
 import {
   CreateMerchCollectionRequest,
+  CreateMerchItemOptionRequest,
   CreateMerchItemRequest,
   EditMerchCollectionRequest,
   EditMerchItemRequest,
   MerchCollection,
   MerchItem,
   MerchItemEdit,
+  MerchItemOption,
 } from '@/lib/types/apiRequests';
 import type {
   CreateMerchCollectionResponse,
+  CreateMerchItemOptionResponse,
   CreateMerchItemResponse,
+  CreateMerchPhotoResponse,
   DeleteMerchCollectionResponse,
   DeleteMerchItemResponse,
   EditMerchCollectionResponse,
@@ -23,6 +27,8 @@ import type {
   GetOneMerchOrderResponse,
   PublicMerchCollection,
   PublicMerchItem,
+  PublicMerchItemOption,
+  PublicMerchItemPhoto,
   PublicMerchItemWithPurchaseLimits,
   PublicOrder,
   PublicOrderWithItems,
@@ -107,6 +113,90 @@ export const deleteItem = async (token: string, uuid: UUID): Promise<void> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.item}/${uuid}`;
 
   await axios.delete<DeleteMerchItemResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+/**
+ * Upload a photo for a store item
+ * @param token Authorization bearer token
+ * @param uuid Store item UUID
+ * @param image Photo
+ * @param position The position of the image
+ * @returns The store item photo object
+ */
+export const createItemPhoto = async (
+  token: string,
+  uuid: UUID,
+  image: Blob,
+  position = 0
+): Promise<PublicMerchItemPhoto> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.itemPicture}/${uuid}`;
+
+  const requestBody = new FormData();
+  requestBody.append('position', `${position}`);
+  requestBody.append('image', image);
+
+  const response = await axios.post<CreateMerchPhotoResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.merchPhoto;
+};
+
+/**
+ * Delete a merch item photo
+ * @param token Authorization bearer token
+ * @param uuid Merch item *photo* UUID
+ */
+export const deleteItemPhoto = async (token: string, uuid: UUID): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.itemPicture}/${uuid}`;
+
+  await axios.delete(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+/**
+ * Create a store item option
+ * @param token Authorization bearer token
+ * @param uuid Store item UUID
+ * @param option The store item option object
+ * @returns The store item option object
+ */
+export const createItemOption = async (
+  token: string,
+  uuid: UUID,
+  option: MerchItemOption
+): Promise<PublicMerchItemOption> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.option}/${uuid}`;
+
+  const requestBody: CreateMerchItemOptionRequest = { option };
+
+  const response = await axios.post<CreateMerchItemOptionResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.option;
+};
+
+/**
+ * Delete a merch item option
+ * @param token Authorization bearer token
+ * @param uuid Merch item *option* UUID
+ */
+export const deleteItemOption = async (token: string, uuid: UUID): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.option}/${uuid}`;
+
+  await axios.delete(requestUrl, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

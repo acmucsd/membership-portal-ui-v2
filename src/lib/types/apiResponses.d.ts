@@ -207,7 +207,7 @@ export interface PublicMerchItemOption {
 }
 
 export interface PublicMerchItemPhoto {
-  uuid: Uuid;
+  uuid: UUID;
   uploadedPhoto: string;
   position: number;
   uploadedAt: Date;
@@ -280,9 +280,11 @@ export interface EditMerchItemResponse extends ApiResponse {
 
 export interface DeleteMerchItemResponse extends ApiResponse {}
 
-export interface UpdateMerchPhotoResponse extends ApiResponse {
-  item: PublicMerchItem;
+export interface CreateMerchPhotoResponse extends ApiResponse {
+  merchPhoto: PublicMerchItemPhoto;
 }
+
+export interface DeleteMerchItemPhotoResponse extends ApiResponse {}
 
 export interface CreateMerchItemOptionResponse extends ApiResponse {
   option: PublicMerchItemOption;
