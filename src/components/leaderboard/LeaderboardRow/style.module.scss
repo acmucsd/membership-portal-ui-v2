@@ -1,0 +1,94 @@
+@use 'src/styles/vars.scss' as vars;
+
+.row {
+  align-items: center;
+  background-color: var(--theme-surface-1);
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: auto auto 2fr 1fr;
+  min-height: 4rem;
+  padding: 0.5rem;
+  padding-right: 2rem;
+  transition: none;
+
+  @media (max-width: vars.$breakpoint-md) {
+    gap: 1rem;
+    grid-template-columns: auto auto 1fr auto;
+    padding-right: 1.5rem;
+  }
+
+  &:nth-child(2n) {
+    background-color: var(--theme-background);
+  }
+
+  &.flash {
+    animation: flash 2s;
+    @keyframes flash {
+      0%,
+      20%,
+      40%,
+      60% {
+        background-color: var(--theme-background);
+        color: var(--theme-text-on-background-1);
+      }
+
+      10%,
+      30%,
+      50% {
+        background-color: var(--theme-primary-2);
+        color: var(--theme-background);
+      }
+    }
+  }
+
+  .position {
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-align: right;
+    width: 2.5rem;
+  }
+
+  .profilePicture {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .nameRank {
+    align-items: center;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+
+    @media (max-width: vars.$breakpoint-md) {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+    }
+
+    .name {
+      font-weight: 500;
+
+      .match {
+        background-color: var(--theme-primary-2);
+        border-radius: 2px;
+        color: var(--theme-background);
+      }
+    }
+
+    .rank {
+      color: var(--theme-text-on-surface-1);
+      opacity: 0.5;
+      text-align: center;
+
+      @media (max-width: vars.$breakpoint-md) {
+        text-align: left;
+      }
+    }
+  }
+
+  .points {
+    font-weight: 500;
+    text-align: right;
+  }
+}

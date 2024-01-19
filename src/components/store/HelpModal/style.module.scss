@@ -1,0 +1,63 @@
+@use 'src/styles/vars.scss' as vars;
+
+.steps {
+  display: flex;
+  gap: 1rem;
+  overflow: auto;
+  // HACK: It seems padding around .steps is necessary to get rid of
+  // unwanted scrollbars on desktop Windows ¯\_(ツ)_/¯
+  padding: 0.5rem;
+  scroll-behavior: smooth;
+
+  @media screen and (max-width: vars.$breakpoint-lg) {
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    width: 19.75rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    scroll-snap-align: center;
+    text-align: center;
+    width: 18.75rem;
+
+    p {
+      margin-top: 1rem;
+    }
+
+    .stepControls {
+      display: none;
+      justify-content: space-between;
+      margin-top: auto;
+
+      @media screen and (max-width: vars.$breakpoint-lg) {
+        display: flex;
+      }
+
+      .stepControl {
+        align-items: center;
+        background-color: var(--theme-surface-1);
+        border-radius: 50%;
+        display: flex;
+        height: 2rem;
+        justify-content: center;
+        width: 2rem;
+
+        path {
+          stroke: vars.$disabled;
+        }
+
+        &:not(span) path {
+          fill: currentColor;
+          stroke: currentColor;
+        }
+      }
+    }
+  }
+}

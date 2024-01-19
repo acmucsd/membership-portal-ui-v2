@@ -1,15 +1,15 @@
 import Navbar from '@/components/layout/Navbar';
-import type { PrivateProfile } from '@/lib/types/apiResponses';
+import { UserAccessType } from '@/lib/types/enums';
 import { PropsWithChildren } from 'react';
 import styles from './style.module.scss';
 
 interface LayoutProps {
-  user: PrivateProfile;
+  accessType?: UserAccessType;
 }
 
-const PageLayout = ({ user, children }: PropsWithChildren<LayoutProps>) => (
+const PageLayout = ({ accessType, children }: PropsWithChildren<LayoutProps>) => (
   <>
-    <Navbar user={user} />
+    <Navbar accessType={accessType} />
     <main className={styles.content}>{children}</main>
   </>
 );

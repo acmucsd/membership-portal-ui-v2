@@ -1,0 +1,37 @@
+@use 'src/styles/vars.scss' as vars;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+
+    .headerText {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .viewToggle {
+      background: none;
+      flex: none;
+      font: inherit;
+      padding: 0;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .card {
+    flex: none;
+    width: 20rem;
+  }
+}

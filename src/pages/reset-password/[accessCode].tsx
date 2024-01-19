@@ -30,10 +30,10 @@ const ResetPasswordPage = ({ code }: ResetPasswordProps) => {
 
   const onSubmit: SubmitHandler<ResetPasswordForm> = ({ newPassword, confirmPassword }) => {
     AuthManager.resetPassword({
+      code,
       user: {
         newPassword,
         confirmPassword,
-        code,
       },
       onSuccessCallback: () => {
         showToast('Password successfully updated!');

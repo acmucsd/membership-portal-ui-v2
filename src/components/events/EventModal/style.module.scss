@@ -1,0 +1,68 @@
+@use 'src/styles/vars.scss' as vars;
+
+.image {
+  aspect-ratio: 1920 / 1080;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.contents {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 70rem;
+  padding: 2.5rem;
+  width: 70vw;
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+
+    .eventDetails {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+    }
+  }
+
+  .link {
+    color: var(--theme-primary-2);
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    text-decoration: underline;
+  }
+}
+
+@media screen and (width <= vars.$breakpoint-md) {
+  .eventDetails {
+    flex-wrap: wrap;
+
+    /* !important's are necessary here to override Typography's styling */
+    .eventTitle {
+      font-size: 1.5rem !important;
+      line-height: 2rem !important;
+    }
+
+    .eventInfo {
+      font-size: 1rem !important;
+      line-height: 1.5rem !important;
+    }
+  }
+
+  .header {
+    flex-wrap: wrap;
+    gap: 2.5rem;
+  }
+}
+
+@media screen and (width <= vars.$breakpoint-sm) {
+  .contents {
+    width: 100vw;
+  }
+}

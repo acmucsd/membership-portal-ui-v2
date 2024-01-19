@@ -1,15 +1,15 @@
 import { config } from '@/lib';
+import { UserAPI } from '@/lib/api';
 import { CookieService } from '@/lib/services';
-import { URL } from '@/lib/types';
+import type { URL } from '@/lib/types';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, UserAccessType } from '@/lib/types/enums';
-import * as _ from 'lodash';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-
+import type { GetServerSideProps, GetServerSidePropsContext } from 'next';
 /**
  * Redirects to login if user is not logged in and allowed to see the specified page
  * @param gssp Server-side props function to run afterwards
  * @param validAccessTypes Access types that can see this page
+ * @param redirectTo URL to send users without valid access level
  * @returns
  */
 export default function withAccessType(
@@ -19,56 +19,70 @@ export default function withAccessType(
 ): GetServerSideProps {
   // Generate a new getServerSideProps function by taking the return value of the original function and appending the user prop onto it if the user cookie exists, otherwise force user to login page
   const modified: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-    // Initialize variables
     const { req, res } = context;
-    const originalReturnValue = await gssp(context);
+    let userCookie = CookieService.getServerCookie(CookieType.USER, { req, res });
+    const authTokenCookie = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
-    // Save current URL so user can return here after logging in
-    const currentUrl = encodeURIComponent(req.url ?? config.homeRoute);
+    const { homeRoute, loginRoute } = config;
+    const currentPageURL = req.url as string;
+    const recoveryQueryString = `?destination=${encodeURIComponent(currentPageURL)}`;
+    const loginRedirectURL = loginRoute;
+    const missingAccessRedirectURL = redirectTo ?? loginRoute;
 
-    const baseRoute = redirectTo ?? config.loginRoute;
-    const destinationRoute =
-      baseRoute === config.loginRoute ? `${baseRoute}?destination=${currentUrl}` : baseRoute;
-
-    const safeRedirectToLogin = {
+    const loginRedirect = {
       redirect: {
-        destination: destinationRoute,
+        destination: `${loginRedirectURL}${
+          currentPageURL !== homeRoute ? recoveryQueryString : ''
+        }`,
+        permanent: false,
+      },
+    };
+    const missingAccessRedirect = {
+      redirect: {
+        destination: `${missingAccessRedirectURL}${
+          missingAccessRedirectURL === loginRoute ? recoveryQueryString : ''
+        }`,
         permanent: false,
       },
     };
 
-    // Get user cookie
-    const userCookie = CookieService.getServerCookie(CookieType.USER, { req, res });
-    const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-
-    // If cookie is misisng, we are not logged in so don't show the current page
-    if (!userCookie || !token) {
-      if (currentUrl === config.homeRoute) {
-        return {
-          redirect: {
-            destination: currentUrl,
-            permanent: false,
-          },
-        };
-      }
-      return safeRedirectToLogin;
+    // If no auth token, kick to login screen
+    if (!authTokenCookie) {
+      return loginRedirect;
     }
 
-    // Once we have the cookie, read the user data
-    const user: PrivateProfile = JSON.parse(userCookie);
+    let user: PrivateProfile;
+    let userAccessLevel: UserAccessType;
 
-    if (!validAccessTypes.includes(user.accessType)) return safeRedirectToLogin;
+    try {
+      user = JSON.parse(userCookie);
+      userAccessLevel = user.accessType;
+      // If no user cookie, try to re-generate one
+      if (!userCookie || !userAccessLevel) {
+        user = await UserAPI.getCurrentUser(authTokenCookie);
+        userAccessLevel = user.accessType;
+        userCookie = JSON.stringify(user);
+        CookieService.setServerCookie(CookieType.USER, JSON.stringify(userCookie), { req, res });
+      }
+    } catch (err: any) {
+      return loginRedirect;
+    }
 
-    // If we haven't short-circuited, user is valid. Show the page and add the user prop.
-    const propsWithUser = {
-      props: {
-        user,
-      },
-    };
+    /* If the user does not have the right access, redirect as specified */
+    if (!validAccessTypes.includes(userAccessLevel)) return missingAccessRedirect;
 
-    // Append user at the start so it can be overridden if necessary using deep merge so we don't delete the whole props object
-    const finalObj = _.merge(propsWithUser, originalReturnValue);
-    return finalObj;
+    // If we haven't short-circuited, user has valid access. Show the page and add the user prop.
+    const originalReturnValue = await gssp(context);
+    // Insert the user object to the original return value if it doesn't exist already
+    if ('props' in originalReturnValue) {
+      const existingProps = await Promise.resolve(originalReturnValue.props);
+      if (!existingProps.user) {
+        existingProps.user = user;
+        originalReturnValue.props = existingProps;
+      }
+    }
+
+    return originalReturnValue;
   };
   return modified;
 }
