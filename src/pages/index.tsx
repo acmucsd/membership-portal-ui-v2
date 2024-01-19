@@ -127,7 +127,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
   // After that, fetch the other API calls.
   const eventsPromise = EventAPI.getAllEvents();
   const attendancesPromise = UserAPI.getAttendancesForCurrentUser(authToken);
-  const userPromise = UserAPI.getCurrentUser(authToken);
+  const userPromise = UserAPI.getCurrentUserAndRefresh(authToken, { req, res });
 
   const [events, attendances, user] = await Promise.all([
     eventsPromise,

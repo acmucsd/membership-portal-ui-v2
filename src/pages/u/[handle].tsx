@@ -8,7 +8,6 @@ import { config } from '@/lib';
 import { UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import { setServerCookie } from '@/lib/services/CookieService';
 import { CookieType } from '@/lib/types/enums';
 import type { GetServerSideProps } from 'next/types';
 
@@ -35,10 +34,9 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
   try {
     const [handleUser, user, signedInAttendances] = await Promise.all([
       UserAPI.getUserByHandle(token, handle).catch(() => null),
-      UserAPI.getCurrentUser(token),
+      UserAPI.getCurrentUserAndRefresh(token, { req, res }),
       UserAPI.getAttendancesForCurrentUser(token),
     ]);
-    setServerCookie(CookieType.USER, JSON.stringify(user), { req, res });
 
     // render UserHandleNotFoundPage when user with handle is not retrieved
     if (handleUser === null) return { props: { handle } };

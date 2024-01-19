@@ -11,7 +11,7 @@ export default UserProfilePage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  const user = await UserAPI.getCurrentUser(token);
+  const user = await UserAPI.getCurrentUserAndRefresh(token, { req, res });
 
   return {
     redirect: {
