@@ -45,10 +45,9 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
 
     const isSignedInUser = handleUser.uuid === user.uuid;
 
-    const attendances =
-      !handleUser.isAttendancePublic || isSignedInUser
-        ? null
-        : (await UserAPI.getAttendancesForUserByUUID(token, user.uuid)).slice(0, 10);
+    let attendances = null;
+    if (!handleUser.isAttendancePublic || isSignedInUser)
+      attendances = (await UserAPI.getAttendancesForUserByUUID(token, user.uuid)).slice(0, 10);
 
     // render UserProfilePage
     return {
