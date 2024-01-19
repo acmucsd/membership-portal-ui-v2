@@ -332,7 +332,7 @@ export interface PublicProfile {
   major: string;
   bio: string | null;
   points: number;
-  userSocialMedia?: PublicUserSocialMedia[];
+  userSocialMedia: PublicUserSocialMedia[];
   isAttendancePublic: boolean;
 }
 

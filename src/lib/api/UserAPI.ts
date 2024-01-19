@@ -9,11 +9,13 @@ import {
   UserPatches,
 } from '@/lib/types/apiRequests';
 import type {
+  GetAttendancesForUserResponse,
   GetCurrentUserResponse,
   GetUserResponse,
   InsertSocialMediaResponse,
   PatchUserResponse,
   PrivateProfile,
+  PublicAttendance,
   PublicProfile,
   PublicUserSocialMedia,
   UpdateProfilePictureResponse,
@@ -164,4 +166,46 @@ export const deleteSocialMedia = async (token: string, uuid: UUID): Promise<void
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+export const getAttendancesForCurrentUser = async (token: string): Promise<PublicAttendance[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.attendance}`;
+
+  const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.attendances;
+};
+
+export const getAttendancesForUserByUUID = async (
+  token: string,
+  uuid: UUID
+): Promise<PublicAttendance[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.forUserByUUID}/${uuid}`;
+
+  const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.attendances;
+};
+
+export const getPublicUserProfileByUUID = async (
+  token: string,
+  uuid: UUID
+): Promise<PublicProfile> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.user}/${uuid}`;
+
+  const response = await axios.get<GetUserResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.user;
 };

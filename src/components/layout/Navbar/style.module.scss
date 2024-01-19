@@ -105,6 +105,8 @@
       .iconLink {
         color: var(--theme-text-on-background-1);
         cursor: pointer;
+        height: 24px;
+        width: 24px;
       }
     }
   }
@@ -149,6 +151,11 @@
 
       &:hover {
         background-color: var(--theme-surface-1);
+      }
+
+      svg {
+        height: 24px;
+        width: 24px;
       }
     }
   }

@@ -1,7 +1,7 @@
 import { Dropdown, PaginationControls, Typography } from '@/components/common';
 import { DIVIDER } from '@/components/common/Dropdown';
 import { EventDisplay } from '@/components/events';
-import { EventAPI } from '@/lib/api';
+import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
@@ -173,10 +173,11 @@ export default EventsPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  const getEvents = EventAPI.getAllEvents();
-  const getAttendances = EventAPI.getAttendancesForUser(authToken);
+  
+  const getEventsPromise = EventAPI.getAllEvents();
+  const getAttendancesPromise = EventAPI.getAttendancesForUser(authToken);
 
-  const [events, attendances] = await Promise.all([getEvents, getAttendances]);
+  const [events, attendances] = await Promise.all([getEventsPromise, getAttendancesPromise]);
 
   return { props: { events, attendances } };
 };
