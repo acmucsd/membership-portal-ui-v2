@@ -67,8 +67,15 @@ export default function withAccessType(
         CookieService.setServerCookie(CookieType.USER, JSON.stringify(userCookie), { req, res });
       }
     } catch (err: any) {
-      CookieService.deleteServerCookie(CookieType.USER, { req, res });
-      return loginRedirect;
+      try {
+        user = await UserAPI.getCurrentUser(authTokenCookie);
+        userAccessLevel = user.accessType;
+        userCookie = JSON.stringify(user);
+        CookieService.setServerCookie(CookieType.USER, JSON.stringify(userCookie), { req, res });
+      } catch (err: any) {
+        CookieService.deleteServerCookie(CookieType.USER, { req, res });
+        return loginRedirect;
+      }
     }
 
     /* If the user does not have the right access, redirect as specified */
