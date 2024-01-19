@@ -173,9 +173,9 @@ export default EventsPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  
+
   const getEventsPromise = EventAPI.getAllEvents();
-  const getAttendancesPromise = EventAPI.getAttendancesForUser(authToken);
+  const getAttendancesPromise = UserAPI.getAttendancesForCurrentUser(authToken);
 
   const [events, attendances] = await Promise.all([getEventsPromise, getAttendancesPromise]);
 
