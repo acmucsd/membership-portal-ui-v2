@@ -83,8 +83,8 @@ export const placeMerchOrder = async (
 ): Promise<PublicOrderWithItems> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}`;
 
-  console.log(token);
-  console.log(JSON.stringify(data));
+  // console.log(token);
+  // console.log(JSON.stringify(data));
 
   const response = await axios.post<PlaceMerchOrderResponse>(requestUrl, data, {
     headers: {
