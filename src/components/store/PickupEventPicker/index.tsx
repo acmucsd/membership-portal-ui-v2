@@ -27,7 +27,7 @@ const PickupEventPicker = ({ events, eventIndex, setEventIndex, active }: EventP
         <div className={styles.eventNavigation}>
           <button
             type="button"
-            onClick={() => setEventIndex(i => (i > 0 ? i - 1 : 0))}
+            onClick={() => setEventIndex((i: number) => (i > 0 ? i - 1 : 0))}
             aria-label="Previous Event"
             disabled={eventIndex <= 0}
           >
