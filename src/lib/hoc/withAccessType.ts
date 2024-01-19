@@ -55,16 +55,19 @@ export default function withAccessType(
     let userAccessLevel: UserAccessType;
 
     try {
-      user = JSON.parse(userCookie);
-      userAccessLevel = user.accessType;
-      // If no user cookie, try to re-generate one
-      if (!userCookie || !userAccessLevel) {
+      if (userCookie) {
+        user = JSON.parse(userCookie);
+        userAccessLevel = user.accessType;
+
+        if (!userAccessLevel) throw new Error('Missing access level on user cookie');
+      } else {
         user = await UserAPI.getCurrentUser(authTokenCookie);
         userAccessLevel = user.accessType;
         userCookie = JSON.stringify(user);
         CookieService.setServerCookie(CookieType.USER, JSON.stringify(userCookie), { req, res });
       }
     } catch (err: any) {
+      CookieService.deleteServerCookie(CookieType.USER, { req, res });
       return loginRedirect;
     }
 
