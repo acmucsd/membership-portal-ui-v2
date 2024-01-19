@@ -236,14 +236,17 @@ export const getDateRange = (sort: string | number) => {
     }
     case 'past-week': {
       from = now - DAY_SECONDS * 7;
+      to = now;
       break;
     }
     case 'past-month': {
       from = now - DAY_SECONDS * 28;
+      to = now;
       break;
     }
     case 'past-year': {
       from = now - DAY_SECONDS * 365;
+      to = now;
       break;
     }
     case 'all-time': {

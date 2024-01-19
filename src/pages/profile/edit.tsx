@@ -600,5 +600,5 @@ const getServerSidePropsFunc: GetServerSideProps<EditProfileProps> = async ({ re
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );

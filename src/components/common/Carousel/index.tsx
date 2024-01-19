@@ -1,11 +1,7 @@
-import type { ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 import styles from './style.module.scss';
 
-interface CarouselProps {
-  children: ReactNode[];
-}
-
-const Carousel = ({ children }: CarouselProps) => {
+const Carousel = ({ children }: PropsWithChildren) => {
   return <div className={styles.slider}>{children}</div>;
 };
 

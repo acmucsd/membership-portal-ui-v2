@@ -1,4 +1,5 @@
 import { Dropdown, PaginationControls } from '@/components/common';
+import { DIVIDER } from '@/components/common/Dropdown';
 import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { config } from '@/lib';
 import { LeaderboardAPI } from '@/lib/api';
@@ -106,7 +107,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             { value: 'past-month', label: 'Past month' },
             { value: 'past-year', label: 'Past year' },
             { value: 'all-time', label: 'All time' },
-            '---',
+            DIVIDER,
             ...years,
           ]}
           value={sort}
@@ -173,6 +174,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   const sort = typeof query.sort === 'string' ? query.sort : getEndYear() - 1;
+
   const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN, getLeaderboardRange(sort));
 
   return {
@@ -182,5 +184,5 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );

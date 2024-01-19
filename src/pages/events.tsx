@@ -1,4 +1,5 @@
 import { Dropdown, PaginationControls, Typography } from '@/components/common';
+import { DIVIDER } from '@/components/common/Dropdown';
 import { EventDisplay } from '@/components/events';
 import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -127,7 +128,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
               { value: 'past-month', label: 'Past month' },
               { value: 'past-year', label: 'Past year' },
               { value: 'all-time', label: 'All time' },
-              '---',
+              DIVIDER,
               ...years,
             ]}
             value={dateFilter}
@@ -172,15 +173,16 @@ export default EventsPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  const [events, attendances] = await Promise.all([
-    EventAPI.getAllEvents(),
-    UserAPI.getAttendancesForCurrentUser(authToken),
-  ]);
+
+  const getEventsPromise = EventAPI.getAllEvents();
+  const getAttendancesPromise = UserAPI.getAttendancesForCurrentUser(authToken);
+
+  const [events, attendances] = await Promise.all([getEventsPromise, getAttendancesPromise]);
 
   return { props: { events, attendances } };
 };
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );
