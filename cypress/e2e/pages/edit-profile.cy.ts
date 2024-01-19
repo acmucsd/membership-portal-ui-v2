@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('Forgot Password Page', () => {
+describe('Edit Profile Page', () => {
   beforeEach(() => {
     cy.login('standard');
     cy.location('pathname').should('equal', '/');

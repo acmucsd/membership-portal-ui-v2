@@ -176,9 +176,14 @@
 
     }
 
-    svg {
-      height: 2rem;
-      width: 2rem;
+    .socialIcons {
+      display: flex;
+      gap: 0.25rem;
+
+      svg {
+        height: 2rem;
+        width: 2rem;
+      }
     }
 
     .bioSection {

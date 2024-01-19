@@ -112,7 +112,7 @@ export const UserProfilePage = ({
             <MajorIcon className={styles.icon} />
             <Typography variant="h4/regular">{handleUser.major}</Typography>
           </div>
-          <div>
+          <div className={styles.socialIcons}>
             {handleUser.userSocialMedia?.map(social => (
               <a
                 href={

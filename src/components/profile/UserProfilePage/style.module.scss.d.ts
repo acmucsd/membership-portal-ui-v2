@@ -20,6 +20,7 @@ export type Styles = {
   progressSection: string;
   rank: string;
   section: string;
+  socialIcons: string;
 };
 
 export type ClassNames = keyof Styles;
