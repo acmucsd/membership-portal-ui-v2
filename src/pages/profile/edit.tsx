@@ -1,4 +1,4 @@
-import { Cropper } from '@/components/common';
+import { Cropper, GifSafeImage } from '@/components/common';
 import {
   EditBlock,
   EditField,
@@ -9,19 +9,18 @@ import {
 } from '@/components/profile';
 import { config, showToast } from '@/lib';
 import { AuthAPI, ResumeAPI, UserAPI } from '@/lib/api';
-import majors from '@/lib/constants/majors.json';
+import majors from '@/lib/constants/majors';
 import socialMediaTypes from '@/lib/constants/socialMediaTypes';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, SocialMediaType } from '@/lib/types/enums';
-import { capitalize, getMessagesFromError, getProfilePicture, isSrcAGif } from '@/lib/utils';
+import { capitalize, getMessagesFromError, getProfilePicture } from '@/lib/utils';
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import DropdownIcon from '@/public/assets/icons/dropdown-arrow-1.svg';
 import styles from '@/styles/pages/profile/edit.module.scss';
 import { AxiosError } from 'axios';
 import type { GetServerSideProps } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FormEvent, useEffect, useId, useMemo, useState } from 'react';
 
@@ -36,7 +35,8 @@ function reportError(title: string, error: unknown) {
 }
 
 function fixUrl(input: string, prefix?: string): string {
-  if (!input || input.startsWith('https://')) {
+  // Return input as-is if it's blank or includes a protocol
+  if (!input || input.includes('://')) {
     return input;
   }
   // Encourage https://
@@ -278,7 +278,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                     onDragLeave={() => setPfpDrop(false)}
                   >
                     <label className={styles.pfpOutline} htmlFor={pfpUploadId}>
-                      <Image
+                      <GifSafeImage
                         className={styles.pfp}
                         src={
                           getProfilePicture(user) +
@@ -287,7 +287,6 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                         alt="Profile picture"
                         width={125}
                         height={125}
-                        unoptimized={isSrcAGif(user.profilePicture)}
                       />
                     </label>
                     <div className={styles.pfpButtons}>
@@ -376,7 +375,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 </EditBlock>
               </div>
             </details>
-            <details open>
+            <details open id="about">
               <summary>
                 <h2>About Me</h2>
                 <DropdownIcon aria-hidden />
@@ -385,7 +384,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 <EditField
                   label="Major"
                   element="select"
-                  options={majors.majors}
+                  options={majors}
                   changed={majorChanged}
                   value={major}
                   onChange={setMajor}
