@@ -29,6 +29,7 @@
     "@mui/material": "^5.11.6",
     "@next/env": "^13.2.4",
     "@svgr/webpack": "^6.5.1",
+    "@vercel/analytics": "^1.1.2",
     "axios": "^1.6.0",
     "axios-middleware": "^0.3.1",
     "cookies-next": "^2.1.1",
