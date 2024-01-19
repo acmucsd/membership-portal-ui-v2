@@ -7,9 +7,10 @@ import InstagramIcon from '@/public/assets/icons/instagram.svg';
 import LinkIcon from '@/public/assets/icons/link-icon.svg';
 import LinkedInIcon from '@/public/assets/icons/linkedin-icon.svg';
 import TwitterIcon from '@/public/assets/icons/twitter.svg';
+import { ComponentType, SVGProps } from 'react';
 
 interface SocialMediaInfo {
-  icon: string;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
   label: string;
   domain?: string;
   example: string;
