@@ -56,6 +56,7 @@ export default function withAccessType(
 
     try {
       if (userCookie) {
+        // Standard flow will use the existing user cookie as src data unless it's corrupted or missing keys, then try to refresh user otherwise redirect on fail
         user = JSON.parse(userCookie);
         userAccessLevel = user.accessType;
 
