@@ -27,7 +27,6 @@ const PickupEventPicker = ({ events, eventIndex, setEventIndex, active }: EventP
         <div className={styles.eventNavigation}>
           <button
             type="button"
-            // redeploy
             onClick={() => setEventIndex((i: number) => (i > 0 ? i - 1 : 0))}
             aria-label="Previous Event"
             disabled={eventIndex <= 0}
@@ -39,7 +38,7 @@ const PickupEventPicker = ({ events, eventIndex, setEventIndex, active }: EventP
           }`}</Typography>
           <button
             type="button"
-            onClick={() => setEventIndex(i => Math.min(i + 1, events.length - 1))}
+            onClick={() => setEventIndex((i: number) => Math.min(i + 1, events.length - 1))}
             aria-label="Next Event"
             disabled={eventIndex >= events.length - 1}
           >
