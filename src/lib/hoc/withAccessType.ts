@@ -2,7 +2,7 @@ import { config } from '@/lib';
 import { UserAPI } from '@/lib/api';
 import { CookieService } from '@/lib/services';
 import type { URL } from '@/lib/types';
-import type { PrivateProfile } from '@/lib/types/apiResponses';
+import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, UserAccessType } from '@/lib/types/enums';
 import type { GetServerSideProps, GetServerSidePropsContext } from 'next';
 /**
@@ -51,33 +51,28 @@ export default function withAccessType(
       return loginRedirect;
     }
 
-    let user: PrivateProfile;
-    let userAccessLevel: UserAccessType;
+    let user: PrivateProfile | undefined;
+    let userAccessLevel: UserAccessType | undefined;
 
-    try {
-      if (userCookie) {
-        // Standard flow will use the existing user cookie as src data unless it's corrupted or missing keys, then try to refresh user otherwise redirect on fail
-        user = JSON.parse(userCookie);
-        userAccessLevel = user.accessType;
-
-        if (!userAccessLevel) throw new Error('Missing access level on user cookie');
-      } else {
-        user = await UserAPI.getCurrentUser(authTokenCookie);
-        userAccessLevel = user.accessType;
-        userCookie = JSON.stringify(user);
-        CookieService.setServerCookie(CookieType.USER, JSON.stringify(userCookie), { req, res });
-      }
-    } catch (err: any) {
+    if (userCookie) {
+      // Standard flow will use the existing user cookie as src data unless it's corrupted or missing keys, then try to refresh user otherwise redirect on fail
       try {
-        user = await UserAPI.getCurrentUser(authTokenCookie);
-        userAccessLevel = user.accessType;
-        userCookie = JSON.stringify(user);
-        CookieService.setServerCookie(CookieType.USER, JSON.stringify(userCookie), { req, res });
-      } catch (err: any) {
-        CookieService.deleteServerCookie(CookieType.USER, { req, res });
-        return loginRedirect;
+        user = JSON.parse(userCookie);
+        userAccessLevel = user?.accessType;
+      } catch {
+        user = undefined;
       }
     }
+
+    if (!user || !userAccessLevel) {
+      user = await UserAPI.getCurrentUser(authTokenCookie);
+      userAccessLevel = user.accessType;
+      userCookie = JSON.stringify(user);
+      CookieService.setServerCookie(CookieType.USER, JSON.stringify(userCookie), { req, res });
+    }
+
+    // This block should be impossible to hit assuming the portal API doesn't go down
+    if (!userAccessLevel) throw new Error('User access level is not defined');
 
     /* If the user does not have the right access, redirect as specified */
     if (!validAccessTypes.includes(userAccessLevel)) return missingAccessRedirect;
