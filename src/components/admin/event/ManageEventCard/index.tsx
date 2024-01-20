@@ -1,10 +1,12 @@
 import { Button } from '@/components/common';
+import { GoogleCalendarButton } from '@/components/events/CalendarButtons';
 import { config, showToast } from '@/lib';
 import { AdminEventManager } from '@/lib/managers';
 import { PublicEvent } from '@/lib/types/apiResponses';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import style from './style.module.scss';
 
 interface IProps {
@@ -13,6 +15,7 @@ interface IProps {
 
 const ManageEventCard = ({ event }: IProps) => {
   const router = useRouter();
+  const [acmurlLoading, setAcmurlLoading] = useState(false);
 
   const publicEventLink = `https://acmucsd.com/events/${event.uuid}`;
 
@@ -46,15 +49,21 @@ const ManageEventCard = ({ event }: IProps) => {
         acmurl = regexMatch[1] as string;
       }
 
+      setAcmurlLoading(true);
       AdminEventManager.generateACMURL({
         shortlink: acmurl,
         longlink: publicEventLink,
-        onSuccessCallback: () =>
+        onSuccessCallback: () => {
+          setAcmurlLoading(false);
           showToast(
             'Successfully generated ACMURL!',
             `acmurl.com/${acmurl} will now redirect to ${publicEventLink}`
-          ),
-        onFailCallback: e => showToast('Error while generating ACMURL!', e),
+          );
+        },
+        onFailCallback: e => {
+          setAcmurlLoading(false);
+          showToast('Error while generating ACMURL!', e);
+        },
       });
     }
   };
@@ -75,7 +84,10 @@ const ManageEventCard = ({ event }: IProps) => {
       <Link href={`${config.admin.events.editRoute}/${event.uuid}`}>Edit Details</Link>
       <Button onClick={duplicateEvent}>Duplicate Event</Button>
       <Button onClick={generateDiscordEvent}>Generate Discord Event</Button>
-      <Button onClick={generateACMURL}>Generate ACMURL</Button>
+      <Button onClick={generateACMURL} disabled={acmurlLoading}>
+        Generate ACMURL
+      </Button>
+      <GoogleCalendarButton event={event} />
     </div>
   );
 };
