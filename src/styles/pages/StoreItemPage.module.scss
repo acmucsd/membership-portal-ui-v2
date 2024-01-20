@@ -11,14 +11,15 @@
   flex-direction: row;
   gap: 5rem;
   justify-content: center;
-  overflow: auto;
   width: 95%;
 
   @media (max-width: 600px) {
     // could also do display: flex; flex-direction: column;
     flex-direction: column;
     gap: 2rem;
-    overflow: hidden;
+    overflow-y: visible;
+    padding: 0;
+    width: 100%;
 
     .coverContainer {
       height: 22.5rem;
@@ -32,6 +33,14 @@
   gap: 2rem;
   justify-content: center;
   width: 90%;
+  @media (max-width: 600px) {
+    overflow: visible;
+    width: 100%;
+
+    ::-webkit-scrollbar {
+      appearance: none;
+    }
+  }
 }
 
 .coverContainer {
