@@ -23,8 +23,18 @@ const InternalServerError = () => {
             textAlign: 'center',
           }}
         >
-          If that doesn&apos;t work, file a bug to us on our project issue&apos;s page
-          <a href="https://github.com/acmucsd/membership-portal-ui-v2/issues"> here</a>
+          If that doesn&apos;t work, file a bug to us on our project issue&apos;s page&nbsp;
+          <a
+            href="https://github.com/acmucsd/membership-portal-ui-v2/issues/new"
+            style={{
+              color: 'var(--theme-primary-4)',
+              textDecoration: 'underline',
+              fontWeight: '700',
+            }}
+          >
+            here
+          </a>
+          .
         </span>
       </VerticalForm>
     </div>
