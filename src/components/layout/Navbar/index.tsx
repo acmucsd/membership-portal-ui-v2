@@ -57,7 +57,7 @@ const Navbar = ({ accessType }: NavbarProps) => {
           </Link>
           <ThemeToggle />
         </div>
-        <hr className={styles.wainbow} />
+        <hr className={`${styles.wainbow} ${styles.loggedOut}`} />
       </header>
     );
   }

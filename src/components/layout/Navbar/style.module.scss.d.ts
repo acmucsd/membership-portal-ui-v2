@@ -7,6 +7,7 @@ export type Styles = {
   icon: string;
   iconLink: string;
   iconLinks: string;
+  loggedOut: string;
   mobileNav: string;
   mobileNavItem: string;
   navLeft: string;

@@ -6,7 +6,7 @@ import { useEffect, useId, useState } from 'react';
 import styles from './style.module.scss';
 
 const ThemeToggle = () => {
-  const { theme = 'system', setTheme } = useTheme();
+  const { theme = 'system', resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   const lightId = `light${useId()}`;
@@ -23,6 +23,15 @@ const ThemeToggle = () => {
 
   const switchPos = themeToSwitch[theme];
   const currAltText = `Icon representing ${theme} theme is on.`;
+
+  useEffect(() => {
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor && resolvedTheme === 'dark') {
+      metaThemeColor.setAttribute('content', '#37393e');
+    } else if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', '#fff');
+    }
+  }, [resolvedTheme]);
 
   useEffect(() => {
     setMounted(true);
