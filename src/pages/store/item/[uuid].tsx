@@ -35,7 +35,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
       <div className={styles.rowContainer}>
         <div className={styles.coverContainer}>
           <Image
-            className={styles.cover}
+            style={{ objectFit: 'contain' }}
             src={getDefaultMerchItemPhoto(item)}
             alt={`Picture of ${item.itemName}`}
             fill
@@ -62,6 +62,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
             amountToBuy={amount}
             onAmountChange={setAmount}
           />
+          <h4>Item Description</h4>
           <p>{item.description}</p>
         </div>
       </div>

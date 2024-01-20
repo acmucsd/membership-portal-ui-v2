@@ -12,10 +12,17 @@
   gap: 5rem;
   justify-content: center;
   overflow: auto;
+  width: 95%;
 
   @media (max-width: 600px) {
     // could also do display: flex; flex-direction: column;
     flex-direction: column;
+    gap: 2rem;
+    overflow: hidden;
+
+    .coverContainer {
+      height: 22.5rem;
+    }
   }
 }
 
@@ -24,16 +31,12 @@
   flex-direction: column;
   gap: 2rem;
   justify-content: center;
+  width: 90%;
 }
 
 .coverContainer {
   height: 37.5rem;
+  overflow: hidden;
   position: relative;
   width: 100%;
-
-  .cover {
-    height: auto;
-    object-fit: cover;
-    width: 100%;
-  }
 }
