@@ -42,7 +42,7 @@ export const getCurrentUser = async (token: string): Promise<PrivateProfile> => 
   return response.data.user;
 };
 
-export const getCurrentUserAndRefresh = async (
+export const getCurrentUserAndRefreshCookie = async (
   token: string,
   options: OptionsType
 ): Promise<PrivateProfile> => {

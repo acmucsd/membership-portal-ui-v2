@@ -576,7 +576,7 @@ export default EditProfilePage;
 const getServerSidePropsFunc: GetServerSideProps<EditProfileProps> = async ({ req, res }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   // Ensure `user` is up-to-date
-  const user = await UserAPI.getCurrentUserAndRefresh(AUTH_TOKEN, { req, res });
+  const user = await UserAPI.getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
 
   return { props: { authToken: AUTH_TOKEN, user } };
 };

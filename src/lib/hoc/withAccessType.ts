@@ -65,7 +65,7 @@ export default function withAccessType(
     }
 
     if (!user || !userAccessLevel) {
-      user = await UserAPI.getCurrentUserAndRefresh(authTokenCookie, { req, res });
+      user = await UserAPI.getCurrentUserAndRefreshCookie(authTokenCookie, { req, res });
       userAccessLevel = user.accessType;
     }
 

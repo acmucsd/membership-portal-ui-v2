@@ -34,7 +34,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
   try {
     const [handleUser, user, signedInAttendances] = await Promise.all([
       UserAPI.getUserByHandle(token, handle).catch(() => null),
-      UserAPI.getCurrentUserAndRefresh(token, { req, res }),
+      UserAPI.getCurrentUserAndRefreshCookie(token, { req, res }),
       UserAPI.getAttendancesForCurrentUser(token),
     ]);
 
