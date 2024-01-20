@@ -5,7 +5,7 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import NoImage from '@/public/assets/graphics/cat404.png';
+import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/store/index.module.scss';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
@@ -33,9 +33,7 @@ const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) 
           <h2>{view === 'collections' ? 'Browse our collections' : 'Browse all items'}</h2>
           <Link
             className={styles.viewToggle}
-            href={
-              view === 'collections' ? `${config.store.homeRoute}?view=all` : config.store.homeRoute
-            }
+            href={view === 'collections' ? `${config.storeRoute}?view=all` : config.storeRoute}
             scroll={false}
           >
             {view === 'collections' ? 'See all items' : 'See collections'}
@@ -45,10 +43,10 @@ const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) 
           <div className={styles.collections}>
             {collections.map(collection => (
               <ItemCard
-                image={collection.items[0]?.picture ?? NoImage.src}
+                image={getDefaultMerchItemPhoto(collection.items[0])}
                 title={collection.title}
                 description={collection.description}
-                href={`${config.store.collectionRoute}${collection.uuid}`}
+                href={`${config.collectionRoute}${collection.uuid}`}
                 key={collection.uuid}
               />
             ))}
@@ -85,5 +83,5 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );

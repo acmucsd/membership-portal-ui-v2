@@ -1,12 +1,8 @@
 export type Styles = {
-  body: string;
   container: string;
-  description: string;
-  discordPreview: string;
+  filter: string;
   header: string;
-  icon: string;
-  logo: string;
-  socials: string;
+  page: string;
 };
 
 export type ClassNames = keyof Styles;

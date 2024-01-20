@@ -93,6 +93,6 @@ const getServerSidePropsFunc: GetServerSideProps = async () => {
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.canManageEvents(),
+  PermissionService.canManageEvents,
   config.admin.homeRoute
 );

@@ -1,18 +1,27 @@
+import { config } from '@/lib';
+import { UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
-import { PermissionService } from '@/lib/services';
+import { CookieService, PermissionService } from '@/lib/services';
+import { CookieType } from '@/lib/types/enums';
 import type { GetServerSideProps, NextPage } from 'next';
 
-const UserProfilePage: NextPage = () => {
-  return <h1>Portal Profile Page</h1>;
-};
+const UserProfilePage: NextPage = () => null;
 
 export default UserProfilePage;
 
-const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: {},
-});
+const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
+  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+  const user = await UserAPI.getCurrentUser(token);
+
+  return {
+    redirect: {
+      destination: `${config.userProfileRoute}${user.handle}`,
+      permanent: false,
+    },
+  };
+};
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );
