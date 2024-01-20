@@ -71,15 +71,16 @@ const config = {
   loginRoute: '/login',
   leaderboardRoute: '/leaderboard',
   userProfileRoute: '/u/',
-  storeRoute: '/store',
-  cartRoute: '/store/cart',
-  myOrdersRoute: '/store/orders',
-  collectionRoute: '/store/collection/',
-  itemRoute: '/store/item/',
+  store: {
+    homeRoute: '/store',
+    cartRoute: '/store/cart',
+    myOrdersRoute: '/store/orders',
+    collectionRoute: '/store/collection/',
+    itemRoute: '/store/item/',
+  },
   admin: {
     homeRoute: '/admin',
     events: {
-      homeRoute: '/admin/event',
       editRoute: '/admin/event/edit',
       createRoute: '/admin/event/create',
     },

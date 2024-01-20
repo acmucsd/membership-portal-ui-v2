@@ -123,7 +123,7 @@ const Navbar = ({ user }: NavbarProps) => {
         <Link
           onClick={() => setMenuOpen(false)}
           className={styles.mobileNavItem}
-          href={config.storeRoute}
+          href={config.store.homeRoute}
         >
           <ShopIcon className={styles.iconLink} />
           Store
