@@ -14,6 +14,8 @@ interface IProps {
 const ManageEventCard = ({ event }: IProps) => {
   const router = useRouter();
 
+  const publicEventLink = `https://acmucsd.com/events/${event.uuid}`;
+
   const duplicateEvent = () => {
     router.push(`${config.admin.events.createRoute}?duplicate=${event.uuid}`);
   };
@@ -21,17 +23,40 @@ const ManageEventCard = ({ event }: IProps) => {
   const generateDiscordEvent = () => {
     AdminEventManager.createDiscordEvent({
       ...event,
+      image: event.cover,
       onSuccessCallback: () => {
         showToast('Successfully created event!', 'Check your server to confirm all details');
       },
       onFailCallback: e => {
-        showToast('error', e);
+        showToast('Error while generating Discord Event!', e);
       },
     });
   };
 
   const generateACMURL = () => {
-    showToast('Function not implemented yet!');
+    if (!event.eventLink) {
+      showToast("Couldn't generate ACMURL...", `${event.title} doesn't have an event link!`);
+    } else {
+      let acmurl = event.eventLink;
+
+      // Try to get the acmurl if eventLink is formatted as acmurl.com/{VALUE_HERE}.
+      const acmurlRegex = /acmurl\.com\/(.*)/;
+      const regexMatch = event.eventLink.match(acmurlRegex);
+      if (regexMatch && regexMatch.length > 1) {
+        acmurl = regexMatch[1] as string;
+      }
+
+      AdminEventManager.generateACMURL({
+        shortlink: acmurl,
+        longlink: publicEventLink,
+        onSuccessCallback: () =>
+          showToast(
+            'Successfully generated ACMURL!',
+            `acmurl.com/${acmurl} will now redirect to ${publicEventLink}`
+          ),
+        onFailCallback: e => showToast('Error while generating ACMURL!', e),
+      });
+    }
   };
 
   return (
@@ -46,7 +71,7 @@ const ManageEventCard = ({ event }: IProps) => {
       </div>
       <h3>{event.title}</h3>
       <br />
-      <a href={`https://acmucsd.com/events/${event.uuid}`}>View Public Event Page</a>
+      <a href={publicEventLink}>View Public Event Page</a>
       <Link href={`${config.admin.events.editRoute}/${event.uuid}`}>Edit Details</Link>
       <Button onClick={duplicateEvent}>Duplicate Event</Button>
       <Button onClick={generateDiscordEvent}>Generate Discord Event</Button>

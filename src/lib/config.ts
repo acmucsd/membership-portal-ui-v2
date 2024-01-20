@@ -66,6 +66,9 @@ const config = {
       discord: {
         event: '/discord/event',
       },
+      acmurl: {
+        generate: '/acmurl/generate',
+      },
     },
   },
   defaultEventImage: Cat,

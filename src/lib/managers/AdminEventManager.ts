@@ -6,6 +6,7 @@ import {
   CreateEventRequest,
   DeleteEventRequest,
   Event,
+  GenerateACMURLRequest,
   UploadEventImageRequest,
 } from '@/lib/types/apiRequests';
 import type { NotionEventDetails } from '@/lib/types/apiResponses';
@@ -40,6 +41,16 @@ export const createDiscordEvent = async (data: CreateDiscordEventRequest & APIHa
   const { onSuccessCallback, onFailCallback, ...event } = data;
   try {
     await KlefkiAPI.createDiscordEvent(event);
+    onSuccessCallback?.();
+  } catch (e: any) {
+    onFailCallback?.(e.response.data.error);
+  }
+};
+
+export const generateACMURL = async (data: GenerateACMURLRequest & APIHandlerProps) => {
+  const { onSuccessCallback, onFailCallback, ...acmurlInfo } = data;
+  try {
+    await KlefkiAPI.generateACMURL(acmurlInfo);
     onSuccessCallback?.();
   } catch (e: any) {
     onFailCallback?.(e.response.data.error);
