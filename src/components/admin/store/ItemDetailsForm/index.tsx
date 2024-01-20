@@ -46,7 +46,7 @@ const ItemDetailsForm = ({ mode, defaultData = {}, collections }: IProps) => {
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   const resetForm = () => reset(initialValues);
 

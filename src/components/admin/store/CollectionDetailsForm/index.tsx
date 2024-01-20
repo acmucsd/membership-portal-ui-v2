@@ -55,7 +55,7 @@ const CollectionDetailsForm = ({ mode, defaultData = {} }: IProps) => {
       ]);
       router.push(`${config.store.collectionRoute}/${uuid}/edit`);
     } catch (error) {
-      reportError('Could not create item', error);
+      reportError('Could not create collection', error);
     } finally {
       setLoading(false);
     }
@@ -68,11 +68,11 @@ const CollectionDetailsForm = ({ mode, defaultData = {} }: IProps) => {
     const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
 
     try {
-      await StoreAPI.editItem(AUTH_TOKEN, uuid, formData);
-      showToast('Item details saved!', '', [
+      await StoreAPI.editCollection(AUTH_TOKEN, uuid, formData);
+      showToast('Collection details saved!', '', [
         {
-          text: 'View public item page',
-          onClick: () => router.push(`${config.store.itemRoute}/${uuid}`),
+          text: 'View public collection page',
+          onClick: () => router.push(`${config.store.collectionRoute}/${uuid}`),
         },
       ]);
     } catch (error) {
@@ -90,7 +90,7 @@ const CollectionDetailsForm = ({ mode, defaultData = {} }: IProps) => {
       showToast('Collection deleted successfully');
       router.push(config.store.homeRoute);
     } catch (error) {
-      reportError('Could not delete item', error);
+      reportError('Could not delete collection', error);
     } finally {
       setLoading(false);
     }
