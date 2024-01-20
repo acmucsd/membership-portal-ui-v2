@@ -1,5 +1,5 @@
+import { GifSafeImage } from '@/components/common';
 import { trim } from '@/lib/utils';
-import Image from 'next/image';
 import Link from 'next/link';
 import styles from './style.module.scss';
 
@@ -18,7 +18,7 @@ const TopThreeCard = ({ position, rank, name, url, points, image }: UserCardProp
     <Link href={url} className={styles.leaderboardCard} data-position={positionNames[position - 1]}>
       <div className={styles.cardLeft}>{position}</div>
       <div className={styles.cardRight}>
-        <Image
+        <GifSafeImage
           className={styles.profileImage}
           src={image}
           alt="User Profile Pic"

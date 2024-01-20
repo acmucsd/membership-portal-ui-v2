@@ -1,0 +1,52 @@
+.wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  
+  text-align: center;
+
+  .pfp {
+    border-radius: 50%;
+    margin: 3rem 0;
+    object-fit: cover;
+  }
+
+  .faded {
+    color: var(--theme-text-on-background-3);
+  }
+
+  .major {
+    margin-top: 1rem;
+  }
+
+  .stats {
+    align-self: stretch;
+    display: flex;
+    margin: 3rem 0;
+    padding: 0;
+
+    .stat {
+      display: flex;
+      flex: 1 0 0;
+      flex-direction: column;
+    }
+  }
+
+  .bio {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 3rem;
+
+    .icon {
+      height: 2rem;
+      width: 2rem;
+    }
+  }
+}

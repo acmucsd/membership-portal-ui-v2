@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { CSSProperties, HTMLAttributes, PropsWithChildren } from 'react';
 
 // v1 variants
@@ -35,6 +36,8 @@ interface TypographyProps extends HTMLAttributes<HTMLElement> {
   variant: Variant;
   component?: ComponentType;
   style?: CSSProperties;
+  // This is used if/when the component is 'a'.
+  href?: string;
 }
 
 // Implements styles from https://www.figma.com/file/ihJGLgfFTURKCgl9KNUPcA/Website-%26-Portal%3A-Design-System?node-id=1561%3A263&mode=dev
@@ -78,7 +81,7 @@ const v2StandardSizes: Record<V2StandardStyle, Record<V2Size, string>> = {
   label: {
     large: '1.25rem',
     medium: '1.125rem',
-    small: '1.3125rem',
+    small: '1rem',
   },
   body: {
     large: '1.125rem',
@@ -96,7 +99,7 @@ const v2StandardHeights: Record<V2StandardStyle, Record<V2Size, string>> = {
   label: {
     large: '1.625rem',
     medium: '1.5rem',
-    small: '1.875rem',
+    small: '1.375rem',
   },
   body: {
     large: '1.5rem',
@@ -119,7 +122,7 @@ const v2StandardSpacings: Partial<Record<V2StandardStyle, Partial<Record<V2Size,
 
 const v2StandardWeights: Record<V2StandardStyle, number> = {
   title: 400,
-  label: 500,
+  label: 400,
   body: 400,
 };
 
@@ -177,14 +180,14 @@ const v2WeightedWeights: Record<V2WeightedStyle, Record<V2Weight, Record<V2Size,
   },
   headline: {
     light: {
-      large: 300,
+      large: 400,
       medium: 400,
       small: 400,
     },
     heavy: {
       large: 600,
-      medium: 400,
-      small: 400,
+      medium: 600,
+      small: 600,
     },
   },
 };
@@ -229,6 +232,21 @@ const variantToCSS = (variant: Variant): CSSProperties => {
  */
 const Typography = (props: PropsWithChildren<TypographyProps>) => {
   const { variant, component, style, children, ...restProps } = props;
+
+  if (restProps.href) {
+    return (
+      <Link
+        href={restProps.href}
+        style={{
+          ...variantToCSS(variant),
+          ...style, // other styles can be customized via style prop
+        }}
+        {...restProps}
+      >
+        {children}
+      </Link>
+    );
+  }
 
   const Component = component || 'div';
 

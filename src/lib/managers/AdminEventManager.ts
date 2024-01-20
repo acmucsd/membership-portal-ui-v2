@@ -1,4 +1,5 @@
 import { EventAPI, KlefkiAPI } from '@/lib/api';
+import config from '@/lib/config';
 import type { APIHandlerProps, AuthAPIHandlerProps, URL, UUID } from '@/lib/types';
 import {
   CreateDiscordEventRequest,
@@ -50,6 +51,10 @@ export const createNewEvent = async (
 ) => {
   const { onSuccessCallback, onFailCallback, token, event, cover } = data;
 
+  if (cover.size > config.file.MAX_EVENT_COVER_SIZE_KB * 1024) {
+    onFailCallback?.(new Error('Cover size too large'));
+    return;
+  }
   try {
     const createdEvent = await EventAPI.createEvent(token, event);
     await EventAPI.uploadEventImage(token, createdEvent.uuid, cover);
