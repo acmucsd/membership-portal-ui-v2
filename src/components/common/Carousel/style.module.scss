@@ -6,7 +6,17 @@
   margin: 0 -1rem;
   overflow-x: auto;
   padding: 1rem;
+  scroll-padding: 1rem;
+  scroll-snap-type: x;
   scrollbar-color: var(--theme-primary-2) var(--theme-primary-1);
+
+  > * {
+    scroll-snap-align: start;
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      scroll-snap-align: center;
+    }
+  }
 
   &::-webkit-scrollbar {
     background-color: var(--theme-primary-1);
