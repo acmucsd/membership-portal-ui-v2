@@ -165,6 +165,10 @@
     height: 0.25rem;
     margin: 0 -1rem;
     width: 100vw;
+
+    &.loggedOut {
+      margin: 0;
+    }
   }
 }
 
