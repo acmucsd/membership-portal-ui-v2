@@ -5,7 +5,7 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import NoImage from '@/public/assets/graphics/cat404.png';
+import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/store/collections.module.scss';
 import { GetServerSideProps } from 'next';
 
@@ -30,9 +30,9 @@ const CollectionsPage = ({ collection: { title, description, items = [] } }: Col
         {items.map(item => (
           <ItemCard
             className={styles.card}
-            image={item.picture ?? NoImage.src}
+            image={getDefaultMerchItemPhoto(item)}
             title={item.itemName}
-            href={`${config.store.itemRoute}${item.uuid}`}
+            href={`${config.itemRoute}${item.uuid}`}
             cost={item.options[0]?.price ?? 0}
             key={item.uuid}
           />
@@ -47,7 +47,7 @@ export default CollectionsPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
   const uuid = params?.uuid as string;
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  const collection = await StoreAPI.getCollection(uuid, token);
+  const collection = await StoreAPI.getCollection(token, uuid);
   return {
     props: {
       collection,
@@ -57,5 +57,5 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.allUserTypes
 );
