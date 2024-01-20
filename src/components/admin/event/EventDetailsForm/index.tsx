@@ -37,6 +37,7 @@ const EventDetailsForm = (props: IProps) => {
     description: defaultData?.description || '',
     cover: defaultData?.cover,
     uuid: defaultData?.uuid,
+    eventLink: defaultData?.eventLink,
   };
 
   const {
@@ -60,7 +61,7 @@ const EventDetailsForm = (props: IProps) => {
   }, []);
 
   const setFieldsFromAutofill = (data: NotionEventDetails) => {
-    const { checkin, title, description, start, end, location, community } = data;
+    const { checkin, title, description, start, end, location, community, acmurl } = data;
     setValue('attendanceCode', checkin, { shouldValidate: true });
     setValue('title', title, { shouldValidate: true });
     setValue('description', description, { shouldValidate: true });
@@ -71,6 +72,7 @@ const EventDetailsForm = (props: IProps) => {
       shouldValidate: true,
     });
     setValue('location', location, { shouldValidate: true });
+    setValue('eventLink', acmurl);
     setValue('committee', community);
   };
 
@@ -261,6 +263,11 @@ const EventDetailsForm = (props: IProps) => {
               required: 'Required',
             })}
           />
+        </EventDetailsFormItem>
+
+        <label htmlFor="description">Event Link</label>
+        <EventDetailsFormItem error={errors.eventLink?.message}>
+          <input type="text" id="eventLink" {...register('eventLink')} />
         </EventDetailsFormItem>
 
         <label htmlFor="description">Description</label>
