@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export type URL = string;
 export type UUID = string;
 export type FillInLater = any;

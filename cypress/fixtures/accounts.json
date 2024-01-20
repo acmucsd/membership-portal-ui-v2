@@ -1,10 +1,6 @@
 {
   "admin": {
-    "email": "acm@ucsd.edu",
-    "password": "password"
-  },
-  "standard": {
-    "email": "acm_standard@ucsd.edu",
+    "username": "acm@ucsd.edu",
     "password": "password"
   }
 }

@@ -1,4 +1,3 @@
-import { CookieType } from '@/lib/types/enums';
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import type { OptionsType } from 'cookies-next/lib/types';
 
@@ -33,12 +32,4 @@ export const deleteClientCookie = (key: string): void => {
 
 export const deleteServerCookie = (key: string, options: OptionsType): void => {
   deleteCookie(key, options);
-};
-
-export const clearClientCookies = (): void => {
-  Object.keys(CookieType).forEach(key => deleteClientCookie(key));
-};
-
-export const clearServerCookies = (options: OptionsType): void => {
-  Object.keys(CookieType).forEach(key => deleteServerCookie(key, options));
 };

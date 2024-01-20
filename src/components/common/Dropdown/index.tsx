@@ -7,13 +7,14 @@ interface Option {
   label: string;
 }
 
-export const DIVIDER = '----';
-
 interface DropdownProps {
   name: string;
   ariaLabel: string;
-  options: (Option | typeof DIVIDER)[];
+  options: (Option | '---')[];
   value: string;
+  // Justification for disabling rules: This seems to be a false positive.
+  // https://stackoverflow.com/q/63767199/
+  // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void;
 }
 
@@ -32,7 +33,7 @@ const Dropdown = ({ name, ariaLabel, options, value, onChange }: DropdownProps) 
   const optionButtons: ReactNode[] = [];
   let dividers = 0;
   options.forEach(option => {
-    if (option === DIVIDER) {
+    if (option === '---') {
       optionButtons.push(<hr key={dividers} />);
       dividers += 1;
     } else {
@@ -80,7 +81,7 @@ const Dropdown = ({ name, ariaLabel, options, value, onChange }: DropdownProps) 
         aria-label={ariaLabel}
       >
         {options.map(option =>
-          option !== DIVIDER ? (
+          option !== '---' ? (
             <option value={option.value} key={option.value}>
               {option.label}
             </option>

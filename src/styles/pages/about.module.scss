@@ -7,7 +7,7 @@
 .container {
   font-size: vars.$general-body;
   margin: 0 auto;
-  max-width: 1440px;
+  max-width: 60rem;
 }
 
 .header {
@@ -45,10 +45,8 @@
       gap: 0.5rem;
       margin-bottom: 0.7rem;
 
-      .icon {
+      .theme {
         fill: currentColor;
-        height: 24px;
-        width: 24px;
       }
     }
   }

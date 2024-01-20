@@ -1,7 +1,7 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
 import { showToast } from '@/lib';
-import majors from '@/lib/constants/majors';
+import data from '@/lib/constants/majors.json';
 import { AuthManager } from '@/lib/managers';
 import { ValidationService } from '@/lib/services';
 import type { UserRegistration } from '@/lib/types/apiRequests';
@@ -133,7 +133,7 @@ const RegisterPage: NextPage = () => {
       <SignInFormItem
         icon={<IoBookOutline />}
         name="major"
-        options={majors}
+        options={data.majors}
         element="select"
         placeholder="Major"
         error={errors.major}

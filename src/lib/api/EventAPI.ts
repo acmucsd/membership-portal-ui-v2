@@ -1,14 +1,15 @@
 import { config } from '@/lib';
 import { FillInLater, UUID } from '@/lib/types';
-import { AttendEventRequest, Event } from '@/lib/types/apiRequests';
+import { Event } from '@/lib/types/apiRequests';
 import {
-  AttendEventResponse,
   CreateEventResponse,
   GetAllEventsResponse,
+  GetAttendancesForUserResponse,
   GetFutureEventsResponse,
   GetOneEventResponse,
   GetPastEventsResponse,
   PatchEventResponse,
+  PublicAttendance,
   PublicEvent,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
@@ -70,21 +71,16 @@ export const getAllEvents = async (): Promise<PublicEvent[]> => {
   return response.data.events;
 };
 
-export const attendEvent = async (
-  token: string,
-  attendanceCode: string
-): Promise<AttendEventResponse> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.attendance}`;
+export const getAttendancesForUser = async (token: string): Promise<PublicAttendance[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance}`;
 
-  const requestBody = { attendanceCode, asStaff: false } as AttendEventRequest;
-
-  const response = await axios.post<AttendEventResponse>(requestUrl, requestBody, {
+  const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  return response.data;
+  return response.data.attendances;
 };
 
 export const createEvent = async (token: string, event: Event): Promise<PublicEvent> => {

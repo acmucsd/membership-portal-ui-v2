@@ -34,19 +34,19 @@ const AboutPage = () => {
         <div className={styles.socials}>
           <p className={styles.description}>{about}</p>
           <a href="https://acmucsd.com">
-            <WebIcon className={styles.icon} />
+            <WebIcon className={styles.theme} />
             acmucsd.com
           </a>
           <a href="https://facebook.com/acm.ucsd">
-            <FacebookIcon className={styles.icon} />
+            <FacebookIcon className={styles.theme} />
             acmurl.com/facebook
           </a>
           <a href="https://instagram.com/acm.ucsd">
-            <IgIcon className={styles.icon} />
+            <IgIcon className={styles.theme} />
             acmurl.com/instagram
           </a>
           <a href="https://acmurl.com/discord">
-            <DiscordIcon className={styles.icon} />
+            <DiscordIcon className={styles.theme} />
             acmurl.com/discord
           </a>
         </div>
@@ -71,5 +71,5 @@ const getServerSidePropsFunc: GetServerSideProps = async () => ({
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.loggedInUser
+  PermissionService.allUserTypes()
 );

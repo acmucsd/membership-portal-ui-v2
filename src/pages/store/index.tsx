@@ -5,7 +5,7 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getDefaultMerchItemPhoto } from '@/lib/utils';
+import NoImage from '@/public/assets/graphics/cat404.png';
 import styles from '@/styles/pages/store/index.module.scss';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
@@ -45,7 +45,7 @@ const StoreHomePage = ({ user: { credits }, view, collections }: HomePageProps) 
           <div className={styles.collections}>
             {collections.map(collection => (
               <ItemCard
-                image={getDefaultMerchItemPhoto(collection.items[0])}
+                image={collection.items[0]?.picture ?? NoImage.src}
                 title={collection.title}
                 description={collection.description}
                 href={`${config.store.collectionRoute}${collection.uuid}`}
@@ -85,5 +85,5 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.loggedInUser
+  PermissionService.allUserTypes()
 );

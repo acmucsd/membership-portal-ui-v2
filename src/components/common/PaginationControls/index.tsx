@@ -5,6 +5,7 @@ import style from './style.module.scss';
 
 interface PaginationControlsProps {
   page: number;
+  // eslint-disable-next-line no-unused-vars
   onPage: (page: number) => void;
   pages: number;
 }

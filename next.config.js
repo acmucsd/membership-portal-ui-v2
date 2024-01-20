@@ -1,13 +1,6 @@
 const env = process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
 
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-  disable: isDevelopment,
-});
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -44,4 +37,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withPWA(nextConfig);
+module.exports = nextConfig;

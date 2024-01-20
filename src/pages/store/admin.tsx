@@ -1,12 +1,12 @@
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 
-const UserProfilePage: NextPage = () => {
-  return <h1>Portal Profile Page</h1>;
+const StoreAdminPage = () => {
+  return <h1>Store Admin Page</h1>;
 };
 
-export default UserProfilePage;
+export default StoreAdminPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => ({
   props: {},

@@ -1,15 +1,5 @@
 @use 'src/styles/vars.scss' as vars;
 
-.originalPrice {
-  &.discount {
-    text-decoration: line-through;
-  }
-}
-
-.discountPrice {
-  color: var(--theme-danger-1);
-}
-
 .diamond {
   background-color: var(--theme-primary-2);
   border-radius: 2px;

@@ -3,6 +3,4 @@ export { default as Diamonds } from './Diamonds';
 export { default as HelpModal } from './HelpModal';
 export { default as Hero } from './Hero';
 export { default as ItemCard } from './ItemCard';
-export { default as OrderCard } from './OrderCard';
-export { default as OrdersDisplay } from './OrdersDisplay';
 export { default as Navbar } from './StoreNavbar';

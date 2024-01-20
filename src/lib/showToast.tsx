@@ -33,7 +33,6 @@ const showToast = (
       <div
         style={{
           fontSize: '14px',
-          whiteSpace: 'pre-wrap',
         }}
       >
         {subtitle}

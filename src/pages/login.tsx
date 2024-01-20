@@ -44,14 +44,8 @@ const LoginPage: NextPage<LoginProps> = ({ destination }) => {
             },
           ]);
 
-          CookieService.clearClientCookies();
+          CookieService.deleteClientCookie(CookieType.USER);
 
-          return;
-        }
-        if (user.state === UserState.BLOCKED) {
-          showToast('This account has been disabled', 'Email acm@ucsd.edu if you have questions.');
-
-          CookieService.clearClientCookies();
           return;
         }
 

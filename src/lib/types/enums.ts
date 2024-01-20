@@ -1,14 +1,7 @@
+/* eslint-disable no-unused-vars */
 export enum CookieType {
   USER = 'USER',
   ACCESS_TOKEN = 'ACCESS_TOKEN',
-}
-
-export enum Community {
-  HACK = 'Hack',
-  AI = 'AI',
-  CYBER = 'Cyber',
-  DESIGN = 'Design',
-  GENERAL = 'General',
 }
 
 export enum UserAccessType {
@@ -42,7 +35,6 @@ export enum ActivityType {
   ACCOUNT_RESET_PASS = 'ACCOUNT_RESET_PASS',
   ACCOUNT_RESET_PASS_REQUEST = 'ACCOUNT_RESET_PASS_REQUEST',
   ACCOUNT_UPDATE_INFO = 'ACCOUNT_UPDATE_INFO',
-  ACCOUNT_ACCESS_LEVEL_UPDATE = 'ACCOUNT_ACCESS_LEVEL_UPDATE',
   ACCOUNT_LOGIN = 'ACCOUNT_LOGIN',
   ATTEND_EVENT = 'ATTEND_EVENT',
   ATTEND_EVENT_AS_STAFF = 'ATTEND_EVENT_AS_STAFF',
@@ -96,15 +88,4 @@ export enum OrderPickupEventStatus {
   ACTIVE = 'ACTIVE',
   CANCELLED = 'CANCELLED',
   COMPLETED = 'COMPLETED',
-}
-
-export enum SocialMediaType {
-  LINKEDIN = 'LINKEDIN',
-  INSTAGRAM = 'INSTAGRAM',
-  FACEBOOK = 'FACEBOOK',
-  PORTFOLIO = 'PORTFOLIO',
-  TWITTER = 'TWITTER',
-  GITHUB = 'GITHUB',
-  EMAIL = 'EMAIL',
-  DEVPOST = 'DEVPOST',
 }

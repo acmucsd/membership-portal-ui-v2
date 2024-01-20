@@ -69,12 +69,12 @@ export const sendPasswordResetEmail = async (
  * @param dataasync
  */
 export const resetPassword = async (
-  data: PasswordResetRequest & APIHandlerProps & { code: string }
+  data: PasswordResetRequest & APIHandlerProps
 ): Promise<void> => {
-  const { code, user, onSuccessCallback, onFailCallback } = data;
+  const { user, onSuccessCallback, onFailCallback } = data;
 
   try {
-    await AuthAPI.resetPassword(code, { user });
+    await AuthAPI.resetPassword({ user });
     onSuccessCallback?.();
   } catch (e: any) {
     onFailCallback?.(e.response.data.error);

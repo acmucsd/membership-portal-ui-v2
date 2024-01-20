@@ -1,7 +1,7 @@
 import { Typography } from '@/components/common';
 import { showToast } from '@/lib';
 import { PublicEvent } from '@/lib/types/apiResponses';
-import { formatURLEventTitle, useObjectUrl } from '@/lib/utils';
+import { formatURLEventTitle } from '@/lib/utils';
 import AppleCalendarLogo from '@/public/assets/icons/applecalendar.svg';
 import GoogleCalendarLogo from '@/public/assets/icons/googlecalendar.svg';
 import * as ics from 'ics';
@@ -26,7 +26,7 @@ const generateGCalURL = ({ title, description, location, start, end }: PublicEve
 };
 
 interface AppleCalInfo {
-  file?: Blob;
+  href?: string;
   download?: string;
   error?: string;
 }
@@ -61,8 +61,9 @@ const generateAppleCalInfo = (event: PublicEvent): AppleCalInfo => {
     // Referencing this answer to save text in a file and download it
     // https://stackoverflow.com/questions/44656610/download-a-string-as-txt-file-in-react
     const file = new Blob([response.value], { type: 'text/calendar' });
+    const href = URL.createObjectURL(file);
     const download = `${formatURLEventTitle(event.title)}.ics`;
-    return { file, download };
+    return { href, download };
   }
   const error = response.error?.message;
   return { error };
@@ -74,8 +75,7 @@ interface CalendarButtonProps {
 
 const CalendarButtons = ({ event }: CalendarButtonProps) => {
   const gCalURL = useMemo(() => generateGCalURL(event), [event]);
-  const appleCalInfo = useMemo(() => generateAppleCalInfo(event), [event]);
-  const appleCalUrl = useObjectUrl(appleCalInfo.file);
+  const appleCalInfo: AppleCalInfo = generateAppleCalInfo(event);
 
   return (
     <div className={styles.options}>
@@ -84,7 +84,11 @@ const CalendarButtons = ({ event }: CalendarButtonProps) => {
         <Typography variant="h6/bold">Add to Google Calendar</Typography>
       </a>
       {appleCalInfo.download ? (
-        <a className={styles.calendarLink} href={appleCalUrl} download={appleCalInfo.download}>
+        <a
+          className={styles.calendarLink}
+          href={appleCalInfo.href}
+          download={appleCalInfo.download}
+        >
           <AppleCalendarLogo className={styles.appleCalLogo} alt="apple calendar" />
           <Typography variant="h6/bold">Add to Apple Calendar</Typography>
         </a>

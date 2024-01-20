@@ -2,5 +2,6 @@
 
 .content {
   margin-top: vars.$header-height;
+  overflow: auto;
   padding: 2rem;
 }
