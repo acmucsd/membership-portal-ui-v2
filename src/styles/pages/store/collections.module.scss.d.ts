@@ -3,7 +3,6 @@ export type Styles = {
   collections: string;
   container: string;
   header: string;
-  heading: string;
 };
 
 export type ClassNames = keyof Styles;

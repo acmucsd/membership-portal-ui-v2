@@ -1,30 +1,30 @@
+import { Typography } from '@/components/common';
 import { ItemCard, Navbar } from '@/components/store';
 import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import { PublicMerchCollection } from '@/lib/types/apiResponses';
+import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/store/collections.module.scss';
 import { GetServerSideProps } from 'next';
 
 interface CollectionProps {
+  user: PrivateProfile;
   collection: PublicMerchCollection;
 }
 
-/* component for each row, one collection = one row
-component for each item 
-for each collection: map it into a row
-for each row: map merch items in
-*/
-const CollectionsPage = ({ collection: { title, description, items = [] } }: CollectionProps) => {
+const CollectionsPage = ({
+  user: { credits },
+  collection: { title, description, items = [] },
+}: CollectionProps) => {
   return (
     <div className={styles.container}>
-      <Navbar balance={0} />
+      <Navbar balance={credits} showBack />
       <div className={styles.header}>
-        <h2 className={styles.heading}>{title}</h2>
-        <p>{description}</p>
+        <Typography variant="h1/bold">{title}</Typography>
+        <Typography variant="h4/regular">{description}</Typography>
       </div>
       <div className={styles.collections}>
         {items.map(item => (
