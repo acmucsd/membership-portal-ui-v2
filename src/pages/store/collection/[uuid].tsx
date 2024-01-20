@@ -23,13 +23,16 @@ const CollectionsPage = ({
     <div className={styles.container}>
       <Navbar balance={credits} showBack />
       <div className={styles.header}>
-        <Typography variant="h1/bold">{title}</Typography>
-        <Typography variant="h4/regular">{description}</Typography>
+        <Typography variant="h1/bold" component="h1">
+          {title}
+        </Typography>
+        <Typography variant="h4/regular" component="p">
+          {description}
+        </Typography>
       </div>
       <div className={styles.collections}>
         {items.map(item => (
           <ItemCard
-            className={styles.card}
             image={getDefaultMerchItemPhoto(item)}
             title={item.itemName}
             href={`${config.itemRoute}${item.uuid}`}

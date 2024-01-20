@@ -1,12 +1,12 @@
 import { config } from '@/lib';
-import {
-  type GetAllMerchCollectionsResponse,
-  type GetMerchOrdersResponse,
-  type GetOneMerchCollectionResponse,
-  type GetOneMerchOrderResponse,
-  type PublicMerchCollection,
-  type PublicOrder,
-  type PublicOrderWithItems,
+import type {
+  GetAllMerchCollectionsResponse,
+  GetMerchOrdersResponse,
+  GetOneMerchCollectionResponse,
+  GetOneMerchOrderResponse,
+  PublicMerchCollection,
+  PublicOrder,
+  PublicOrderWithItems,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
 

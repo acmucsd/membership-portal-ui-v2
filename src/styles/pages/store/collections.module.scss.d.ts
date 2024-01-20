@@ -1,5 +1,4 @@
 export type Styles = {
-  card: string;
   collections: string;
   container: string;
   header: string;
