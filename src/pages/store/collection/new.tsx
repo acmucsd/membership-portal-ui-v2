@@ -11,13 +11,14 @@ import { GetServerSideProps } from 'next';
 
 interface CreateCollectionPageProps {
   user: PrivateProfile;
+  token: string;
   item: PublicMerchCollection | null;
 }
-const CreateCollectionPage = ({ user: { credits }, item }: CreateCollectionPageProps) => {
+const CreateCollectionPage = ({ user: { credits }, token, item }: CreateCollectionPageProps) => {
   return (
     <div className={styles.container}>
       <Navbar balance={credits} showBack />
-      <CollectionDetailsForm mode="create" defaultData={item ?? undefined} />
+      <CollectionDetailsForm mode="create" defaultData={item ?? undefined} token={token} />
     </div>
   );
 };
@@ -30,7 +31,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
     typeof query.duplicate === 'string'
       ? await StoreAPI.getCollection(query.duplicate, token)
       : null;
-  return { props: { item } };
+  return { props: { token, item } };
 };
 
 export const getServerSideProps = withAccessType(

@@ -2,10 +2,8 @@ import EventDetailsFormItem from '@/components/admin/event/EventDetailsFormItem'
 import { Button } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
-import { CookieService } from '@/lib/services';
 import { MerchCollection } from '@/lib/types/apiRequests';
 import { PublicMerchCollection } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
 import { reportError } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -17,9 +15,10 @@ type FormValues = MerchCollection;
 interface IProps {
   mode: 'create' | 'edit';
   defaultData?: Partial<PublicMerchCollection>;
+  token: string;
 }
 
-const CollectionDetailsForm = ({ mode, defaultData = {} }: IProps) => {
+const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
   const router = useRouter();
   const initialValues: FormValues = {
     title: defaultData.title ?? '',
@@ -43,10 +42,8 @@ const CollectionDetailsForm = ({ mode, defaultData = {} }: IProps) => {
   const createCollection: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
 
-    const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
-
     try {
-      const { uuid } = await StoreAPI.createCollection(AUTH_TOKEN, formData);
+      const { uuid } = await StoreAPI.createCollection(token, formData);
       showToast('Collection created successfully!', '', [
         {
           text: 'View public collection page',
@@ -65,10 +62,9 @@ const CollectionDetailsForm = ({ mode, defaultData = {} }: IProps) => {
     setLoading(true);
 
     const uuid = defaultData.uuid ?? '';
-    const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
 
     try {
-      await StoreAPI.editCollection(AUTH_TOKEN, uuid, formData);
+      await StoreAPI.editCollection(token, uuid, formData);
       showToast('Collection details saved!', '', [
         {
           text: 'View public collection page',
@@ -84,9 +80,8 @@ const CollectionDetailsForm = ({ mode, defaultData = {} }: IProps) => {
 
   const deleteCollection = async () => {
     setLoading(true);
-    const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
     try {
-      await StoreAPI.deleteCollection(AUTH_TOKEN, defaultData.uuid ?? '');
+      await StoreAPI.deleteCollection(token, defaultData.uuid ?? '');
       showToast('Collection deleted successfully');
       router.push(config.store.homeRoute);
     } catch (error) {

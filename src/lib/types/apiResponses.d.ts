@@ -203,7 +203,7 @@ export interface PublicMerchItemOption {
   price: number;
   quantity: number;
   discountPercentage: number;
-  metadata: MerchItemOptionMetadata;
+  metadata: MerchItemOptionMetadata | null;
 }
 
 export interface PublicMerchItemPhoto {

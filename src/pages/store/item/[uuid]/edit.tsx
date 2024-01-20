@@ -11,14 +11,15 @@ import { GetServerSideProps } from 'next';
 
 interface ItemEditPageProps {
   user: PrivateProfile;
+  token: string;
   item: PublicMerchItem;
   collections: PublicMerchCollection[];
 }
-const ItemEditPage = ({ user: { credits }, item, collections }: ItemEditPageProps) => {
+const ItemEditPage = ({ user: { credits }, token, item, collections }: ItemEditPageProps) => {
   return (
     <div className={styles.container}>
       <Navbar balance={credits} showBack />
-      <ItemDetailsForm mode="edit" defaultData={item} collections={collections} />
+      <ItemDetailsForm mode="edit" defaultData={item} token={token} collections={collections} />
     </div>
   );
 };
@@ -34,7 +35,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
       StoreAPI.getItem(uuid, token),
       StoreAPI.getAllCollections(token),
     ]);
-    return { props: { item, collections } };
+    return { props: { token, item, collections } };
   } catch (err: any) {
     return { redirect: { destination: config.store.homeRoute, permanent: false } };
   }
