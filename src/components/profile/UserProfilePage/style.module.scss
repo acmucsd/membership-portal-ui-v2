@@ -37,9 +37,10 @@
       }
 
       .profilePic {
-        border-radius: 4rem;
+        border-radius: 50%;
         flex-shrink: 0;
         height: 7rem;
+        object-fit: cover;
         overflow: hidden;
         position: relative;
         width: 7rem;
@@ -54,8 +55,9 @@
         @media (max-width: vars.$breakpoint-md) {
           align-items: center;
           flex-direction: column;
-          
-          h1, div {
+
+          h1,
+          div {
             text-align: center;
           }
         }
@@ -98,15 +100,17 @@
           font-weight: 400;
           line-height: 1.25;
           text-align: end;
-          
+
           @media (max-width: vars.$breakpoint-md) {
             text-align: center;
           }
 
           svg {
             height: 1.125rem;
-            transform: translateY(calc((1.125rem * 1.25) - 1.125rem) * 0.5); // center the trophy icon
-            width: 1.125rem
+            transform: translateY(
+              calc((1.125rem * 1.25) - 1.125rem) * 0.5
+            ); // center the trophy icon
+            width: 1.125rem;
           }
         }
       }
@@ -173,7 +177,6 @@
         height: 1.313rem;
         width: 1.313rem;
       }
-
     }
 
     .socialIcons {
@@ -205,26 +208,26 @@
     right: 1rem;
     top: 1rem;
 
-      div {
-        align-items: center;
-        background: var(--theme-background);
-        border: 1px solid var(--theme-accent-1-transparent);
-        border-radius: 0.625rem;
-        box-shadow: 0 0.0625rem 0.25rem 0 var(--theme-shadow);
-        display: flex;
-        height: 2.375rem;
-        justify-content: center;
-        transition: all 0.3s;
-        width: 2.75rem;
-  
-        &:hover {
-          transform: scale(1.1);
-        }
-  
-        svg {
-          height: 1.625rem;
-          width: 1.625rem;
-        }
+    div {
+      align-items: center;
+      background: var(--theme-background);
+      border: 1px solid var(--theme-accent-1-transparent);
+      border-radius: 0.625rem;
+      box-shadow: 0 0.0625rem 0.25rem 0 var(--theme-shadow);
+      display: flex;
+      height: 2.375rem;
+      justify-content: center;
+      transition: all 0.3s;
+      width: 2.75rem;
+
+      &:hover {
+        transform: scale(1.1);
       }
+
+      svg {
+        height: 1.625rem;
+        width: 1.625rem;
+      }
+    }
   }
 }
