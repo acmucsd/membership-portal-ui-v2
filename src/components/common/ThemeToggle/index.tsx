@@ -25,6 +25,8 @@ const ThemeToggle = () => {
   const currAltText = `Icon representing ${theme} theme is on.`;
 
   useEffect(() => {
+    // Adjusting the <meta name="theme-color"> tag.
+    // This affects the color of the safe zone on iPhone 15.
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor && resolvedTheme === 'dark') {
       metaThemeColor.setAttribute('content', '#37393e');
