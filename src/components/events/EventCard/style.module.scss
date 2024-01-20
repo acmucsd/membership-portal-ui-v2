@@ -16,11 +16,11 @@
   }
 
   .image {
+    aspect-ratio: 1920 / 1080;
     flex-shrink: 0;
-    height: 9.375rem;
     overflow: none;
     position: relative;
-    width: 20rem;
+    width: 100%;
   }
 
   .info {

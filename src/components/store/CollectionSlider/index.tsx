@@ -1,7 +1,8 @@
+import { Carousel } from '@/components/common';
 import ItemCard from '@/components/store/ItemCard';
 import { config } from '@/lib';
 import { PublicMerchItem } from '@/lib/types/apiResponses';
-import NoImage from '@/public/assets/graphics/cat404.png';
+import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from './style.module.scss';
 
 interface CollectionSliderProps {
@@ -15,18 +16,18 @@ const CollectionSlider = ({ title, description, items }: CollectionSliderProps) 
     <div className={styles.wrapper}>
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.description}>{description}</p>
-      <div className={styles.slider}>
+      <Carousel>
         {items.map(item => (
           <ItemCard
             className={styles.card}
-            image={item.picture ?? NoImage.src}
+            image={getDefaultMerchItemPhoto(item)}
             title={item.itemName}
             href={`${config.store.itemRoute}${item.uuid}`}
             cost={item.options[0]?.price ?? 0}
             key={item.uuid}
           />
         ))}
-      </div>
+      </Carousel>
     </div>
   );
 };

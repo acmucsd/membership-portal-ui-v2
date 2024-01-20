@@ -10,9 +10,11 @@ import styles from './style.module.scss';
 interface EventCardProps {
   event: PublicEvent;
   attended: boolean;
+  className?: string;
+  showYear?: boolean;
 }
 
-const EventCard = ({ event, attended }: EventCardProps) => {
+const EventCard = ({ event, attended, className, showYear }: EventCardProps) => {
   const { cover, title, start, end, location } = event;
   const [expanded, setExpanded] = useState(false);
 
@@ -26,7 +28,11 @@ const EventCard = ({ event, attended }: EventCardProps) => {
         event={event}
         onClose={() => setExpanded(false)}
       />
-      <button type="button" className={styles.container} onClick={() => setExpanded(true)}>
+      <button
+        type="button"
+        className={`${styles.container} ${className || ''}`}
+        onClick={() => setExpanded(true)}
+      >
         <div className={styles.image}>
           <PointsDisplay points={event.pointValue} attended={attended} />
           <Image
@@ -52,7 +58,7 @@ const EventCard = ({ event, attended }: EventCardProps) => {
                 style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
                 suppressHydrationWarning
               >
-                {formatEventDate(start, end)}
+                {formatEventDate(start, end, showYear)}
               </Typography>
               <Typography
                 variant="body/small"

@@ -4,7 +4,7 @@
   "plugins": ["prettier", "node", "@typescript-eslint", "import", "jsdoc"],
   "rules": {
     "prettier/prettier": "error",
-    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": ["warn", { "varsIgnorePattern": "^_$" }],
     "no-console": "error",
     "func-names": "off",
     "no-process-exit": "off",
@@ -38,5 +38,10 @@
       }
     ]
   },
-  "ignorePatterns": "src/**/*.d.ts"
+  "ignorePatterns": [
+    "src/**/*.d.ts",
+    "**/public/sw.js",
+    "**/public/workbox-*.js",
+    "**/public/worker-*.js"
+  ]
 }

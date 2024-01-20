@@ -1,4 +1,5 @@
 import { Dropdown, PaginationControls } from '@/components/common';
+import { DIVIDER } from '@/components/common/Dropdown';
 import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { config } from '@/lib';
 import { LeaderboardAPI } from '@/lib/api';
@@ -7,17 +8,12 @@ import { CookieService, PermissionService } from '@/lib/services';
 import { SlidingLeaderboardQueryParams } from '@/lib/types/apiRequests';
 import { PrivateProfile, PublicProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getProfilePicture, getUserRank } from '@/lib/utils';
+import { getDateRange, getEndYear, getProfilePicture, getUserRank, getYears } from '@/lib/utils';
 import MyPositionIcon from '@/public/assets/icons/my-position-icon.svg';
 import styles from '@/styles/pages/leaderboard.module.scss';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
-
-/** Year ACM was founded. */
-const START_YEAR = 2019;
-/** Number of seconds in a day. */
-const DAY_SECONDS = 86400;
 
 interface Match {
   index: number;
@@ -31,37 +27,14 @@ function filter<T extends PublicProfile>(users: T[], query: string): (T & { matc
   });
 }
 
-function getEndYear(): number {
-  const today = new Date();
-  // Arbitrarily start the next academic year in August
-  return today.getMonth() < 7 ? today.getFullYear() : today.getFullYear() + 1;
-}
-
 function getLeaderboardRange(sort: string | number, limit = 0): SlidingLeaderboardQueryParams {
   const params: SlidingLeaderboardQueryParams = { limit };
-  const now = Date.now() / 1000;
-  switch (sort) {
-    case 'past-week': {
-      params.from = now - DAY_SECONDS * 7;
-      break;
-    }
-    case 'past-month': {
-      params.from = now - DAY_SECONDS * 28;
-      break;
-    }
-    case 'past-year': {
-      params.from = now - DAY_SECONDS * 365;
-      break;
-    }
-    case 'all-time': {
-      break;
-    }
-    default: {
-      const year = +sort;
-      // Arbitrarily academic years on August 1, which should be during the summer
-      params.from = new Date(year, 7, 1).getTime() / 1000;
-      params.to = new Date(year + 1, 7, 1).getTime() / 1000;
-    }
+  const { from, to } = getDateRange(sort);
+  if (from !== undefined) {
+    params.from = from;
+  }
+  if (to !== undefined) {
+    params.to = to;
   }
   return params;
 }
@@ -83,14 +56,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
   // user presses the button multiple times
   const [scrollIntoView, setScrollIntoView] = useState(0);
 
-  const years = useMemo(() => {
-    const endYear = getEndYear();
-    const years = [];
-    for (let year = START_YEAR; year < endYear; year += 1) {
-      years.unshift({ value: String(year), label: `${year}–${year + 1}` });
-    }
-    return years;
-  }, []);
+  const years = useMemo(getYears, []);
 
   const { allRows, myIndex } = useMemo(() => {
     const results = leaderboard.map((user, index) => ({ ...user, position: index + 1 }));
@@ -141,7 +107,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             { value: 'past-month', label: 'Past month' },
             { value: 'past-year', label: 'Past year' },
             { value: 'all-time', label: 'All time' },
-            '---',
+            DIVIDER,
             ...years,
           ]}
           value={sort}
@@ -158,7 +124,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             <TopThreeCard
               key={user.uuid}
               position={user.position}
-              rank={getUserRank(user)}
+              rank={getUserRank(user.points)}
               name={`${user.firstName} ${user.lastName}`}
               url={`${config.userProfileRoute}${user.handle}`}
               points={user.points}
@@ -174,7 +140,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
               <LeaderboardRow
                 key={user.uuid}
                 position={user.position}
-                rank={getUserRank(user)}
+                rank={getUserRank(user.points)}
                 name={`${user.firstName} ${user.lastName}`}
                 url={`${config.userProfileRoute}${user.handle}`}
                 points={user.points}
@@ -208,6 +174,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   const sort = typeof query.sort === 'string' ? query.sort : getEndYear() - 1;
+
   const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN, getLeaderboardRange(sort));
 
   return {
@@ -217,5 +184,5 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );

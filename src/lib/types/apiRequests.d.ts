@@ -1,5 +1,5 @@
-import { UUID } from '.';
-import { FeedbackStatus, FeedbackType } from './enums';
+import { URL, UUID } from '.';
+import { FeedbackStatus, FeedbackType, SocialMediaType, UserAccessType } from './enums';
 
 // REQUEST TYPES
 
@@ -16,7 +16,6 @@ export interface LoginRequest {
 }
 
 export interface PasswordChange {
-  code: string;
   newPassword: string;
   confirmPassword: string;
 }
@@ -32,6 +31,7 @@ export interface UserRegistration {
   password: string;
   graduationYear: number;
   major: string;
+  handle?: string;
 }
 
 export interface EmailModificationRequest {
@@ -40,10 +40,6 @@ export interface EmailModificationRequest {
 
 export interface RegistrationRequest {
   user: UserRegistration;
-}
-
-export interface VerifyAccountRequest {
-  accessCode: string;
 }
 
 // USER
@@ -58,6 +54,11 @@ export interface SendPasswordResetEmailRequest {
   email: string;
 }
 
+export interface SocialMedia {
+  type: SocialMediaType;
+  url: URL;
+}
+
 export interface PasswordUpdate extends PasswordChange {
   password: string;
 }
@@ -69,6 +70,7 @@ export interface UserPatches {
   major?: string;
   graduationYear?: number;
   bio?: string;
+  isAttendancePublic?: boolean;
   passwordChange?: PasswordUpdate;
 }
 
@@ -82,6 +84,18 @@ export interface SubmitFeedbackRequest {
 
 export interface UpdateFeedbackStatusRequest {
   status: FeedbackStatus;
+}
+
+export interface InsertUserSocialMediaRequest {
+  socialMedia: SocialMedia;
+}
+
+export interface SocialMediaPatches {
+  url?: string;
+}
+
+export interface UpdateUserSocialMediaRequest {
+  socialMedia: SocialMediaPatches;
 }
 
 // LEADERBOARD
@@ -116,6 +130,15 @@ export interface SubmitAttendanceForUsersRequest {
   users: string[];
   event: UUID;
   asStaff?: boolean;
+}
+
+export interface UserAccessUpdates {
+  user: string;
+  accessType: UserAccessType;
+}
+
+export interface ModifyUserAccessLevelRequest {
+  accessUpdates: UserAccessUpdates[];
 }
 
 // EVENT
@@ -230,7 +253,6 @@ export interface CommonMerchItemProperties {
   itemName: string;
   collection: string;
   description: string;
-  picture?: string;
   hidden?: boolean;
   monthlyLimit?: number;
   lifetimeLimit?: number;
@@ -250,8 +272,14 @@ export interface MerchItemOption {
   metadata?: MerchItemOptionMetadata;
 }
 
+export interface MerchItemPhoto {
+  uploadedPhoto: string;
+  position: number;
+}
+
 export interface MerchItem extends CommonMerchItemProperties {
   options: MerchItemOption[];
+  merchPhotos: MerchItemPhoto[];
 }
 
 export interface MerchItemOptionEdit {
@@ -303,6 +331,12 @@ export interface GetCartRequest {
 }
 
 // RESUMES
+/* Request object does not have nested property because the API request is of
+type multipart/form-data which does not support nested properties */
+export interface UploadResumeRequest {
+  isResumeVisible?: boolean;
+}
+
 export interface ResumePatches {
   isResumeVisible?: boolean;
 }
