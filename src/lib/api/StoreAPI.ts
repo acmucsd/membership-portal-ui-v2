@@ -1,8 +1,8 @@
 import { config } from '@/lib';
 import {
-  GetOneMerchCollectionResponse,
   type GetAllMerchCollectionsResponse,
   type GetMerchOrdersResponse,
+  type GetOneMerchCollectionResponse,
   type GetOneMerchOrderResponse,
   type PublicMerchCollection,
   type PublicOrder,
