@@ -20,7 +20,7 @@ export default function withAccessType(
   // Generate a new getServerSideProps function by taking the return value of the original function and appending the user prop onto it if the user cookie exists, otherwise force user to login page
   const modified: GetServerSideProps = async (context: GetServerSidePropsContext) => {
     const { req, res } = context;
-    let userCookie = CookieService.getServerCookie(CookieType.USER, { req, res });
+    const userCookie = CookieService.getServerCookie(CookieType.USER, { req, res });
     const authTokenCookie = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
     const { homeRoute, loginRoute } = config;
@@ -65,10 +65,8 @@ export default function withAccessType(
     }
 
     if (!user || !userAccessLevel) {
-      user = await UserAPI.getCurrentUser(authTokenCookie);
+      user = await UserAPI.getCurrentUserAndRefreshCookie(authTokenCookie, { req, res });
       userAccessLevel = user.accessType;
-      userCookie = JSON.stringify(user);
-      CookieService.setServerCookie(CookieType.USER, JSON.stringify(userCookie), { req, res });
     }
 
     // This block should be impossible to hit assuming the portal API doesn't go down

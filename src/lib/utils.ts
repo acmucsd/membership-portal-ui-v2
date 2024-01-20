@@ -282,4 +282,19 @@ export const getDefaultMerchItemPhoto = (item: PublicMerchItem | undefined): str
  * @param url url to be fixed
  * @returns url begnning with http://
  */
-export const fixUrl = (url: string) => (url.includes('://') ? url : `http://${url}`);
+export const fixUrl = (input: string, prefix?: string): string => {
+  // Return input as-is if it's blank or includes a protocol
+  if (!input || input.includes('://')) {
+    return input;
+  }
+  // Encourage https://
+  if (prefix && input.startsWith('http://')) {
+    return input.replace('http', 'https');
+  }
+  // If the user typed in their username
+  if (prefix && /^[\w.-]+(?<!\.com)\/?$/.test(input)) {
+    return `https://${prefix}/${input}`;
+  }
+  // Add https:// if it was left out
+  return `https://${input}`;
+};

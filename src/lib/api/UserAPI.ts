@@ -1,4 +1,5 @@
 import { config } from '@/lib';
+import { CookieService } from '@/lib/services';
 import type { UUID } from '@/lib/types';
 import {
   InsertUserSocialMediaRequest,
@@ -21,7 +22,9 @@ import type {
   UpdateProfilePictureResponse,
   UpdateSocialMediaResponse,
 } from '@/lib/types/apiResponses';
+import { CookieType } from '@/lib/types/enums';
 import axios from 'axios';
+import { OptionsType } from 'cookies-next/lib/types';
 
 /**
  * Get current user's private profile
@@ -30,7 +33,6 @@ import axios from 'axios';
  */
 export const getCurrentUser = async (token: string): Promise<PrivateProfile> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.user}`;
-
   const response = await axios.get<GetCurrentUserResponse>(requestUrl, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -38,6 +40,25 @@ export const getCurrentUser = async (token: string): Promise<PrivateProfile> => 
   });
 
   return response.data.user;
+};
+
+export const getCurrentUserAndRefreshCookie = async (
+  token: string,
+  options: OptionsType
+): Promise<PrivateProfile> => {
+  const userCookie = CookieService.getServerCookie(CookieType.USER, options);
+  if (userCookie) return JSON.parse(userCookie);
+
+  const user: PrivateProfile = await getCurrentUser(token);
+
+  const { req, res } = options;
+  CookieService.setServerCookie(CookieType.USER, JSON.stringify(user), {
+    req,
+    res,
+    maxAge: 5 * 60,
+  });
+
+  return user;
 };
 
 /**

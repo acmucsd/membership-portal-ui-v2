@@ -15,7 +15,7 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, SocialMediaType } from '@/lib/types/enums';
-import { capitalize, getMessagesFromError, getProfilePicture } from '@/lib/utils';
+import { capitalize, fixUrl, getMessagesFromError, getProfilePicture } from '@/lib/utils';
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import DropdownIcon from '@/public/assets/icons/dropdown-arrow-1.svg';
 import styles from '@/styles/pages/profile/edit.module.scss';
@@ -34,23 +34,6 @@ function reportError(title: string, error: unknown) {
   }
 }
 
-function fixUrl(input: string, prefix?: string): string {
-  // Return input as-is if it's blank or includes a protocol
-  if (!input || input.includes('://')) {
-    return input;
-  }
-  // Encourage https://
-  if (prefix && input.startsWith('http://')) {
-    return input.replace('http', 'https');
-  }
-  // If the user typed in their username
-  if (prefix && /^[\w.-]+(?<!\.com)\/?$/.test(input)) {
-    return `https://${prefix}/${input}`;
-  }
-  // Add https:// if it was left out
-  return `https://${input}`;
-}
-
 interface EditProfileProps {
   user: PrivateProfile;
   authToken: string;
@@ -61,7 +44,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
 
   useEffect(() => {
     if (user !== initUser) {
-      CookieService.setClientCookie(CookieType.USER, JSON.stringify(user));
+      CookieService.setClientCookie(CookieType.USER, JSON.stringify(user), { maxAge: 5 * 60 });
     }
   }, [user, initUser]);
 
@@ -593,7 +576,7 @@ export default EditProfilePage;
 const getServerSidePropsFunc: GetServerSideProps<EditProfileProps> = async ({ req, res }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   // Ensure `user` is up-to-date
-  const user = await UserAPI.getCurrentUser(AUTH_TOKEN);
+  const user = await UserAPI.getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
 
   return { props: { authToken: AUTH_TOKEN, user } };
 };
