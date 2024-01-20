@@ -3,6 +3,7 @@ import { UUID } from '@/lib/types';
 import type {
   GetAllMerchCollectionsResponse,
   GetMerchOrdersResponse,
+  GetOneMerchCollectionResponse,
   GetOneMerchOrderResponse,
   PublicMerchCollection,
   PublicOrder,
