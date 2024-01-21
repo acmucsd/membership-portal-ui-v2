@@ -1,4 +1,6 @@
-import { MerchItemOptionMetadata, URL, UUID } from '.';
+/* eslint-disable no-use-before-define */
+import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
+import { URL, UUID } from '.';
 import {
   ActivityScope,
   ActivityType,
@@ -8,6 +10,7 @@ import {
   OrderStatus,
   SocialMediaType,
   UserAccessType,
+  UserState,
 } from './enums';
 
 // RESPONSE TYPES

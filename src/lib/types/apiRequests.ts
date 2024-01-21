@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import { URL, UUID } from '.';
 import { FeedbackStatus, FeedbackType, SocialMediaType, UserAccessType } from './enums';
 
