@@ -30,7 +30,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   try {
-    const item = await StoreAPI.getCollection(uuid, token);
+    const item = await StoreAPI.getCollection(token, uuid);
     return { props: { token, item } };
   } catch (err: any) {
     return { redirect: { destination: config.store.homeRoute, permanent: false } };

@@ -204,24 +204,6 @@ export const deleteItemOption = async (token: string, uuid: UUID): Promise<void>
 };
 
 /**
- * Get a single collection by UUID
- * @param uuid Collection UUID
- * @param token Bearer token
- * @returns Collection info
- */
-export const getCollection = async (uuid: UUID, token: string): Promise<PublicMerchCollection> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collection}/${uuid}`;
-
-  const response = await axios.get<GetOneMerchCollectionResponse>(requestUrl, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response.data.collection;
-};
-
-/**
  * Create a single collection by UUID
  * @param token Bearer token
  * @param collection Collection info

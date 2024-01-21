@@ -29,7 +29,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   const item =
     typeof query.duplicate === 'string'
-      ? await StoreAPI.getCollection(query.duplicate, token)
+      ? await StoreAPI.getCollection(token, query.duplicate)
       : null;
   return { props: { token, item } };
 };
