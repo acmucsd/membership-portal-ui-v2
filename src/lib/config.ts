@@ -34,7 +34,10 @@ const config = {
         future: '/event/future',
         picture: '/event/picture',
       },
-      attendance: '/attendance',
+      attendance: {
+        attendance: '/attendance',
+        forUserByUUID: '/attendance/user',
+      },
       leaderboard: '/leaderboard',
       store: {
         collection: '/merch/collection',
@@ -63,6 +66,9 @@ const config = {
       discord: {
         event: '/discord/event',
       },
+      acmurl: {
+        generate: '/acmurl/generate',
+      },
     },
   },
   defaultEventImage: Cat,
@@ -90,6 +96,15 @@ const config = {
   },
   admin: {
     homeRoute: '/admin',
+    awardPoints: '/admin/points',
+    grantPastAttendance: '/admin/attendance',
+    awardMilestone: '/admin/milestone',
+    viewResumes: '/admin/resumes',
+    store: {
+      items: '/admin/store/items',
+      pickupEvents: '/admin/store/pickupEvents',
+      homeRoute: '/admin/store',
+    },
     events: {
       homeRoute: '/admin/event',
       editRoute: '/admin/event/edit',

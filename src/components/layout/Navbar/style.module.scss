@@ -1,7 +1,5 @@
 @use 'src/styles/vars.scss' as vars;
 
-$wainbow-height: 20rem;
-
 .header {
   background-color: var(--theme-background);
   height: vars.$header-height;
@@ -107,6 +105,8 @@ $wainbow-height: 20rem;
       .iconLink {
         color: var(--theme-text-on-background-1);
         cursor: pointer;
+        height: 24px;
+        width: 24px;
       }
     }
   }
@@ -119,19 +119,19 @@ $wainbow-height: 20rem;
     font-size: 20px;
     font-weight: 700;
     gap: 0.25rem;
-    height: $wainbow-height;
+    height: fit-content;
     justify-content: center;
     line-height: 300%;
-    margin-top: #{$wainbow-height * -1};
 
-    padding: 0 1rem 1rem;
+    padding: 0 1rem;
     position: relative;
-    transition: margin-top 0.3s cubic-bezier(0, 0.4, 0.1, 1), background-color 0.3s ease;
+    transform: translateY(calc(-100% + 0.25rem));
+    transition: transform 0.3s cubic-bezier(0, 0.4, 0.1, 1), background-color 0.3s ease;
     width: 100vw;
     z-index: -1;
 
     &[data-open='true'] {
-      margin-top: 0;
+      transform: translateY(0%);
     }
 
     .mobileNavItem {
@@ -152,13 +152,23 @@ $wainbow-height: 20rem;
       &:hover {
         background-color: var(--theme-surface-1);
       }
+
+      svg {
+        height: 24px;
+        width: 24px;
+      }
     }
   }
 
   .wainbow {
     background: vars.$wainbow;
     height: 0.25rem;
+    margin: 0 -1rem;
     width: 100vw;
+
+    &.loggedOut {
+      margin: 0;
+    }
   }
 }
 

@@ -3,6 +3,7 @@ import type { UUID } from '@/lib/types';
 import type {
   GetAllMerchCollectionsResponse,
   GetMerchOrdersResponse,
+  GetOneMerchCollectionResponse,
   GetOneMerchItemResponse,
   GetOneMerchOrderResponse,
   PublicMerchCollection,
@@ -67,4 +68,19 @@ export const getOrder = async (token: string, uuid: string): Promise<PublicOrder
   });
 
   return response.data.order;
+};
+
+export const getCollection = async (
+  token: string,
+  uuid: string
+): Promise<PublicMerchCollection> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collection}/${uuid}`;
+
+  const response = await axios.get<GetOneMerchCollectionResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.collection;
 };

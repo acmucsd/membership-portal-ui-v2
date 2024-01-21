@@ -5,14 +5,14 @@ import Step3 from '@/public/assets/graphics/store/step3.svg';
 import Step4 from '@/public/assets/graphics/store/step4.svg';
 import ArrowLeftIcon from '@/public/assets/icons/arrow-left.svg';
 import ArrowRightIcon from '@/public/assets/icons/arrow-right.svg';
-import { ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 import styles from './style.module.scss';
 
 interface StepProps {
   step: number;
-  children?: ReactNode;
 }
-const Step = ({ step, children }: StepProps) => {
+
+const Step = ({ step, children }: PropsWithChildren<StepProps>) => {
   const Left = step > 1 ? 'a' : 'span';
   const Right = step < 4 ? 'a' : 'span';
   return (

@@ -122,11 +122,17 @@
         &:hover {
           box-shadow: 0 5px 10px var(--theme-shadow);
         }
+
+        svg {
+          height: 24px;
+          width: 24px;
+        }
       }
     }
   }
 
   .image {
+    margin: 0 auto;
     max-height: 1080px;
     max-width: 1920px;
     object-fit: cover;

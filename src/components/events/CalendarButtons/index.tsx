@@ -72,34 +72,47 @@ interface CalendarButtonProps {
   event: PublicEvent;
 }
 
-const CalendarButtons = ({ event }: CalendarButtonProps) => {
+export const GoogleCalendarButton = ({ event }: CalendarButtonProps) => {
   const gCalURL = useMemo(() => generateGCalURL(event), [event]);
+  return (
+    <a className={styles.calendarLink} href={gCalURL} target="blank">
+      <GoogleCalendarLogo alt="google calendar" />
+      <Typography variant="h6/bold">Add to Google Calendar</Typography>
+    </a>
+  );
+};
+
+export const AppleCalendarButton = ({ event }: CalendarButtonProps) => {
   const appleCalInfo = useMemo(() => generateAppleCalInfo(event), [event]);
   const appleCalUrl = useObjectUrl(appleCalInfo.file);
 
+  if (appleCalInfo.download) {
+    return (
+      <a className={styles.calendarLink} href={appleCalUrl} download={appleCalInfo.download}>
+        <AppleCalendarLogo className={styles.appleCalLogo} alt="apple calendar" />
+        <Typography variant="h6/bold">Add to Apple Calendar</Typography>
+      </a>
+    );
+  }
+  return (
+    <button
+      type="button"
+      className={styles.calendarLink}
+      onClick={() =>
+        showToast(appleCalInfo.error || 'An error occurred when saving to Apple Calendar.')
+      }
+    >
+      <AppleCalendarLogo className={styles.appleCalLogo} alt="apple calendar" />
+      <Typography variant="h6/bold">Add to Apple Calendar</Typography>
+    </button>
+  );
+};
+
+const CalendarButtons = ({ event }: CalendarButtonProps) => {
   return (
     <div className={styles.options}>
-      <a className={styles.calendarLink} href={gCalURL} target="blank">
-        <GoogleCalendarLogo alt="google calendar" />
-        <Typography variant="h6/bold">Add to Google Calendar</Typography>
-      </a>
-      {appleCalInfo.download ? (
-        <a className={styles.calendarLink} href={appleCalUrl} download={appleCalInfo.download}>
-          <AppleCalendarLogo className={styles.appleCalLogo} alt="apple calendar" />
-          <Typography variant="h6/bold">Add to Apple Calendar</Typography>
-        </a>
-      ) : (
-        <button
-          type="button"
-          className={styles.calendarLink}
-          onClick={() =>
-            showToast(appleCalInfo.error || 'An error occurred when saving to Apple Calendar.')
-          }
-        >
-          <AppleCalendarLogo className={styles.appleCalLogo} alt="apple calendar" />
-          <Typography variant="h6/bold">Add to Apple Calendar</Typography>
-        </button>
-      )}
+      <GoogleCalendarButton event={event} />
+      <AppleCalendarButton event={event} />
     </div>
   );
 };

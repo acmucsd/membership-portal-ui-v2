@@ -13,5 +13,5 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ query }) => {
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );
