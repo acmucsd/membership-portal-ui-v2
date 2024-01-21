@@ -2,6 +2,7 @@
   align-self: flex-start;
   background-color: var(--theme-primary-2);
   border-radius: 50%;
+  box-shadow: 0 2px 5px var(--theme-shadow);
   color: var(--theme-background);
   display: flex;
   flex: none;
@@ -9,7 +10,7 @@
   transition: box-shadow 0.2s;
 
   &:hover {
-    box-shadow: 0 2px 5px var(--theme-shadow);
+    box-shadow: 0 3px 10px var(--theme-shadow);
   }
 
   .icon {

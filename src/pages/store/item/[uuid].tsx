@@ -55,6 +55,7 @@ const StoreItemPage = ({
             cost={currOption?.price}
             uuid={uuid}
             showEdit={canManageStore}
+            isHidden={canManageStore && item.hidden}
           />
           {item.options.length > 1 ? (
             <SizeSelector

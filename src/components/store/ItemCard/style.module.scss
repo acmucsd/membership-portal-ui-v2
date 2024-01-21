@@ -37,6 +37,7 @@
     flex-direction: column;
     gap: 0.5rem;
     padding: 0 1rem;
+    white-space: pre-wrap;
     word-break: break-word;
 
     .title {
@@ -56,6 +57,8 @@
   }
 
   .icons {
+    display: flex;
+    gap: 0.5rem;
     position: absolute;
     right: 0.5rem;
     top: 0.5rem;

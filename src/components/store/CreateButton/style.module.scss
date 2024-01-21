@@ -10,6 +10,11 @@
   justify-content: center;
   min-height: 8rem;
 
+  &.horizontal {
+    flex-direction: row;
+    min-height: 4rem;
+  }
+
   .icon {
     height: 2rem;
     width: 2rem;

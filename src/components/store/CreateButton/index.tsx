@@ -8,12 +8,14 @@ interface CreateButtonProps {
   className?: string;
   type: 'item' | 'collection';
   collection?: string;
+  horizontal?: boolean;
 }
 
 const CreateButton = ({
   className,
   type,
   collection,
+  horizontal,
   children,
 }: PropsWithChildren<CreateButtonProps>) => {
   return (
@@ -21,7 +23,7 @@ const CreateButton = ({
       href={`${type === 'collection' ? config.store.collectionRoute : config.store.itemRoute}new${
         collection ? `?collection=${collection}` : ''
       }`}
-      className={`${className} ${styles.itemCard}`}
+      className={`${className} ${styles.itemCard} ${horizontal ? styles.horizontal : ''}`}
     >
       <BsPlus className={styles.icon} aria-hidden />
       {children}

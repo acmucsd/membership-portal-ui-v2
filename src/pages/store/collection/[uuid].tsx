@@ -1,5 +1,5 @@
 import { Typography } from '@/components/common';
-import { CreateButton, EditButton, ItemCard, Navbar } from '@/components/store';
+import { CreateButton, EditButton, HiddenIcon, ItemCard, Navbar } from '@/components/store';
 import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -20,7 +20,7 @@ interface CollectionProps {
 const CollectionsPage = ({
   uuid,
   user: { credits, accessType },
-  collection: { title, description, items = [] },
+  collection: { title, description, items = [], archived },
   previewPublic,
 }: CollectionProps) => {
   const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
@@ -33,23 +33,27 @@ const CollectionsPage = ({
         <Typography variant="h1/bold" component="h1">
           {title}
           {canManageStore && <EditButton type="collection" uuid={uuid} />}
+          {canManageStore && archived && <HiddenIcon type="collection" />}
         </Typography>
         <Typography variant="h4/regular" component="p">
           {description}
         </Typography>
       </div>
       <div className={styles.collections}>
-        {items.map(item => (
-          <ItemCard
-            image={getDefaultMerchItemPhoto(item)}
-            title={item.itemName}
-            href={`${config.store.itemRoute}${item.uuid}${preview}`}
-            cost={item.options[0]?.price ?? 0}
-            key={item.uuid}
-          >
-            {canManageStore && <EditButton type="item" uuid={item.uuid} />}
-          </ItemCard>
-        ))}
+        {items
+          .filter(item => canManageStore || !item.hidden)
+          .map(item => (
+            <ItemCard
+              image={getDefaultMerchItemPhoto(item)}
+              title={item.itemName}
+              href={`${config.store.itemRoute}${item.uuid}${preview}`}
+              cost={item.options[0]?.price ?? 0}
+              key={item.uuid}
+            >
+              {canManageStore && item.hidden && <HiddenIcon type="item" />}
+              {canManageStore && <EditButton type="item" uuid={item.uuid} />}
+            </ItemCard>
+          ))}
         {canManageStore && (
           <CreateButton type="item" collection={uuid}>
             Add an item

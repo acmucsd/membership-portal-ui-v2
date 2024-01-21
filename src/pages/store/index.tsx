@@ -3,6 +3,7 @@ import {
   EditButton,
   HelpModal,
   Hero,
+  HiddenIcon,
   ItemCard,
   Navbar,
 } from '@/components/store';
@@ -49,6 +50,10 @@ const StoreHomePage = ({
   const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
   const preview = previewPublic ? '?preview=public' : '';
 
+  const visibleCollections = collections.filter(
+    collection => canManageStore || !collection.archived
+  );
+
   return (
     <>
       <div className={styles.container}>
@@ -74,7 +79,7 @@ const StoreHomePage = ({
         </div>
         {view === 'collections' ? (
           <div className={styles.collections}>
-            {collections.map(collection => (
+            {visibleCollections.map(collection => (
               <ItemCard
                 image={getDefaultMerchItemPhoto(collection.items[0])}
                 title={collection.title}
@@ -82,6 +87,7 @@ const StoreHomePage = ({
                 href={`${config.store.collectionRoute}${collection.uuid}${preview}`}
                 key={collection.uuid}
               >
+                {canManageStore && collection.archived && <HiddenIcon type="collection" />}
                 {canManageStore && <EditButton type="collection" uuid={collection.uuid} />}
               </ItemCard>
             ))}
@@ -89,17 +95,22 @@ const StoreHomePage = ({
           </div>
         ) : (
           <>
-            {collections.map(collection => (
+            {visibleCollections.map(collection => (
               <CollectionSlider
                 uuid={collection.uuid}
                 title={collection.title}
                 description={collection.description}
                 items={collection.items}
-                showEdit={canManageStore}
+                canManageStore={canManageStore}
+                isHidden={canManageStore && collection.archived}
                 key={collection.uuid}
               />
             ))}
-            {canManageStore && <CreateButton type="collection">Create a collection</CreateButton>}
+            {canManageStore && (
+              <CreateButton type="collection" horizontal>
+                Create a collection
+              </CreateButton>
+            )}
           </>
         )}
       </div>

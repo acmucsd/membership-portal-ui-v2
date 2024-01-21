@@ -9,14 +9,16 @@ interface EditButtonProps {
 }
 
 const EditButton = ({ type, uuid }: EditButtonProps) => {
+  const label = `Edit ${type}`;
   return (
     <Link
       className={styles.edit}
       href={`${
         type === 'collection' ? config.store.collectionRoute : config.store.itemRoute
       }${uuid}/edit`}
+      title={label}
     >
-      <EditIcon className={styles.icon} aria-label="Edit" />
+      <EditIcon className={styles.icon} aria-label={label} />
     </Link>
   );
 };
