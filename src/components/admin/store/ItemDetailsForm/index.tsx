@@ -10,15 +10,21 @@ import {
   PublicMerchItemOption,
 } from '@/lib/types/apiResponses';
 import { reportError } from '@/lib/utils';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import style from './style.module.scss';
 
 type FormValues = Omit<MerchItem, 'uuid' | 'hasVariantsEnabled' | 'merchPhotos' | 'options'>;
+type Photo = {
+  uuid?: UUID;
+  uploadedPhoto: string;
+};
 type Option = {
   uuid?: UUID;
   price: string;
+  oldQuantity?: number;
   quantity: string;
   discountPercentage: string;
   value: string;
@@ -32,6 +38,7 @@ const stringifyOption = ({
 }: PublicMerchItemOption): Option => ({
   uuid,
   price: String(price),
+  oldQuantity: quantity,
   quantity: String(quantity),
   discountPercentage: String(discountPercentage),
   value,
@@ -39,40 +46,43 @@ const stringifyOption = ({
 
 interface IProps {
   mode: 'create' | 'edit';
-  defaultData?: Omit<Partial<PublicMerchItem>, 'collection'> & {
-    collection?: string | PublicMerchCollection;
-  };
+  defaultData?: PublicMerchItem | UUID;
   token: string;
   collections: PublicMerchCollection[];
 }
 
-const ItemDetailsForm = ({ mode, defaultData = {}, token, collections }: IProps) => {
+const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
   const router = useRouter();
-  const initialValues: FormValues = {
-    itemName: defaultData.itemName ?? '',
-    collection:
-      typeof defaultData.collection === 'string'
-        ? defaultData.collection
-        : defaultData.collection?.uuid ?? '',
-    description: defaultData.description ?? '',
-    monthlyLimit: defaultData.monthlyLimit ?? 1,
-    lifetimeLimit: defaultData.lifetimeLimit ?? 1,
-    hidden: defaultData.hidden ?? true,
-  };
-  const [merchPhotos, setMerchPhotos] = useState(defaultData.merchPhotos ?? []);
-  const [optionType, setOptionType] = useState(defaultData.options?.[0]?.metadata?.type || '');
-  const [options, setOptions] = useState<Option[]>(
-    defaultData.options
-      ?.sort((a, b) => a.metadata.position - b.metadata.position)
-      .map(stringifyOption) ?? [
-      {
-        price: '',
-        quantity: '',
-        discountPercentage: '0',
-        value: '',
-      },
-    ]
+  const [lastSaved, setLastSaved] = useState<PublicMerchItem | null>(
+    typeof defaultData === 'string' ? null : defaultData
   );
+  const initialValues: FormValues = useMemo(
+    () => ({
+      itemName: lastSaved?.itemName ?? '',
+      collection:
+        lastSaved?.collection?.uuid ?? (typeof defaultData === 'string' ? defaultData : ''),
+      description: lastSaved?.description ?? '',
+      monthlyLimit: lastSaved?.monthlyLimit ?? 1,
+      lifetimeLimit: lastSaved?.lifetimeLimit ?? 1,
+      hidden: lastSaved?.hidden ?? true,
+    }),
+    [lastSaved, defaultData]
+  );
+  const defaultMerchPhotos = lastSaved?.merchPhotos?.sort((a, b) => a.position - b.position) ?? [];
+  const [merchPhotos, setMerchPhotos] = useState<Photo[]>(defaultMerchPhotos);
+  const defaultOptionType = lastSaved?.options?.[0]?.metadata?.type || '';
+  const [optionType, setOptionType] = useState(defaultOptionType);
+  const defaultOptions = lastSaved?.options
+    ?.sort((a, b) => a.metadata.position - b.metadata.position)
+    .map(stringifyOption) ?? [
+    {
+      price: '',
+      quantity: '',
+      discountPercentage: '0',
+      value: '',
+    },
+  ];
+  const [options, setOptions] = useState<Option[]>(defaultOptions);
 
   const {
     register,
@@ -83,41 +93,40 @@ const ItemDetailsForm = ({ mode, defaultData = {}, token, collections }: IProps)
 
   const [loading, setLoading] = useState(false);
 
-  const resetForm = () => reset(initialValues);
-
-  // const createOptionsAsNeeded = async () => {
-  //   if (!options.every(option => option.uuid)) {
-  //     const newOptions = await Promise.all(options.map(option => option.uuid ? option : StoreAPI.createItemOption(token,uuid,)))
-  //     setOptions
-  //   }
-  // }
+  const resetForm = () => {
+    reset(initialValues);
+    setMerchPhotos(defaultMerchPhotos);
+    setOptionType(defaultOptionType);
+    setOptions(defaultOptions);
+  };
 
   const createItem: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
 
     try {
-      const { uuid, options: newOptions } = await StoreAPI.createItem(token, {
+      const item = await StoreAPI.createItem(token, {
         ...formData,
         hasVariantsEnabled: options.length > 1,
-        merchPhotos,
+        merchPhotos: [], // TEMP
         options: options.map((option, i) => ({
           price: +option.price,
           quantity: +option.quantity,
           discountPercentage: +option.discountPercentage,
           metadata:
-            options.length > 1
-              ? { type: optionType, value: option.value, position: i }
-              : { type: 'Size', value: 'Option 1', position: 0 },
+            options.length > 1 ? { type: optionType, value: option.value, position: i } : undefined,
         })),
       });
-      setOptions(newOptions.map(stringifyOption));
+      setLastSaved(item);
+      setOptions(
+        item.options.sort((a, b) => a.metadata.position - b.metadata.position).map(stringifyOption)
+      );
       showToast('Item created successfully!', '', [
         {
           text: 'View public item page',
-          onClick: () => router.push(`${config.store.itemRoute}/${uuid}`),
+          onClick: () => router.push(`${config.store.itemRoute}/${item.uuid}`),
         },
       ]);
-      router.push(`${config.store.itemRoute}/${uuid}/edit`);
+      router.push(`${config.store.itemRoute}/${item.uuid}/edit`);
     } catch (error) {
       reportError('Could not create item', error);
     } finally {
@@ -126,17 +135,63 @@ const ItemDetailsForm = ({ mode, defaultData = {}, token, collections }: IProps)
   };
 
   const editItem: SubmitHandler<FormValues> = async formData => {
+    if (!lastSaved) {
+      throw new Error('`editItem` called on create item page.');
+    }
+    const { uuid } = lastSaved;
     setLoading(true);
-
-    const uuid = defaultData.uuid ?? '';
-
     try {
-      await StoreAPI.editItem(token, uuid, {
+      // If we need to add new options, ensure that `hasVariantsEnabled` is
+      // enabled and update all existing options' `type` so the new options'
+      // `type` match.
+      if (
+        options.length > 1 &&
+        options.some(option => !option.uuid) &&
+        (!lastSaved.hasVariantsEnabled || lastSaved.options[0]?.metadata.type !== optionType)
+      ) {
+        await StoreAPI.editItem(token, uuid, {
+          hasVariantsEnabled: true,
+          options: lastSaved.options.map(({ uuid, metadata }) => ({
+            uuid,
+            metadata: { ...metadata, type: optionType },
+          })),
+        });
+      }
+      // Delete removed options
+      await Promise.all(
+        lastSaved.options
+          .filter(option => !options.some(o => o.uuid === option.uuid))
+          .map(({ uuid }) => StoreAPI.deleteItemOption(token, uuid))
+      );
+      const item = await StoreAPI.editItem(token, uuid, {
         ...formData,
         hasVariantsEnabled: options.length > 1,
-        merchPhotos,
-        options,
+        merchPhotos: [], // TEMP
+        options: await Promise.all(
+          options.map(async (option, i) => {
+            const edits = {
+              price: +option.price,
+              quantity: +option.quantity,
+              discountPercentage: +option.discountPercentage,
+              metadata:
+                options.length > 1
+                  ? { type: optionType, value: option.value, position: i }
+                  : undefined,
+            };
+            return option.uuid
+              ? {
+                  uuid: option.uuid,
+                  ...edits,
+                  quantityToAdd: edits.quantity - (option.oldQuantity ?? 0),
+                }
+              : StoreAPI.createItemOption(token, uuid, edits);
+          })
+        ),
       });
+      setLastSaved(item);
+      setOptions(
+        item.options.sort((a, b) => a.metadata.position - b.metadata.position).map(stringifyOption)
+      );
       showToast('Item details saved!', '', [
         {
           text: 'View public item page',
@@ -151,9 +206,12 @@ const ItemDetailsForm = ({ mode, defaultData = {}, token, collections }: IProps)
   };
 
   const deleteItem = async () => {
+    if (!lastSaved) {
+      return;
+    }
     setLoading(true);
     try {
-      await StoreAPI.deleteItem(token, defaultData.uuid ?? '');
+      await StoreAPI.deleteItem(token, lastSaved.uuid);
       showToast('Item deleted successfully');
       router.push(config.store.homeRoute);
     } catch (error) {
@@ -166,6 +224,10 @@ const ItemDetailsForm = ({ mode, defaultData = {}, token, collections }: IProps)
   return (
     <form onSubmit={handleSubmit(mode === 'edit' ? editItem : createItem)}>
       <h1>{mode === 'edit' ? 'Modify' : 'Create'} Store Item</h1>
+
+      {lastSaved && (
+        <Link href={`${config.store.itemRoute}${lastSaved.uuid}`}>View store listing</Link>
+      )}
 
       <div className={style.form}>
         <label htmlFor="name">Item name</label>
@@ -242,7 +304,7 @@ const ItemDetailsForm = ({ mode, defaultData = {}, token, collections }: IProps)
             <th>Price</th>
             <th>Quantity</th>
             <th>Percent discount</th>
-            <th>Remove</th>
+            {options.length > 1 && <th>Remove</th>}
           </tr>
         </thead>
         <tbody>
@@ -296,11 +358,13 @@ const ItemDetailsForm = ({ mode, defaultData = {}, token, collections }: IProps)
                   }
                 />
               </td>
-              <td>
-                <Button onClick={() => setOptions(options.toSpliced(i, 1))} destructive>
-                  Remove
-                </Button>
-              </td>
+              {options.length > 1 && (
+                <td>
+                  <Button onClick={() => setOptions(options.toSpliced(i, 1))} destructive>
+                    Remove
+                  </Button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
