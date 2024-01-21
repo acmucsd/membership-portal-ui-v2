@@ -27,6 +27,15 @@ interface CropperProps {
   aspectRatio: number;
   circle?: boolean;
   maxFileHeight: number;
+  /**
+   * Maximum number of bytes (not kilobytes) of the image. If unspecified, there
+   * is no limit.
+   *
+   * The cropper will first try to produce a PNG image then JPG images of
+   * decreasing quality until the threshold is met. If a JPG image of 0 quality
+   * is still too large, the cropper will close with `reason:
+   * 'cannot-compress'`.
+   */
   maxSize?: number;
   onCrop: (file: Blob) => void;
   onClose: (reason: 'invalid-image' | 'cannot-compress' | null) => void;

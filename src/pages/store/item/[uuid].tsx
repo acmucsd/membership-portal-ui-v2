@@ -90,7 +90,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.allUserTypes
 );
 
 // Knowledge:
