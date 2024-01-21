@@ -3,7 +3,6 @@ import AddCartButton from '@/components/store/AddCartButton';
 import ItemHeader from '@/components/store/ItemHeader';
 import SizeSelector from '@/components/store/SizeSelector';
 import { StoreAPI } from '@/lib/api';
-import config from '@/lib/config';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchItemWithPurchaseLimits } from '@/lib/types/apiResponses';
@@ -15,11 +14,20 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 interface ItemPageProps {
+  uuid: string;
   user: PrivateProfile;
 
   item: PublicMerchItemWithPurchaseLimits;
+  previewPublic: boolean;
 }
-const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
+const StoreItemPage = ({
+  uuid,
+  user: { credits, accessType },
+  item,
+  previewPublic,
+}: ItemPageProps) => {
+  const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
+
   const [size, setSize] = useState<string | undefined>(item.options.length <= 1 ? 'Y' : undefined);
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
@@ -42,7 +50,12 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
           />
         </div>
         <div className={styles.optionsContainer}>
-          <ItemHeader itemName={item.itemName} cost={currOption?.price} />
+          <ItemHeader
+            itemName={item.itemName}
+            cost={currOption?.price}
+            uuid={uuid}
+            showEdit={canManageStore}
+          />
           {item.options.length > 1 ? (
             <SizeSelector
               currSize={size}
@@ -72,7 +85,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
 
 export default StoreItemPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res, query }) => {
   const uuid = params?.uuid as string;
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
@@ -80,11 +93,13 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
     const item = await StoreAPI.getItem(uuid, token);
     return {
       props: {
+        uuid,
         item,
+        previewPublic: query.preview === 'public',
       },
     };
-  } catch (err: any) {
-    return { redirect: { destination: config.store.homeRoute, permanent: false } };
+  } catch {
+    return { notFound: true };
   }
 };
 

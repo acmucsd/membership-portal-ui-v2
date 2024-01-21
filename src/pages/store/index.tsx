@@ -47,6 +47,7 @@ const StoreHomePage = ({
   const [helpOpen, setHelpOpen] = useState(false);
 
   const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
+  const preview = previewPublic ? '?preview=public' : '';
 
   return (
     <>
@@ -78,7 +79,7 @@ const StoreHomePage = ({
                 image={getDefaultMerchItemPhoto(collection.items[0])}
                 title={collection.title}
                 description={collection.description}
-                href={`${config.store.collectionRoute}${collection.uuid}`}
+                href={`${config.store.collectionRoute}${collection.uuid}${preview}`}
                 key={collection.uuid}
               >
                 {canManageStore && <EditButton type="collection" uuid={collection.uuid} />}

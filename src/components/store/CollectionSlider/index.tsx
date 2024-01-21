@@ -13,9 +13,19 @@ interface CollectionSliderProps {
   description: string;
   items: PublicMerchItem[];
   showEdit?: boolean;
+  previewPublic?: boolean;
 }
 
-const CollectionSlider = ({ uuid, title, description, items, showEdit }: CollectionSliderProps) => {
+const CollectionSlider = ({
+  uuid,
+  title,
+  description,
+  items,
+  showEdit,
+  previewPublic,
+}: CollectionSliderProps) => {
+  const preview = previewPublic ? '?preview=public' : '';
+
   return (
     <div className={styles.wrapper}>
       <h3 className={styles.title}>
@@ -29,7 +39,7 @@ const CollectionSlider = ({ uuid, title, description, items, showEdit }: Collect
             className={styles.card}
             image={getDefaultMerchItemPhoto(item)}
             title={item.itemName}
-            href={`${config.store.itemRoute}${item.uuid}`}
+            href={`${config.store.itemRoute}${item.uuid}${preview}`}
             cost={item.options[0]?.price ?? 0}
             key={item.uuid}
           >

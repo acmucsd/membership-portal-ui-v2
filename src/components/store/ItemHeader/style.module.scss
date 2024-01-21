@@ -12,8 +12,10 @@
   gap: 8px;
 
   h1 {
+    display: flex;
     font-size: vars.$general-heading-1;
     font-weight: bold;
+    gap: 1rem;
   }
 
   p {

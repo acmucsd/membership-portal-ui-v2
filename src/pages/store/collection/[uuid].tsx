@@ -24,6 +24,7 @@ const CollectionsPage = ({
   previewPublic,
 }: CollectionProps) => {
   const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
+  const preview = previewPublic ? '?preview=public' : '';
 
   return (
     <div className={styles.container}>
@@ -42,7 +43,7 @@ const CollectionsPage = ({
           <ItemCard
             image={getDefaultMerchItemPhoto(item)}
             title={item.itemName}
-            href={`${config.store.itemRoute}${item.uuid}`}
+            href={`${config.store.itemRoute}${item.uuid}${preview}`}
             cost={item.options[0]?.price ?? 0}
             key={item.uuid}
           >
@@ -64,10 +65,14 @@ export default CollectionsPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res, query }) => {
   const uuid = params?.uuid as string;
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  const collection = await StoreAPI.getCollection(token, uuid);
-  return {
-    props: { uuid, collection, previewPublic: query.preview === 'public' },
-  };
+  try {
+    const collection = await StoreAPI.getCollection(token, uuid);
+    return {
+      props: { uuid, collection, previewPublic: query.preview === 'public' },
+    };
+  } catch {
+    return { notFound: true };
+  }
 };
 
 export const getServerSideProps = withAccessType(

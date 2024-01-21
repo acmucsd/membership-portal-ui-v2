@@ -36,8 +36,8 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
       StoreAPI.getAllCollections(token),
     ]);
     return { props: { token, item, collections } };
-  } catch (err: any) {
-    return { redirect: { destination: config.store.homeRoute, permanent: false } };
+  } catch {
+    return { notFound: true };
   }
 };
 

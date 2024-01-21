@@ -1,8 +1,10 @@
 .edit {
+  align-self: flex-start;
   background-color: var(--theme-primary-2);
   border-radius: 50%;
   color: var(--theme-background);
   display: flex;
+  flex: none;
   padding: 0.5rem;
   transition: box-shadow 0.2s;
 
