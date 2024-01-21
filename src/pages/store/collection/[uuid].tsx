@@ -7,7 +7,7 @@ import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getDefaultMerchItemPhoto } from '@/lib/utils';
-import styles from '@/styles/pages/store/collections.module.scss';
+import styles from '@/styles/pages/StoreCollectionPage.module.scss';
 import { GetServerSideProps } from 'next';
 
 interface CollectionProps {
@@ -35,7 +35,7 @@ const CollectionsPage = ({
           <ItemCard
             image={getDefaultMerchItemPhoto(item)}
             title={item.itemName}
-            href={`${config.itemRoute}${item.uuid}`}
+            href={`${config.store.itemRoute}${item.uuid}`}
             cost={item.options[0]?.price ?? 0}
             key={item.uuid}
           />
