@@ -54,7 +54,7 @@ interface IProps {
 const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
   const router = useRouter();
   const [lastSaved, setLastSaved] = useState<PublicMerchItem | null>(
-    typeof defaultData === 'string' ? null : defaultData
+    typeof defaultData === 'string' ? null : defaultData ?? null
   );
   const initialValues: FormValues = useMemo(
     () => ({
