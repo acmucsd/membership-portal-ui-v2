@@ -1,5 +1,12 @@
-import { CollectionSlider, HelpModal, Hero, ItemCard, Navbar } from '@/components/store';
-import CreateItemCard from '@/components/store/CreateItemCard';
+import {
+  CollectionSlider,
+  EditButton,
+  HelpModal,
+  Hero,
+  ItemCard,
+  Navbar,
+} from '@/components/store';
+import CreateButton from '@/components/store/CreateButton';
 import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -11,7 +18,6 @@ import styles from '@/styles/pages/StoreHomePage.module.scss';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useState } from 'react';
-import { BsPlus } from 'react-icons/bs';
 
 type View = 'collections' | 'all-items';
 
@@ -73,18 +79,12 @@ const StoreHomePage = ({
                 title={collection.title}
                 description={collection.description}
                 href={`${config.store.collectionRoute}${collection.uuid}`}
-                editUrl={
-                  canManageStore ? `${config.store.collectionRoute}${collection.uuid}/edit` : null
-                }
                 key={collection.uuid}
-              />
+              >
+                {canManageStore && <EditButton type="collection" uuid={collection.uuid} />}
+              </ItemCard>
             ))}
-            {canManageStore && (
-              <CreateItemCard
-                href={config.store.createCollectionRoute}
-                label="Create a collection"
-              />
-            )}
+            {canManageStore && <CreateButton type="collection">Create a collection</CreateButton>}
           </div>
         ) : (
           <>
@@ -94,16 +94,11 @@ const StoreHomePage = ({
                 title={collection.title}
                 description={collection.description}
                 items={collection.items}
-                editUrl={
-                  canManageStore ? `${config.store.collectionRoute}${collection.uuid}/edit` : null
-                }
+                showEdit={canManageStore}
                 key={collection.uuid}
               />
             ))}
-            <Link className={styles.createCollection} href={config.store.createCollectionRoute}>
-              <BsPlus aria-hidden />
-              Create a collection
-            </Link>
+            {canManageStore && <CreateButton type="collection">Create a collection</CreateButton>}
           </>
         )}
       </div>

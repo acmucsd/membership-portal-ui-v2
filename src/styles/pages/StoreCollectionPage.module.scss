@@ -11,6 +11,11 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+
+    h1 {
+      display: flex;
+      gap: 1rem;
+    }
   }
 
   .collections {
@@ -19,6 +24,22 @@
     grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
     @media screen and (max-width: vars.$breakpoint-sm) {
       grid-template-columns: 1fr;
+    }
+  }
+
+  .createItem {
+    align-items: center;
+    border: 1px solid var(--theme-shadow);
+    border-radius: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    height: 3rem;
+    justify-content: center;
+    padding: 0 1rem;
+
+    svg {
+      height: 1.5rem;
+      width: 1.5rem;
     }
   }
 }

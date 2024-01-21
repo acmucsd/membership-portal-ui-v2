@@ -1,7 +1,7 @@
 export type Styles = {
   cost: string;
   details: string;
-  edit: string;
+  icons: string;
   imageWrapper: string;
   itemCard: string;
   linkWrapper: string;

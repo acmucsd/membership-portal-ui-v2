@@ -1,7 +1,7 @@
 import Diamonds from '@/components/store/Diamonds';
-import EditIcon from '@/public/assets/icons/edit.svg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { PropsWithChildren } from 'react';
 import styles from './style.module.scss';
 
 interface CommonOptions {
@@ -9,7 +9,6 @@ interface CommonOptions {
   title: string;
   href: string;
   className?: string;
-  editUrl?: string | null;
 }
 
 interface StoreItemOptions {
@@ -28,7 +27,14 @@ type ItemCardProps = (StoreItemOptions | CollectionOptions) & CommonOptions;
  * - a store item that costs `cost` diamonds (optional `outOfStock`), or
  * - a collection with a `description`.
  */
-const ItemCard = ({ image, title, href, className, editUrl, ...props }: ItemCardProps) => {
+const ItemCard = ({
+  image,
+  title,
+  href,
+  className,
+  children,
+  ...props
+}: PropsWithChildren<ItemCardProps>) => {
   return (
     <article className={`${styles.itemCard} ${className}`}>
       <Link href={href} className={styles.linkWrapper}>
@@ -47,11 +53,7 @@ const ItemCard = ({ image, title, href, className, editUrl, ...props }: ItemCard
           )}
         </div>
       </Link>
-      {editUrl && (
-        <Link className={styles.edit} href={editUrl}>
-          <EditIcon aria-label="Edit" />
-        </Link>
-      )}
+      {children && <div className={styles.icons}>{children}</div>}
     </article>
   );
 };

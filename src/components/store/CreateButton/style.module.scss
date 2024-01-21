@@ -3,8 +3,8 @@
 .itemCard {
   align-items: center;
   border: 1px solid var(--theme-shadow);
-  border-radius: 10px;
-  display: inline-flex;
+  border-radius: 0.5rem;
+  display: flex;
   flex-direction: column;
   gap: 1rem;
   justify-content: center;

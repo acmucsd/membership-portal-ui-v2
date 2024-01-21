@@ -1,5 +1,5 @@
 import { Typography } from '@/components/common';
-import { ItemCard, Navbar } from '@/components/store';
+import { CreateButton, EditButton, ItemCard, Navbar } from '@/components/store';
 import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -11,20 +11,27 @@ import styles from '@/styles/pages/StoreCollectionPage.module.scss';
 import { GetServerSideProps } from 'next';
 
 interface CollectionProps {
+  uuid: string;
   user: PrivateProfile;
   collection: PublicMerchCollection;
+  previewPublic: boolean;
 }
 
 const CollectionsPage = ({
-  user: { credits },
+  uuid,
+  user: { credits, accessType },
   collection: { title, description, items = [] },
+  previewPublic,
 }: CollectionProps) => {
+  const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
+
   return (
     <div className={styles.container}>
       <Navbar balance={credits} showBack />
       <div className={styles.header}>
         <Typography variant="h1/bold" component="h1">
           {title}
+          {canManageStore && <EditButton type="collection" uuid={uuid} />}
         </Typography>
         <Typography variant="h4/regular" component="p">
           {description}
@@ -38,8 +45,15 @@ const CollectionsPage = ({
             href={`${config.store.itemRoute}${item.uuid}`}
             cost={item.options[0]?.price ?? 0}
             key={item.uuid}
-          />
+          >
+            {canManageStore && <EditButton type="item" uuid={item.uuid} />}
+          </ItemCard>
         ))}
+        {canManageStore && (
+          <CreateButton type="item" collection={uuid}>
+            Add an item
+          </CreateButton>
+        )}
       </div>
     </div>
   );
@@ -47,14 +61,12 @@ const CollectionsPage = ({
 
 export default CollectionsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res, query }) => {
   const uuid = params?.uuid as string;
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   const collection = await StoreAPI.getCollection(token, uuid);
   return {
-    props: {
-      collection,
-    },
+    props: { uuid, collection, previewPublic: query.preview === 'public' },
   };
 };
 

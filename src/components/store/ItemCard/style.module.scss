@@ -3,7 +3,7 @@
 .itemCard {
   background-color: var(--theme-background);
   border: 1px solid var(--theme-shadow);
-  border-radius: 10px;
+  border-radius: 0.5rem;
   box-shadow: 0 4px 4px var(--theme-shadow);
   display: inline-flex;
   overflow: hidden;
@@ -55,25 +55,9 @@
     }
   }
 
-  .edit {
-    background-color: var(--theme-primary-2);
-    border-radius: 50%;
-    color: var(--theme-background);
-    display: flex;
-    margin: 0.5rem;
-    padding: 0.5rem;
+  .icons {
     position: absolute;
-    right: 0;
-    top: 0;
-    transition: box-shadow 0.2s;
-
-    &:hover {
-      box-shadow: 0 2px 5px var(--theme-shadow);
-    }
-
-    svg {
-      height: 1.5rem;
-      width: 1.5rem;
-    }
+    right: 0.5rem;
+    top: 0.5rem;
   }
 }

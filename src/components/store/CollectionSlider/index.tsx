@@ -1,11 +1,10 @@
 import { Carousel } from '@/components/common';
-import CreateItemCard from '@/components/store/CreateItemCard';
+import CreateButton from '@/components/store/CreateButton';
+import EditButton from '@/components/store/EditButton';
 import ItemCard from '@/components/store/ItemCard';
 import { config } from '@/lib';
 import { PublicMerchItem } from '@/lib/types/apiResponses';
 import { getDefaultMerchItemPhoto } from '@/lib/utils';
-import EditIcon from '@/public/assets/icons/edit.svg';
-import Link from 'next/link';
 import styles from './style.module.scss';
 
 interface CollectionSliderProps {
@@ -13,19 +12,15 @@ interface CollectionSliderProps {
   title: string;
   description: string;
   items: PublicMerchItem[];
-  editUrl?: string | null;
+  showEdit?: boolean;
 }
 
-const CollectionSlider = ({ uuid, title, description, items, editUrl }: CollectionSliderProps) => {
+const CollectionSlider = ({ uuid, title, description, items, showEdit }: CollectionSliderProps) => {
   return (
     <div className={styles.wrapper}>
       <h3 className={styles.title}>
         {title}
-        {editUrl && (
-          <Link className={styles.edit} href={editUrl}>
-            <EditIcon aria-label="Edit" />
-          </Link>
-        )}
+        {showEdit && <EditButton type="collection" uuid={uuid} />}
       </h3>
       <p className={styles.description}>{description}</p>
       <Carousel>
@@ -35,17 +30,16 @@ const CollectionSlider = ({ uuid, title, description, items, editUrl }: Collecti
             image={getDefaultMerchItemPhoto(item)}
             title={item.itemName}
             href={`${config.store.itemRoute}${item.uuid}`}
-            editUrl={editUrl ? `${config.store.itemRoute}${item.uuid}/edit` : null}
             cost={item.options[0]?.price ?? 0}
             key={item.uuid}
-          />
+          >
+            {showEdit && <EditButton type="item" uuid={uuid} />}
+          </ItemCard>
         ))}
-        {editUrl && (
-          <CreateItemCard
-            className={styles.card}
-            href={`${config.store.createItemRoute}?collection=${uuid}`}
-            label="Add an item"
-          />
+        {showEdit && (
+          <CreateButton className={styles.card} type="item" collection={uuid}>
+            Add an item
+          </CreateButton>
         )}
       </Carousel>
     </div>
