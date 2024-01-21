@@ -1,6 +1,6 @@
 import { config } from '@/lib';
 import { URL } from '@/lib/types';
-import { CreateDiscordEventRequest } from '@/lib/types/apiRequests';
+import { CreateDiscordEventRequest, GenerateACMURLRequest } from '@/lib/types/apiRequests';
 import type { NotionEventDetails, NotionEventPreview } from '@/lib/types/apiResponses';
 import axios from 'axios';
 import totp from 'totp-generator';
@@ -62,4 +62,15 @@ export const getFutureEventsPreview = async (): Promise<NotionEventPreview[]> =>
   } catch (e) {
     return [];
   }
+};
+
+export const generateACMURL = async (acmurlInfo: GenerateACMURLRequest): Promise<void> => {
+  const { klefki } = config;
+  const requestUrl = `${klefki.baseUrl}${klefki.endpoints.acmurl.generate}`;
+
+  await axios.post<void>(requestUrl, acmurlInfo, {
+    headers: {
+      Authorization: `Bearer ${generateToken(klefki.key)}`,
+    },
+  });
 };

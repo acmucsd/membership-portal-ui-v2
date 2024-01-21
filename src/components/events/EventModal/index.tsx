@@ -2,7 +2,7 @@ import { CommunityLogo, Modal, Typography } from '@/components/common';
 import CalendarButtons from '@/components/events/CalendarButtons';
 import PointsDisplay from '@/components/events/PointsDisplay';
 import { PublicEvent } from '@/lib/types/apiResponses';
-import { formatEventDate } from '@/lib/utils';
+import { fixUrl, formatEventDate } from '@/lib/utils';
 import LinkIcon from '@/public/assets/icons/link.svg';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,10 +19,7 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
   const { cover, title, start, end, location, description, eventLink } = event;
 
   const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
-  const formattedEventLink = eventLink?.includes('https://') ? eventLink : `https://${eventLink}`;
-  const displayEventLink = eventLink
-    ? formattedEventLink
-    : `https://acmucsd.com/events/${event.uuid}`;
+  const displayEventLink = fixUrl(eventLink) || `https://acmucsd.com/events/${event.uuid}`;
 
   return (
     <Modal open={open} onClose={onClose}>

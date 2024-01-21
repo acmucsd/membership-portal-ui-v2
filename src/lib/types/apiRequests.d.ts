@@ -362,4 +362,10 @@ export interface CreateDiscordEventRequest {
   end: string;
   description: string;
   location: string;
+  image?: string;
+}
+
+export interface GenerateACMURLRequest {
+  shortlink: string;
+  longlink: string;
 }

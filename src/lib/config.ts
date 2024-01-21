@@ -34,7 +34,10 @@ const config = {
         future: '/event/future',
         picture: '/event/picture',
       },
-      attendance: '/attendance',
+      attendance: {
+        attendance: '/attendance',
+        forUserByUUID: '/attendance/user',
+      },
       leaderboard: '/leaderboard',
       store: {
         collection: '/merch/collection',
@@ -62,6 +65,9 @@ const config = {
       },
       discord: {
         event: '/discord/event',
+      },
+      acmurl: {
+        generate: '/acmurl/generate',
       },
     },
   },

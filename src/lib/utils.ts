@@ -1,4 +1,5 @@
 import defaultProfilePictures from '@/lib/constants/profilePictures';
+import ranks from '@/lib/constants/ranks';
 import showToast from '@/lib/showToast';
 import type { URL } from '@/lib/types';
 import type {
@@ -9,6 +10,11 @@ import type {
 } from '@/lib/types/apiResponses';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import { AxiosError } from 'axios';
+import {
+  type StaticImageData,
+  type StaticImport,
+  type StaticRequire,
+} from 'next/dist/shared/lib/get-img-props';
 import { useEffect, useState } from 'react';
 
 /**
@@ -84,19 +90,24 @@ export const formatSearch = (text: string): string => {
 
 /**
  * Helper function to map each user to a numeric value deterministically
- * TODO: Use the user's UUID to hash to a number since it will never change
  * @param user
- * @returns
+ * @returns A 32-bit integer
+ * @see https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
  */
-const hashUser = (user: PublicProfile) => {
-  return user.points;
+const hashUser = ({ uuid }: PublicProfile) => {
+  return uuid.split('').reduce((hash, char) => {
+    /* eslint-disable no-bitwise */
+    const hash1 = (hash << 5) - hash + char.charCodeAt(0);
+    return hash1 | 0; // Convert to 32bit integer
+    /* eslint-enable no-bitwise */
+  }, 0);
 };
 
 export const getProfilePicture = (user: PublicProfile): URL => {
   if (user.profilePicture) return user.profilePicture;
 
   const NUM_IMAGES = defaultProfilePictures.length;
-  const index = hashUser(user) % NUM_IMAGES;
+  const index = ((hashUser(user) % NUM_IMAGES) + NUM_IMAGES) % NUM_IMAGES;
   const path = defaultProfilePictures[index]?.src ?? '';
 
   return path;
@@ -111,20 +122,28 @@ export const getLevel = (points: number): number => {
   return Math.floor(points / 100) + 1;
 };
 
-// TODO: Define all ranks and logic for this
-export const getUserRank = (user: PublicProfile): string => {
-  const ranks = ['Polynomial Pita', 'Factorial Flatbread'];
-  const index = user.points % 2;
-
-  return ranks[index] ?? '';
+/**
+ * Get a user's rank based on how many points they have
+ * @param points
+ * @returns rank name
+ */
+export const getUserRank = (points: number): string => {
+  const index = Math.min(ranks.length, getLevel(points)) - 1;
+  return ranks[index] as string;
 };
 
 /**
- * Checks whether an image source is a gif
+ * Checks whether a next/image Image source is a gif
  * @param src - source of the image
  * @returns whether or not the source is a gif
  */
-export const isSrcAGif = (src: string | null): boolean => src !== null && /\.gif($|&)/.test(src);
+export const isSrcAGif = (src: string | StaticImport): boolean => {
+  const srcString =
+    (typeof src === 'string' && src) ||
+    (src as StaticRequire).default?.src ||
+    (src as StaticImageData).src;
+  return /\.gif($|&)/.test(srcString);
+};
 
 /**
  * A React hook for calling `URL.createObjectURL` on the given file. Avoids
@@ -229,14 +248,17 @@ export const getDateRange = (sort: string | number) => {
     }
     case 'past-week': {
       from = now - DAY_SECONDS * 7;
+      to = now;
       break;
     }
     case 'past-month': {
       from = now - DAY_SECONDS * 28;
+      to = now;
       break;
     }
     case 'past-year': {
       from = now - DAY_SECONDS * 365;
+      to = now;
       break;
     }
     case 'all-time': {
@@ -265,4 +287,26 @@ export const getDefaultMerchItemPhoto = (item: PublicMerchItem | undefined): str
     return defaultPhoto.uploadedPhoto;
   }
   return NoImage.src;
+};
+
+/**
+ * Prepend 'http://' to a url if a protocol isn't specified
+ * @param url url to be fixed
+ * @returns url begnning with http://
+ */
+export const fixUrl = (input: string, prefix?: string): string => {
+  // Return input as-is if it's blank or includes a protocol
+  if (!input || input.includes('://')) {
+    return input;
+  }
+  // Encourage https://
+  if (prefix && input.startsWith('http://')) {
+    return input.replace('http', 'https');
+  }
+  // If the user typed in their username
+  if (prefix && /^[\w.-]+(?<!\.com)\/?$/.test(input)) {
+    return `https://${prefix}/${input}`;
+  }
+  // Add https:// if it was left out
+  return `https://${input}`;
 };

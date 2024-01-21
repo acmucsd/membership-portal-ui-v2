@@ -1,4 +1,4 @@
-import { Cropper } from '@/components/common';
+import { Cropper, GifSafeImage } from '@/components/common';
 import {
   EditBlock,
   EditField,
@@ -9,36 +9,19 @@ import {
 } from '@/components/profile';
 import { config, showToast } from '@/lib';
 import { AuthAPI, ResumeAPI, UserAPI } from '@/lib/api';
-import majors from '@/lib/constants/majors.json';
+import majors from '@/lib/constants/majors';
 import socialMediaTypes from '@/lib/constants/socialMediaTypes';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, SocialMediaType } from '@/lib/types/enums';
-import { capitalize, getProfilePicture, isSrcAGif, reportError } from '@/lib/utils';
+import { capitalize, fixUrl, getProfilePicture, reportError } from '@/lib/utils';
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import DropdownIcon from '@/public/assets/icons/dropdown-arrow-1.svg';
 import styles from '@/styles/pages/profile/edit.module.scss';
 import type { GetServerSideProps } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FormEvent, useEffect, useId, useMemo, useState } from 'react';
-
-function fixUrl(input: string, prefix?: string): string {
-  if (!input || input.startsWith('https://')) {
-    return input;
-  }
-  // Encourage https://
-  if (prefix && input.startsWith('http://')) {
-    return input.replace('http', 'https');
-  }
-  // If the user typed in their username
-  if (prefix && /^[\w.-]+(?<!\.com)\/?$/.test(input)) {
-    return `https://${prefix}/${input}`;
-  }
-  // Add https:// if it was left out
-  return `https://${input}`;
-}
 
 interface EditProfileProps {
   user: PrivateProfile;
@@ -50,7 +33,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
 
   useEffect(() => {
     if (user !== initUser) {
-      CookieService.setClientCookie(CookieType.USER, JSON.stringify(user));
+      CookieService.setClientCookie(CookieType.USER, JSON.stringify(user), { maxAge: 5 * 60 });
     }
   }, [user, initUser]);
 
@@ -267,7 +250,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                     onDragLeave={() => setPfpDrop(false)}
                   >
                     <label className={styles.pfpOutline} htmlFor={pfpUploadId}>
-                      <Image
+                      <GifSafeImage
                         className={styles.pfp}
                         src={
                           getProfilePicture(user) +
@@ -276,7 +259,6 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                         alt="Profile picture"
                         width={125}
                         height={125}
-                        unoptimized={isSrcAGif(user.profilePicture)}
                       />
                     </label>
                     <div className={styles.pfpButtons}>
@@ -365,7 +347,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 </EditBlock>
               </div>
             </details>
-            <details open>
+            <details open id="about">
               <summary>
                 <h2>About Me</h2>
                 <DropdownIcon aria-hidden />
@@ -374,7 +356,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 <EditField
                   label="Major"
                   element="select"
-                  options={majors.majors}
+                  options={majors}
                   changed={majorChanged}
                   value={major}
                   onChange={setMajor}
@@ -583,12 +565,12 @@ export default EditProfilePage;
 const getServerSidePropsFunc: GetServerSideProps<EditProfileProps> = async ({ req, res }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   // Ensure `user` is up-to-date
-  const user = await UserAPI.getCurrentUser(AUTH_TOKEN);
+  const user = await UserAPI.getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
 
   return { props: { authToken: AUTH_TOKEN, user } };
 };
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );

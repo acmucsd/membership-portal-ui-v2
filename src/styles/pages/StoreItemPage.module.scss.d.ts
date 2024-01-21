@@ -1,5 +1,4 @@
 export type Styles = {
-  cover: string;
   coverContainer: string;
   navbarBodyDiv: string;
   optionsContainer: string;
