@@ -308,7 +308,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
             <input
               type="number"
               id="monthlyLimit"
-              {...register('monthlyLimit', { valueAsNumber: true, required: 'Required' })}
+              {...register('monthlyLimit', { valueAsNumber: true, required: 'Required', min: 0 })}
             />
           </EventDetailsFormItem>
 
@@ -317,7 +317,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
             <input
               type="number"
               id="lifetimeLimit"
-              {...register('lifetimeLimit', { valueAsNumber: true, required: 'Required' })}
+              {...register('lifetimeLimit', { valueAsNumber: true, required: 'Required', min: 0 })}
             />
           </EventDetailsFormItem>
         </div>
@@ -410,6 +410,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                     type="number"
                     name="price"
                     aria-label="Price"
+                    min={0}
                     value={option.price}
                     onChange={e =>
                       setOptions(options.with(i, { ...option, price: e.currentTarget.value }))
@@ -421,6 +422,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                     type="number"
                     name="quantity"
                     aria-label="Quantity"
+                    min={0}
                     value={option.quantity}
                     onChange={e =>
                       setOptions(options.with(i, { ...option, quantity: e.currentTarget.value }))
@@ -432,6 +434,8 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                     type="number"
                     name="discount-percentage"
                     aria-label="Percent discount"
+                    min={0}
+                    max={100}
                     value={option.discountPercentage}
                     onChange={e =>
                       setOptions(
@@ -496,7 +500,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
       <Cropper
         file={photo}
         aspectRatio={1}
-        maxSize={100000}
+        maxSize={config.file.MAX_MERCH_PHOTO_SIZE_KB * 1024}
         maxFileHeight={1080}
         onCrop={async blob => {
           setMerchPhotos(photos => [...photos, { blob, uploadedPhoto: URL.createObjectURL(blob) }]);
