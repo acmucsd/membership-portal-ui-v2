@@ -1,10 +1,132 @@
 @use 'src/styles/vars.scss' as vars;
 
+.header {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .viewPage {
+    background-color: var(--theme-primary-2);
+    border-radius: 0.5rem;
+    color: var(--theme-background);
+    display: flex;
+    font-weight: bold;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+}
+
 .form {
   column-gap: 8px;
   display: grid;
   grid-template-columns: 1fr 3fr;
   row-gap: 1rem;
+
+  [type='color'] {
+    cursor: pointer;
+    max-width: 5rem;
+    padding: 0 !important;
+  }
+}
+
+.photos {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  margin: 1rem 0;
+
+  li {
+    aspect-ratio: 1 / 1;
+    position: relative;
+
+    img {
+      border-radius: 20px;
+      object-fit: cover;
+    }
+
+    button {
+      position: absolute;
+      right: 0.5rem;
+      top: 0.5rem;
+      z-index: 2;
+    }
+
+    .addImage {
+      align-items: center;
+      border: 1px solid var(--theme-shadow);
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      width: 100%;
+
+      svg {
+        height: 1.5rem;
+        width: 1.5rem;
+      }
+
+      [type='file'] {
+        @include vars.accessibly-hidden;
+      }
+    }
+  }
+}
+
+.options {
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  overflow: hidden;
+
+  thead {
+    background-color: var(--theme-primary-2);
+    color: var(--theme-background);
+  }
+
+  th {
+    text-align: left;
+  }
+
+  tbody tr:nth-child(2n + 1) {
+    background-color: var(--theme-surface-1);
+  }
+
+  th,
+  td {
+    padding: 0.5rem;
+
+    &:first-child {
+      padding-left: 1rem;
+    }
+
+    &:last-child {
+      padding-right: 1rem;
+    }
+  }
+
+  tfoot {
+    background-color: var(--theme-surface-2);
+  }
+
+  input {
+    background: none;
+    border: 0;
+    border: 1px solid currentColor;
+    border-radius: 0.5rem;
+    color: inherit;
+    font: inherit;
+    padding: 0.5rem;
+    width: 100%;
+  }
+
+  [type='number'] {
+    text-align: right;
+  }
 }
 
 .submitButtons {

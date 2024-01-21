@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { BsArrowRight, BsPlus } from 'react-icons/bs';
 import style from './style.module.scss';
 
 type FormValues = Omit<MerchItem, 'uuid' | 'hasVariantsEnabled' | 'merchPhotos' | 'options'>;
@@ -266,11 +267,16 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
   return (
     <>
       <form onSubmit={handleSubmit(mode === 'edit' ? editItem : createItem)}>
-        <h1>{mode === 'edit' ? 'Modify' : 'Create'} Store Item</h1>
+        <div className={style.header}>
+          <h1>{mode === 'edit' ? 'Modify' : 'Create'} Store Item</h1>
 
-        {lastSaved && (
-          <Link href={`${config.store.itemRoute}${lastSaved.uuid}`}>View store listing</Link>
-        )}
+          {lastSaved && (
+            <Link className={style.viewPage} href={`${config.store.itemRoute}${lastSaved.uuid}`}>
+              View store listing
+              <BsArrowRight aria-hidden />
+            </Link>
+          )}
+        </div>
 
         <div className={style.form}>
           <label htmlFor="name">Item name</label>
@@ -322,22 +328,10 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           </EventDetailsFormItem>
         </div>
 
-        <EventDetailsFormItem error={errors.hidden?.message}>
-          <label>
-            <input type="checkbox" {...register('hidden')} />
-            &nbsp;Hide this item from the public storefront
-          </label>
-        </EventDetailsFormItem>
-
-        <ul>
+        <ul className={style.photos}>
           {merchPhotos.map((photo, i) => (
             <li key={photo.uuid ?? i}>
-              <Image
-                src={photo.uploadedPhoto}
-                alt="Uploaded photo of store item"
-                width={50}
-                height={50}
-              />
+              <Image src={photo.uploadedPhoto} alt="Uploaded photo of store item" fill />
               <Button
                 onClick={() => {
                   setMerchPhotos(merchPhotos.toSpliced(i, 1));
@@ -347,28 +341,31 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                 }}
                 destructive
               >
-                Delete
+                Remove
               </Button>
             </li>
           ))}
+          <li>
+            <label className={style.addImage}>
+              <BsPlus aria-hidden />
+              Add image
+              <input
+                type="file"
+                id="cover"
+                accept="image/*"
+                onChange={e => {
+                  const file = e.currentTarget.files?.[0];
+                  e.currentTarget.value = '';
+                  if (file) {
+                    setPhoto(file);
+                  }
+                }}
+              />
+            </label>
+          </li>
         </ul>
-        <label>
-          Add image
-          <input
-            type="file"
-            id="cover"
-            accept="image/*"
-            onChange={e => {
-              const file = e.currentTarget.files?.[0];
-              e.currentTarget.value = '';
-              if (file) {
-                setPhoto(file);
-              }
-            }}
-          />
-        </label>
 
-        <table>
+        <table className={style.options}>
           <thead>
             <tr>
               {options.length > 1 && (
@@ -456,7 +453,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           </tbody>
           <tfoot>
             <tr>
-              <td>
+              <td colSpan={10}>
                 <Button
                   onClick={() =>
                     setOptions([
@@ -471,6 +468,13 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
             </tr>
           </tfoot>
         </table>
+
+        <EventDetailsFormItem error={errors.hidden?.message}>
+          <label>
+            <input type="checkbox" {...register('hidden')} />
+            &nbsp;Hide this item from the public storefront
+          </label>
+        </EventDetailsFormItem>
 
         <div className={style.submitButtons}>
           {mode === 'edit' ? (

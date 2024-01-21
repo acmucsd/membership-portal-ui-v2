@@ -5,9 +5,11 @@ import { StoreAPI } from '@/lib/api';
 import { MerchCollection } from '@/lib/types/apiRequests';
 import { PublicMerchCollection } from '@/lib/types/apiResponses';
 import { reportError } from '@/lib/utils';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { BsArrowRight } from 'react-icons/bs';
 import style from '../ItemDetailsForm/style.module.scss';
 
 type FormValues = MerchCollection;
@@ -93,7 +95,19 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
 
   return (
     <form onSubmit={handleSubmit(mode === 'edit' ? editCollection : createCollection)}>
-      <h1>{mode === 'edit' ? 'Modify' : 'Create'} Collection</h1>
+      <div className={style.header}>
+        <h1>{mode === 'edit' ? 'Modify' : 'Create'} Collection</h1>
+
+        {defaultData.uuid && (
+          <Link
+            className={style.viewPage}
+            href={`${config.store.collectionRoute}${defaultData.uuid}`}
+          >
+            View collection page
+            <BsArrowRight aria-hidden />
+          </Link>
+        )}
+      </div>
 
       <div className={style.form}>
         <label htmlFor="title">Title</label>
