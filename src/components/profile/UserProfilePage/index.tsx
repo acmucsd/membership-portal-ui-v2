@@ -154,16 +154,17 @@ export const UserProfilePage = ({
             )}
           </Typography>
           <Carousel>
-            {(isSignedInUser ? signedInAttendances : (attendances as PublicAttendance[])).map(
-              ({ event }) => (
+            {(isSignedInUser ? signedInAttendances : (attendances as PublicAttendance[]))
+              .reverse()
+              .slice(0, 10)
+              .map(({ event }) => (
                 <EventCard
                   className={styles.card}
                   key={event.uuid}
                   event={event}
                   attended={signedInAttendances.some(({ event: { uuid } }) => uuid === event.uuid)}
                 />
-              )
-            )}
+              ))}
           </Carousel>
         </div>
       )}
