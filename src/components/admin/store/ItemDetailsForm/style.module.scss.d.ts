@@ -1,6 +1,7 @@
 export type Styles = {
   addImage: string;
   form: string;
+  grip: string;
   header: string;
   options: string;
   photos: string;

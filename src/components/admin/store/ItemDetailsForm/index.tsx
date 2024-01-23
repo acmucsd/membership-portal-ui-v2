@@ -333,7 +333,13 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           <Draggable items={merchPhotos} onReorder={setMerchPhotos}>
             {(props, photo, i) => (
               <li key={photo.uuid ?? i} {...props}>
-                <Image src={photo.uploadedPhoto} alt="Uploaded photo of store item" fill />
+                <Image
+                  className={DRAG_HANDLE}
+                  src={photo.uploadedPhoto}
+                  alt="Uploaded photo of store item"
+                  draggable={false}
+                  fill
+                />
                 <Button
                   onClick={() => {
                     setMerchPhotos(merchPhotos.toSpliced(i, 1));
@@ -345,12 +351,6 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                 >
                   Remove
                 </Button>
-                <p
-                  className={DRAG_HANDLE}
-                  style={{ position: 'absolute', zIndex: 5, color: '#f00' }}
-                >
-                  drag me
-                </p>
               </li>
             )}
           </Draggable>
@@ -405,7 +405,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                   {options.length > 1 && (
                     <>
                       <td>
-                        <BsGripVertical className={DRAG_HANDLE} />
+                        <BsGripVertical className={`${DRAG_HANDLE} ${style.grip}`} />
                       </td>
                       <td>
                         <input

@@ -98,6 +98,12 @@
     &:nth-child(2n + 1) {
       background-color: var(--theme-surface-1);
     }
+
+    .grip {
+      height: 1.5rem;
+      vertical-align: middle;
+      width: 1.5rem;
+    }
   }
 
   th,
