@@ -25,7 +25,7 @@ const AddCartButton = ({
 }: AddCartButtonProps) => {
   const myID = useId();
 
-  const maxCanBuy = Math.min(lifetimeRemaining, monthlyRemaining);
+  const maxCanBuy = Math.min(20, Math.min(lifetimeRemaining, monthlyRemaining));
 
   const validText = inStock ? (
     <p className={styles.valid}>This item is in stock.</p>
