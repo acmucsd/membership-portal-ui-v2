@@ -13,9 +13,12 @@
 
   h1 {
     display: flex;
-    font-size: vars.$general-heading-1;
+    font-size: vars.$general-heading-2;
     font-weight: bold;
     gap: 1rem;
+    @media (max-width: 600px) {
+      font-size: vars.$card-heading-1;
+    }
   }
 
   p {

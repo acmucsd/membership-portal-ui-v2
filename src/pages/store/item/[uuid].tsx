@@ -58,12 +58,7 @@ const StoreItemPage = ({
             isHidden={canManageStore && item.hidden}
           />
           {item.options.length > 1 ? (
-            <SizeSelector
-              currSize={size}
-              onSizeChange={setSize}
-              options={item.options}
-              uuid={item.uuid}
-            />
+            <SizeSelector currSize={size} onSizeChange={setSize} options={item.options} />
           ) : null}
 
           <AddCartButton

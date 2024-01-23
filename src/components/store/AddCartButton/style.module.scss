@@ -20,7 +20,16 @@
   .quantityColumn {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+    @media (max-width: 600px) {
+      gap: 0.75rem;
+    }
+
+    div > select {
+      font-size: 1rem;
+      font-weight: normal;
+      line-height: 1.25rem;
+    }
   }
 
   .error {

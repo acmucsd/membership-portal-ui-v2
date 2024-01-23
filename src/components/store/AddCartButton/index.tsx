@@ -25,7 +25,7 @@ const AddCartButton = ({
 }: AddCartButtonProps) => {
   const myID = useId();
 
-  const maxCanBuy = Math.min(lifetimeRemaining, monthlyRemaining);
+  const maxCanBuy = Math.min(20, Math.min(lifetimeRemaining, monthlyRemaining));
 
   const validText = inStock ? (
     <p className={styles.valid}>This item is in stock.</p>
@@ -47,7 +47,7 @@ const AddCartButton = ({
     buyButtonText = 'Out of Stock';
   }
 
-  const optionArr: Array<{ value: string; label: string } | '---'> = [];
+  const optionArr: Array<{ value: string; label: string } | '----'> = [];
 
   if (maxCanBuy === 0) {
     optionArr.push({ value: `0`, label: `0` });
@@ -57,7 +57,7 @@ const AddCartButton = ({
     optionArr.push({ value: `${i}`, label: `${i}` });
   }
 
-  optionArr.push('---');
+  optionArr.push('----');
 
   return (
     <div className={styles.addCartGroup}>
