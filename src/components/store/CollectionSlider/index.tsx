@@ -51,7 +51,7 @@ const CollectionSlider = ({
               key={item.uuid}
             >
               {canManageStore && item.hidden && <HiddenIcon type="item" />}
-              {canManageStore && <EditButton type="item" uuid={uuid} />}
+              {canManageStore && <EditButton type="item" uuid={item.uuid} />}
             </ItemCard>
           ))}
         {canManageStore && (

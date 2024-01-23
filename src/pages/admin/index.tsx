@@ -33,7 +33,7 @@ const AdminPage = ({ user: { accessType } }: AdminProps) => {
           margin: '1rem 0',
         }}
       >
-        <LinkButton href={config.admin.store.items}>Manage Store Merchandise</LinkButton>
+        <LinkButton href={config.store.homeRoute}>Manage Store Merchandise</LinkButton>
         <LinkButton href={config.admin.store.pickupEvents}>Manage Pickup Events</LinkButton>
       </div>
       <br />
