@@ -1,7 +1,4 @@
 @use 'src/styles/vars.scss' as vars;
-// EXAMPLE: vars.$light-primary-1 (see SizeSelector p{} styling)
-// TODO: Update text size, color, background color, border color, etc. to follow vars presets
-
 $indicator-size: 30px;
 $switch-gap: 127%;
 $switch-gap-num: calc($switch-gap / 100%);
