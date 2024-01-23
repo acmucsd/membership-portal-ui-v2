@@ -11,21 +11,23 @@ interface SizeSelectorProps {
 const SizeSelector = ({ currSize, options, onSizeChange }: SizeSelectorProps) => {
   const myID = useId();
 
-  const myOptions = options.map(val => {
-    const tempId = val.metadata?.value ? `${val.metadata.value}${myID}` : `${val.uuid}${myID}`;
-    return (
-      <Fragment key={tempId}>
-        <input
-          id={tempId}
-          name="state-d"
-          type="radio"
-          defaultChecked={currSize === val.metadata?.value}
-          onClick={() => onSizeChange(val.metadata?.value)}
-        />
-        <label htmlFor={tempId}>{val.metadata?.value}</label>
-      </Fragment>
-    );
-  });
+  const myOptions = options
+    .sort((a, b) => (a.metadata?.position ?? 0) - (b.metadata?.position ?? 0))
+    .map(val => {
+      const tempId = val.metadata?.value ? `${val.metadata.value}${myID}` : `${val.uuid}${myID}`;
+      return (
+        <Fragment key={tempId}>
+          <input
+            id={tempId}
+            name="state-d"
+            type="radio"
+            defaultChecked={currSize === val.metadata?.value}
+            onClick={() => val.metadata && onSizeChange(val.metadata.value)}
+          />
+          <label htmlFor={tempId}>{val.metadata?.value}</label>
+        </Fragment>
+      );
+    });
 
   return (
     <div className={styles.sizeSelector}>

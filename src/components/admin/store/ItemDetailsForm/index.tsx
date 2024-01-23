@@ -1,5 +1,6 @@
 import EventDetailsFormItem from '@/components/admin/event/EventDetailsFormItem';
 import { Button, Cropper } from '@/components/common';
+import Draggable, { DRAG_HANDLE } from '@/components/common/Draggable';
 import { config, showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import { UUID } from '@/lib/types';
@@ -15,7 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { BsArrowRight, BsPlus } from 'react-icons/bs';
+import { BsArrowRight, BsGripVertical, BsPlus } from 'react-icons/bs';
 import style from './style.module.scss';
 
 type FormValues = Omit<MerchItem, 'uuid' | 'hasVariantsEnabled' | 'merchPhotos' | 'options'>;
@@ -329,22 +330,30 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
         </div>
 
         <ul className={style.photos}>
-          {merchPhotos.map((photo, i) => (
-            <li key={photo.uuid ?? i}>
-              <Image src={photo.uploadedPhoto} alt="Uploaded photo of store item" fill />
-              <Button
-                onClick={() => {
-                  setMerchPhotos(merchPhotos.toSpliced(i, 1));
-                  if (photo.uuid === undefined) {
-                    URL.revokeObjectURL(photo.uploadedPhoto);
-                  }
-                }}
-                destructive
-              >
-                Remove
-              </Button>
-            </li>
-          ))}
+          <Draggable items={merchPhotos} onReorder={setMerchPhotos}>
+            {(props, photo, i) => (
+              <li key={photo.uuid ?? i} {...props}>
+                <Image src={photo.uploadedPhoto} alt="Uploaded photo of store item" fill />
+                <Button
+                  onClick={() => {
+                    setMerchPhotos(merchPhotos.toSpliced(i, 1));
+                    if (photo.uuid === undefined) {
+                      URL.revokeObjectURL(photo.uploadedPhoto);
+                    }
+                  }}
+                  destructive
+                >
+                  Remove
+                </Button>
+                <p
+                  className={DRAG_HANDLE}
+                  style={{ position: 'absolute', zIndex: 5, color: '#f00' }}
+                >
+                  drag me
+                </p>
+              </li>
+            )}
+          </Draggable>
           <li>
             <label className={style.addImage}>
               <BsPlus aria-hidden />
@@ -369,16 +378,19 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           <thead>
             <tr>
               {options.length > 1 && (
-                <th>
-                  <input
-                    type="text"
-                    name="category-type"
-                    aria-label="Option type"
-                    placeholder="Size, color, ..."
-                    value={optionType}
-                    onChange={e => setOptionType(e.currentTarget.value)}
-                  />
-                </th>
+                <>
+                  <th />
+                  <th>
+                    <input
+                      type="text"
+                      name="category-type"
+                      aria-label="Option type"
+                      placeholder="Size, color, ..."
+                      value={optionType}
+                      onChange={e => setOptionType(e.currentTarget.value)}
+                    />
+                  </th>
+                </>
               )}
               <th>Price</th>
               <th>Quantity</th>
@@ -387,69 +399,76 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
             </tr>
           </thead>
           <tbody>
-            {options.map((option, i) => (
-              <tr key={option.uuid || i}>
-                {options.length > 1 && (
+            <Draggable items={options} onReorder={setOptions}>
+              {(props, option, i) => (
+                <tr key={option.uuid || i} {...props}>
+                  {options.length > 1 && (
+                    <>
+                      <td>
+                        <BsGripVertical className={DRAG_HANDLE} />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          name="category-value"
+                          aria-label={optionType}
+                          value={option.value}
+                          onChange={e =>
+                            setOptions(options.with(i, { ...option, value: e.currentTarget.value }))
+                          }
+                        />
+                      </td>
+                    </>
+                  )}
                   <td>
                     <input
-                      type="text"
-                      name="category-value"
-                      aria-label={optionType}
-                      value={option.value}
+                      type="number"
+                      name="price"
+                      aria-label="Price"
+                      min={0}
+                      value={option.price}
                       onChange={e =>
-                        setOptions(options.with(i, { ...option, value: e.currentTarget.value }))
+                        setOptions(options.with(i, { ...option, price: e.currentTarget.value }))
                       }
                     />
                   </td>
-                )}
-                <td>
-                  <input
-                    type="number"
-                    name="price"
-                    aria-label="Price"
-                    min={0}
-                    value={option.price}
-                    onChange={e =>
-                      setOptions(options.with(i, { ...option, price: e.currentTarget.value }))
-                    }
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name="quantity"
-                    aria-label="Quantity"
-                    min={0}
-                    value={option.quantity}
-                    onChange={e =>
-                      setOptions(options.with(i, { ...option, quantity: e.currentTarget.value }))
-                    }
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name="discount-percentage"
-                    aria-label="Percent discount"
-                    min={0}
-                    max={100}
-                    value={option.discountPercentage}
-                    onChange={e =>
-                      setOptions(
-                        options.with(i, { ...option, discountPercentage: e.currentTarget.value })
-                      )
-                    }
-                  />
-                </td>
-                {options.length > 1 && (
                   <td>
-                    <Button onClick={() => setOptions(options.toSpliced(i, 1))} destructive>
-                      Remove
-                    </Button>
+                    <input
+                      type="number"
+                      name="quantity"
+                      aria-label="Quantity"
+                      min={0}
+                      value={option.quantity}
+                      onChange={e =>
+                        setOptions(options.with(i, { ...option, quantity: e.currentTarget.value }))
+                      }
+                    />
                   </td>
-                )}
-              </tr>
-            ))}
+                  <td>
+                    <input
+                      type="number"
+                      name="discount-percentage"
+                      aria-label="Percent discount"
+                      min={0}
+                      max={100}
+                      value={option.discountPercentage}
+                      onChange={e =>
+                        setOptions(
+                          options.with(i, { ...option, discountPercentage: e.currentTarget.value })
+                        )
+                      }
+                    />
+                  </td>
+                  {options.length > 1 && (
+                    <td>
+                      <Button onClick={() => setOptions(options.toSpliced(i, 1))} destructive>
+                        Remove
+                      </Button>
+                    </td>
+                  )}
+                </tr>
+              )}
+            </Draggable>
           </tbody>
           <tfoot>
             <tr>

@@ -92,8 +92,12 @@
     text-align: left;
   }
 
-  tbody tr:nth-child(2n + 1) {
-    background-color: var(--theme-surface-1);
+  tbody tr {
+    background-color: var(--theme-background);
+
+    &:nth-child(2n + 1) {
+      background-color: var(--theme-surface-1);
+    }
   }
 
   th,
