@@ -4,12 +4,11 @@ import { Fragment, useId } from 'react';
 
 interface SizeSelectorProps {
   currSize: string | undefined;
-  uuid: string;
   options: PublicMerchItemOption[];
   onSizeChange: (currSize: string) => void;
 }
 
-const SizeSelector = ({ currSize, options, onSizeChange, uuid }: SizeSelectorProps) => {
+const SizeSelector = ({ currSize, options, onSizeChange }: SizeSelectorProps) => {
   const myID = useId();
 
   const myOptions = options.map(val => {
