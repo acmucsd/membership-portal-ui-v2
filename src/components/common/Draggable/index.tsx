@@ -82,7 +82,9 @@ function Draggable<T>({ items, onReorder, children: mapFn }: DraggableProps<T>) 
           { minDist: Infinity, index: -1 }
         );
 
-        dragState.current.reordered = elements.toSpliced(index, 1).toSpliced(closest, 0, dragged);
+        dragState.current.reordered = [...elements];
+        dragState.current.reordered.splice(index, 1);
+        dragState.current.reordered.splice(closest, 0, dragged);
         dragState.current.reordered.forEach((item, newIndex) => {
           const newItem = elements[newIndex];
           if (item.ogIndex === index || !newItem) {

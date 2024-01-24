@@ -342,7 +342,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                 />
                 <Button
                   onClick={() => {
-                    setMerchPhotos(merchPhotos.toSpliced(i, 1));
+                    setMerchPhotos(merchPhotos.filter((_, index) => index !== i));
                     if (photo.uuid === undefined) {
                       URL.revokeObjectURL(photo.uploadedPhoto);
                     }
@@ -416,7 +416,11 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                           required
                           value={option.value}
                           onChange={e =>
-                            setOptions(options.with(i, { ...option, value: e.currentTarget.value }))
+                            setOptions(
+                              options.map((option, index) =>
+                                index === i ? { ...option, value: e.currentTarget.value } : option
+                              )
+                            )
                           }
                         />
                       </td>
@@ -430,7 +434,11 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                       min={0}
                       value={option.price}
                       onChange={e =>
-                        setOptions(options.with(i, { ...option, price: e.currentTarget.value }))
+                        setOptions(
+                          options.map((option, index) =>
+                            index === i ? { ...option, price: e.currentTarget.value } : option
+                          )
+                        )
                       }
                     />
                   </td>
@@ -442,7 +450,11 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                       min={0}
                       value={option.quantity}
                       onChange={e =>
-                        setOptions(options.with(i, { ...option, quantity: e.currentTarget.value }))
+                        setOptions(
+                          options.map((option, index) =>
+                            index === i ? { ...option, quantity: e.currentTarget.value } : option
+                          )
+                        )
                       }
                     />
                   </td>
@@ -456,14 +468,21 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                       value={option.discountPercentage}
                       onChange={e =>
                         setOptions(
-                          options.with(i, { ...option, discountPercentage: e.currentTarget.value })
+                          options.map((option, index) =>
+                            index === i
+                              ? { ...option, discountPercentage: e.currentTarget.value }
+                              : option
+                          )
                         )
                       }
                     />
                   </td>
                   {options.length > 1 && (
                     <td>
-                      <Button onClick={() => setOptions(options.toSpliced(i, 1))} destructive>
+                      <Button
+                        onClick={() => setOptions(options.filter((_, index) => index !== i))}
+                        destructive
+                      >
                         Remove
                       </Button>
                     </td>

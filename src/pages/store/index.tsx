@@ -28,7 +28,8 @@ function getPath(view: View): string {
   if (view === 'all-items') {
     params.set('view', 'all');
   }
-  return params.size > 0 ? `${config.store.homeRoute}?${params}` : config.store.homeRoute;
+  const query = params.toString();
+  return query ? `${config.store.homeRoute}?${query}` : config.store.homeRoute;
 }
 
 interface HomePageProps {
