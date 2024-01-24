@@ -3,6 +3,7 @@
 .header {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1rem;
 
@@ -37,8 +38,12 @@
 .photos {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
   margin: 1rem 0;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    grid-template-columns: 1fr 1fr;
+  }
 
   li {
     aspect-ratio: 1 / 1;
@@ -78,64 +83,72 @@
   }
 }
 
-.options {
-  border-radius: 0.5rem;
-  margin: 1rem 0;
-  overflow: hidden;
+.tableScroller {
+  overflow-x: auto;
 
-  thead {
-    background-color: var(--theme-primary-2);
-    color: var(--theme-background);
-  }
-
-  th {
-    text-align: left;
-  }
-
-  tbody tr {
-    background-color: var(--theme-background);
-
-    &:nth-child(2n + 1) {
-      background-color: var(--theme-surface-1);
-    }
-
-    .grip {
-      height: 1.5rem;
-      vertical-align: middle;
-      width: 1.5rem;
-    }
-  }
-
-  th,
-  td {
-    padding: 0.5rem;
-
-    &:first-child {
-      padding-left: 1rem;
-    }
-
-    &:last-child {
-      padding-right: 1rem;
-    }
-  }
-
-  tfoot {
-    background-color: var(--theme-surface-2);
-  }
-
-  input {
-    background: none;
-    border: 0;
-    border: 1px solid currentColor;
+  .options {
     border-radius: 0.5rem;
-    color: inherit;
-    font: inherit;
-    padding: 0.5rem;
-    width: 100%;
-  }
+    margin: 1rem 0;
+    overflow: hidden;
 
-  [type='number'] {
-    text-align: right;
+    &.multipleOptions {
+      min-width: 40rem;
+    }
+
+    thead {
+      background-color: var(--theme-primary-2);
+      color: var(--theme-background);
+    }
+
+    th {
+      text-align: left;
+    }
+
+    tbody tr {
+      background-color: var(--theme-background);
+
+      &:nth-child(2n + 1) {
+        background-color: var(--theme-surface-1);
+      }
+
+      .grip {
+        height: 1.5rem;
+        vertical-align: middle;
+        width: 1.5rem;
+      }
+    }
+
+    th,
+    td {
+      padding: 0.5rem;
+
+      &:first-child {
+        padding-left: 1rem;
+      }
+
+      &:last-child {
+        padding-right: 1rem;
+      }
+    }
+
+    tfoot {
+      background-color: var(--theme-surface-2);
+    }
+
+    input {
+      background: none;
+      border: 0;
+      border: 1px solid currentColor;
+      border-radius: 0.5rem;
+      color: inherit;
+      font: inherit;
+      padding: 0.5rem;
+      width: 100%;
+    }
+
+    [type='number'] {
+      text-align: right;
+    }
   }
 }
 

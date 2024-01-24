@@ -3,9 +3,11 @@ export type Styles = {
   form: string;
   grip: string;
   header: string;
+  multipleOptions: string;
   options: string;
   photos: string;
   submitButtons: string;
+  tableScroller: string;
   viewPage: string;
 };
 
