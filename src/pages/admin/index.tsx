@@ -1,15 +1,17 @@
 import { LinkButton, Typography } from '@/components/common';
 import { config } from '@/lib';
 import withAccessType from '@/lib/hoc/withAccessType';
-import { PermissionService } from '@/lib/services';
+import { CookieService, PermissionService } from '@/lib/services';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
+import { CookieType } from '@/lib/types/enums';
 import type { GetServerSideProps } from 'next';
 
 interface AdminProps {
   user: PrivateProfile;
+  preview: string;
 }
 
-const AdminPage = ({ user: { accessType } }: AdminProps) => {
+const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
   return (
     <div>
       <Typography variant="h1/bold">Admin Actions</Typography>
@@ -26,6 +28,19 @@ const AdminPage = ({ user: { accessType } }: AdminProps) => {
       </div>
       <br />
       <Typography variant="h2/bold">Store</Typography>
+      <label>
+        <input
+          type="checkbox"
+          defaultChecked={preview === 'member'}
+          onChange={e =>
+            CookieService.setClientCookie(
+              CookieType.PREVIEW,
+              e.currentTarget.checked ? 'member' : 'admin'
+            )
+          }
+        />{' '}
+        Preview store as member
+      </label>
       <div
         style={{
           display: 'flex',
@@ -76,9 +91,10 @@ const AdminPage = ({ user: { accessType } }: AdminProps) => {
 
 export default AdminPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async () => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
+  const preview = CookieService.getServerCookie(CookieType.PREVIEW, { req, res });
   return {
-    props: {},
+    props: { preview },
   };
 };
 

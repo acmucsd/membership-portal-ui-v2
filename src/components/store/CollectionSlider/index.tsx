@@ -15,7 +15,6 @@ interface CollectionSliderProps {
   description: string;
   items: PublicMerchItem[];
   canManageStore?: boolean;
-  previewPublic?: boolean;
   isHidden?: boolean;
 }
 
@@ -25,11 +24,8 @@ const CollectionSlider = ({
   description,
   items,
   canManageStore,
-  previewPublic,
   isHidden,
 }: CollectionSliderProps) => {
-  const preview = previewPublic ? '?preview=public' : '';
-
   return (
     <div className={styles.wrapper}>
       <h3 className={styles.title}>
@@ -46,7 +42,7 @@ const CollectionSlider = ({
               className={styles.card}
               image={getDefaultMerchItemPhoto(item)}
               title={item.itemName}
-              href={`${config.store.itemRoute}${item.uuid}${preview}`}
+              href={`${config.store.itemRoute}${item.uuid}`}
               cost={item.options[0]?.price ?? 0}
               key={item.uuid}
             >

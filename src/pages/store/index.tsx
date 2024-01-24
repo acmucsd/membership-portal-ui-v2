@@ -8,7 +8,7 @@ import {
   Navbar,
 } from '@/components/store';
 import CreateButton from '@/components/store/CreateButton';
-import { config } from '@/lib';
+import { config, showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
@@ -18,17 +18,15 @@ import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/StoreHomePage.module.scss';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 type View = 'collections' | 'all-items';
 
-function getPath(view: View, previewPublic: boolean): string {
+function getPath(view: View): string {
   const params = new URLSearchParams();
   if (view === 'all-items') {
     params.set('view', 'all');
-  }
-  if (previewPublic) {
-    params.set('preview', 'public');
   }
   return params.size > 0 ? `${config.store.homeRoute}?${params}` : config.store.homeRoute;
 }
@@ -45,10 +43,11 @@ const StoreHomePage = ({
   collections,
   previewPublic,
 }: HomePageProps) => {
+  const router = useRouter();
+
   const [helpOpen, setHelpOpen] = useState(false);
 
   const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
-  const preview = previewPublic ? '?preview=public' : '';
 
   const visibleCollections = collections.filter(
     collection => canManageStore || !collection.archived
@@ -65,13 +64,30 @@ const StoreHomePage = ({
         <div className={styles.header}>
           <h2>{view === 'collections' ? 'Browse our collections' : 'Browse all items'}</h2>
           {canManageStore && (
-            <Link className={styles.viewToggle} href={getPath(view, true)}>
+            <button
+              type="button"
+              className={styles.viewToggle}
+              onClick={() => {
+                CookieService.setClientCookie(CookieType.PREVIEW, 'member');
+                showToast(
+                  'Previewing store as member',
+                  'To re-enable admin store options, go to admin settings.',
+                  [
+                    {
+                      text: 'Admin settings',
+                      onClick: () => router.push(config.admin.homeRoute),
+                    },
+                  ]
+                );
+                router.replace(config.store.homeRoute);
+              }}
+            >
               View store as member
-            </Link>
+            </button>
           )}
           <Link
             className={styles.viewToggle}
-            href={getPath(view === 'collections' ? 'all-items' : 'collections', previewPublic)}
+            href={getPath(view === 'collections' ? 'all-items' : 'collections')}
             scroll={false}
           >
             {view === 'collections' ? 'See all items' : 'See collections'}
@@ -84,7 +100,7 @@ const StoreHomePage = ({
                 image={getDefaultMerchItemPhoto(collection.items[0])}
                 title={collection.title}
                 description={collection.description}
-                href={`${config.store.collectionRoute}${collection.uuid}${preview}`}
+                href={`${config.store.collectionRoute}${collection.uuid}`}
                 key={collection.uuid}
               >
                 {canManageStore && collection.archived && <HiddenIcon type="collection" />}
@@ -122,6 +138,7 @@ export default StoreHomePage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+  const preview = CookieService.getServerCookie(CookieType.PREVIEW, { req, res });
 
   const collections = await StoreAPI.getAllCollections(AUTH_TOKEN);
 
@@ -129,7 +146,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
     props: {
       view: query.view === 'all' ? 'all-items' : 'collections',
       collections,
-      previewPublic: query.preview === 'public',
+      previewPublic: preview === 'member',
     },
   };
 };

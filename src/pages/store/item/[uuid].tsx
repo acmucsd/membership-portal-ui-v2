@@ -81,9 +81,10 @@ const StoreItemPage = ({
 
 export default StoreItemPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res, query }) => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
   const uuid = params?.uuid as string;
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+  const preview = CookieService.getServerCookie(CookieType.PREVIEW, { req, res });
 
   try {
     const item = await StoreAPI.getItem(uuid, token);
@@ -91,7 +92,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res, qu
       props: {
         uuid,
         item,
-        previewPublic: query.preview === 'public',
+        previewPublic: preview === 'member',
       },
     };
   } catch {
