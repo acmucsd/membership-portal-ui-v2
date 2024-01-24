@@ -177,6 +177,41 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           })),
         });
       }
+      // Add new options and photos before deleting old ones
+      const newOptions = await Promise.all(
+        options.map(async (option, position) => {
+          const edits = {
+            price: +option.price,
+            quantity: +option.quantity,
+            discountPercentage: +option.discountPercentage,
+            metadata:
+              options.length > 1 ? { type: optionType, value: option.value, position } : undefined,
+          };
+          return option.uuid
+            ? {
+                uuid: option.uuid,
+                ...edits,
+                quantityToAdd: edits.quantity - (option.oldQuantity ?? 0),
+              }
+            : StoreAPI.createItemOption(token, uuid, edits).then(({ metadata, ...option }) => ({
+                ...option,
+                metadata:
+                  options.length > 1
+                    ? { type: optionType, value: metadata?.value ?? '', position }
+                    : undefined,
+              }));
+        })
+      );
+      const newMerchPhotos = await Promise.all(
+        merchPhotos.map(async (photo, position) => {
+          if (photo.uuid !== undefined) {
+            return { uuid: photo.uuid, position };
+          }
+          // When `photo.blob` exists, `uploadedPhoto` contains the object URL
+          URL.revokeObjectURL(photo.uploadedPhoto);
+          return { ...(await StoreAPI.createItemPhoto(token, uuid, photo.blob)), position };
+        })
+      );
       // Delete removed options and photos
       await Promise.all(
         lastSaved.options
@@ -191,43 +226,8 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
       const item = await StoreAPI.editItem(token, uuid, {
         ...formData,
         hasVariantsEnabled: options.length > 1,
-        // Upload new options and photos first as needed, then edit item
-        options: await Promise.all(
-          options.map(async (option, position) => {
-            const edits = {
-              price: +option.price,
-              quantity: +option.quantity,
-              discountPercentage: +option.discountPercentage,
-              metadata:
-                options.length > 1
-                  ? { type: optionType, value: option.value, position }
-                  : undefined,
-            };
-            return option.uuid
-              ? {
-                  uuid: option.uuid,
-                  ...edits,
-                  quantityToAdd: edits.quantity - (option.oldQuantity ?? 0),
-                }
-              : StoreAPI.createItemOption(token, uuid, edits).then(({ metadata, ...option }) => ({
-                  ...option,
-                  metadata:
-                    options.length > 1
-                      ? { type: optionType, value: metadata?.value ?? '', position }
-                      : undefined,
-                }));
-          })
-        ),
-        merchPhotos: await Promise.all(
-          merchPhotos.map(async (photo, position) => {
-            if (photo.uuid !== undefined) {
-              return { uuid: photo.uuid, position };
-            }
-            // When `photo.blob` exists, `uploadedPhoto` contains the object URL
-            URL.revokeObjectURL(photo.uploadedPhoto);
-            return { ...(await StoreAPI.createItemPhoto(token, uuid, photo.blob)), position };
-          })
-        ),
+        options: newOptions,
+        merchPhotos: newMerchPhotos,
       });
       setLastSaved(item);
       setOptions(
@@ -386,6 +386,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                       name="category-type"
                       aria-label="Option type"
                       placeholder="Size, color, ..."
+                      required
                       value={optionType}
                       onChange={e => setOptionType(e.currentTarget.value)}
                     />
@@ -412,6 +413,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                           type="text"
                           name="category-value"
                           aria-label={optionType}
+                          required
                           value={option.value}
                           onChange={e =>
                             setOptions(options.with(i, { ...option, value: e.currentTarget.value }))
@@ -477,7 +479,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                   onClick={() =>
                     setOptions([
                       ...options,
-                      { price: '', quantity: '', discountPercentage: '', value: '' },
+                      { price: '', quantity: '', discountPercentage: '0', value: '' },
                     ])
                   }
                 >
