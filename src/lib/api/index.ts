@@ -5,3 +5,4 @@ export * as LeaderboardAPI from './LeaderboardAPI';
 export * as ResumeAPI from './ResumeAPI';
 export * as StoreAPI from './StoreAPI';
 export * as UserAPI from './UserAPI';
+export * as UserAccessAPI from './UserAccessAPI';
