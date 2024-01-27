@@ -37,6 +37,12 @@
     background: none;
   }
 
+  @media screen and (width <= vars.$breakpoint-md) {
+    &.bottomSheet {
+      padding: 4rem 0 0;
+    }
+  }
+
   .modalBody {
     background-color: var(--theme-background);
     border-radius: 10px;
@@ -67,6 +73,13 @@
         display: flex;
         margin-left: 1rem;
         padding: 0;
+      }
+    }
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      &.bottomSheet {
+        height: calc(100vh - 4rem);
+        overflow: scroll;
       }
     }
   }
