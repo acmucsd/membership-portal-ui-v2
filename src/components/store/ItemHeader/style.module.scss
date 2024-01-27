@@ -1,9 +1,11 @@
 @use 'src/styles/vars.scss' as vars;
 
 .price {
+  align-items: center;
+  align-self: stretch;
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .itemHeaderGroup {
@@ -15,8 +17,13 @@
     @media (max-width: 600px) {
       font-size: vars.$card-heading-1;
     }
+
+    flex: 1 0 0;
     font-size: vars.$general-heading-2;
-    font-weight: bold;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.02rem;
+    line-height: 2.5rem; /* 125% */
   }
 
   p {
@@ -33,13 +40,17 @@
   }
 
   .button {
+    align-items: center;
     border-color: var(--theme-accent-line-2);
-    border-radius: 10px;
+    border-radius: 0.625rem;
     border-width: 1px;
+
+    display: flex;
     font-size: vars.$input-text-medium;
     font-weight: bold;
-    height: 40px;
-    width: 200px;
+    justify-content: center;
+    padding: 0 1rem;
+    width: 4.4375rem;
   }
 
   .buttonInStock {

@@ -5,7 +5,7 @@ $component-roundness: 10px;
 .sizeSelector {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
   overflow: auto;
 
   h4 {
@@ -20,7 +20,7 @@ $component-roundness: 10px;
     border-radius: $component-roundness;
     display: flex;
     float: left;
-    gap: 12px;
+    gap: 0.75rem;
     position: relative;
 
     label {
@@ -36,7 +36,7 @@ $component-roundness: 10px;
       float: left;
       height: $indicator-size;
       justify-content: center;
-      margin: 2px;
+      padding: 0 1rem;
       width: #{$indicator-size * 2};
     }
 
