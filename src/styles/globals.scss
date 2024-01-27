@@ -9,6 +9,12 @@ body {
   scroll-padding-top: 4.25rem;
 }
 
+/* stylelint-disable-next-line selector-no-qualifying-type */
+body:has(dialog[open]) {
+  overflow: hidden;
+  touch-action: none;
+}
+
 main {
   min-height: vars.$min-content-height;
 }

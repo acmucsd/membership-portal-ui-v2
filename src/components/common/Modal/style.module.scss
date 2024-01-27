@@ -78,8 +78,8 @@
 
     @media screen and (width <= vars.$breakpoint-md) {
       &.bottomSheet {
-        height: calc(100vh - 4rem);
-        overflow: scroll;
+        max-height: calc(100vh - 4rem);
+        overflow-y: scroll;
       }
     }
   }
