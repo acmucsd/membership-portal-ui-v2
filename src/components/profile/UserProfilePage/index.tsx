@@ -1,6 +1,7 @@
 import { Carousel, GifSafeImage, Typography } from '@/components/common';
 import { EventCard } from '@/components/events';
 import SocialMediaIcon from '@/components/profile/SocialMediaIcon';
+import UserBanner from '@/components/profile/UserBanner';
 import { config, showToast } from '@/lib';
 import { PublicAttendance, type PublicProfile } from '@/lib/types/apiResponses';
 import { SocialMediaType } from '@/lib/types/enums';
@@ -34,7 +35,7 @@ export const UserProfilePage = ({
   return (
     <div className={styles.profilePage}>
       <div className={styles.cardWrapper}>
-        <div className={styles.banner} />
+        <UserBanner attendances={isSignedInUser ? signedInAttendances : attendances} />
         <div className={styles.profileCard}>
           <div className={styles.profilePic}>
             <GifSafeImage
