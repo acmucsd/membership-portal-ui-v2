@@ -76,12 +76,5 @@
         padding: 0;
       }
     }
-
-    @media screen and (width <= vars.$breakpoint-md) {
-      &.bottomSheet {
-        max-height: calc(100vh - 4rem);
-        overflow-y: scroll;
-      }
-    }
   }
 }
