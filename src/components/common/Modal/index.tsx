@@ -13,11 +13,36 @@ interface ModalProps {
 
 const Modal = ({ title, open, onClose, children, bottomSheet }: ModalProps) => {
   const ref = useRef<HTMLDialogElement>(null);
+  const scrollPosition = useRef<number>(0);
 
   useEffect(() => {
+    /**
+     * In order to stop the body behind the modal from scrolling in iOS,
+     * we need to add position: fixed and overflow: hidden to body and html (this is done in globals.scss)
+     *
+     * A side effect of this is that the position is reset to the top of the page every time the modal
+     * resets. We address this by saving and restoring the scroll position every time we close a modal.
+     */
+    const body = document.querySelector('body');
+
+    const saveScrollPosition = () => {
+      scrollPosition.current = window.scrollY;
+      if (body) {
+        body.style.top = `-${scrollPosition}px`;
+      }
+    };
+    const restoreScrollPosition = () => {
+      if (body) {
+        body.style.removeProperty('top');
+        window.scrollTo(0, scrollPosition.current);
+      }
+    };
+
     if (open) {
+      saveScrollPosition();
       ref.current?.showModal();
     } else {
+      restoreScrollPosition();
       ref.current?.close();
     }
   }, [open]);

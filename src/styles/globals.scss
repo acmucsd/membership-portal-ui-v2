@@ -12,7 +12,7 @@ body {
 /* stylelint-disable-next-line selector-no-qualifying-type */
 body:has(dialog[open]) {
   overflow: hidden;
-  touch-action: none;
+  position: fixed;
 }
 
 main {

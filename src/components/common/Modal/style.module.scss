@@ -49,6 +49,7 @@
     margin: auto;
     max-width: 100%;
     overflow: hidden;
+    overscroll-behavior: none;
     transform: scale(0.95);
     transition: transform 0.2s;
 
