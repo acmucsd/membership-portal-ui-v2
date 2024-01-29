@@ -1,6 +1,7 @@
 export enum CookieType {
   USER = 'USER',
   ACCESS_TOKEN = 'ACCESS_TOKEN',
+  CART = 'CART',
 }
 
 export enum Community {
