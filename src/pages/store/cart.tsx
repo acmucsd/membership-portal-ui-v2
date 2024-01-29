@@ -9,7 +9,12 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { getServerCookie, setClientCookie, setServerCookie } from '@/lib/services/CookieService';
 import { loggedInUser } from '@/lib/services/PermissionService';
 import { UUID } from '@/lib/types';
-import { PrivateProfile, PublicEvent, PublicOrderPickupEvent } from '@/lib/types/apiResponses';
+import {
+  PrivateProfile,
+  PublicEvent,
+  PublicMerchItemOption,
+  PublicOrderPickupEvent,
+} from '@/lib/types/apiResponses';
 import { ClientCartItem, CookieCartItem } from '@/lib/types/client';
 import { CookieType } from '@/lib/types/enums';
 import { getMessagesFromError } from '@/lib/utils';
@@ -62,7 +67,7 @@ const StoreCartPage = ({
   // update the cart cookie and order total
   useEffect(() => {
     setOrderTotal(calculateOrderTotal(cart));
-    setClientCookie('CART', clientCartToCookie(cart));
+    setClientCookie(CookieType.CART, clientCartToCookie(cart));
   }, [cart, credits]);
 
   // prop for item cards to remove their item
@@ -77,7 +82,7 @@ const StoreCartPage = ({
         option: uuid,
         quantity,
       })),
-      //* temp using first pickup event always
+      // todo - temp using first pickup event always
       pickupEvent: pickupEvents[0]?.uuid ?? 'xxx',
     })
       .then(({ items, pickupEvent }) => {
@@ -86,7 +91,7 @@ const StoreCartPage = ({
           `Pick up at ${pickupEvent.title}`
         );
         setCartState(CartState.CONFIRMED);
-        setClientCookie('CART', clientCartToCookie([]));
+        setClientCookie(CookieType.CART, clientCartToCookie([]));
         setLiveCredits(credits - orderTotal);
       })
       .catch(err => {
@@ -116,7 +121,7 @@ const StoreCartPage = ({
                 quantity: 1,
               },
             ];
-            setClientCookie('CART', JSON.stringify(newCart));
+            setClientCookie(CookieType.CART, JSON.stringify(newCart));
             showToast('Filled your cart, buddy-o');
           }}
         >
@@ -281,7 +286,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   // recover saved items and reset cart to [] if it's invalid
   let savedItems;
   try {
-    const cartCookie = getServerCookie('CART', { req, res });
+    const cartCookie = getServerCookie(CookieType.CART, { req, res });
     savedItems = JSON.parse(cartCookie);
     if (!Array.isArray(savedItems)) throw new Error();
   } catch {
@@ -295,7 +300,9 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
         // form the ClientCartItem from the PublicMerchItem
         const ClientCartItem: Partial<ClientCartItem> = { ...publicItem, quantity };
-        ClientCartItem.option = options.find(option => option.uuid === optionUUID);
+        ClientCartItem.option = options.find(
+          (option: PublicMerchItemOption) => option.uuid === optionUUID
+        );
 
         // check for invalid cart cookie item
         if (!ClientCartItem.option || typeof quantity !== 'number') throw new Error();
@@ -320,7 +327,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   ]);
 
   // update the cart cookie if part of it was malformed
-  setServerCookie('CART', clientCartToCookie(savedCart), { req, res });
+  setServerCookie(CookieType.CART, clientCartToCookie(savedCart), { req, res });
 
   return {
     props: {

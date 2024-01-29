@@ -1,7 +1,7 @@
 import { Typography } from '@/components/common';
 import Diamonds from '@/components/store/Diamonds';
 import StoreModal from '@/components/store/StoreModal';
-import { config, cssVars } from '@/lib';
+import { config } from '@/lib';
 import { UUID } from '@/lib/types';
 import { ClientCartItem } from '@/lib/types/client';
 import { capitalize } from '@/lib/utils';
@@ -27,7 +27,7 @@ const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
               <Image
                 src={item.merchPhotos[0].uploadedPhoto}
                 alt={item.itemName}
-                sizes={`(max-width: ${cssVars['breakpoint-md']}) 100px, 150px`}
+                sizes={`(max-width: ${config.cssVars.breakpointMd}) 100px, 150px`}
                 fill
               />
             </div>
