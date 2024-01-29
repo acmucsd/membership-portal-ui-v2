@@ -1,0 +1,89 @@
+@use 'src/styles/vars.scss' as vars;
+
+.cartItem {
+  --desktop-image-size: 150px;
+  --mobile-image-size: 100px;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-areas: 
+    "left right"
+    "left remove";
+  grid-template-columns: var(--desktop-image-size) 1fr;
+  padding: 0.75rem 1rem;
+
+  @media (max-width: vars.$breakpoint-md) {
+    grid-template-areas: 
+    "left right"
+    "remove right";
+    grid-template-columns: var(--mobile-image-size) 1fr;
+  }
+
+  .leftCol {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    grid-area: left;
+    justify-content: space-between;
+
+    .imageWrapper {
+      height: var(--desktop-image-size);
+      position: relative;
+      width: var(--desktop-image-size);
+  
+      @media (max-width: vars.$breakpoint-md) {
+        height: var(--mobile-image-size);
+        width: var(--mobile-image-size);
+      }
+    }
+  }
+  
+  .rightCol {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    grid-area: right;
+    justify-content: space-between;
+
+    .cartItemInfo {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 0.5rem;
+  
+      .title {
+        align-items: baseline;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+  
+        @media (max-width: vars.$breakpoint-md) {
+          flex-direction: column;
+        }
+  
+        h3:hover {
+          text-decoration: underline;
+        }
+  
+        .price {
+          justify-self: flex-end;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  .removeBtn {
+    align-self: end;
+    background-color: transparent;
+    color: var(--theme-danger-1);
+    grid-area: remove;
+    padding: 0;
+    width: fit-content;
+    
+    @media (max-width: vars.$breakpoint-md) {
+      margin: auto;
+    }
+  }
+}
