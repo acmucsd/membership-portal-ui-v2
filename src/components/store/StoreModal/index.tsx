@@ -35,8 +35,7 @@ const StoreModal = ({
     <>
       {cloneElement(opener, {
         onClick: () => {
-          opener?.props?.onClick();
-          // if (opener.props.onClick) opener.props.onClick();
+          if (opener.props.onClick) opener.props.onClick();
           setOpen(true);
         },
       })}

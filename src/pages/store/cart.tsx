@@ -2,7 +2,6 @@ import { Typography } from '@/components/common';
 import EventCard from '@/components/events/EventCard';
 import { CartItemCard, Diamonds, Navbar, PickupEventPicker, StoreModal } from '@/components/store';
 import { config, showToast } from '@/lib';
-import { getAllFutureEvents } from '@/lib/api/EventAPI';
 import { getFutureOrderPickupEvents, getItem, placeMerchOrder } from '@/lib/api/StoreAPI';
 import { getCurrentUser } from '@/lib/api/UserAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -11,9 +10,8 @@ import { loggedInUser } from '@/lib/services/PermissionService';
 import { UUID } from '@/lib/types';
 import {
   PrivateProfile,
-  PublicEvent,
   PublicMerchItemOption,
-  PublicOrderPickupEvent,
+  PublicOrderPickupEventWithLinkedEvent,
 } from '@/lib/types/apiResponses';
 import { ClientCartItem, CookieCartItem } from '@/lib/types/client';
 import { CookieType } from '@/lib/types/enums';
@@ -27,9 +25,8 @@ import { useEffect, useState } from 'react';
 interface CartPageProps {
   user: PrivateProfile;
   savedCart: ClientCartItem[];
-  pickupEvents: PublicOrderPickupEvent[];
+  pickupEvents: PublicOrderPickupEventWithLinkedEvent[];
   token: string;
-  tempFakeEvents: PublicEvent[];
 }
 
 enum CartState {
@@ -47,13 +44,7 @@ const clientCartToCookie = (items: ClientCartItem[]): string =>
     }))
   );
 
-const StoreCartPage = ({
-  user: { credits },
-  savedCart,
-  pickupEvents,
-  token,
-  tempFakeEvents,
-}: CartPageProps) => {
+const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents, token }: CartPageProps) => {
   const calculateOrderTotal = (cart: ClientCartItem[]): number => {
     return cart.reduce((total, { quantity, option: { price } }) => total + quantity * price, 0);
   };
@@ -82,8 +73,7 @@ const StoreCartPage = ({
         option: uuid,
         quantity,
       })),
-      // todo - temp using first pickup event always
-      pickupEvent: pickupEvents[0]?.uuid ?? 'xxx',
+      pickupEvent: pickupEvents[pickupIndex]?.uuid ?? 'x',
     })
       .then(({ items, pickupEvent }) => {
         showToast(
@@ -122,7 +112,7 @@ const StoreCartPage = ({
               },
             ];
             setClientCookie(CookieType.CART, JSON.stringify(newCart));
-            showToast('Filled your cart, buddy-o');
+            showToast('Filled your cart, buddy-o', 'Refresh to apply changes');
           }}
         >
           {cartState !== CartState.CONFIRMED ? 'Your Cart' : 'Order Confirmation'}
@@ -141,7 +131,7 @@ const StoreCartPage = ({
                 onClick={() => {
                   setCartState(CartState.CONFIRMING);
                 }}
-                disabled={orderTotal > credits}
+                disabled={orderTotal > credits || pickupEvents.length === 0}
               >
                 <Typography variant="h4/bold" component="span">
                   Place Order
@@ -151,8 +141,13 @@ const StoreCartPage = ({
             onConfirm={placeOrder}
             onCancel={() => setCartState(CartState.PRECHECKOUT)}
           >
-            {tempFakeEvents[pickupIndex] && (
-              <EventCard event={tempFakeEvents[pickupIndex] as PublicEvent} attended={false} />
+            {pickupEvents[pickupIndex] && (
+              <EventCard
+                event={
+                  (pickupEvents[pickupIndex] as PublicOrderPickupEventWithLinkedEvent).linkedEvent
+                }
+                attended={false}
+              />
             )}
           </StoreModal>
         ) : (
@@ -229,7 +224,7 @@ const StoreCartPage = ({
               </Typography>
             </div>
             <PickupEventPicker
-              events={tempFakeEvents}
+              events={pickupEvents.map(event => event.linkedEvent)}
               eventIndex={pickupIndex}
               setEventIndex={setPickupIndex}
               active={cartState !== CartState.CONFIRMED}
@@ -313,17 +308,16 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
     })
   ).then((items): ClientCartItem[] => items.filter(item => item !== undefined) as ClientCartItem[]);
 
-  // TODO: replace placeholder events with pickup events
-  const pickupEventsPromise = getFutureOrderPickupEvents(AUTH_TOKEN);
-  const tempFakeEventsPromise = getAllFutureEvents();
+  const pickupEventsPromise = getFutureOrderPickupEvents(AUTH_TOKEN).then(events =>
+    events.filter(event => event.linkedEvent && event.status !== 'CANCELLED')
+  );
   const userPromise = getCurrentUser(AUTH_TOKEN);
 
   // gather the API request promises and await them concurrently
-  const [savedCart, pickupEvents, user, tempFakeEvents] = await Promise.all([
+  const [savedCart, pickupEvents, user] = await Promise.all([
     savedCartPromises,
     pickupEventsPromise,
     userPromise,
-    tempFakeEventsPromise,
   ]);
 
   // update the cart cookie if part of it was malformed
@@ -334,7 +328,6 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
       user,
       savedCart,
       pickupEvents,
-      tempFakeEvents,
       token: AUTH_TOKEN,
     },
   };

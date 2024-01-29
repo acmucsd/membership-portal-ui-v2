@@ -1,6 +1,7 @@
 export type Styles = {
   eventNavigation: string;
   eventPicker: string;
+  noEvents: string;
   slider: string;
   window: string;
 };

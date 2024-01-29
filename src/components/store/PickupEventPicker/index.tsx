@@ -16,11 +16,22 @@ const PickupEventPicker = ({ events, eventIndex, setEventIndex, active }: EventP
   return (
     <div className={styles.eventPicker}>
       <div className={styles.window}>
-        <div className={styles.slider} style={{ transform: `translateX(${-320 * eventIndex}px)` }}>
-          {events.map(event => (
-            <EventCard key={event.uuid} event={event} attended={false} />
-          ))}
-        </div>
+        {events.length > 0 ? (
+          <div
+            className={styles.slider}
+            style={{ transform: `translateX(${-320 * eventIndex}px)` }}
+          >
+            {events.map(event => (
+              <EventCard key={event.uuid} event={event} attended={false} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.noEvents}>
+            <Typography variant="h3/medium" component="span">
+              No upcoming pickup events. Check back later!
+            </Typography>
+          </div>
+        )}
       </div>
 
       {active && (
