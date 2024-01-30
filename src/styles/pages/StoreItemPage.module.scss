@@ -8,7 +8,7 @@
   max-width: 22.5rem;
   min-width: 18rem;
 
-  @media (max-width: 900px) {
+  @media (max-width: vars.$breakpoint-md) {
     flex: 22.5rem 1 0;
     max-width: none;
     width: 95%;
@@ -24,7 +24,7 @@
   justify-content: center;
   width: 95%;
 
-  @media (max-width: 900px) {
+  @media (max-width: vars.$breakpoint-md) {
     align-items: center;
     flex-direction: column;
     gap: 2rem;
@@ -43,7 +43,7 @@
   margin-left: auto;
   margin-right: auto;
   width: 90%;
-  @media (max-width: 900px) {
+  @media (max-width: vars.$breakpoint-md) {
     width: 100%;
   }
 
@@ -74,7 +74,7 @@
   position: relative;
   width: 100%;
 
-  @media (max-width: 900px) {
+  @media (max-width: vars.$breakpoint-md) {
     max-height: 30rem;
   }
 }
