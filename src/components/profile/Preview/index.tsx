@@ -1,12 +1,9 @@
-import { Typography } from '@/components/common';
+import { GifSafeImage, Typography } from '@/components/common';
 import SocialMediaIcon from '@/components/profile/SocialMediaIcon';
 import { PublicProfile } from '@/lib/types/apiResponses';
 import { SocialMediaType } from '@/lib/types/enums';
-import { getLevel, getProfilePicture, isSrcAGif } from '@/lib/utils';
-import Image from 'next/image';
+import { fixUrl, getLevel, getProfilePicture } from '@/lib/utils';
 import styles from './style.module.scss';
-
-const fixUrl = (url: string) => (url.includes('://') ? url : `http://${url}`);
 
 interface PreviewStatProps {
   title: string;
@@ -31,13 +28,12 @@ interface PreviewProps {
 const Preview = ({ user, pfpCacheBust }: PreviewProps) => {
   return (
     <div className={styles.wrapper}>
-      <Image
+      <GifSafeImage
         className={styles.pfp}
         src={getProfilePicture(user) + (pfpCacheBust !== -1 ? `?_=${pfpCacheBust}` : '')}
         alt="Profile picture"
         width={90}
         height={90}
-        unoptimized={isSrcAGif(user.profilePicture)}
       />
       <Typography variant="h2/bold" component="p">
         {user.firstName} {user.lastName}

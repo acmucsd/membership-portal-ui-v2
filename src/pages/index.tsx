@@ -126,8 +126,8 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
   // After that, fetch the other API calls.
   const eventsPromise = EventAPI.getAllEvents();
-  const attendancesPromise = EventAPI.getAttendancesForUser(authToken);
-  const userPromise = UserAPI.getCurrentUser(authToken);
+  const attendancesPromise = UserAPI.getAttendancesForCurrentUser(authToken);
+  const userPromise = UserAPI.getCurrentUserAndRefreshCookie(authToken, { req, res });
 
   const [events, attendances, user] = await Promise.all([
     eventsPromise,
@@ -167,5 +167,5 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );

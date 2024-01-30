@@ -25,7 +25,7 @@ export const login = async (data: LoginRequest & APIHandlerProps): Promise<void>
     });
 
     const user = await UserAPI.getCurrentUser(token);
-    CookieService.setClientCookie(CookieType.USER, JSON.stringify(user));
+    CookieService.setClientCookie(CookieType.USER, JSON.stringify(user), { maxAge: 5 * 60 });
 
     onSuccessCallback?.(user);
   } catch (e: any) {

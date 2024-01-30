@@ -4,9 +4,9 @@ export type Styles = {
   description: string;
   discordPreview: string;
   header: string;
+  icon: string;
   logo: string;
   socials: string;
-  theme: string;
 };
 
 export type ClassNames = keyof Styles;

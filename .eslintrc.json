@@ -38,5 +38,10 @@
       }
     ]
   },
-  "ignorePatterns": "src/**/*.d.ts"
+  "ignorePatterns": [
+    "src/**/*.d.ts",
+    "**/public/sw.js",
+    "**/public/workbox-*.js",
+    "**/public/worker-*.js"
+  ]
 }

@@ -3,6 +3,14 @@ export enum CookieType {
   ACCESS_TOKEN = 'ACCESS_TOKEN',
 }
 
+export enum Community {
+  HACK = 'Hack',
+  AI = 'AI',
+  CYBER = 'Cyber',
+  DESIGN = 'Design',
+  GENERAL = 'General',
+}
+
 export enum UserAccessType {
   RESTRICTED = 'RESTRICTED',
   STANDARD = 'STANDARD',

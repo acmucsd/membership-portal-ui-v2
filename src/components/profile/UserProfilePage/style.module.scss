@@ -1,0 +1,233 @@
+@use 'src/styles/vars.scss' as vars;
+
+.profilePage {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: auto;
+  max-width: vars.$breakpoint-md;
+  width: 100%;
+
+  .cardWrapper {
+    padding-top: 3rem;
+    position: relative;
+
+    .banner {
+      background-color: vars.$pink-2;
+      border-radius: 0.5rem;
+      height: 90%;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    .profileCard {
+      background-color: var(--theme-background);
+      border-radius: 0.25rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+      display: flex;
+      gap: 1rem;
+      margin: 0 2rem;
+      padding: 1rem 2rem;
+      position: relative;
+
+      @media (max-width: vars.$breakpoint-md) {
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .profilePic {
+        border-radius: 50%;
+        flex-shrink: 0;
+        height: 7rem;
+        object-fit: cover;
+        overflow: hidden;
+        position: relative;
+        width: 7rem;
+      }
+
+      .cardName {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        @media (max-width: vars.$breakpoint-md) {
+          align-items: center;
+          flex-direction: column;
+
+          h1,
+          div {
+            text-align: center;
+          }
+        }
+
+        .handle {
+          cursor: pointer;
+        }
+      }
+
+      .cardRank {
+        align-items: flex-end;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        gap: 0.5rem;
+        justify-content: flex-end;
+
+        @media (max-width: vars.$breakpoint-md) {
+          align-items: center;
+          color: var(--theme-text-on-background-2);
+          flex-direction: column;
+        }
+
+        .rank {
+          color: var(--theme-text-on-background-1);
+          display: flex;
+          font-size: 1.25rem;
+          font-weight: 500;
+          margin-top: calc(2.375rem + 0.5rem); // give space for edit button
+
+          @media (max-width: vars.$breakpoint-md) {
+            margin-top: 0;
+            text-align: center;
+          }
+        }
+
+        .points {
+          color: var(--theme-text-on-background-1);
+          font-size: 1.125rem;
+          font-weight: 400;
+          line-height: 1.25;
+          text-align: end;
+
+          @media (max-width: vars.$breakpoint-md) {
+            text-align: center;
+          }
+
+          svg {
+            height: 1.125rem;
+            transform: translateY(
+              calc((1.125rem * 1.25) - 1.125rem) * 0.5
+            ); // center the trophy icon
+            width: 1.125rem;
+          }
+        }
+      }
+    }
+  }
+
+  .section {
+    border: 2px solid #808184;
+    border-radius: 0.75rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .progressSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9375rem;
+
+    .progressInfo {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+
+    .progressBar {
+      background-color: var(--theme-accent-line-2);
+      border-radius: 0.5rem;
+      height: 1.25rem;
+      width: 100%;
+
+      .inner {
+        background-color: var(--theme-primary-2);
+        border-radius: 0.5rem;
+        height: 100%;
+        transition: width 1s ease;
+      }
+    }
+
+    p {
+      @media (max-width: vars.$breakpoint-md) {
+        text-align: center;
+      }
+    }
+  }
+
+  .aboutSection {
+    display: grid;
+    grid-template-columns: 20rem 1fr;
+    position: relative;
+
+    @media (max-width: vars.$breakpoint-md) {
+      display: flex;
+      flex-direction: column;
+      gap: 1.875rem;
+    }
+
+    .aboutMeSection {
+      align-items: center;
+      display: grid;
+      gap: 0.56rem;
+      grid-template-columns: auto 1fr;
+      margin: 0.81rem 0;
+
+      .icon {
+        height: 1.313rem;
+        width: 1.313rem;
+      }
+    }
+
+    .socialIcons {
+      display: flex;
+      gap: 0.25rem;
+
+      svg {
+        height: 2rem;
+        width: 2rem;
+      }
+    }
+
+    .bioSection {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  }
+
+  .card {
+    flex: none;
+    width: 20rem;
+  }
+
+  .editWrapper {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+
+    div {
+      align-items: center;
+      background: var(--theme-background);
+      border: 1px solid var(--theme-accent-1-transparent);
+      border-radius: 0.625rem;
+      box-shadow: 0 0.0625rem 0.25rem 0 var(--theme-shadow);
+      display: flex;
+      height: 2.375rem;
+      justify-content: center;
+      transition: all 0.3s;
+      width: 2.75rem;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      svg {
+        height: 1.625rem;
+        width: 1.625rem;
+      }
+    }
+  }
+}

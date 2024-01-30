@@ -7,10 +7,12 @@ interface Option {
   label: string;
 }
 
+export const DIVIDER = '----';
+
 interface DropdownProps {
   name: string;
   ariaLabel: string;
-  options: (Option | '---')[];
+  options: (Option | typeof DIVIDER)[];
   value: string;
   onChange: (value: string) => void;
 }
@@ -30,7 +32,7 @@ const Dropdown = ({ name, ariaLabel, options, value, onChange }: DropdownProps) 
   const optionButtons: ReactNode[] = [];
   let dividers = 0;
   options.forEach(option => {
-    if (option === '---') {
+    if (option === DIVIDER) {
       optionButtons.push(<hr key={dividers} />);
       dividers += 1;
     } else {
@@ -78,7 +80,7 @@ const Dropdown = ({ name, ariaLabel, options, value, onChange }: DropdownProps) 
         aria-label={ariaLabel}
       >
         {options.map(option =>
-          option !== '---' ? (
+          option !== DIVIDER ? (
             <option value={option.value} key={option.value}>
               {option.label}
             </option>
