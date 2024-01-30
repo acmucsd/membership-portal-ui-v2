@@ -46,17 +46,13 @@ $component-roundness: 10px;
       position: absolute;
     }
 
-    input:checked {
-      border-color: var(--size-selector-border);
-    }
-
     input:hover + label {
-      border-color: var(--size-selector-border);
+      border-color: var(--theme-size-selector-border);
     }
 
     input:checked + label {
-      border-color: var(--size-selector-border);
-      color: var(--size-selector-border);
+      border-color: var(--theme-size-selector-border);
+      color: var(--theme-size-selector-border);
     }
   }
 }
