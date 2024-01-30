@@ -27,12 +27,6 @@ const AddCartButton = ({
 
   const maxCanBuy = Math.min(20, Math.min(lifetimeRemaining, monthlyRemaining));
 
-  const validText = inStock ? (
-    <p className={styles.valid}>This item is in stock.</p>
-  ) : (
-    <p className={styles.error}>This item is out of stock.</p>
-  );
-
   let buyButtonText = 'Add to Cart';
 
   if (inCart) {
@@ -66,7 +60,7 @@ const AddCartButton = ({
       ) : (
         <p>You can&apos;t buy any more of this item!.</p>
       )}
-      {currSize === undefined ? <p className={styles.error}>Please select a size.</p> : validText}
+      {currSize === undefined ? <p className={styles.error}>Please select a size.</p> : null}
 
       {currSize === undefined ? null : (
         <div className={styles.buttonRow}>
