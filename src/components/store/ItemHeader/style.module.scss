@@ -11,19 +11,20 @@
 .itemHeaderGroup {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 
   h1 {
     @media (max-width: 600px) {
       font-size: vars.$card-heading-1;
     }
-
-    flex: 1 0 0;
+    display: inline;
     font-size: vars.$general-heading-2;
     font-style: normal;
     font-weight: 700;
     letter-spacing: 0.02rem;
     line-height: 2.5rem; /* 125% */
+    word-break: break-word;
   }
 
   p {
@@ -37,29 +38,5 @@
 
   .valid {
     color: vars.$success-1;
-  }
-
-  .button {
-    align-items: center;
-    border-color: var(--theme-accent-line-2);
-    border-radius: 0.625rem;
-    border-width: 1px;
-
-    display: flex;
-    font-size: vars.$input-text-medium;
-    font-weight: bold;
-    justify-content: center;
-    padding: 0 1rem;
-    width: 4.4375rem;
-  }
-
-  .buttonInStock {
-    background-color: var(--theme-primary-2);
-    color: var(--theme-text-on-background1);
-  }
-
-  .buttonNoStock {
-    background-color: var(--theme-background);
-    color: vars.$disabled;
   }
 }

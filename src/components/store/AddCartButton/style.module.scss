@@ -27,8 +27,13 @@
 
     div > select {
       font-size: 1rem;
-      font-weight: normal;
+      font-size: 1.25rem;
+      font-style: normal;
+      font-weight: 700;
       line-height: 1.25rem;
+      line-height: 200%; /* 2.5rem */
+
+      text-align: center;
     }
   }
 
@@ -44,8 +49,8 @@
     border-radius: 10px;
     font-size: vars.$input-text-medium;
     font-weight: bold;
-    height: 40px;
-    width: 200px;
+    padding: 0.3rem 1rem;
+    word-break: break-all;
   }
 
   .buttonInStock {
