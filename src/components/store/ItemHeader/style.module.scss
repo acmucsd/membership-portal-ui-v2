@@ -15,7 +15,7 @@
   gap: 1rem;
 
   h1 {
-    @media (max-width: 600px) {
+    @media (max-width: vars.$breakpoint-md) {
       font-size: vars.$card-heading-1;
     }
     display: inline;

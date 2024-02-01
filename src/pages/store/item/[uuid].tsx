@@ -1,7 +1,7 @@
 import { Navbar } from '@/components/store';
 import AddCartButton from '@/components/store/AddCartButton';
 import ItemHeader from '@/components/store/ItemHeader';
-import SizeSelector from '@/components/store/SizeSelector';
+import SizeSelector, { Metadata } from '@/components/store/SizeSelector';
 import { StoreAPI } from '@/lib/api';
 import config from '@/lib/config';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -19,8 +19,11 @@ interface ItemPageProps {
 
   item: PublicMerchItemWithPurchaseLimits;
 }
+
 const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
-  const [size, setSize] = useState<string | undefined>(item.options.length <= 1 ? 'Y' : undefined);
+  const [size, setSize] = useState<Metadata | undefined>(
+    item.options.length <= 1 ? { type: 'Y', value: 'Y' } : undefined
+  );
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
 
@@ -50,7 +53,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
           <AddCartButton
             inCart={inCart}
             onCartChange={setInCart}
-            currSize={size}
+            currSize={size?.value}
             inStock={currOption?.quantity != null && currOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}

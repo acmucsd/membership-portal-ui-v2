@@ -84,7 +84,7 @@ const AddCartButton = ({
             type="button"
             title={`${buyButtonText} Button`}
             value={buyButtonText}
-            onClick={() => onCartChange(!inCart) }
+            onClick={() => onCartChange(!inCart)}
             disabled={!inStock || maxCanBuy === 0}
           >
             {buyButtonText}
