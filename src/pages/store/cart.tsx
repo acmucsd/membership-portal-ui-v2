@@ -1,5 +1,4 @@
 import { Typography } from '@/components/common';
-import EventCard from '@/components/events/EventCard';
 import { CartItemCard, Diamonds, Navbar, PickupEventPicker, StoreModal } from '@/components/store';
 import { config, showToast } from '@/lib';
 import { getFutureOrderPickupEvents, getItem, placeMerchOrder } from '@/lib/api/StoreAPI';
@@ -110,6 +109,11 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents, token }: Ca
                 optionUUID: '72d22f34-c366-4ecd-a365-059661a0f0fc',
                 quantity: 1,
               },
+              {
+                itemUUID: '2a37de8e-7b5c-41ba-84bc-f7f40804be85',
+                optionUUID: 'e3e68f83-d97e-40b0-a5ea-2c169a434403',
+                quantity: 10,
+              },
             ];
             setClientCookie(CookieType.CART, JSON.stringify(newCart));
             showToast('Filled your cart, buddy-o', 'Refresh to apply changes');
@@ -141,14 +145,9 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents, token }: Ca
             onConfirm={placeOrder}
             onCancel={() => setCartState(CartState.PRECHECKOUT)}
           >
-            {pickupEvents[pickupIndex] && (
-              <EventCard
-                event={
-                  (pickupEvents[pickupIndex] as PublicOrderPickupEventWithLinkedEvent).linkedEvent
-                }
-                attended={false}
-              />
-            )}
+            {/* {pickupEvents[pickupIndex] && (
+              <EventCard event={pickupEvents[pickupIndex]} attended={false} />
+            )} */}
           </StoreModal>
         ) : (
           <div />
@@ -224,7 +223,8 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents, token }: Ca
               </Typography>
             </div>
             <PickupEventPicker
-              events={pickupEvents.map(event => event.linkedEvent)}
+              events={pickupEvents}
+              // events={pickupEvents.map(event => event.linkedEvent)}
               eventIndex={pickupIndex}
               setEventIndex={setPickupIndex}
               active={cartState !== CartState.CONFIRMED}
@@ -308,8 +308,9 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
     })
   ).then((items): ClientCartItem[] => items.filter(item => item !== undefined) as ClientCartItem[]);
 
-  const pickupEventsPromise = getFutureOrderPickupEvents(AUTH_TOKEN).then(events =>
-    events.filter(event => event.linkedEvent && event.status !== 'CANCELLED')
+  const pickupEventsPromise = getFutureOrderPickupEvents(AUTH_TOKEN).then(
+    events => events.filter(event => event.status !== 'CANCELLED')
+    // events.filter(event => event.linkedEvent && event.status !== 'CANCELLED')
   );
   const userPromise = getCurrentUser(AUTH_TOKEN);
 

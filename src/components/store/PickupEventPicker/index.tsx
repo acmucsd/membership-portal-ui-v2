@@ -1,12 +1,12 @@
 import { Typography } from '@/components/common';
 import EventCard from '@/components/events/EventCard';
-import { PublicEvent } from '@/lib/types/apiResponses';
+import { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
 import ArrowLeft from '@/public/assets/icons/arrow-left.svg';
 import ArrowRight from '@/public/assets/icons/arrow-right.svg';
 import styles from './style.module.scss';
 
 interface EventPickerProps {
-  events: PublicEvent[];
+  events: PublicOrderPickupEvent[];
   eventIndex: number;
   setEventIndex: (...args: any[]) => any;
   active: boolean;
@@ -22,7 +22,13 @@ const PickupEventPicker = ({ events, eventIndex, setEventIndex, active }: EventP
             style={{ transform: `translateX(${-320 * eventIndex}px)` }}
           >
             {events.map(event => (
-              <EventCard key={event.uuid} event={event} attended={false} />
+              <EventCard
+                key={event.uuid}
+                event={event}
+                attended={false}
+                borderless
+                showYear={false}
+              />
             ))}
           </div>
         ) : (

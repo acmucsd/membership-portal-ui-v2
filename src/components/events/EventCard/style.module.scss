@@ -1,7 +1,5 @@
 .container {
   background: transparent;
-  border: 1px solid var(--theme-primary-6);
-  border-radius: 10px;
   -ms-overflow-style: none;
   overflow-x: hidden;
   padding: 0;
@@ -9,6 +7,11 @@
   text-align: left;
   transition: all 0.3s;
   width: 20rem;
+
+  &.bordered { 
+    border: 1px solid var(--theme-primary-6);
+    border-radius: 10px;
+  }
 
   &:hover {
     box-shadow: 0 0 8px var(--theme-primary-6);

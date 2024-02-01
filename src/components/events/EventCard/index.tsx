@@ -1,40 +1,65 @@
 import { CommunityLogo, Typography } from '@/components/common';
 import EventModal from '@/components/events/EventModal';
 import PointsDisplay from '@/components/events/PointsDisplay';
-import { PublicEvent } from '@/lib/types/apiResponses';
+import {
+  PublicEvent,
+  PublicOrderPickupEvent,
+  PublicOrderPickupEventWithLinkedEvent,
+} from '@/lib/types/apiResponses';
 import { formatEventDate } from '@/lib/utils';
 import Image from 'next/image';
 import { useState } from 'react';
 import styles from './style.module.scss';
 
+const isOrderPickupEvent = (
+  event: PublicOrderPickupEvent | PublicEvent
+): event is PublicOrderPickupEvent => 'status' in event;
+
 interface EventCardProps {
-  event: PublicEvent;
+  event: PublicEvent | PublicOrderPickupEvent;
   attended: boolean;
   className?: string;
   showYear?: boolean;
+  borderless?: boolean;
 }
 
-const EventCard = ({ event, attended, className, showYear }: EventCardProps) => {
-  const { cover, title, start, end, location } = event;
+const EventCard = ({ event, attended, className, showYear, borderless }: EventCardProps) => {
+  // const { cover, title, start, end, location } = event;
+  const { cover, title, start, end, location, committee } = isOrderPickupEvent(event)
+    ? {
+        ...(event.linkedEvent ?? {}),
+        ...event,
+      }
+    : event;
+
   const [expanded, setExpanded] = useState(false);
 
   const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
 
   return (
     <>
-      <EventModal
-        open={expanded}
-        attended={attended}
-        event={event}
-        onClose={() => setExpanded(false)}
-      />
+      {isOrderPickupEvent(event) && !event.linkedEvent ? null : (
+        <EventModal
+          open={expanded}
+          attended={attended}
+          event={
+            isOrderPickupEvent(event)
+              ? (event as PublicOrderPickupEventWithLinkedEvent).linkedEvent
+              : event
+          }
+          onClose={() => setExpanded(false)}
+        />
+      )}
+
       <button
         type="button"
-        className={`${styles.container} ${className || ''}`}
+        className={`${styles.container} ${borderless ? '' : styles.bordered} ${className || ''}`}
         onClick={() => setExpanded(true)}
       >
         <div className={styles.image}>
-          <PointsDisplay points={event.pointValue} attended={attended} />
+          {!isOrderPickupEvent(event) && (
+            <PointsDisplay points={event.pointValue} attended={attended} />
+          )}
           <Image
             src={displayCover}
             alt="Event Cover Image"
@@ -45,7 +70,7 @@ const EventCard = ({ event, attended, className, showYear }: EventCardProps) => 
         </div>
         <div className={styles.info}>
           <div className={styles.header}>
-            <CommunityLogo community={event.committee} size={50} />
+            <CommunityLogo community={committee ?? 'General'} size={50} />
             <div className={styles.eventDetails}>
               <Typography
                 variant="body/medium"
