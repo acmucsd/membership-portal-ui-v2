@@ -9,10 +9,10 @@ body {
   scroll-padding-top: 4.25rem;
 }
 
+/* This prevents the background from scrolling while a modal is open. */
 /* stylelint-disable-next-line selector-no-qualifying-type */
 body:has(dialog[open]) {
   overflow: hidden;
-  position: fixed;
 }
 
 main {
