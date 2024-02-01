@@ -3,6 +3,7 @@ import CalendarButtons from '@/components/events/CalendarButtons';
 import PointsDisplay from '@/components/events/PointsDisplay';
 import { PublicEvent } from '@/lib/types/apiResponses';
 import { fixUrl, formatEventDate } from '@/lib/utils';
+import CloseIcon from '@/public/assets/icons/close-icon.svg';
 import LinkIcon from '@/public/assets/icons/link.svg';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,6 +26,9 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
   return (
     <Modal open={open} onClose={onClose} bottomSheet>
       <div className={styles.image}>
+        <button type="submit" aria-label="Close" className={styles.close}>
+          <CloseIcon aria-hidden />
+        </button>
         <PointsDisplay points={event.pointValue} attended={attended} />
         <Image src={displayCover} alt="Event Cover Image" style={{ objectFit: 'cover' }} fill />
       </div>

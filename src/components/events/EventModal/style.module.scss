@@ -6,6 +6,23 @@
   overflow: hidden;
   position: relative;
   width: 100%;
+
+  .close {
+    align-items: center;
+    background-color: var(--theme-accent-line-2-transparent);
+    border-radius: 1rem;
+    display: flex;
+    left: 2.5%;
+    padding: 0.25rem;
+    position: absolute;
+    top: 5%;
+    transition: background-color 0.2s;
+    z-index: 100;
+
+    &:hover {
+      background-color: var(--theme-accent-line-1-transparent);
+    }
+  }
 }
 
 .contents {

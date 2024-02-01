@@ -1,4 +1,5 @@
 export type Styles = {
+  close: string;
   contents: string;
   eventDetails: string;
   eventInfo: string;
