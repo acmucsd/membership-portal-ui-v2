@@ -9,7 +9,7 @@ import {
 } from '@/components/store';
 import { config, showToast } from '@/lib';
 import { getFutureOrderPickupEvents, getItem, placeMerchOrder } from '@/lib/api/StoreAPI';
-import { getCurrentUser } from '@/lib/api/UserAPI';
+import { getCurrentUserAndRefreshCookie } from '@/lib/api/UserAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
 import {
   getClientCookie,
@@ -18,7 +18,7 @@ import {
   setServerCookie,
 } from '@/lib/services/CookieService';
 import { loggedInUser } from '@/lib/services/PermissionService';
-import { UUID } from '@/lib/types';
+import type { UUID } from '@/lib/types';
 import {
   PrivateProfile,
   PublicMerchItemOption,
@@ -239,7 +239,6 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
             </div>
             <PickupEventPicker
               events={pickupEvents}
-              // events={pickupEvents.map(event => event.linkedEvent)}
               eventIndex={pickupIndex}
               setEventIndex={setPickupIndex}
               active={cartState !== CartState.CONFIRMED}
@@ -323,11 +322,10 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
     })
   ).then((items): ClientCartItem[] => items.filter(item => item !== undefined) as ClientCartItem[]);
 
-  const pickupEventsPromise = getFutureOrderPickupEvents(AUTH_TOKEN).then(
-    events => events.filter(event => event.status !== 'CANCELLED')
-    // events.filter(event => event.linkedEvent && event.status !== 'CANCELLED')
+  const pickupEventsPromise = getFutureOrderPickupEvents(AUTH_TOKEN).then(events =>
+    events.filter(event => event.status !== 'CANCELLED')
   );
-  const userPromise = getCurrentUser(AUTH_TOKEN);
+  const userPromise = getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
 
   // gather the API request promises and await them concurrently
   const [savedCart, pickupEvents, user] = await Promise.all([

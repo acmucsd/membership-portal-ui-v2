@@ -2,7 +2,7 @@ import { Typography } from '@/components/common';
 import Diamonds from '@/components/store/Diamonds';
 import StoreConfirmModal from '@/components/store/StoreConfirmModal';
 import { config } from '@/lib';
-import { UUID } from '@/lib/types';
+import type { UUID } from '@/lib/types';
 import { ClientCartItem } from '@/lib/types/client';
 import { capitalize, getDefaultMerchItemPhoto } from '@/lib/utils';
 import Image from 'next/image';
