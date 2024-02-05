@@ -1,3 +1,5 @@
+import { PublicMerchItem, PublicMerchItemOption } from '@/lib/types/apiResponses';
+
 export interface CookieCartItem {
   itemUUID: string;
   optionUUID: string;

@@ -2,7 +2,7 @@ import { Modal, Typography } from '@/components/common';
 import { PropsWithChildren, ReactElement, cloneElement, useState } from 'react';
 import styles from './style.module.scss';
 
-interface StoreModalProps {
+interface StoreConfirmModalProps {
   opener: ReactElement<any>;
   title: string;
   onConfirm?: (...args: any[]) => any;
@@ -17,13 +17,13 @@ interface StoreModalProps {
  * @param props.onCancel - called when modal is closed any way other than the confirm button
  * @returns wrapper including opener and modal
  */
-const StoreModal = ({
+const StoreConfirmModal = ({
   opener,
   title,
   onConfirm = () => {},
   onCancel = () => {},
   children,
-}: PropsWithChildren<StoreModalProps>) => {
+}: PropsWithChildren<StoreConfirmModalProps>) => {
   const [open, setOpen] = useState(false);
 
   const onClose = () => {
@@ -74,4 +74,4 @@ const StoreModal = ({
   );
 };
 
-export default StoreModal;
+export default StoreConfirmModal;

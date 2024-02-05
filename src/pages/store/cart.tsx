@@ -1,15 +1,28 @@
 import { Typography } from '@/components/common';
-import { CartItemCard, Diamonds, Navbar, PickupEventPicker, StoreModal } from '@/components/store';
+import { EventCard } from '@/components/events';
+import {
+  CartItemCard,
+  Diamonds,
+  Navbar,
+  PickupEventPicker,
+  StoreConfirmModal,
+} from '@/components/store';
 import { config, showToast } from '@/lib';
 import { getFutureOrderPickupEvents, getItem, placeMerchOrder } from '@/lib/api/StoreAPI';
 import { getCurrentUser } from '@/lib/api/UserAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
-import { getServerCookie, setClientCookie, setServerCookie } from '@/lib/services/CookieService';
+import {
+  getClientCookie,
+  getServerCookie,
+  setClientCookie,
+  setServerCookie,
+} from '@/lib/services/CookieService';
 import { loggedInUser } from '@/lib/services/PermissionService';
 import { UUID } from '@/lib/types';
 import {
   PrivateProfile,
   PublicMerchItemOption,
+  PublicOrderPickupEvent,
   PublicOrderPickupEventWithLinkedEvent,
 } from '@/lib/types/apiResponses';
 import { ClientCartItem, CookieCartItem } from '@/lib/types/client';
@@ -25,7 +38,6 @@ interface CartPageProps {
   user: PrivateProfile;
   savedCart: ClientCartItem[];
   pickupEvents: PublicOrderPickupEventWithLinkedEvent[];
-  token: string;
 }
 
 enum CartState {
@@ -43,11 +55,11 @@ const clientCartToCookie = (items: ClientCartItem[]): string =>
     }))
   );
 
-const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents, token }: CartPageProps) => {
-  const calculateOrderTotal = (cart: ClientCartItem[]): number => {
-    return cart.reduce((total, { quantity, option: { price } }) => total + quantity * price, 0);
-  };
+const calculateOrderTotal = (cart: ClientCartItem[]): number => {
+  return cart.reduce((total, { quantity, option: { price } }) => total + quantity * price, 0);
+};
 
+const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageProps) => {
   const [cart, setCart] = useState(savedCart);
   const [pickupIndex, setPickupIndex] = useState(0);
   const [cartState, setCartState] = useState(CartState.PRECHECKOUT);
@@ -67,7 +79,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents, token }: Ca
 
   // handle confirming an order
   const placeOrder = () =>
-    placeMerchOrder(token, {
+    placeMerchOrder(getClientCookie(CookieType.CART), {
       order: cart.map(({ option: { uuid }, quantity }) => ({
         option: uuid,
         quantity,
@@ -116,7 +128,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents, token }: Ca
               },
             ];
             setClientCookie(CookieType.CART, JSON.stringify(newCart));
-            showToast('Filled your cart, buddy-o', 'Refresh to apply changes');
+            showToast('Filled your cart, buddy-o!', 'Refresh to apply changes');
           }}
         >
           {cartState !== CartState.CONFIRMED ? 'Your Cart' : 'Order Confirmation'}
@@ -124,7 +136,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents, token }: Ca
 
         {/* Place Order Button */}
         {cart.length > 0 && cartState !== CartState.CONFIRMED ? (
-          <StoreModal
+          <StoreConfirmModal
             title="Please confirm you can pick up your order at this event:"
             opener={
               <button
@@ -145,10 +157,13 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents, token }: Ca
             onConfirm={placeOrder}
             onCancel={() => setCartState(CartState.PRECHECKOUT)}
           >
-            {/* {pickupEvents[pickupIndex] && (
-              <EventCard event={pickupEvents[pickupIndex]} attended={false} />
-            )} */}
-          </StoreModal>
+            {pickupEvents[pickupIndex] && (
+              <EventCard
+                event={pickupEvents[pickupIndex] as PublicOrderPickupEvent}
+                attended={false}
+              />
+            )}
+          </StoreConfirmModal>
         ) : (
           <div />
         )}
@@ -329,7 +344,6 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
       user,
       savedCart,
       pickupEvents,
-      token: AUTH_TOKEN,
     },
   };
 };

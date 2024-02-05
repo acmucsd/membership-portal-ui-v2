@@ -1,10 +1,10 @@
 import { Typography } from '@/components/common';
 import Diamonds from '@/components/store/Diamonds';
-import StoreModal from '@/components/store/StoreModal';
+import StoreConfirmModal from '@/components/store/StoreConfirmModal';
 import { config } from '@/lib';
 import { UUID } from '@/lib/types';
 import { ClientCartItem } from '@/lib/types/client';
-import { capitalize } from '@/lib/utils';
+import { capitalize, getDefaultMerchItemPhoto } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './style.module.scss';
@@ -25,7 +25,8 @@ const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
           <Link href={itemPage}>
             <div className={styles.imageWrapper}>
               <Image
-                src={item.merchPhotos[0].uploadedPhoto}
+                src={getDefaultMerchItemPhoto(item)}
+                // src={item.merchPhotos[0].uploadedPhoto}
                 alt={item.itemName}
                 sizes={`(max-width: ${config.cssVars.breakpointMd}) 100px, 150px`}
                 fill
@@ -47,7 +48,7 @@ const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
 
           {item.option.metadata && (
             <Typography variant="h5/bold" component="p">
-              {capitalize(item.option.metadata?.type)}&nbsp;
+              {capitalize(item.option.metadata?.type)}:&nbsp;
               <Typography variant="h5/regular" component="span">
                 {item.option.metadata?.value}
               </Typography>
@@ -62,7 +63,7 @@ const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
         </div>
       </div>
       {removable && (
-        <StoreModal
+        <StoreConfirmModal
           opener={
             <button type="button" className={styles.removeBtn}>
               <Typography variant="h5/regular" component="span">
@@ -76,7 +77,7 @@ const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
           }}
         >
           <CartItemCard item={item} removable={false} />
-        </StoreModal>
+        </StoreConfirmModal>
       )}
     </div>
   );

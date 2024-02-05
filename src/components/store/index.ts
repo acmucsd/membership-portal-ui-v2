@@ -7,5 +7,5 @@ export { default as ItemCard } from './ItemCard';
 export { default as OrderCard } from './OrderCard';
 export { default as OrdersDisplay } from './OrdersDisplay';
 export { default as PickupEventPicker } from './PickupEventPicker';
-export { default as StoreModal } from './StoreModal';
+export { default as StoreConfirmModal } from './StoreConfirmModal';
 export { default as Navbar } from './StoreNavbar';

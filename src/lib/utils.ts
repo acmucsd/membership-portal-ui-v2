@@ -266,7 +266,9 @@ export const getDateRange = (sort: string | number) => {
  * Returns the default (first) photo for a merchandise item.
  * If there are no photos for this item, returns the default 404 image.
  */
-export const getDefaultMerchItemPhoto = (item: PublicMerchItem | undefined): string => {
+export const getDefaultMerchItemPhoto = (
+  item: Pick<PublicMerchItem, 'merchPhotos'> | undefined
+): string => {
   if (item && item.merchPhotos.length > 0) {
     // Get the photo with the smallest position.
     const defaultPhoto = item.merchPhotos.reduce((prevImage, currImage) => {
