@@ -79,7 +79,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
 
   // handle confirming an order
   const placeOrder = () =>
-    placeMerchOrder(getClientCookie(CookieType.CART), {
+    placeMerchOrder(getClientCookie(CookieType.ACCESS_TOKEN), {
       order: cart.map(({ option: { uuid }, quantity }) => ({
         option: uuid,
         quantity,
@@ -104,33 +104,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
       <Navbar balance={liveCredits} />
       <div className={styles.content}>
         {/* Title */}
-        <Typography
-          variant="h1/bold"
-          component="h1"
-          className={styles.title}
-          // todo: remove this
-          onClick={() => {
-            const newCart: CookieCartItem[] = [
-              {
-                itemUUID: '17774f20-e04d-4ace-a6fc-8dfe9286eca7',
-                optionUUID: 'd75f35b3-e452-46ea-a58b-2a2e010e6ff9',
-                quantity: 2,
-              },
-              {
-                itemUUID: 'afe7cfff-9a62-4146-8c8c-5b14f39ba0a0',
-                optionUUID: '72d22f34-c366-4ecd-a365-059661a0f0fc',
-                quantity: 1,
-              },
-              {
-                itemUUID: '2a37de8e-7b5c-41ba-84bc-f7f40804be85',
-                optionUUID: 'e3e68f83-d97e-40b0-a5ea-2c169a434403',
-                quantity: 10,
-              },
-            ];
-            setClientCookie(CookieType.CART, JSON.stringify(newCart));
-            showToast('Filled your cart, buddy-o!', 'Refresh to apply changes');
-          }}
-        >
+        <Typography variant="h1/bold" component="h1" className={styles.title}>
           {cartState !== CartState.CONFIRMED ? 'Your Cart' : 'Order Confirmation'}
         </Typography>
 
