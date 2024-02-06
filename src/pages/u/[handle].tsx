@@ -43,9 +43,11 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
 
     const isSignedInUser = handleUser.uuid === user.uuid;
 
-    let attendances = null;
+    let recentAttendances = null;
     if (!isSignedInUser && handleUser.isAttendancePublic)
-      attendances = await UserAPI.getAttendancesForUserByUUID(token, handleUser.uuid);
+      recentAttendances = (await UserAPI.getAttendancesForUserByUUID(token, handleUser.uuid)).slice(
+        -10
+      );
 
     // render UserProfilePage
     return {
@@ -53,7 +55,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
         handleUser,
         isSignedInUser,
         signedInAttendances,
-        attendances,
+        recentAttendances,
       },
     };
   } catch (err: any) {

@@ -18,12 +18,12 @@ export interface UserProfilePageProps {
   handleUser: PublicProfile;
   isSignedInUser: boolean;
   signedInAttendances: PublicAttendance[];
-  attendances?: PublicAttendance[];
+  recentAttendances?: PublicAttendance[];
 }
 
 export const UserProfilePage = ({
   handleUser,
-  attendances,
+  recentAttendances,
   signedInAttendances,
   isSignedInUser,
 }: UserProfilePageProps) => {
@@ -143,7 +143,7 @@ export const UserProfilePage = ({
           </div>
         )}
       </div>
-      {(attendances || isSignedInUser) && (
+      {(recentAttendances || isSignedInUser) && (
         <div className={styles.section}>
           <Typography variant="h2/bold">
             Recently Attended Events
@@ -154,9 +154,11 @@ export const UserProfilePage = ({
             )}
           </Typography>
           <Carousel>
-            {(isSignedInUser ? signedInAttendances : (attendances as PublicAttendance[]))
+            {(isSignedInUser
+              ? signedInAttendances.slice(-10)
+              : (recentAttendances as PublicAttendance[])
+            )
               .reverse()
-              .slice(0, 10)
               .map(({ event }) => (
                 <EventCard
                   className={styles.card}
