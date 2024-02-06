@@ -16,12 +16,11 @@ import { useState } from 'react';
 
 interface ItemPageProps {
   user: PrivateProfile;
-
   item: PublicMerchItemWithPurchaseLimits;
 }
 
 const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
-  const [size, setSize] = useState<Metadata | undefined>(
+  const [selectedOption, setSelectedOption] = useState<Metadata | undefined>(
     item.options.length <= 1 ? { type: 'Y', value: 'Y' } : undefined
   );
   const [inCart, setInCart] = useState<boolean>(false);
@@ -30,7 +29,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
   const currOption =
     item.options.length <= 1
       ? item.options[0]
-      : item.options.find(val => val.metadata?.value === size);
+      : item.options.find(val => val.metadata?.value === selectedOption?.value);
 
   return (
     <div className={styles.navbarBodyDiv}>
@@ -47,13 +46,17 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
         <div className={styles.optionsContainer}>
           <ItemHeader itemName={item.itemName} cost={currOption?.price} />
           {item.options.length > 1 ? (
-            <SizeSelector currSize={size} onSizeChange={setSize} options={item.options} />
+            <SizeSelector
+              currSize={selectedOption}
+              onSizeChange={setSelectedOption}
+              options={item.options}
+            />
           ) : null}
 
           <AddCartButton
             inCart={inCart}
             onCartChange={setInCart}
-            currSize={size?.value}
+            currSize={selectedOption?.value}
             inStock={currOption?.quantity != null && currOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}
