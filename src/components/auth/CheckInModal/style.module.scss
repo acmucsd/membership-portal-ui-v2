@@ -1,0 +1,59 @@
+@use 'src/styles/vars.scss' as vars;
+
+.contents {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 40rem;
+  padding: 2.5rem;
+  width: 70vw;
+
+  .cardContainer {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+
+    @media (max-width: vars.$breakpoint-md) {
+      flex-direction: column;
+    }
+
+    .card {
+      background: transparent;
+      border: 1px solid var(--theme-primary-6);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      min-height: 15rem;
+      -ms-overflow-style: none;
+      overflow-x: hidden;
+      padding: 0;
+      position: relative;
+      text-align: left;
+      transition: all 0.3s;
+      width: 20rem;
+
+      &:hover {
+        box-shadow: 0 0 8px var(--theme-primary-6);
+        transform: scale(1.025);
+      }
+
+      .cardHeader {
+        border-radius: 10px 10px 0 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        text-align: left;
+      }
+
+      .cardSubHeader {
+        border-radius: 10px 10px 0 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        text-align: left;
+      }
+    }
+  }
+}

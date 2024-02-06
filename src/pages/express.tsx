@@ -1,18 +1,19 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
-import { config, showToast } from '@/lib';
+import { showToast } from '@/lib';
 import { EventManager } from '@/lib/managers';
-import { CookieService, ValidationService } from '@/lib/services';
+import { ValidationService } from '@/lib/services';
 import type { ExpressCheckInRequest } from '@/lib/types/apiRequests';
-import { CookieType } from '@/lib/types/enums';
 import { getMessagesFromError } from '@/lib/utils';
 import type { GetServerSideProps, NextPage } from 'next';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineKey, AiOutlineMail } from 'react-icons/ai';
 
-interface CheckinProps {}
+interface CheckinProps {
+  code: string;
+}
 
-const ExpressCheckInPage: NextPage<CheckinProps> = () => {
+const ExpressCheckInPage: NextPage<CheckinProps> = ({ code }) => {
   const {
     register,
     handleSubmit,
@@ -57,6 +58,8 @@ const ExpressCheckInPage: NextPage<CheckinProps> = () => {
         name="checkin code"
         type="checkin code"
         placeholder="Checkin Code"
+        // auto fill in the checkin code with the query parameter
+        value={code}
         formRegister={register('attendanceCode', {
           required: 'Required',
         })}
@@ -74,23 +77,18 @@ const ExpressCheckInPage: NextPage<CheckinProps> = () => {
 
 export default ExpressCheckInPage;
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
-  const user = CookieService.getServerCookie(CookieType.USER, { req, res });
-  const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-
-  const route = query?.destination ? decodeURIComponent(query?.destination as string) : null;
-  if (user && authToken) {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const code = query.destination?.slice(query.destination.indexOf('=') + 1);
+  if (typeof code === 'string') {
     return {
-      redirect: {
-        destination: route || config.homeRoute,
-        permanent: false,
+      props: {
+        code,
       },
     };
   }
-
   return {
     props: {
-      destination: route || config.homeRoute,
+      code: '',
     },
   };
 };
