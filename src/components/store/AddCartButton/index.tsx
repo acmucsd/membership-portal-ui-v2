@@ -29,9 +29,7 @@ const AddCartButton = ({
 
   let buyButtonText = 'Add to Cart';
 
-  if (inCart) {
-    buyButtonText = 'Remove from Cart';
-  } else if (maxCanBuy === 0) {
+  if (maxCanBuy === 0) {
     buyButtonText = 'Limit Reached';
   } else if (currSize === undefined) {
     buyButtonText = 'Select a Size';
@@ -41,7 +39,7 @@ const AddCartButton = ({
     buyButtonText = 'Out of Stock';
   }
 
-  const optionArr: Array<{ value: string; label: string } | '----'> = [];
+  const optionArr: Array<{ value: string; label: string }> = [];
 
   if (maxCanBuy === 0) {
     optionArr.push({ value: `0`, label: `0` });
@@ -50,8 +48,6 @@ const AddCartButton = ({
   for (let i = 1; i <= maxCanBuy; i += 1) {
     optionArr.push({ value: `${i}`, label: `${i}` });
   }
-
-  optionArr.push('----');
 
   return (
     <div className={styles.addCartGroup}>

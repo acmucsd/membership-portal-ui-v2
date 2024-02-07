@@ -1,3 +1,7 @@
+export { default as AddCartButton } from '@/components/store/AddCartButton';
+export { default as ItemHeader } from '@/components/store/ItemHeader';
+export { default as SizeSelector } from '@/components/store/SizeSelector';
+export type { Metadata } from '@/components/store/SizeSelector';
 export { default as CollectionSlider } from './CollectionSlider';
 export { default as Diamonds } from './Diamonds';
 export { default as HelpModal } from './HelpModal';

@@ -1,7 +1,4 @@
-import { Navbar } from '@/components/store';
-import AddCartButton from '@/components/store/AddCartButton';
-import ItemHeader from '@/components/store/ItemHeader';
-import SizeSelector, { Metadata } from '@/components/store/SizeSelector';
+import { AddCartButton, ItemHeader, Metadata, Navbar, SizeSelector } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import config from '@/lib/config';
 import withAccessType from '@/lib/hoc/withAccessType';
