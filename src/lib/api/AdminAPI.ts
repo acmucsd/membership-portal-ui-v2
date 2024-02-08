@@ -9,7 +9,7 @@ import axios from 'axios';
  * @param accessType The user's updated access type
  * @returns The updated user profile
  */
-const manageUserAccess = async (
+export const manageUserAccess = async (
   token: string,
   user: string,
   accessType: string

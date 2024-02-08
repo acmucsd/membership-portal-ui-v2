@@ -1,11 +1,11 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
 import { config, showToast } from '@/lib';
-import manageUserAccess from '@/lib/api/UserAccessAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService, ValidationService } from '@/lib/services';
+import manageUserAccess from '@/lib/managers/AdminUserManager';
+import { PermissionService, ValidationService } from '@/lib/services';
 import { UserAccessUpdates } from '@/lib/types/apiRequests';
-import { CookieType } from '@/lib/types/enums';
+import { UserAccessType } from '@/lib/types/enums';
 import { getMessagesFromError } from '@/lib/utils';
 import { AxiosError } from 'axios';
 import { GetServerSideProps } from 'next';
@@ -13,6 +13,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BsPerson } from 'react-icons/bs';
 
+// This function needs to be moved to the util class after Sean's PR is merged
 function reportError(title: string, error: unknown) {
   if (error instanceof AxiosError && error.response?.data?.error) {
     showToast(title, getMessagesFromError(error.response.data.error).join('\n\n'));
@@ -31,15 +32,16 @@ const ManageUserAccessPage = () => {
   } = useForm<UserAccessUpdates>();
 
   const onSubmit: SubmitHandler<UserAccessUpdates> = async ({ user, accessType }) => {
-    try {
-      const token = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
-      const updatedUsers = await manageUserAccess(token, user, accessType);
-      if (updatedUsers && updatedUsers.length > 0 && updatedUsers[0]?.email) {
+    manageUserAccess({
+      user,
+      accessType,
+      onSuccessCallback: updatedUsers => {
         showToast(`User access type updated for user ${updatedUsers[0].email}!`);
-      }
-    } catch (error) {
-      reportError('Failed to update user access type', error);
-    }
+      },
+      onFailCallback: error => {
+        reportError('Failed to update user access type', error);
+      },
+    });
   };
 
   return (
@@ -62,17 +64,8 @@ const ManageUserAccessPage = () => {
       <SignInFormItem
         icon={<BsPerson />}
         element="select"
-        name="user access"
-        options={[
-          'RESTRICTED',
-          'STANDARD',
-          'STAFF',
-          'ADMIN',
-          'MARKETING',
-          'MERCH_STORE_MANAGER',
-          'MERCH_STORE_DISTRIBUTOR',
-        ]}
-        placeholder="User access"
+        name="User Access"
+        options={Object.values(UserAccessType)}
         formRegister={register('accessType')}
         error={errors.user}
       />
