@@ -18,7 +18,7 @@ export interface UserProfilePageProps {
   handleUser: PublicProfile;
   isSignedInUser: boolean;
   signedInAttendances: PublicAttendance[];
-  recentAttendances?: PublicAttendance[];
+  recentAttendances: PublicAttendance[];
 }
 
 export const UserProfilePage = ({
@@ -154,19 +154,14 @@ export const UserProfilePage = ({
             )}
           </Typography>
           <Carousel>
-            {(isSignedInUser
-              ? signedInAttendances.slice(-10)
-              : (recentAttendances as PublicAttendance[])
-            )
-              .reverse()
-              .map(({ event }) => (
-                <EventCard
-                  className={styles.card}
-                  key={event.uuid}
-                  event={event}
-                  attended={signedInAttendances.some(({ event: { uuid } }) => uuid === event.uuid)}
-                />
-              ))}
+            {recentAttendances.map(({ event }) => (
+              <EventCard
+                className={styles.card}
+                key={event.uuid}
+                event={event}
+                attended={signedInAttendances.some(({ event: { uuid } }) => uuid === event.uuid)}
+              />
+            ))}
           </Carousel>
         </div>
       )}
