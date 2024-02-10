@@ -8,19 +8,19 @@
   color: #fff;
   cursor: pointer;
   display: flex;
-  height: 2rem;
   justify-content: center;
+  min-height: 2rem;
   padding: 4px 1rem;
   transition: 0.3s ease-in-out transform;
 
   width: fit-content;
 
   &[data-size='default'] {
-    height: 2.5rem;
+    min-height: 2.5rem;
   }
 
   &[data-size='small'] {
-    height: 2rem;
+    min-height: 2rem;
   }
 
   &[data-variant='primary'] {

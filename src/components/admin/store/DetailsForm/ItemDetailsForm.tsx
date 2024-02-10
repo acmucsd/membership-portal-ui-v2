@@ -144,7 +144,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           onClick: () => router.push(`${config.store.itemRoute}/${item.uuid}`),
         },
       ]);
-      router.replace(`${config.store.itemRoute}/${item.uuid}/edit`);
+      router.replace(`${config.store.itemRoute}/${item.uuid}`);
     } catch (error) {
       reportError('Could not create item', error);
     } finally {
@@ -395,7 +395,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                   </>
                 ) : null}
                 <th>Price</th>
-                <th>Quantity</th>
+                <th>Quantity available</th>
                 <th>Percent discount</th>
                 {options.length > 1 ? <th>Remove</th> : null}
               </tr>

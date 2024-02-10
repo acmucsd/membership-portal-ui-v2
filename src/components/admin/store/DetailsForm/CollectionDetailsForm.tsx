@@ -52,7 +52,7 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
           onClick: () => router.push(`${config.store.collectionRoute}/${uuid}`),
         },
       ]);
-      router.replace(`${config.store.collectionRoute}/${uuid}/edit`);
+      router.replace(`${config.store.collectionRoute}/${uuid}`);
     } catch (error) {
       reportError('Could not create collection', error);
     } finally {

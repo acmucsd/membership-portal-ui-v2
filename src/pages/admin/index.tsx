@@ -20,6 +20,7 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
       <div
         style={{
           display: 'flex',
+          flexWrap: 'wrap',
           gap: '1rem',
           margin: '1rem 0',
         }}
@@ -44,6 +45,7 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
       <div
         style={{
           display: 'flex',
+          flexWrap: 'wrap',
           gap: '1rem',
           margin: '1rem 0',
         }}
@@ -56,6 +58,7 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
       <div
         style={{
           display: 'flex',
+          flexWrap: 'wrap',
           gap: '1rem',
           margin: '1rem 0',
         }}
@@ -75,6 +78,7 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
       <div
         style={{
           display: 'flex',
+          flexWrap: 'wrap',
           gap: '1rem',
           margin: '1rem 0',
         }}
@@ -92,7 +96,7 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
 export default AdminPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
-  const preview = CookieService.getServerCookie(CookieType.PREVIEW, { req, res });
+  const preview = CookieService.getServerCookie(CookieType.PREVIEW, { req, res }) ?? '';
   return {
     props: { preview },
   };
