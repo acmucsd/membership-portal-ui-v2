@@ -1,5 +1,4 @@
 import { Dropdown } from '@/components/common';
-import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
 import { useId } from 'react';
 import styles from './style.module.scss';
 
@@ -10,7 +9,7 @@ interface AddCartButtonProps {
   lifetimeRemaining: number;
   monthlyRemaining: number;
   amountToBuy: number;
-  metadata: MerchItemOptionMetadata | undefined;
+  optionName: string;
   onCartChange: (inCart: boolean) => void;
   onAmountChange: (amountToBuy: number) => void;
 }
@@ -23,7 +22,7 @@ const AddCartButton = ({
   lifetimeRemaining,
   monthlyRemaining,
   amountToBuy,
-  metadata,
+  optionName,
   onAmountChange,
 }: AddCartButtonProps) => {
   const myID = useId();
@@ -57,7 +56,7 @@ const AddCartButton = ({
       )}
       {currOption === undefined ? (
         <p className={styles.error}>
-          {`Please select a ${metadata?.type.toLocaleLowerCase() ?? 'option'}`}.
+          {`Please select a ${optionName?.toLocaleLowerCase() ?? 'option'}`}.
         </p>
       ) : null}
 

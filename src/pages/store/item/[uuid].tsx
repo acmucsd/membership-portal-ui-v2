@@ -28,10 +28,13 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
 
-  const currOption: PublicMerchItemOption | null | undefined =
-    item.options.length <= 1
-      ? item.options[0]
-      : item.options.find(val => val.metadata?.value === selectedOption?.value);
+  const currItemOption: PublicMerchItemOption | null | undefined =
+    item.options.find(val => val.metadata?.value === selectedOption?.value) ??
+    item.options.find(option => option.quantity > 0) ??
+    item.options[0] ??
+    null;
+
+  console.log(`currItemOption ${currItemOption}`);
 
   return (
     <div className={styles.navbarBodyDiv}>
@@ -46,7 +49,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
           />
         </div>
         <div className={styles.optionsContainer}>
-          <ItemHeader itemName={item.itemName} cost={currOption?.price} />
+          <ItemHeader itemName={item.itemName} cost={currItemOption?.price} />
           {item.options.length > 1 ? (
             <SizeSelector
               currOption={selectedOption}
@@ -59,12 +62,12 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
             inCart={inCart}
             onCartChange={setInCart}
             currOption={selectedOption?.value}
-            inStock={currOption?.quantity != null && currOption?.quantity >= 1}
+            inStock={currItemOption?.quantity != null && currItemOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}
             amountToBuy={amount}
             onAmountChange={setAmount}
-            metadata={selectedOption}
+            optionName={currItemOption?.metadata.type}
           />
           <h4>Item Description</h4>
           <p>{item.description}</p>
