@@ -23,7 +23,8 @@ const CollectionsPage = ({
   collection: { title, description, items = [], archived },
   previewPublic,
 }: CollectionProps) => {
-  const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
+  const storeAdminVisible =
+    PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
 
   return (
     <div className={styles.container}>
@@ -31,8 +32,8 @@ const CollectionsPage = ({
       <div className={styles.header}>
         <Typography variant="h1/bold" component="h1">
           {title}
-          {canManageStore ? <EditButton type="collection" uuid={uuid} /> : null}
-          {canManageStore && archived ? <HiddenIcon type="collection" /> : null}
+          {storeAdminVisible ? <EditButton type="collection" uuid={uuid} /> : null}
+          {storeAdminVisible && archived ? <HiddenIcon type="collection" /> : null}
         </Typography>
         <Typography variant="h4/regular" component="p">
           {description}
@@ -40,7 +41,7 @@ const CollectionsPage = ({
       </div>
       <div className={styles.collections}>
         {items
-          .filter(item => canManageStore || !item.hidden)
+          .filter(item => storeAdminVisible || !item.hidden)
           .map(item => (
             <ItemCard
               image={getDefaultMerchItemPhoto(item)}
@@ -51,11 +52,11 @@ const CollectionsPage = ({
               outOfStock={item.options.every(option => option.quantity === 0)}
               key={item.uuid}
             >
-              {canManageStore && item.hidden ? <HiddenIcon type="item" /> : null}
-              {canManageStore ? <EditButton type="item" uuid={item.uuid} /> : null}
+              {storeAdminVisible && item.hidden ? <HiddenIcon type="item" /> : null}
+              {storeAdminVisible ? <EditButton type="item" uuid={item.uuid} /> : null}
             </ItemCard>
           ))}
-        {canManageStore ? (
+        {storeAdminVisible ? (
           <CreateButton type="item" collection={uuid}>
             Add an item
           </CreateButton>

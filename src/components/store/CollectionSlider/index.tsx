@@ -14,7 +14,7 @@ interface CollectionSliderProps {
   title: string;
   description: string;
   items: PublicMerchItem[];
-  canManageStore?: boolean;
+  storeAdminVisible?: boolean;
   isHidden?: boolean;
 }
 
@@ -23,20 +23,20 @@ const CollectionSlider = ({
   title,
   description,
   items,
-  canManageStore,
+  storeAdminVisible,
   isHidden,
 }: CollectionSliderProps) => {
   return (
     <div className={styles.wrapper}>
       <h3 className={styles.title}>
         <Link href={`${config.store.collectionRoute}${uuid}`}>{title}</Link>
-        {canManageStore ? <EditButton type="collection" uuid={uuid} /> : null}
+        {storeAdminVisible ? <EditButton type="collection" uuid={uuid} /> : null}
         {isHidden ? <HiddenIcon type="collection" /> : null}
       </h3>
       <p className={styles.description}>{description}</p>
       <Carousel>
         {items
-          .filter(item => canManageStore || !item.hidden)
+          .filter(item => storeAdminVisible || !item.hidden)
           .map(item => (
             <ItemCard
               className={styles.card}
@@ -48,11 +48,11 @@ const CollectionSlider = ({
               outOfStock={item.options.every(option => option.quantity === 0)}
               key={item.uuid}
             >
-              {canManageStore && item.hidden ? <HiddenIcon type="item" /> : null}
-              {canManageStore ? <EditButton type="item" uuid={item.uuid} /> : null}
+              {storeAdminVisible && item.hidden ? <HiddenIcon type="item" /> : null}
+              {storeAdminVisible ? <EditButton type="item" uuid={item.uuid} /> : null}
             </ItemCard>
           ))}
-        {canManageStore ? (
+        {storeAdminVisible ? (
           <CreateButton className={styles.card} type="item" collection={uuid}>
             Add an item
           </CreateButton>

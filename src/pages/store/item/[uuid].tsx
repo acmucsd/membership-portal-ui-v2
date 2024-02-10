@@ -23,7 +23,8 @@ const StoreItemPage = ({
   item,
   previewPublic,
 }: ItemPageProps) => {
-  const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
+  const storeAdminVisible =
+    PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
   const [selectedOption, setSelectedOption] = useState<Metadata | undefined>(
     item.options.length <= 1 ? { type: 'Y', value: 'Y' } : undefined
   );
@@ -53,8 +54,8 @@ const StoreItemPage = ({
             cost={currOption?.price}
             discountPercentage={currOption?.discountPercentage}
             uuid={uuid}
-            showEdit={canManageStore}
-            isHidden={canManageStore && item.hidden}
+            showEdit={storeAdminVisible}
+            isHidden={storeAdminVisible && item.hidden}
           />
           {item.options.length > 1 ? (
             <SizeSelector

@@ -48,10 +48,11 @@ const StoreHomePage = ({
 
   const [helpOpen, setHelpOpen] = useState(false);
 
-  const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
+  const storeAdminVisible =
+    PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
 
   const visibleCollections = collections.filter(
-    collection => canManageStore || !collection.archived
+    collection => storeAdminVisible || !collection.archived
   );
 
   return (
@@ -64,7 +65,7 @@ const StoreHomePage = ({
       <div className={styles.container}>
         <div className={styles.header}>
           <h2>{view === 'collections' ? 'Browse our collections' : 'Browse all items'}</h2>
-          {canManageStore ? (
+          {storeAdminVisible ? (
             <button
               type="button"
               className={styles.viewToggle}
@@ -104,11 +105,11 @@ const StoreHomePage = ({
                 href={`${config.store.collectionRoute}${collection.uuid}`}
                 key={collection.uuid}
               >
-                {canManageStore && collection.archived ? <HiddenIcon type="collection" /> : null}
-                {canManageStore ? <EditButton type="collection" uuid={collection.uuid} /> : null}
+                {storeAdminVisible && collection.archived ? <HiddenIcon type="collection" /> : null}
+                {storeAdminVisible ? <EditButton type="collection" uuid={collection.uuid} /> : null}
               </ItemCard>
             ))}
-            {canManageStore ? (
+            {storeAdminVisible ? (
               <CreateButton type="collection">Create a collection</CreateButton>
             ) : null}
           </div>
@@ -120,12 +121,12 @@ const StoreHomePage = ({
                 title={collection.title}
                 description={collection.description}
                 items={collection.items}
-                canManageStore={canManageStore}
-                isHidden={canManageStore && collection.archived}
+                storeAdminVisible={storeAdminVisible}
+                isHidden={storeAdminVisible && collection.archived}
                 key={collection.uuid}
               />
             ))}
-            {canManageStore ? (
+            {storeAdminVisible ? (
               <CreateButton type="collection" horizontal>
                 Create a collection
               </CreateButton>
