@@ -44,6 +44,8 @@ const CollectionSlider = ({
               title={item.itemName}
               href={`${config.store.itemRoute}${item.uuid}`}
               cost={item.options[0]?.price ?? 0}
+              discountPercentage={item.options[0]?.discountPercentage ?? 0}
+              outOfStock={item.options.every(option => option.quantity === 0)}
               key={item.uuid}
             >
               {canManageStore && item.hidden ? <HiddenIcon type="item" /> : null}

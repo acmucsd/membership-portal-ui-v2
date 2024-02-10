@@ -13,7 +13,8 @@ interface CommonOptions {
 
 interface StoreItemOptions {
   cost: number;
-  outOfStock?: boolean;
+  discountPercentage: number;
+  outOfStock: boolean;
 }
 
 interface CollectionOptions {
@@ -46,7 +47,14 @@ const ItemCard = ({
           {'description' in props ? <p>{props.description}</p> : null}
           {'cost' in props ? (
             <p className={styles.cost}>
-              <Diamonds count={props.cost} />
+              <Diamonds
+                count={props.cost}
+                discount={
+                  props.discountPercentage !== 0
+                    ? props.cost * (1 - props.discountPercentage / 100)
+                    : undefined
+                }
+              />
               &nbsp;
               {props.outOfStock ? <span className={styles.outOfStock}>Out of stock</span> : null}
             </p>

@@ -6,12 +6,20 @@ import styles from './style.module.scss';
 interface ItemHeaderProps {
   itemName: string;
   cost: number | undefined;
+  discountPercentage: number | undefined;
   uuid?: string;
   showEdit?: boolean;
   isHidden?: boolean;
 }
 
-const ItemHeader = ({ itemName, cost, uuid, showEdit, isHidden }: ItemHeaderProps) => {
+const ItemHeader = ({
+  itemName,
+  cost,
+  discountPercentage = 0,
+  uuid,
+  showEdit,
+  isHidden,
+}: ItemHeaderProps) => {
   return (
     <div className={styles.itemHeaderGroup}>
       <h1>
@@ -21,7 +29,10 @@ const ItemHeader = ({ itemName, cost, uuid, showEdit, isHidden }: ItemHeaderProp
       </h1>
       {cost === undefined ? null : (
         <div className={styles.price}>
-          <Diamonds count={cost} />
+          <Diamonds
+            count={cost}
+            discount={discountPercentage !== 0 ? cost * (1 - discountPercentage / 100) : undefined}
+          />
         </div>
       )}
     </div>

@@ -51,6 +51,7 @@ const StoreItemPage = ({
           <ItemHeader
             itemName={item.itemName}
             cost={currOption?.price}
+            discountPercentage={currOption?.discountPercentage}
             uuid={uuid}
             showEdit={canManageStore}
             isHidden={canManageStore && item.hidden}
