@@ -1,26 +1,29 @@
 import { Dropdown } from '@/components/common';
+import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
 import { useId } from 'react';
 import styles from './style.module.scss';
 
 interface AddCartButtonProps {
-  currSize: string | undefined;
+  currOption: string | undefined;
   inStock: boolean;
   inCart: boolean;
   lifetimeRemaining: number;
   monthlyRemaining: number;
   amountToBuy: number;
+  metadata: MerchItemOptionMetadata | undefined;
   onCartChange: (inCart: boolean) => void;
   onAmountChange: (amountToBuy: number) => void;
 }
 
 const AddCartButton = ({
-  currSize,
+  currOption,
   inStock,
   inCart,
   onCartChange,
   lifetimeRemaining,
   monthlyRemaining,
   amountToBuy,
+  metadata,
   onAmountChange,
 }: AddCartButtonProps) => {
   const myID = useId();
@@ -31,7 +34,7 @@ const AddCartButton = ({
 
   if (maxCanBuy === 0) {
     buyButtonText = 'Limit Reached';
-  } else if (currSize === undefined) {
+  } else if (currOption === undefined) {
     buyButtonText = 'Select a Size';
   } else if (inStock) {
     buyButtonText = 'Add to Cart';
@@ -40,10 +43,6 @@ const AddCartButton = ({
   }
 
   const optionArr: Array<{ value: string; label: string }> = [];
-
-  if (maxCanBuy === 0) {
-    optionArr.push({ value: `0`, label: `0` });
-  }
 
   for (let i = 1; i <= maxCanBuy; i += 1) {
     optionArr.push({ value: `${i}`, label: `${i}` });
@@ -56,9 +55,13 @@ const AddCartButton = ({
       ) : (
         <p>You can&apos;t buy any more of this item!.</p>
       )}
-      {currSize === undefined ? <p className={styles.error}>Please select a size.</p> : null}
+      {currOption === undefined ? (
+        <p className={styles.error}>
+          {`Please select a ${metadata?.type.toLocaleLowerCase() ?? 'option'}`}.
+        </p>
+      ) : null}
 
-      {currSize === undefined ? null : (
+      {currOption === undefined ? null : (
         <div className={styles.buttonRow}>
           {!inStock || maxCanBuy <= 1 ? null : (
             <div className={styles.quantityColumn}>

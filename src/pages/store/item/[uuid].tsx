@@ -1,9 +1,14 @@
-import { AddCartButton, ItemHeader, Metadata, Navbar, SizeSelector } from '@/components/store';
+import { AddCartButton, ItemHeader, Navbar, SizeSelector } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import config from '@/lib/config';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import { PrivateProfile, PublicMerchItemWithPurchaseLimits } from '@/lib/types/apiResponses';
+import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
+import {
+  PrivateProfile,
+  PublicMerchItemOption,
+  PublicMerchItemWithPurchaseLimits,
+} from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/StoreItemPage.module.scss';
@@ -17,13 +22,13 @@ interface ItemPageProps {
 }
 
 const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
-  const [selectedOption, setSelectedOption] = useState<Metadata | undefined>(
-    item.options.length <= 1 ? { type: 'Y', value: 'Y' } : undefined
+  const [selectedOption, setSelectedOption] = useState<MerchItemOptionMetadata | undefined>(
+    item.options.length <= 1 ? { type: 'Y', value: 'Y', position: 0 } : undefined
   );
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
 
-  const currOption =
+  const currOption: PublicMerchItemOption | null | undefined =
     item.options.length <= 1
       ? item.options[0]
       : item.options.find(val => val.metadata?.value === selectedOption?.value);
@@ -44,7 +49,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
           <ItemHeader itemName={item.itemName} cost={currOption?.price} />
           {item.options.length > 1 ? (
             <SizeSelector
-              currSize={selectedOption}
+              currOption={selectedOption}
               onSizeChange={setSelectedOption}
               options={item.options}
             />
@@ -53,12 +58,13 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
           <AddCartButton
             inCart={inCart}
             onCartChange={setInCart}
-            currSize={selectedOption?.value}
+            currOption={selectedOption?.value}
             inStock={currOption?.quantity != null && currOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}
             amountToBuy={amount}
             onAmountChange={setAmount}
+            metadata={selectedOption}
           />
           <h4>Item Description</h4>
           <p>{item.description}</p>
