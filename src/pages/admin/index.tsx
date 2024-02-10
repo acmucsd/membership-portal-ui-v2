@@ -35,7 +35,7 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
           defaultChecked={preview === 'member'}
           onChange={e =>
             CookieService.setClientCookie(
-              CookieType.PREVIEW,
+              CookieType.USER_PREVIEW_ENABLED,
               e.currentTarget.checked ? 'member' : 'admin'
             )
           }
@@ -96,7 +96,8 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
 export default AdminPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
-  const preview = CookieService.getServerCookie(CookieType.PREVIEW, { req, res }) ?? '';
+  const preview =
+    CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res }) ?? '';
   return {
     props: { preview },
   };

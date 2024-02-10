@@ -68,7 +68,7 @@ export default CollectionsPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
   const uuid = params?.uuid as string;
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  const preview = CookieService.getServerCookie(CookieType.PREVIEW, { req, res });
+  const preview = CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res });
   try {
     const collection = await StoreAPI.getCollection(token, uuid);
     return {

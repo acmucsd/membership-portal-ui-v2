@@ -69,7 +69,7 @@ const StoreHomePage = ({
               type="button"
               className={styles.viewToggle}
               onClick={() => {
-                CookieService.setClientCookie(CookieType.PREVIEW, 'member');
+                CookieService.setClientCookie(CookieType.USER_PREVIEW_ENABLED, 'member');
                 showToast(
                   'Previewing store as member',
                   'To re-enable admin store options, go to admin settings.',
@@ -141,7 +141,7 @@ export default StoreHomePage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  const preview = CookieService.getServerCookie(CookieType.PREVIEW, { req, res });
+  const preview = CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res });
 
   const collections = await StoreAPI.getAllCollections(AUTH_TOKEN);
 
