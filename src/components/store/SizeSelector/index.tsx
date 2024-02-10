@@ -2,15 +2,22 @@ import styles from '@/components/store/SizeSelector/style.module.scss';
 import { PublicMerchItemOption } from '@/lib/types/apiResponses';
 import { Fragment, useId } from 'react';
 
+interface Metadata {
+  type: string;
+  value: string;
+}
+
 interface SizeSelectorProps {
-  currSize: string | undefined;
+  currSize: Metadata | undefined;
   options: PublicMerchItemOption[];
-  onSizeChange: (currSize: string) => void;
+  onSizeChange: (currSize: Metadata) => void;
+}
+function toTitleCase(str: string) {
+  return str.toLowerCase().replace(/\.\s*([a-z])|^[a-z]/gm, s => s.toUpperCase());
 }
 
 const SizeSelector = ({ currSize, options, onSizeChange }: SizeSelectorProps) => {
   const myID = useId();
-
   const myOptions = options
     .sort((a, b) => (a.metadata?.position ?? 0) - (b.metadata?.position ?? 0))
     .map(val => {
@@ -22,7 +29,7 @@ const SizeSelector = ({ currSize, options, onSizeChange }: SizeSelectorProps) =>
             name="state-d"
             type="radio"
             defaultChecked={currSize === val.metadata?.value}
-            onClick={() => val.metadata && onSizeChange(val.metadata.value)}
+            onClick={() => val.metadata && onSizeChange(val.metadata)}
           />
           <label htmlFor={tempId}>{val.metadata?.value}</label>
         </Fragment>
@@ -33,7 +40,11 @@ const SizeSelector = ({ currSize, options, onSizeChange }: SizeSelectorProps) =>
     <div className={styles.sizeSelector}>
       {options.length > 1 ? (
         <>
-          <h4>Size</h4>
+          {options[0]?.metadata?.type === undefined ? (
+            <h4>Options</h4>
+          ) : (
+            <h4>{toTitleCase(options[0]?.metadata.type)}</h4>
+          )}
           <form className={styles.switch}>{myOptions}</form>
         </>
       ) : null}
@@ -41,3 +52,4 @@ const SizeSelector = ({ currSize, options, onSizeChange }: SizeSelectorProps) =>
   );
 };
 export default SizeSelector;
+export type { Metadata };

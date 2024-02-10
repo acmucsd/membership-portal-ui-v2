@@ -27,17 +27,9 @@ const AddCartButton = ({
 
   const maxCanBuy = Math.min(20, Math.min(lifetimeRemaining, monthlyRemaining));
 
-  const validText = inStock ? (
-    <p className={styles.valid}>This item is in stock.</p>
-  ) : (
-    <p className={styles.error}>This item is out of stock.</p>
-  );
-
   let buyButtonText = 'Add to Cart';
 
-  if (inCart) {
-    buyButtonText = 'Remove from Cart';
-  } else if (maxCanBuy === 0) {
+  if (maxCanBuy === 0) {
     buyButtonText = 'Limit Reached';
   } else if (currSize === undefined) {
     buyButtonText = 'Select a Size';
@@ -47,7 +39,7 @@ const AddCartButton = ({
     buyButtonText = 'Out of Stock';
   }
 
-  const optionArr: Array<{ value: string; label: string } | '----'> = [];
+  const optionArr: Array<{ value: string; label: string }> = [];
 
   if (maxCanBuy === 0) {
     optionArr.push({ value: `0`, label: `0` });
@@ -57,8 +49,6 @@ const AddCartButton = ({
     optionArr.push({ value: `${i}`, label: `${i}` });
   }
 
-  optionArr.push('----');
-
   return (
     <div className={styles.addCartGroup}>
       {maxCanBuy > 0 ? (
@@ -66,7 +56,7 @@ const AddCartButton = ({
       ) : (
         <p>You can&apos;t buy any more of this item!.</p>
       )}
-      {currSize === undefined ? <p className={styles.error}>Please select a size.</p> : validText}
+      {currSize === undefined ? <p className={styles.error}>Please select a size.</p> : null}
 
       {currSize === undefined ? null : (
         <div className={styles.buttonRow}>
@@ -90,9 +80,7 @@ const AddCartButton = ({
             type="button"
             title={`${buyButtonText} Button`}
             value={buyButtonText}
-            onClick={() => {
-              onCartChange(!inCart);
-            }}
+            onClick={() => onCartChange(!inCart)}
             disabled={!inStock || maxCanBuy === 0}
           >
             {buyButtonText}

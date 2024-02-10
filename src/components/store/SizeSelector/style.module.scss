@@ -5,12 +5,12 @@ $component-roundness: 10px;
 .sizeSelector {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
   overflow: auto;
 
   h4 {
     color: var(--theme-text-on-background-1);
-    font-size: vars.$general-heading-3-4;
+    font-size: vars.$general-heading-3;
     font-weight: bold;
   }
 
@@ -19,8 +19,9 @@ $component-roundness: 10px;
     border-color: #9f9f9f;
     border-radius: $component-roundness;
     display: flex;
+    flex-wrap: wrap;
     float: left;
-    gap: 12px;
+    gap: 0.75rem;
     position: relative;
 
     label {
@@ -36,8 +37,8 @@ $component-roundness: 10px;
       float: left;
       height: $indicator-size;
       justify-content: center;
-      margin: 2px;
-      width: #{$indicator-size * 2};
+      min-width: #{$indicator-size * 2};
+      padding: 0 1rem;
     }
 
     input {
@@ -45,17 +46,13 @@ $component-roundness: 10px;
       position: absolute;
     }
 
-    input:checked {
-      border-color: var(--size-selector-border);
-    }
-
     input:hover + label {
-      border-color: var(--size-selector-border);
+      border-color: var(--theme-size-selector-border);
     }
 
     input:checked + label {
-      border-color: var(--size-selector-border);
-      color: var(--size-selector-border);
+      border-color: var(--theme-size-selector-border);
+      color: var(--theme-size-selector-border);
     }
   }
 }

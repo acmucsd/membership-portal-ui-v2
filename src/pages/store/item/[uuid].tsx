@@ -1,7 +1,4 @@
-import { Navbar } from '@/components/store';
-import AddCartButton from '@/components/store/AddCartButton';
-import ItemHeader from '@/components/store/ItemHeader';
-import SizeSelector from '@/components/store/SizeSelector';
+import { AddCartButton, ItemHeader, Metadata, Navbar, SizeSelector } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
@@ -16,10 +13,10 @@ import { useState } from 'react';
 interface ItemPageProps {
   uuid: string;
   user: PrivateProfile;
-
   item: PublicMerchItemWithPurchaseLimits;
   previewPublic: boolean;
 }
+
 const StoreItemPage = ({
   uuid,
   user: { credits, accessType },
@@ -27,15 +24,16 @@ const StoreItemPage = ({
   previewPublic,
 }: ItemPageProps) => {
   const canManageStore = PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
-
-  const [size, setSize] = useState<string | undefined>(item.options.length <= 1 ? 'Y' : undefined);
+  const [selectedOption, setSelectedOption] = useState<Metadata | undefined>(
+    item.options.length <= 1 ? { type: 'Y', value: 'Y' } : undefined
+  );
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
 
   const currOption =
     item.options.length <= 1
       ? item.options[0]
-      : item.options.find(val => val.metadata?.value === size);
+      : item.options.find(val => val.metadata?.value === selectedOption?.value);
 
   return (
     <div className={styles.navbarBodyDiv}>
@@ -58,13 +56,17 @@ const StoreItemPage = ({
             isHidden={canManageStore && item.hidden}
           />
           {item.options.length > 1 ? (
-            <SizeSelector currSize={size} onSizeChange={setSize} options={item.options} />
+            <SizeSelector
+              currSize={selectedOption}
+              onSizeChange={setSelectedOption}
+              options={item.options}
+            />
           ) : null}
 
           <AddCartButton
             inCart={inCart}
             onCartChange={setInCart}
-            currSize={size}
+            currSize={selectedOption?.value}
             inStock={currOption?.quantity != null && currOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}

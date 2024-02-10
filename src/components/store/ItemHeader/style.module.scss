@@ -1,24 +1,30 @@
 @use 'src/styles/vars.scss' as vars;
 
 .price {
+  align-items: center;
+  align-self: stretch;
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .itemHeaderGroup {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 1rem;
 
   h1 {
-    display: flex;
-    font-size: vars.$general-heading-2;
-    font-weight: bold;
-    gap: 1rem;
-    @media (max-width: 600px) {
+    @media (max-width: vars.$breakpoint-md) {
       font-size: vars.$card-heading-1;
     }
+    display: flex;
+    font-size: vars.$general-heading-2;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.02rem;
+    line-height: 2.5rem; /* 125% */
+    word-break: break-word;
   }
 
   p {
@@ -32,25 +38,5 @@
 
   .valid {
     color: vars.$success-1;
-  }
-
-  .button {
-    border-color: var(--theme-accent-line-2);
-    border-radius: 10px;
-    border-width: 1px;
-    font-size: vars.$input-text-medium;
-    font-weight: bold;
-    height: 40px;
-    width: 200px;
-  }
-
-  .buttonInStock {
-    background-color: var(--theme-primary-2);
-    color: var(--theme-text-on-background1);
-  }
-
-  .buttonNoStock {
-    background-color: var(--theme-background);
-    color: vars.$disabled;
   }
 }

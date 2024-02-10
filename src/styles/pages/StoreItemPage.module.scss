@@ -1,7 +1,18 @@
+@use 'src/styles/vars.scss' as vars;
+
 .optionsContainer {
   display: flex;
+  flex: none;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
+  max-width: 22.5rem;
+  min-width: 18rem;
+
+  @media (max-width: vars.$breakpoint-md) {
+    flex: 22.5rem 1 0;
+    max-width: none;
+    width: 95%;
+  }
 }
 
 .rowContainer {
@@ -13,32 +24,58 @@
   justify-content: center;
   width: 95%;
 
-  @media (max-width: 600px) {
+  @media (max-width: vars.$breakpoint-md) {
+    align-items: center;
     flex-direction: column;
     gap: 2rem;
     padding: 0;
     width: 100%;
-
-    .coverContainer {
-      height: 22.5rem;
-    }
   }
 }
 
 .navbarBodyDiv {
   display: flex;
+
   flex-direction: column;
   gap: 2rem;
   justify-content: center;
+
+  margin-left: auto;
+  margin-right: auto;
   width: 90%;
-  @media (max-width: 600px) {
+  @media (max-width: vars.$breakpoint-md) {
     width: 100%;
+  }
+
+  h4 {
+    font-size: vars.$general-heading-3;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.75rem; /* 127.273% */
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  p {
+    font-size: vars.$general-heading-4;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.5rem; /* 150% */
+
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 }
 
 .coverContainer {
-  height: 37.5rem;
+  aspect-ratio: 1/1;
+  max-height: 37.5rem;
+  max-width: 37.5rem;
   overflow: hidden;
   position: relative;
   width: 100%;
+
+  @media (max-width: vars.$breakpoint-md) {
+    max-height: 30rem;
+  }
 }

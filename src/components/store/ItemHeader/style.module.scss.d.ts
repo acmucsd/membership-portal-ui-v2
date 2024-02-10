@@ -1,7 +1,4 @@
 export type Styles = {
-  button: string;
-  buttonInStock: string;
-  buttonNoStock: string;
   error: string;
   itemHeaderGroup: string;
   price: string;
