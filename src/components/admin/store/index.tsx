@@ -1,2 +1,2 @@
-export { default as CollectionDetailsForm } from './CollectionDetailsForm';
-export { default as ItemDetailsForm } from './ItemDetailsForm';
+export { default as CollectionDetailsForm } from './DetailsForm/CollectionDetailsForm';
+export { default as ItemDetailsForm } from './DetailsForm/ItemDetailsForm';

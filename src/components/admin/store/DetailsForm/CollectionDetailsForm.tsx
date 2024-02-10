@@ -1,4 +1,4 @@
-import EventDetailsFormItem from '@/components/admin/event/EventDetailsFormItem';
+import DetailsFormItem from '@/components/admin/DetailsFormItem';
 import { Button } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { BsArrowRight } from 'react-icons/bs';
-import style from '../ItemDetailsForm/style.module.scss';
+import style from './style.module.scss';
 
 type FormValues = MerchCollection;
 
@@ -111,7 +111,7 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
 
       <div className={style.form}>
         <label htmlFor="title">Title</label>
-        <EventDetailsFormItem error={errors.title?.message}>
+        <DetailsFormItem error={errors.title?.message}>
           <input
             type="text"
             id="title"
@@ -120,20 +120,20 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
               required: 'Required',
             })}
           />
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
         <label htmlFor="description">Description</label>
-        <EventDetailsFormItem error={errors.description?.message}>
+        <DetailsFormItem error={errors.description?.message}>
           <textarea
             id="description"
             {...register('description', {
               required: 'Required',
             })}
           />
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
         <label htmlFor="themeColorHex">Theme color</label>
-        <EventDetailsFormItem error={errors.themeColorHex?.message}>
+        <DetailsFormItem error={errors.themeColorHex?.message}>
           <input
             type="color"
             id="themeColorHex"
@@ -141,15 +141,15 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
               required: 'Required',
             })}
           />
-        </EventDetailsFormItem>
+        </DetailsFormItem>
       </div>
 
-      <EventDetailsFormItem error={errors.archived?.message}>
+      <DetailsFormItem error={errors.archived?.message}>
         <label>
           <input type="checkbox" {...register('archived')} />
           &nbsp;Archived?
         </label>
-      </EventDetailsFormItem>
+      </DetailsFormItem>
 
       <div className={style.submitButtons}>
         {mode === 'edit' ? (

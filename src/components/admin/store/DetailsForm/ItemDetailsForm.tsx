@@ -1,4 +1,4 @@
-import EventDetailsFormItem from '@/components/admin/event/EventDetailsFormItem';
+import DetailsFormItem from '@/components/admin/DetailsFormItem';
 import { Button, Cropper } from '@/components/common';
 import Draggable, { DRAG_HANDLE } from '@/components/common/Draggable';
 import { config, showToast } from '@/lib';
@@ -281,22 +281,22 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
 
         <div className={style.form}>
           <label htmlFor="name">Item name</label>
-          <EventDetailsFormItem error={errors.itemName?.message}>
+          <DetailsFormItem error={errors.itemName?.message}>
             <input
               type="text"
               id="name"
               placeholder="ACM Raccoon Sticker"
               {...register('itemName', { required: 'Required' })}
             />
-          </EventDetailsFormItem>
+          </DetailsFormItem>
 
           <label htmlFor="description">Description</label>
-          <EventDetailsFormItem error={errors.description?.message}>
+          <DetailsFormItem error={errors.description?.message}>
             <textarea id="description" {...register('description', { required: 'Required' })} />
-          </EventDetailsFormItem>
+          </DetailsFormItem>
 
           <label htmlFor="collection">Collection</label>
-          <EventDetailsFormItem error={errors.collection?.message}>
+          <DetailsFormItem error={errors.collection?.message}>
             <select
               id="collection"
               placeholder="General"
@@ -308,25 +308,25 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                 </option>
               ))}
             </select>
-          </EventDetailsFormItem>
+          </DetailsFormItem>
 
           <label htmlFor="monthlyLimit">Monthly limit</label>
-          <EventDetailsFormItem error={errors.monthlyLimit?.message}>
+          <DetailsFormItem error={errors.monthlyLimit?.message}>
             <input
               type="number"
               id="monthlyLimit"
               {...register('monthlyLimit', { valueAsNumber: true, required: 'Required', min: 0 })}
             />
-          </EventDetailsFormItem>
+          </DetailsFormItem>
 
           <label htmlFor="lifetimeLimit">Lifetime limit</label>
-          <EventDetailsFormItem error={errors.lifetimeLimit?.message}>
+          <DetailsFormItem error={errors.lifetimeLimit?.message}>
             <input
               type="number"
               id="lifetimeLimit"
               {...register('lifetimeLimit', { valueAsNumber: true, required: 'Required', min: 0 })}
             />
-          </EventDetailsFormItem>
+          </DetailsFormItem>
         </div>
 
         <ul className={style.photos}>
@@ -511,12 +511,12 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           </table>
         </div>
 
-        <EventDetailsFormItem error={errors.hidden?.message}>
+        <DetailsFormItem error={errors.hidden?.message}>
           <label>
             <input type="checkbox" {...register('hidden')} />
             &nbsp;Hide this item from the public storefront
           </label>
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
         <div className={style.submitButtons}>
           {mode === 'edit' ? (
