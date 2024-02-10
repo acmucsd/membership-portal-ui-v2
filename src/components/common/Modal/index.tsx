@@ -7,7 +7,7 @@ interface ModalProps {
   open: boolean;
   onClose: () => void;
   children?: ReactNode;
-  /** Anchor content to the bottom of the screen. Primarily for mobile modals. */
+  /** Anchor content to the bottom of the screen. Only applies to mobile modals. */
   bottomSheet?: boolean;
 }
 

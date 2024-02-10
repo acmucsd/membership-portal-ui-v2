@@ -77,5 +77,9 @@
         padding: 0;
       }
     }
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      border-radius: 10px 10px 0 0;
+    }
   }
 }

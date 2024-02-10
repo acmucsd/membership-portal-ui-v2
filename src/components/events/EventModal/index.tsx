@@ -27,7 +27,7 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
     <Modal open={open} onClose={onClose} bottomSheet>
       <div className={styles.image}>
         <button type="submit" aria-label="Close" className={styles.close}>
-          <CloseIcon aria-hidden />
+          <CloseIcon aria-hidden className={styles.closeIcon} />
         </button>
         <PointsDisplay points={event.pointValue} attended={attended} />
         <Image src={displayCover} alt="Event Cover Image" style={{ objectFit: 'cover' }} fill />
