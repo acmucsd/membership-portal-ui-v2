@@ -18,7 +18,7 @@ import { CookieType, SocialMediaType } from '@/lib/types/enums';
 import { capitalize, fixUrl, getProfilePicture, reportError } from '@/lib/utils';
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import DropdownIcon from '@/public/assets/icons/dropdown-arrow-1.svg';
-import styles from '@/styles/pages/profile/edit.module.scss';
+import styles from '@/styles/pages/EditProfile.module.scss';
 import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { FormEvent, useEffect, useId, useMemo, useState } from 'react';
