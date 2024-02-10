@@ -6,6 +6,28 @@
   overflow: hidden;
   position: relative;
   width: 100%;
+
+  .close {
+    align-items: center;
+    backdrop-filter: blur(1px);
+    background-color: vars.$dark-accent-line-2-transparent;
+    border-radius: 50%;
+    display: flex;
+    left: 2.5%;
+    padding: 0.25rem;
+    position: absolute;
+    top: 5%;
+    transition: background-color 0.2s;
+    z-index: 100;
+
+    .closeIcon {
+      fill: vars.$light-background;
+    }
+
+    &:hover {
+      background-color: var(--theme-accent-line-1-transparent);
+    }
+  }
 }
 
 .contents {
