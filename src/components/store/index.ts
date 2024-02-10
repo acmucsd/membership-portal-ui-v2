@@ -1,7 +1,4 @@
-export { default as AddCartButton } from '@/components/store/AddCartButton';
-export { default as ItemHeader } from '@/components/store/ItemHeader';
-export { default as SizeSelector } from '@/components/store/SizeSelector';
-export type { Metadata } from '@/components/store/SizeSelector';
+export { default as AddCartButton } from './AddCartButton';
 export { default as CollectionSlider } from './CollectionSlider';
 export { default as CreateButton } from './CreateButton';
 export { default as Diamonds } from './Diamonds';
@@ -10,6 +7,9 @@ export { default as HelpModal } from './HelpModal';
 export { default as Hero } from './Hero';
 export { default as HiddenIcon } from './HiddenIcon';
 export { default as ItemCard } from './ItemCard';
+export { default as ItemHeader } from './ItemHeader';
 export { default as OrderCard } from './OrderCard';
 export { default as OrdersDisplay } from './OrdersDisplay';
+export { default as SizeSelector } from './SizeSelector';
+export type { Metadata } from './SizeSelector';
 export { default as Navbar } from './StoreNavbar';

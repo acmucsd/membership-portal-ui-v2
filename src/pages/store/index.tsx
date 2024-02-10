@@ -1,5 +1,6 @@
 import {
   CollectionSlider,
+  CreateButton,
   EditButton,
   HelpModal,
   Hero,
@@ -7,7 +8,6 @@ import {
   ItemCard,
   Navbar,
 } from '@/components/store';
-import CreateButton from '@/components/store/CreateButton';
 import { config, showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';

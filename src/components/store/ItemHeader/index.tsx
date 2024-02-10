@@ -1,5 +1,6 @@
-import { EditButton, HiddenIcon } from '@/components/store';
 import Diamonds from '@/components/store/Diamonds';
+import EditButton from '@/components/store/EditButton';
+import HiddenIcon from '@/components/store/HiddenIcon';
 import styles from './style.module.scss';
 
 interface ItemHeaderProps {

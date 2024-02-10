@@ -1,4 +1,4 @@
-import { AddCartButton, ItemHeader, Metadata, Navbar, SizeSelector } from '@/components/store';
+import { AddCartButton, ItemHeader, Navbar, SizeSelector, type Metadata } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
