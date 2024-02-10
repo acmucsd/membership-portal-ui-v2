@@ -72,7 +72,7 @@ export const UserProfilePage = ({
               {handleUser.points.toLocaleString()} Leaderboard Points
             </div>
           </div>
-          {isSignedInUser && (
+          {isSignedInUser ? (
             <div className={styles.editWrapper}>
               <Link href={config.profile.editRoute}>
                 <div>
@@ -80,7 +80,7 @@ export const UserProfilePage = ({
                 </div>
               </Link>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
       <div className={`${styles.section} ${styles.progressSection}`}>
@@ -133,7 +133,7 @@ export const UserProfilePage = ({
             {handleUser.bio || <i>Nothing here...</i>}
           </Typography>
         </div>
-        {isSignedInUser && (
+        {isSignedInUser ? (
           <div className={styles.editWrapper}>
             <Link href={`${config.profile.editRoute}#about`}>
               <div>
@@ -141,17 +141,17 @@ export const UserProfilePage = ({
               </div>
             </Link>
           </div>
-        )}
+        ) : null}
       </div>
-      {(attendances || isSignedInUser) && (
+      {attendances || isSignedInUser ? (
         <div className={styles.section}>
           <Typography variant="h2/bold">
             Recently Attended Events
-            {!handleUser.isAttendancePublic && (
+            {!handleUser.isAttendancePublic ? (
               <Typography variant="h5/medium" component="span">
                 &nbsp;<i>(hidden for other users)</i>
               </Typography>
-            )}
+            ) : null}
           </Typography>
           <Carousel>
             {(isSignedInUser ? signedInAttendances : (attendances as PublicAttendance[])).map(
@@ -166,7 +166,7 @@ export const UserProfilePage = ({
             )}
           </Carousel>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

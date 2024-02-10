@@ -468,9 +468,9 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 <EditBlock title="Attendance">
                   <Switch checked={isAttendancePublic} onCheck={setIsAttendancePublic}>
                     Display my ACM attendance history on my profile
-                    {isAttendancePublicChanged && (
+                    {isAttendancePublicChanged ? (
                       <span className={styles.unsavedChange}> (unsaved change)</span>
-                    )}
+                    ) : null}
                   </Switch>
                 </EditBlock>
               </div>

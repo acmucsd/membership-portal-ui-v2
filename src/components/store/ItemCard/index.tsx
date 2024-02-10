@@ -43,17 +43,17 @@ const ItemCard = ({
         </div>
         <div className={styles.details}>
           <p className={styles.title}>{title}</p>
-          {'description' in props && <p>{props.description}</p>}
-          {'cost' in props && (
+          {'description' in props ? <p>{props.description}</p> : null}
+          {'cost' in props ? (
             <p className={styles.cost}>
               <Diamonds count={props.cost} />
               &nbsp;
-              {props.outOfStock && <span className={styles.outOfStock}>Out of stock</span>}
+              {props.outOfStock ? <span className={styles.outOfStock}>Out of stock</span> : null}
             </p>
-          )}
+          ) : null}
         </div>
       </Link>
-      {children && <div className={styles.icons}>{children}</div>}
+      {children ? <div className={styles.icons}>{children}</div> : null}
     </article>
   );
 };

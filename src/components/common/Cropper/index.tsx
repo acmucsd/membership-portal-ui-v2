@@ -102,7 +102,7 @@ const Cropper = ({
         onPointerUp={handlePointerEnd}
         onPointerCancel={handlePointerEnd}
       >
-        {url && (
+        {url ? (
           <Image
             src={url}
             alt="Selected file"
@@ -128,7 +128,7 @@ const Cropper = ({
             draggable={false}
             ref={image}
           />
-        )}
+        ) : null}
         <div
           className={`${styles.frame} ${circle ? styles.circle : ''}`}
           style={{ aspectRatio: `${aspectRatio}` }}

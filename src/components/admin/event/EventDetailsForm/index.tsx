@@ -285,9 +285,9 @@ const EventDetailsForm = (props: IProps) => {
           <>
             <label htmlFor="cover">Cover Image</label>
             <EventDetailsFormItem>
-              {coverUrl && (
+              {coverUrl ? (
                 <Image src={coverUrl} alt="Selected cover image" width={480} height={270} />
-              )}
+              ) : null}
               <input
                 type="file"
                 id="cover"

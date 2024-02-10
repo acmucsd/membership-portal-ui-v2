@@ -271,12 +271,12 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
         <div className={style.header}>
           <h1>{mode === 'edit' ? 'Modify' : 'Create'} Store Item</h1>
 
-          {lastSaved && (
+          {lastSaved ? (
             <Link className={style.viewPage} href={`${config.store.itemRoute}${lastSaved.uuid}`}>
               View store listing
               <BsArrowRight aria-hidden />
             </Link>
-          )}
+          ) : null}
         </div>
 
         <div className={style.form}>
@@ -378,7 +378,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           <table className={`${style.options} ${options.length > 1 ? style.multipleOptions : ''}`}>
             <thead>
               <tr>
-                {options.length > 1 && (
+                {options.length > 1 ? (
                   <>
                     <th />
                     <th>
@@ -393,18 +393,18 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                       />
                     </th>
                   </>
-                )}
+                ) : null}
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Percent discount</th>
-                {options.length > 1 && <th>Remove</th>}
+                {options.length > 1 ? <th>Remove</th> : null}
               </tr>
             </thead>
             <tbody>
               <Draggable items={options} onReorder={setOptions}>
                 {(props, option, i) => (
                   <tr key={option.uuid || i} {...props}>
-                    {options.length > 1 && (
+                    {options.length > 1 ? (
                       <>
                         <td>
                           <BsGripVertical className={`${DRAG_HANDLE} ${style.grip}`} />
@@ -426,7 +426,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                           />
                         </td>
                       </>
-                    )}
+                    ) : null}
                     <td>
                       <input
                         type="number"
@@ -478,7 +478,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                         }
                       />
                     </td>
-                    {options.length > 1 && (
+                    {options.length > 1 ? (
                       <td>
                         <Button
                           onClick={() => setOptions(options.filter((_, index) => index !== i))}
@@ -487,7 +487,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                           Remove
                         </Button>
                       </td>
-                    )}
+                    ) : null}
                   </tr>
                 )}
               </Draggable>

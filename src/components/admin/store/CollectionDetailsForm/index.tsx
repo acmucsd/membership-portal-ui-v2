@@ -98,7 +98,7 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
       <div className={style.header}>
         <h1>{mode === 'edit' ? 'Modify' : 'Create'} Collection</h1>
 
-        {defaultData.uuid && (
+        {defaultData.uuid ? (
           <Link
             className={style.viewPage}
             href={`${config.store.collectionRoute}${defaultData.uuid}`}
@@ -106,7 +106,7 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
             View collection page
             <BsArrowRight aria-hidden />
           </Link>
-        )}
+        ) : null}
       </div>
 
       <div className={style.form}>

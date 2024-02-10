@@ -37,14 +37,14 @@ const Modal = ({ title, open, onClose, children }: ModalProps) => {
       onClose={onClose}
     >
       <form method="dialog" className={`${styles.modalBody} ${title ? styles.hasHeader : ''}`}>
-        {title && (
+        {title ? (
           <div className={styles.header}>
             <h1>{title}</h1>
             <button type="submit" className={styles.close} aria-label="Close">
               <CloseIcon aria-hidden />
             </button>
           </div>
-        )}
+        ) : null}
         {children}
       </form>
     </dialog>

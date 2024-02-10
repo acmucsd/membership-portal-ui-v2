@@ -16,8 +16,8 @@ const ItemHeader = ({ itemName, cost, uuid, showEdit, isHidden }: ItemHeaderProp
     <div className={styles.itemHeaderGroup}>
       <h1>
         {itemName}
-        {uuid && showEdit && <EditButton type="item" uuid={uuid} />}
-        {isHidden && <HiddenIcon type="item" />}
+        {uuid && showEdit ? <EditButton type="item" uuid={uuid} /> : null}
+        {isHidden ? <HiddenIcon type="item" /> : null}
       </h1>
       {cost === undefined ? null : (
         <div className={styles.price}>

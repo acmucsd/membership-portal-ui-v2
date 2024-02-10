@@ -31,8 +31,8 @@ const CollectionsPage = ({
       <div className={styles.header}>
         <Typography variant="h1/bold" component="h1">
           {title}
-          {canManageStore && <EditButton type="collection" uuid={uuid} />}
-          {canManageStore && archived && <HiddenIcon type="collection" />}
+          {canManageStore ? <EditButton type="collection" uuid={uuid} /> : null}
+          {canManageStore && archived ? <HiddenIcon type="collection" /> : null}
         </Typography>
         <Typography variant="h4/regular" component="p">
           {description}
@@ -49,15 +49,15 @@ const CollectionsPage = ({
               cost={item.options[0]?.price ?? 0}
               key={item.uuid}
             >
-              {canManageStore && item.hidden && <HiddenIcon type="item" />}
-              {canManageStore && <EditButton type="item" uuid={item.uuid} />}
+              {canManageStore && item.hidden ? <HiddenIcon type="item" /> : null}
+              {canManageStore ? <EditButton type="item" uuid={item.uuid} /> : null}
             </ItemCard>
           ))}
-        {canManageStore && (
+        {canManageStore ? (
           <CreateButton type="item" collection={uuid}>
             Add an item
           </CreateButton>
-        )}
+        ) : null}
       </div>
     </div>
   );

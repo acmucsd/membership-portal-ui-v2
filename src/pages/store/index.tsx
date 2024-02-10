@@ -64,7 +64,7 @@ const StoreHomePage = ({
       <div className={styles.container}>
         <div className={styles.header}>
           <h2>{view === 'collections' ? 'Browse our collections' : 'Browse all items'}</h2>
-          {canManageStore && (
+          {canManageStore ? (
             <button
               type="button"
               className={styles.viewToggle}
@@ -85,7 +85,7 @@ const StoreHomePage = ({
             >
               View store as member
             </button>
-          )}
+          ) : null}
           <Link
             className={styles.viewToggle}
             href={getPath(view === 'collections' ? 'all-items' : 'collections')}
@@ -104,11 +104,13 @@ const StoreHomePage = ({
                 href={`${config.store.collectionRoute}${collection.uuid}`}
                 key={collection.uuid}
               >
-                {canManageStore && collection.archived && <HiddenIcon type="collection" />}
-                {canManageStore && <EditButton type="collection" uuid={collection.uuid} />}
+                {canManageStore && collection.archived ? <HiddenIcon type="collection" /> : null}
+                {canManageStore ? <EditButton type="collection" uuid={collection.uuid} /> : null}
               </ItemCard>
             ))}
-            {canManageStore && <CreateButton type="collection">Create a collection</CreateButton>}
+            {canManageStore ? (
+              <CreateButton type="collection">Create a collection</CreateButton>
+            ) : null}
           </div>
         ) : (
           <>
@@ -123,11 +125,11 @@ const StoreHomePage = ({
                 key={collection.uuid}
               />
             ))}
-            {canManageStore && (
+            {canManageStore ? (
               <CreateButton type="collection" horizontal>
                 Create a collection
               </CreateButton>
-            )}
+            ) : null}
           </>
         )}
       </div>

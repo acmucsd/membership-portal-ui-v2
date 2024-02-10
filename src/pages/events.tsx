@@ -158,13 +158,13 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
       </div>
       <EventDisplay events={displayedEvents} attendances={attendances} />
 
-      {filteredEvents.length > 0 && (
+      {filteredEvents.length > 0 ? (
         <PaginationControls
           page={page}
           onPage={page => setPage(page)}
           pages={Math.ceil(filteredEvents.length / ROWS_PER_PAGE)}
         />
-      )}
+      ) : null}
     </div>
   );
 };

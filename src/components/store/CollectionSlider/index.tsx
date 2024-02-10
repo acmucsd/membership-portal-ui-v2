@@ -30,8 +30,8 @@ const CollectionSlider = ({
     <div className={styles.wrapper}>
       <h3 className={styles.title}>
         <Link href={`${config.store.collectionRoute}${uuid}`}>{title}</Link>
-        {canManageStore && <EditButton type="collection" uuid={uuid} />}
-        {isHidden && <HiddenIcon type="collection" />}
+        {canManageStore ? <EditButton type="collection" uuid={uuid} /> : null}
+        {isHidden ? <HiddenIcon type="collection" /> : null}
       </h3>
       <p className={styles.description}>{description}</p>
       <Carousel>
@@ -46,15 +46,15 @@ const CollectionSlider = ({
               cost={item.options[0]?.price ?? 0}
               key={item.uuid}
             >
-              {canManageStore && item.hidden && <HiddenIcon type="item" />}
-              {canManageStore && <EditButton type="item" uuid={item.uuid} />}
+              {canManageStore && item.hidden ? <HiddenIcon type="item" /> : null}
+              {canManageStore ? <EditButton type="item" uuid={item.uuid} /> : null}
             </ItemCard>
           ))}
-        {canManageStore && (
+        {canManageStore ? (
           <CreateButton className={styles.card} type="item" collection={uuid}>
             Add an item
           </CreateButton>
-        )}
+        ) : null}
       </Carousel>
     </div>
   );
