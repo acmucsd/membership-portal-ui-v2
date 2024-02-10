@@ -144,7 +144,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           onClick: () => router.push(`${config.store.itemRoute}/${item.uuid}`),
         },
       ]);
-      router.push(`${config.store.itemRoute}/${item.uuid}/edit`);
+      router.replace(`${config.store.itemRoute}/${item.uuid}/edit`);
     } catch (error) {
       reportError('Could not create item', error);
     } finally {
@@ -285,7 +285,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
             <input
               type="text"
               id="name"
-              placeholder="ACM Cafe"
+              placeholder="ACM Raccoon Sticker"
               {...register('itemName', { required: 'Required' })}
             />
           </EventDetailsFormItem>

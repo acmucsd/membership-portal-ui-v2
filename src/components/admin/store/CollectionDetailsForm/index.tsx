@@ -52,7 +52,7 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
           onClick: () => router.push(`${config.store.collectionRoute}/${uuid}`),
         },
       ]);
-      router.push(`${config.store.collectionRoute}/${uuid}/edit`);
+      router.replace(`${config.store.collectionRoute}/${uuid}/edit`);
     } catch (error) {
       reportError('Could not create collection', error);
     } finally {
@@ -115,7 +115,7 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
           <input
             type="text"
             id="title"
-            placeholder="ACM Cafe"
+            placeholder="The Raccoon Collection"
             {...register('title', {
               required: 'Required',
             })}
