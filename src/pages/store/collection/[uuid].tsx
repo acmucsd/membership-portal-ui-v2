@@ -79,7 +79,6 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
         uuid,
         collection,
         previewPublic: preview === 'member',
-        generated: new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }),
       },
     };
   } catch {

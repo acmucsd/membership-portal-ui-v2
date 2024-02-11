@@ -103,12 +103,7 @@ export default AdminPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const preview =
     CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res }) ?? '';
-  return {
-    props: {
-      preview,
-      generated: new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }),
-    },
-  };
+  return { props: { preview } };
 };
 
 export const getServerSideProps = withAccessType(
