@@ -1,22 +1,18 @@
 import styles from '@/components/store/SizeSelector/style.module.scss';
+import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
 import { PublicMerchItemOption } from '@/lib/types/apiResponses';
 import { Fragment, useId } from 'react';
 
-interface Metadata {
-  type: string;
-  value: string;
-}
-
 interface SizeSelectorProps {
-  currSize: Metadata | undefined;
+  currOption: MerchItemOptionMetadata | undefined;
   options: PublicMerchItemOption[];
-  onSizeChange: (currSize: Metadata) => void;
+  onSizeChange: (currSize: MerchItemOptionMetadata) => void;
 }
 function toTitleCase(str: string) {
   return str.toLowerCase().replace(/\.\s*([a-z])|^[a-z]/gm, s => s.toUpperCase());
 }
 
-const SizeSelector = ({ currSize, options, onSizeChange }: SizeSelectorProps) => {
+const SizeSelector = ({ currOption, options, onSizeChange }: SizeSelectorProps) => {
   const myID = useId();
   const myOptions = options
     .sort((a, b) => (a.metadata?.position ?? 0) - (b.metadata?.position ?? 0))
@@ -28,7 +24,7 @@ const SizeSelector = ({ currSize, options, onSizeChange }: SizeSelectorProps) =>
             id={tempId}
             name="state-d"
             type="radio"
-            defaultChecked={currSize === val.metadata?.value}
+            defaultChecked={currOption === val.metadata?.value}
             onClick={() => val.metadata && onSizeChange(val.metadata)}
           />
           <label htmlFor={tempId}>{val.metadata?.value}</label>
@@ -52,4 +48,3 @@ const SizeSelector = ({ currSize, options, onSizeChange }: SizeSelectorProps) =>
   );
 };
 export default SizeSelector;
-export type { Metadata };

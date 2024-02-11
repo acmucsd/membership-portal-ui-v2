@@ -26,12 +26,10 @@
     }
 
     div > select {
-      font-size: 1rem;
       font-size: 1.25rem;
       font-style: normal;
       font-weight: 700;
-      line-height: 1.25rem;
-      line-height: 200%; /* 2.5rem */
+      line-height: 2.5rem;
 
       text-align: center;
     }
@@ -61,10 +59,7 @@
 
   .buttonNoStock {
     background-color: var(--theme-background);
-    border: solid;
-    border-color: var(--theme-accent-line-2);
-
-    border-width: 1px;
+    border: 1px solid var(--theme-accent-line-2);
     color: vars.$disabled;
   }
 }

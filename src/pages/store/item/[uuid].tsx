@@ -1,8 +1,13 @@
-import { AddCartButton, ItemHeader, Navbar, SizeSelector, type Metadata } from '@/components/store';
+import { CartOptionsGroup, ItemHeader, Navbar, SizeSelector } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import { PrivateProfile, PublicMerchItemWithPurchaseLimits } from '@/lib/types/apiResponses';
+import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
+import {
+  PrivateProfile,
+  PublicMerchItemOption,
+  PublicMerchItemWithPurchaseLimits,
+} from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/StoreItemPage.module.scss';
@@ -25,16 +30,17 @@ const StoreItemPage = ({
 }: ItemPageProps) => {
   const storeAdminVisible =
     PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
-  const [selectedOption, setSelectedOption] = useState<Metadata | undefined>(
-    item.options.length <= 1 ? { type: 'Y', value: 'Y' } : undefined
+  const [selectedOption, setSelectedOption] = useState<MerchItemOptionMetadata | undefined>(
+    item.options.length <= 1 ? { type: 'Y', value: 'Y', position: 0 } : undefined
   );
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
 
-  const currOption =
-    item.options.length <= 1
-      ? item.options[0]
-      : item.options.find(val => val.metadata?.value === selectedOption?.value);
+  const currItemOption: PublicMerchItemOption | null | undefined =
+    item.options.find(val => val.metadata?.value === selectedOption?.value) ??
+    item.options.find(option => option.quantity > 0) ??
+    item.options[0] ??
+    null;
 
   return (
     <div className={styles.navbarBodyDiv}>
@@ -51,29 +57,30 @@ const StoreItemPage = ({
         <div className={styles.optionsContainer}>
           <ItemHeader
             itemName={item.itemName}
-            cost={currOption?.price}
-            discountPercentage={currOption?.discountPercentage}
+            cost={currItemOption?.price}
+            discountPercentage={currItemOption?.discountPercentage}
             uuid={uuid}
             showEdit={storeAdminVisible}
             isHidden={storeAdminVisible && item.hidden}
           />
           {item.options.length > 1 ? (
             <SizeSelector
-              currSize={selectedOption}
+              currOption={selectedOption}
               onSizeChange={setSelectedOption}
               options={item.options}
             />
           ) : null}
 
-          <AddCartButton
+          <CartOptionsGroup
             inCart={inCart}
             onCartChange={setInCart}
-            currSize={selectedOption?.value}
-            inStock={currOption?.quantity != null && currOption?.quantity >= 1}
+            currOption={selectedOption?.value}
+            inStock={currItemOption?.quantity != null && currItemOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}
             amountToBuy={amount}
             onAmountChange={setAmount}
+            optionsKey={currItemOption?.metadata?.type ?? ''}
           />
           <h4>Item Description</h4>
           <p>{item.description}</p>
