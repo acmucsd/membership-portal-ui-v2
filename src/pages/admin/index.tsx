@@ -104,7 +104,10 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const preview =
     CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res }) ?? '';
   return {
-    props: { preview },
+    props: {
+      preview,
+      generated: new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }),
+    },
   };
 };
 
