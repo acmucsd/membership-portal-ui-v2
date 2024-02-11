@@ -1,8 +1,8 @@
 import DetailsFormItem from '@/components/admin/DetailsFormItem';
-import { Button, Cropper } from '@/components/common';
-import Draggable, { DRAG_HANDLE } from '@/components/common/Draggable';
+import ItemOptionsEditor, { type Option } from '@/components/admin/store/ItemOptionsEditor';
+import { Button, Cropper, DRAG_HANDLE, Draggable } from '@/components/common';
 import { config, showToast } from '@/lib';
-import { StoreAPI } from '@/lib/api';
+import { AdminStoreManager } from '@/lib/managers';
 import { UUID } from '@/lib/types';
 import { MerchItem } from '@/lib/types/apiRequests';
 import {
@@ -10,27 +10,18 @@ import {
   PublicMerchItem,
   PublicMerchItemOption,
 } from '@/lib/types/apiResponses';
-import { reportError } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { BsArrowRight, BsGripVertical, BsPlus } from 'react-icons/bs';
+import { BsArrowRight, BsPlus } from 'react-icons/bs';
 import style from './style.module.scss';
 
 type FormValues = Omit<MerchItem, 'uuid' | 'hasVariantsEnabled' | 'merchPhotos' | 'options'>;
 type Photo =
   | { uuid: UUID; uploadedPhoto: string }
   | { uuid?: undefined; blob: Blob; uploadedPhoto: string };
-type Option = {
-  uuid?: UUID;
-  price: string;
-  oldQuantity?: number;
-  quantity: string;
-  discountPercentage: string;
-  value: string;
-};
 const stringifyOption = ({
   uuid,
   price,
@@ -40,7 +31,6 @@ const stringifyOption = ({
 }: PublicMerchItemOption): Option => ({
   uuid,
   price: String(price),
-  oldQuantity: quantity,
   quantity: String(quantity),
   discountPercentage: String(discountPercentage),
   value: metadata?.value ?? '',
@@ -109,8 +99,9 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
   const createItem: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
 
-    try {
-      const item = await StoreAPI.createItem(token, {
+    const uuid = AdminStoreManager.createNewItem(
+      token,
+      {
         ...formData,
         hasVariantsEnabled: options.length > 1,
         merchPhotos: [],
@@ -121,33 +112,18 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           metadata:
             options.length > 1 ? { type: optionType, value: option.value, position } : undefined,
         })),
-      });
-      setLastSaved(item);
-      setOptions(
-        item.options
-          .sort((a, b) => (a.metadata?.position ?? 0) - (b.metadata?.position ?? 0))
-          .map(stringifyOption)
-      );
-      // Upload photos after creating item
-      setMerchPhotos(
-        await Promise.all(
-          merchPhotos.map(photo =>
-            photo.uuid !== undefined
-              ? photo
-              : StoreAPI.createItemPhoto(token, item.uuid, photo.blob)
-          )
-        )
-      );
+      },
+      merchPhotos.flatMap(photo => (photo.uuid !== undefined ? [] : [photo.blob]))
+    );
+    if (uuid) {
       showToast('Item created successfully!', '', [
         {
-          text: 'View public item page',
-          onClick: () => router.push(`${config.store.itemRoute}/${item.uuid}`),
+          text: 'Continue editing',
+          onClick: () => router.push(`${config.store.itemRoute}/${uuid}/edit`),
         },
       ]);
-      router.replace(`${config.store.itemRoute}/${item.uuid}`);
-    } catch (error) {
-      reportError('Could not create item', error);
-    } finally {
+      router.replace(`${config.store.itemRoute}/${uuid}`);
+    } else {
       setLoading(false);
     }
   };
@@ -158,83 +134,33 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
     }
     const { uuid } = lastSaved;
     setLoading(true);
-    try {
-      // If we need to add new options, ensure that `hasVariantsEnabled` is
-      // enabled and update all existing options' `type` so the new options'
-      // `type` match.
-      if (
-        options.length > 1 &&
-        options.some(option => !option.uuid) &&
-        (!lastSaved.hasVariantsEnabled || lastSaved.options[0]?.metadata?.type !== optionType)
-      ) {
-        await StoreAPI.editItem(token, uuid, {
-          hasVariantsEnabled: true,
-          options: lastSaved.options.map(({ uuid, metadata }, position) => ({
-            uuid,
-            metadata: metadata
-              ? { ...metadata, type: optionType }
-              : { type: optionType, value: `${position}`, position },
-          })),
-        });
-      }
-      // Add new options and photos before deleting old ones
-      const newOptions = await Promise.all(
-        options.map(async (option, position) => {
-          const edits = {
-            price: +option.price,
-            quantity: +option.quantity,
-            discountPercentage: +option.discountPercentage,
-            metadata:
-              options.length > 1 ? { type: optionType, value: option.value, position } : undefined,
-          };
-          return option.uuid
-            ? {
-                uuid: option.uuid,
-                ...edits,
-                quantityToAdd: edits.quantity - (option.oldQuantity ?? 0),
-              }
-            : StoreAPI.createItemOption(token, uuid, edits).then(({ metadata, ...option }) => ({
-                ...option,
-                metadata:
-                  options.length > 1
-                    ? { type: optionType, value: metadata?.value ?? '', position }
-                    : undefined,
-              }));
-        })
-      );
-      const newMerchPhotos = await Promise.all(
-        merchPhotos.map(async (photo, position) => {
-          if (photo.uuid !== undefined) {
-            return { uuid: photo.uuid, position };
-          }
-          // When `photo.blob` exists, `uploadedPhoto` contains the object URL
-          URL.revokeObjectURL(photo.uploadedPhoto);
-          return { ...(await StoreAPI.createItemPhoto(token, uuid, photo.blob)), position };
-        })
-      );
-      // Delete removed options and photos
-      await Promise.all(
-        lastSaved.options
-          .filter(option => !options.some(o => o.uuid === option.uuid))
-          .map(({ uuid }) => StoreAPI.deleteItemOption(token, uuid))
-      );
-      await Promise.all(
-        lastSaved.merchPhotos
-          .filter(photo => !merchPhotos.some(p => p.uuid === photo.uuid))
-          .map(({ uuid }) => StoreAPI.deleteItemPhoto(token, uuid))
-      );
-      const item = await StoreAPI.editItem(token, uuid, {
-        ...formData,
-        hasVariantsEnabled: options.length > 1,
-        options: newOptions,
-        merchPhotos: newMerchPhotos,
-      });
+    const item = await AdminStoreManager.editItem(
+      token,
+      uuid,
+      lastSaved,
+      formData,
+      optionType,
+      options.map(option => ({
+        price: +option.price,
+        quantity: +option.quantity,
+        discountPercentage: +option.discountPercentage,
+        uuid: option.uuid,
+        variant: option.value,
+      })),
+      merchPhotos.map(photo => (photo.uuid !== undefined ? photo.uuid : photo.blob))
+    );
+    if (item) {
       setLastSaved(item);
       setOptions(
         item.options
           .sort((a, b) => (a.metadata?.position ?? 0) - (b.metadata?.position ?? 0))
           .map(stringifyOption)
       );
+      merchPhotos.forEach(photo => {
+        if (!photo.uuid) {
+          URL.revokeObjectURL(photo.uploadedPhoto);
+        }
+      });
       setMerchPhotos(item.merchPhotos.sort((a, b) => a.position - b.position));
       showToast('Item details saved!', '', [
         {
@@ -242,11 +168,8 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           onClick: () => router.push(`${config.store.itemRoute}/${uuid}`),
         },
       ]);
-    } catch (error) {
-      reportError('Could not save changes', error);
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   const deleteItem = async () => {
@@ -254,13 +177,10 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
       return;
     }
     setLoading(true);
-    try {
-      await StoreAPI.deleteItem(token, lastSaved.uuid);
+    if (await AdminStoreManager.deleteItem(token, lastSaved.uuid)) {
       showToast('Item deleted successfully');
-      router.push(config.store.homeRoute);
-    } catch (error) {
-      reportError('Could not delete item', error);
-    } finally {
+      router.replace(config.store.homeRoute);
+    } else {
       setLoading(false);
     }
   };
@@ -374,142 +294,12 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           </li>
         </ul>
 
-        <div className={style.tableScroller}>
-          <table className={`${style.options} ${options.length > 1 ? style.multipleOptions : ''}`}>
-            <thead>
-              <tr>
-                {options.length > 1 ? (
-                  <>
-                    <th />
-                    <th>
-                      <input
-                        type="text"
-                        name="category-type"
-                        aria-label="Option type"
-                        placeholder="Size, color, ..."
-                        required
-                        value={optionType}
-                        onChange={e => setOptionType(e.currentTarget.value)}
-                      />
-                    </th>
-                  </>
-                ) : null}
-                <th>Price</th>
-                <th>Quantity available</th>
-                <th>Percent discount</th>
-                {options.length > 1 ? <th>Remove</th> : null}
-              </tr>
-            </thead>
-            <tbody>
-              <Draggable items={options} onReorder={setOptions}>
-                {(props, option, i) => (
-                  <tr key={option.uuid || i} {...props}>
-                    {options.length > 1 ? (
-                      <>
-                        <td>
-                          <BsGripVertical className={`${DRAG_HANDLE} ${style.grip}`} />
-                        </td>
-                        <td>
-                          <input
-                            type="text"
-                            name="category-value"
-                            aria-label={optionType}
-                            required
-                            value={option.value}
-                            onChange={e =>
-                              setOptions(
-                                options.map((option, index) =>
-                                  index === i ? { ...option, value: e.currentTarget.value } : option
-                                )
-                              )
-                            }
-                          />
-                        </td>
-                      </>
-                    ) : null}
-                    <td>
-                      <input
-                        type="number"
-                        name="price"
-                        aria-label="Price"
-                        min={0}
-                        value={option.price}
-                        onChange={e =>
-                          setOptions(
-                            options.map((option, index) =>
-                              index === i ? { ...option, price: e.currentTarget.value } : option
-                            )
-                          )
-                        }
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        name="quantity"
-                        aria-label="Quantity"
-                        min={0}
-                        value={option.quantity}
-                        onChange={e =>
-                          setOptions(
-                            options.map((option, index) =>
-                              index === i ? { ...option, quantity: e.currentTarget.value } : option
-                            )
-                          )
-                        }
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        name="discount-percentage"
-                        aria-label="Percent discount"
-                        min={0}
-                        max={100}
-                        value={option.discountPercentage}
-                        onChange={e =>
-                          setOptions(
-                            options.map((option, index) =>
-                              index === i
-                                ? { ...option, discountPercentage: e.currentTarget.value }
-                                : option
-                            )
-                          )
-                        }
-                      />
-                    </td>
-                    {options.length > 1 ? (
-                      <td>
-                        <Button
-                          onClick={() => setOptions(options.filter((_, index) => index !== i))}
-                          destructive
-                        >
-                          Remove
-                        </Button>
-                      </td>
-                    ) : null}
-                  </tr>
-                )}
-              </Draggable>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colSpan={10}>
-                  <Button
-                    onClick={() =>
-                      setOptions([
-                        ...options,
-                        { price: '', quantity: '', discountPercentage: '0', value: '' },
-                      ])
-                    }
-                  >
-                    Add option
-                  </Button>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+        <ItemOptionsEditor
+          options={options}
+          onOptions={setOptions}
+          optionType={optionType}
+          onOptionType={setOptionType}
+        />
 
         <DetailsFormItem error={errors.hidden?.message}>
           <label>

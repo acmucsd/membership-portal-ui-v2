@@ -1,10 +1,8 @@
 export type Styles = {
-  addImage: string;
-  form: string;
-  header: string;
-  photos: string;
-  submitButtons: string;
-  viewPage: string;
+  grip: string;
+  multipleOptions: string;
+  options: string;
+  tableScroller: string;
 };
 
 export type ClassNames = keyof Styles;

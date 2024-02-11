@@ -1,10 +1,9 @@
 import DetailsFormItem from '@/components/admin/DetailsFormItem';
 import { Button } from '@/components/common';
 import { config, showToast } from '@/lib';
-import { StoreAPI } from '@/lib/api';
+import { AdminStoreManager } from '@/lib/managers';
 import { MerchCollection } from '@/lib/types/apiRequests';
 import { PublicMerchCollection } from '@/lib/types/apiResponses';
-import { reportError } from '@/lib/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -44,18 +43,16 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
   const createCollection: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
 
-    try {
-      const { uuid } = await StoreAPI.createCollection(token, formData);
+    const uuid = await AdminStoreManager.createNewCollection(token, formData);
+    if (uuid) {
       showToast('Collection created successfully!', '', [
         {
-          text: 'View public collection page',
-          onClick: () => router.push(`${config.store.collectionRoute}/${uuid}`),
+          text: 'Continue editing',
+          onClick: () => router.push(`${config.store.collectionRoute}/${uuid}/edit`),
         },
       ]);
       router.replace(`${config.store.collectionRoute}/${uuid}`);
-    } catch (error) {
-      reportError('Could not create collection', error);
-    } finally {
+    } else {
       setLoading(false);
     }
   };
@@ -65,30 +62,24 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
 
     const uuid = defaultData.uuid ?? '';
 
-    try {
-      await StoreAPI.editCollection(token, uuid, formData);
+    if (await AdminStoreManager.editCollection(token, uuid, formData)) {
       showToast('Collection details saved!', '', [
         {
           text: 'View public collection page',
           onClick: () => router.push(`${config.store.collectionRoute}/${uuid}`),
         },
       ]);
-    } catch (error) {
-      reportError('Could not save changes', error);
-    } finally {
+    } else {
       setLoading(false);
     }
   };
 
   const deleteCollection = async () => {
     setLoading(true);
-    try {
-      await StoreAPI.deleteCollection(token, defaultData.uuid ?? '');
+    if (await AdminStoreManager.deleteCollection(token, defaultData.uuid ?? '')) {
       showToast('Collection deleted successfully');
-      router.push(config.store.homeRoute);
-    } catch (error) {
-      reportError('Could not delete collection', error);
-    } finally {
+      router.replace(config.store.homeRoute);
+    } else {
       setLoading(false);
     }
   };
