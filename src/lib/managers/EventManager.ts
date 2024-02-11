@@ -48,7 +48,7 @@ export const getAllEvents = async (
 
 export const attendEvent = async (
   data: AttendEventRequest & AuthAPIHandlerProps<PublicEvent>
-): Promise<PublicEvent | { error: unknown }> => {
+): Promise<PublicEvent | { error: string }> => {
   const { token, attendanceCode, onSuccessCallback, onFailCallback } = data;
 
   try {

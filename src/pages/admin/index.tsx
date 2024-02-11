@@ -5,6 +5,7 @@ import { CookieService, PermissionService } from '@/lib/services';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import type { GetServerSideProps } from 'next';
+import { useState } from 'react';
 
 interface AdminProps {
   user: PrivateProfile;
@@ -12,6 +13,9 @@ interface AdminProps {
 }
 
 const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
+  const [previewMode, setPreviewMode] = useState(preview);
+  const storeAdminVisible = previewMode !== 'member';
+
   return (
     <div>
       <Typography variant="h1/bold">Admin Actions</Typography>
@@ -32,13 +36,12 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
       <label>
         <input
           type="checkbox"
-          defaultChecked={preview === 'member'}
-          onChange={e =>
-            CookieService.setClientCookie(
-              CookieType.USER_PREVIEW_ENABLED,
-              e.currentTarget.checked ? 'member' : 'admin'
-            )
-          }
+          defaultChecked={!storeAdminVisible}
+          onChange={e => {
+            const previewMode = e.currentTarget.checked ? 'member' : 'admin';
+            CookieService.setClientCookie(CookieType.USER_PREVIEW_ENABLED, previewMode);
+            setPreviewMode(previewMode);
+          }}
         />{' '}
         Preview store as member
       </label>
@@ -50,7 +53,9 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
           margin: '1rem 0',
         }}
       >
-        <LinkButton href={config.store.homeRoute}>Manage Store Merchandise</LinkButton>
+        <LinkButton href={config.store.homeRoute}>
+          {storeAdminVisible ? 'Manage Store Merchandise' : 'View Merch Store'}
+        </LinkButton>
         <LinkButton href={config.admin.store.pickupEvents}>Manage Pickup Events</LinkButton>
       </div>
       <br />
