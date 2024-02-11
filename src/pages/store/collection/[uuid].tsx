@@ -75,7 +75,12 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
   try {
     const collection = await StoreAPI.getCollection(token, uuid);
     return {
-      props: { uuid, collection, previewPublic: preview === 'member' },
+      props: {
+        uuid,
+        collection,
+        previewPublic: preview === 'member',
+        generated: new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }),
+      },
     };
   } catch {
     return { notFound: true };
