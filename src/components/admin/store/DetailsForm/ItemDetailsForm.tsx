@@ -99,7 +99,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
   const createItem: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
 
-    const uuid = AdminStoreManager.createNewItem(
+    const uuid = await AdminStoreManager.createNewItem(
       token,
       {
         ...formData,

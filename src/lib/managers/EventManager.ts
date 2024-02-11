@@ -1,7 +1,8 @@
 import { EventAPI } from '@/lib/api';
 import type { APIHandlerProps, AuthAPIHandlerProps } from '@/lib/types';
 import type { AttendEventRequest, GetEventRequest } from '@/lib/types/apiRequests';
-import type { CustomErrorBody, PublicEvent } from '@/lib/types/apiResponses';
+import type { PublicEvent } from '@/lib/types/apiResponses';
+import { getErrorMessage } from '@/lib/utils';
 
 /**
  * Get details for a single ACM event
@@ -9,7 +10,7 @@ import type { CustomErrorBody, PublicEvent } from '@/lib/types/apiResponses';
  * @returns
  */
 export const getEvent = async (
-  data: GetEventRequest & AuthAPIHandlerProps
+  data: GetEventRequest & AuthAPIHandlerProps<PublicEvent>
 ): Promise<PublicEvent | undefined> => {
   const { event: uuid, token, onSuccessCallback, onFailCallback } = data;
 
@@ -18,8 +19,8 @@ export const getEvent = async (
 
     onSuccessCallback?.(event);
     return event;
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
     return undefined;
   }
 };
@@ -29,7 +30,9 @@ export const getEvent = async (
  * @param data Request parameters object
  * @returns Array of all lifetime events
  */
-export const getAllEvents = async (data: APIHandlerProps): Promise<PublicEvent[] | undefined> => {
+export const getAllEvents = async (
+  data: APIHandlerProps<PublicEvent[]>
+): Promise<PublicEvent[] | undefined> => {
   const { onSuccessCallback, onFailCallback } = data;
 
   try {
@@ -37,23 +40,23 @@ export const getAllEvents = async (data: APIHandlerProps): Promise<PublicEvent[]
 
     onSuccessCallback?.(eventArray);
     return eventArray;
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
     return undefined;
   }
 };
 
 export const attendEvent = async (
-  data: AttendEventRequest & AuthAPIHandlerProps
-): Promise<PublicEvent | CustomErrorBody> => {
+  data: AttendEventRequest & AuthAPIHandlerProps<PublicEvent>
+): Promise<PublicEvent | { error: unknown }> => {
   const { token, attendanceCode, onSuccessCallback, onFailCallback } = data;
 
   try {
     const response = await EventAPI.attendEvent(token, attendanceCode);
     onSuccessCallback?.(response.event);
     return response.event;
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
-    return e.response.data.error;
+  } catch (e) {
+    onFailCallback?.(e);
+    return { error: getErrorMessage(e) };
   }
 };

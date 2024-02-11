@@ -9,7 +9,7 @@ import { FillInLater } from '@/lib/types';
 import { Event } from '@/lib/types/apiRequests';
 import { NotionEventDetails, NotionEventPreview, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getMessagesFromError, useObjectUrl } from '@/lib/utils';
+import { reportError, useObjectUrl } from '@/lib/utils';
 import { DateTime } from 'luxon';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -116,7 +116,7 @@ const EventDetailsForm = (props: IProps) => {
       },
       onFailCallback: error => {
         setLoading(false);
-        showToast('Unable to create event', getMessagesFromError(error).join());
+        reportError('Unable to create event', error);
       },
     });
   };
@@ -150,7 +150,7 @@ const EventDetailsForm = (props: IProps) => {
       },
       onFailCallback: error => {
         setLoading(false);
-        showToast('Unable to create event', getMessagesFromError(error).join());
+        reportError('Unable to create event', error);
       },
     });
   };

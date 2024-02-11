@@ -5,12 +5,7 @@ import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { attendEvent } from '@/lib/managers/EventManager';
 import { CookieService, PermissionService } from '@/lib/services';
-import type {
-  CustomErrorBody,
-  PrivateProfile,
-  PublicAttendance,
-  PublicEvent,
-} from '@/lib/types/apiResponses';
+import type { PrivateProfile, PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/Home.module.scss';
 import { GetServerSideProps } from 'next';
@@ -22,11 +17,11 @@ interface HomePageProps {
   upcomingEvents: PublicEvent[];
   liveEvents: PublicEvent[];
   attendances: PublicAttendance[];
-  checkInResponse: PublicEvent | CustomErrorBody | null;
+  checkInResponse: PublicEvent | { error: string } | null;
 }
 
 const processCheckInResponse = (
-  response: PublicEvent | CustomErrorBody
+  response: PublicEvent | { error: string }
 ): PublicEvent | undefined => {
   if ('uuid' in response) {
     // If the response contains a uuid, the response is a PublicEvent.
@@ -35,7 +30,7 @@ const processCheckInResponse = (
     showToast(title, subtitle);
     return response;
   }
-  showToast('Unable to checkin!', response.message);
+  showToast('Unable to checkin!', response.error);
   return undefined;
 };
 

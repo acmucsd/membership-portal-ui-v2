@@ -69,9 +69,8 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
           onClick: () => router.push(`${config.store.collectionRoute}/${uuid}`),
         },
       ]);
-    } else {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   const deleteCollection = async () => {
