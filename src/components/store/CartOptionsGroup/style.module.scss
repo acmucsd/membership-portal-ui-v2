@@ -59,10 +59,7 @@
 
   .buttonNoStock {
     background-color: var(--theme-background);
-    border: solid;
-    border-color: var(--theme-accent-line-2);
-
-    border-width: 1px;
+    border: 1px solid var(--theme-accent-line-2);
     color: vars.$disabled;
   }
 }

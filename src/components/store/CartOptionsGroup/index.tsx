@@ -80,8 +80,6 @@ const CartOptionsGroup = ({
               styles.button
             }`}
             type="button"
-            title={`${buyButtonText} Button`}
-            value={buyButtonText}
             onClick={() => onCartChange(!inCart)}
             disabled={!inStock || maxCanBuy === 0}
           >
