@@ -2,19 +2,19 @@ import { Dropdown } from '@/components/common';
 import { useId } from 'react';
 import styles from './style.module.scss';
 
-interface AddCartButtonProps {
+interface CartOptionGroupProps {
   currOption: string | undefined;
   inStock: boolean;
   inCart: boolean;
   lifetimeRemaining: number;
   monthlyRemaining: number;
   amountToBuy: number;
-  optionName: string;
+  optionsKey: string;
   onCartChange: (inCart: boolean) => void;
   onAmountChange: (amountToBuy: number) => void;
 }
 
-const AddCartButton = ({
+const CartOptionsGroup = ({
   currOption,
   inStock,
   inCart,
@@ -22,9 +22,9 @@ const AddCartButton = ({
   lifetimeRemaining,
   monthlyRemaining,
   amountToBuy,
-  optionName,
+  optionsKey,
   onAmountChange,
-}: AddCartButtonProps) => {
+}: CartOptionGroupProps) => {
   const myID = useId();
 
   const maxCanBuy = Math.min(20, Math.min(lifetimeRemaining, monthlyRemaining));
@@ -56,7 +56,7 @@ const AddCartButton = ({
       )}
       {currOption === undefined ? (
         <p className={styles.error}>
-          {`Please select a ${optionName?.toLocaleLowerCase() ?? 'option'}`}.
+          {`Please select a ${optionsKey?.toLocaleLowerCase() ?? 'option'}`}.
         </p>
       ) : null}
 
@@ -66,7 +66,7 @@ const AddCartButton = ({
             <div className={styles.quantityColumn}>
               <h4>Quantity</h4>
               <Dropdown
-                name={`options${myID}`}
+                name={`options${currOption}_${optionsKey}${myID}`}
                 ariaLabel={`Dropdown to select the number of items to purchase for ${myID}`}
                 options={optionArr}
                 value={`${amountToBuy}`}
@@ -92,4 +92,4 @@ const AddCartButton = ({
     </div>
   );
 };
-export default AddCartButton;
+export default CartOptionsGroup;

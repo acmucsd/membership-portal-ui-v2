@@ -1,4 +1,4 @@
-export { default as AddCartButton } from '@/components/store/AddCartButton';
+export { default as CartOptionsGroup } from '@/components/store/CartOptionsGroup';
 export { default as ItemHeader } from '@/components/store/ItemHeader';
 export { default as SizeSelector } from '@/components/store/SizeSelector';
 export { default as CollectionSlider } from './CollectionSlider';

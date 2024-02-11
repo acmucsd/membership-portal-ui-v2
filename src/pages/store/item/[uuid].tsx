@@ -1,4 +1,4 @@
-import { AddCartButton, ItemHeader, Navbar, SizeSelector } from '@/components/store';
+import { CartOptionsGroup, ItemHeader, Navbar, SizeSelector } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import config from '@/lib/config';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -34,8 +34,6 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
     item.options[0] ??
     null;
 
-  console.log(`currItemOption ${currItemOption}`);
-
   return (
     <div className={styles.navbarBodyDiv}>
       <Navbar balance={credits} showBack />
@@ -58,7 +56,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
             />
           ) : null}
 
-          <AddCartButton
+          <CartOptionsGroup
             inCart={inCart}
             onCartChange={setInCart}
             currOption={selectedOption?.value}
@@ -67,7 +65,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
             monthlyRemaining={item.monthlyRemaining}
             amountToBuy={amount}
             onAmountChange={setAmount}
-            optionName={currItemOption?.metadata.type}
+            optionsKey={currItemOption?.metadata.type}
           />
           <h4>Item Description</h4>
           <p>{item.description}</p>

@@ -43,6 +43,7 @@ $component-roundness: 10px;
 
     input {
       opacity: 0;
+      pointer-events: none;
       position: absolute;
     }
 
