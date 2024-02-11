@@ -15,6 +15,9 @@ export const createNewItem = async (
   merchPhotos: Blob[]
 ): Promise<UUID | null> => {
   try {
+    if (merchandise.monthlyLimit && merchandise.monthlyLimit > (merchandise.lifetimeLimit ?? 0)) {
+      throw new Error('Monthly limit cannot exceed lifetime limit.');
+    }
     const item = await StoreAPI.createItem(token, merchandise);
     await Promise.all(merchPhotos.map(blob => StoreAPI.createItemPhoto(token, item.uuid, blob)));
     return item.uuid;
@@ -34,6 +37,9 @@ export const editItem = async (
   merchPhotos: (string | Blob)[]
 ): Promise<PublicMerchItem | null> => {
   try {
+    if (merchandise.monthlyLimit && merchandise.monthlyLimit > (merchandise.lifetimeLimit ?? 0)) {
+      throw new Error('Monthly limit cannot exceed lifetime limit.');
+    }
     // If we need to add new options, ensure that `hasVariantsEnabled` is
     // enabled and update all existing options' `type` so the new options'
     // `type` match.
