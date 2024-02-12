@@ -54,7 +54,7 @@ const CartOptionsGroup = ({
       ) : (
         <p>You can&apos;t buy any more of this item!.</p>
       )}
-      {currOption === undefined ? (
+      {currOption === undefined && optionsKey != null ? (
         <p className={styles.error}>
           {`Please select a ${optionsKey?.toLocaleLowerCase() ?? 'option'}`}.
         </p>

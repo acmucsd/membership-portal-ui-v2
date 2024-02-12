@@ -27,6 +27,8 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
 
+  console.log(selectedOption?.metadata);
+
   //   const currItemOption: PublicMerchItemOption | null | undefined =
   // item.options.find(val => val.metadata?.value === selectedOption?.value) ??
   // item.options.find(option => option.quantity > 0) ??
@@ -64,7 +66,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
             monthlyRemaining={item.monthlyRemaining}
             amountToBuy={amount}
             onAmountChange={setAmount}
-            optionsKey={selectedOption?.metadata.type}
+            optionsKey={selectedOption?.metadata?.type}
           />
           <h4>Item Description</h4>
           <p>{item.description}</p>

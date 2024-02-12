@@ -30,19 +30,15 @@ const SizeSelector = ({ currOption, options, onOptionChange }: SizeSelectorProps
     );
   });
 
-  return (
+  return options.length > 1 && options ? (
     <div className={styles.sizeSelector}>
-      {options.length > 1 ? (
-        <>
-          {options[0]?.metadata.type === undefined ? (
-            <h4>Options</h4>
-          ) : (
-            <h4>{toTitleCase(options[0]?.metadata.type)}</h4>
-          )}
-          <form className={styles.switch}>{myOptions}</form>
-        </>
-      ) : null}
+      {options[0]?.metadata.type === undefined ? (
+        <h4>Options</h4>
+      ) : (
+        <h4>{toTitleCase(options[0]?.metadata.type)}</h4>
+      )}
+      <form className={styles.switch}>{myOptions}</form>
     </div>
-  );
+  ) : null;
 };
 export default SizeSelector;
