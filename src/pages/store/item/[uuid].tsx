@@ -27,8 +27,6 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
 
-  console.log(selectedOption?.metadata);
-
   //   const currItemOption: PublicMerchItemOption | null | undefined =
   // item.options.find(val => val.metadata?.value === selectedOption?.value) ??
   // item.options.find(option => option.quantity > 0) ??
