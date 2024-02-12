@@ -3,7 +3,6 @@ import { StoreAPI } from '@/lib/api';
 import config from '@/lib/config';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
 import {
   PrivateProfile,
   PublicMerchItemOption,
@@ -22,17 +21,17 @@ interface ItemPageProps {
 }
 
 const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
-  const [selectedOption, setSelectedOption] = useState<MerchItemOptionMetadata | undefined>(
-    item.options.length <= 1 ? { type: 'Y', value: 'Y', position: 0 } : undefined
+  const [selectedOption, setSelectedOption] = useState<PublicMerchItemOption | null | undefined>(
+    item.options.find(option => option.quantity > 0) ?? item.options[0] ?? null
   );
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
 
-  const currItemOption: PublicMerchItemOption | null | undefined =
-    item.options.find(val => val.metadata?.value === selectedOption?.value) ??
-    item.options.find(option => option.quantity > 0) ??
-    item.options[0] ??
-    null;
+  //   const currItemOption: PublicMerchItemOption | null | undefined =
+  // item.options.find(val => val.metadata?.value === selectedOption?.value) ??
+  // item.options.find(option => option.quantity > 0) ??
+  // item.options[0] ??
+  // null;
 
   return (
     <div className={styles.navbarBodyDiv}>
@@ -47,11 +46,11 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
           />
         </div>
         <div className={styles.optionsContainer}>
-          <ItemHeader itemName={item.itemName} cost={currItemOption?.price} />
+          <ItemHeader itemName={item.itemName} cost={selectedOption?.price} />
           {item.options.length > 1 ? (
             <SizeSelector
-              currOption={selectedOption}
-              onSizeChange={setSelectedOption}
+              currOption={selectedOption?.metadata}
+              onOptionChange={setSelectedOption}
               options={item.options}
             />
           ) : null}
@@ -59,13 +58,13 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
           <CartOptionsGroup
             inCart={inCart}
             onCartChange={setInCart}
-            currOption={selectedOption?.value}
-            inStock={currItemOption?.quantity != null && currItemOption?.quantity >= 1}
+            currOption={selectedOption?.metadata?.value}
+            inStock={selectedOption?.quantity != null && selectedOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}
             amountToBuy={amount}
             onAmountChange={setAmount}
-            optionsKey={currItemOption?.metadata.type}
+            optionsKey={selectedOption?.metadata.type}
           />
           <h4>Item Description</h4>
           <p>{item.description}</p>

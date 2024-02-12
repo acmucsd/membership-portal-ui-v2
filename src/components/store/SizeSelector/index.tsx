@@ -6,13 +6,13 @@ import { Fragment, useId } from 'react';
 interface SizeSelectorProps {
   currOption: MerchItemOptionMetadata | undefined;
   options: PublicMerchItemOption[];
-  onSizeChange: (currSize: MerchItemOptionMetadata) => void;
+  onOptionChange: (currSize: PublicMerchItemOption) => void;
 }
 function toTitleCase(str: string) {
   return str.toLowerCase().replace(/\.\s*([a-z])|^[a-z]/gm, s => s.toUpperCase());
 }
 
-const SizeSelector = ({ currOption, options, onSizeChange }: SizeSelectorProps) => {
+const SizeSelector = ({ currOption, options, onOptionChange }: SizeSelectorProps) => {
   const myID = useId();
   const myOptions = options.map(val => {
     const tempId = val.metadata.value ? `${val.metadata.value}${myID}` : `${val.uuid}${myID}`;
@@ -22,8 +22,8 @@ const SizeSelector = ({ currOption, options, onSizeChange }: SizeSelectorProps) 
           id={tempId}
           name="state-d"
           type="radio"
-          defaultChecked={currOption === val.metadata?.value}
-          onClick={() => onSizeChange(val.metadata)}
+          defaultChecked={currOption?.value === val.metadata?.value}
+          onClick={() => onOptionChange(val)}
         />
         <label htmlFor={tempId}>{val.metadata?.value}</label>
       </Fragment>
