@@ -3,6 +3,7 @@ import CalendarButtons from '@/components/events/CalendarButtons';
 import PointsDisplay from '@/components/events/PointsDisplay';
 import { PublicEvent } from '@/lib/types/apiResponses';
 import { fixUrl, formatEventDate } from '@/lib/utils';
+import CloseIcon from '@/public/assets/icons/close-icon.svg';
 import LinkIcon from '@/public/assets/icons/link.svg';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,10 +21,14 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
 
   const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
   const displayEventLink = fixUrl(eventLink) || `https://acmucsd.com/events/${event.uuid}`;
+  const isUpcomingEvent = new Date(start) > new Date();
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={onClose} bottomSheet>
       <div className={styles.image}>
+        <button type="submit" aria-label="Close" className={styles.close}>
+          <CloseIcon aria-hidden className={styles.closeIcon} />
+        </button>
         <PointsDisplay points={event.pointValue} attended={attended} />
         <Image src={displayCover} alt="Event Cover Image" style={{ objectFit: 'cover' }} fill />
       </div>
@@ -52,10 +57,12 @@ const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
             </div>
           </div>
 
-          <CalendarButtons event={event} />
+          {isUpcomingEvent ? <CalendarButtons event={event} /> : null}
         </div>
 
-        <Typography variant="body/medium">{description}</Typography>
+        <Typography variant="body/medium" style={{ wordBreak: 'break-word' }}>
+          {description}
+        </Typography>
         <Link className={styles.link} href={displayEventLink}>
           <div style={{ width: 11 }}>
             <LinkIcon role="link" />

@@ -43,9 +43,14 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
 
     const isSignedInUser = handleUser.uuid === user.uuid;
 
-    let attendances = null;
+    // If the user is viewing their own page, then re-use signedInAttendances.
+    // We return the 10 most recently attended events.
+    let recentAttendances = signedInAttendances.slice(-10).reverse();
+    // Otherwise, fetch the viewed user's attendances.
     if (!isSignedInUser && handleUser.isAttendancePublic)
-      attendances = (await UserAPI.getAttendancesForUserByUUID(token, user.uuid)).slice(0, 10);
+      recentAttendances = (await UserAPI.getAttendancesForUserByUUID(token, handleUser.uuid))
+        .slice(-10)
+        .reverse();
 
     // render UserProfilePage
     return {
@@ -53,7 +58,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
         handleUser,
         isSignedInUser,
         signedInAttendances,
-        attendances,
+        recentAttendances,
       },
     };
   } catch (err: any) {

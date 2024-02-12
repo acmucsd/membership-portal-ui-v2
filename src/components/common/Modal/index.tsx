@@ -7,9 +7,11 @@ interface ModalProps {
   open: boolean;
   onClose: () => void;
   children?: ReactNode;
+  /** Anchor content to the bottom of the screen. Only applies to mobile modals. */
+  bottomSheet?: boolean;
 }
 
-const Modal = ({ title, open, onClose, children }: ModalProps) => {
+const Modal = ({ title, open, onClose, children, bottomSheet }: ModalProps) => {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ const Modal = ({ title, open, onClose, children }: ModalProps) => {
     // I don't need to add my own.
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
     <dialog
-      className={styles.modal}
+      className={`${styles.modal} ${bottomSheet ? styles.bottomSheet : ''}`}
       ref={ref}
       onClick={e => {
         if (e.target === e.currentTarget) {
