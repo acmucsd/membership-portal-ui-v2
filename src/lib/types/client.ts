@@ -1,4 +1,4 @@
-import { PublicMerchItem, PublicMerchItemOption } from '@/lib/types/apiResponses';
+import { PublicMerchItemOption, PublicMerchItemWithPurchaseLimits } from '@/lib/types/apiResponses';
 
 export interface CookieCartItem {
   itemUUID: string;
@@ -9,7 +9,7 @@ export interface CookieCartItem {
 /**
  * Similar to PublicCartItem but holds exactly one option
  */
-export interface ClientCartItem extends Omit<PublicMerchItem, 'options'> {
+export interface ClientCartItem extends Omit<PublicMerchItemWithPurchaseLimits, 'options'> {
   option: PublicMerchItemOption;
   quantity: number;
 }

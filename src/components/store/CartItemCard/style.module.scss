@@ -10,6 +10,7 @@
     "left remove";
   grid-template-columns: var(--desktop-image-size) 1fr;
   padding: 0.75rem 1rem;
+  position: relative;
 
   @media (max-width: vars.$breakpoint-md) {
     grid-template-areas: 
@@ -84,6 +85,28 @@
     
     @media (max-width: vars.$breakpoint-md) {
       margin: auto;
+    }
+  }
+
+  .unavailable {
+    align-items: center;
+    background-color: var(--theme-accent-line-1-transparent);
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    padding: 1rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    > div {
+      align-items: center;
+      background-color: var(--theme-surface-2);
+      border-radius: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
     }
   }
 }

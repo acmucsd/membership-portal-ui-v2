@@ -27,12 +27,12 @@ import {
 } from '@/lib/types/apiResponses';
 import { ClientCartItem, CookieCartItem } from '@/lib/types/client';
 import { CookieType } from '@/lib/types/enums';
-import { getMessagesFromError } from '@/lib/utils';
+import { getMessagesFromError, validateClientCartItem } from '@/lib/utils';
 import EmptyCartIcon from '@/public/assets/icons/empty-cart.svg';
 import styles from '@/styles/pages/store/cart/index.module.scss';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface CartPageProps {
   user: PrivateProfile;
@@ -71,6 +71,8 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
     setOrderTotal(calculateOrderTotal(cart));
     setClientCookie(CookieType.CART, clientCartToCookie(cart));
   }, [cart, credits]);
+
+  const cartInvalid = useMemo(() => cart.some(item => validateClientCartItem(item)), [cart]);
 
   // prop for item cards to remove their item
   const removeItem = (optionUUID: UUID) => {
@@ -121,7 +123,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
                 onClick={() => {
                   setCartState(CartState.CONFIRMING);
                 }}
-                disabled={orderTotal > credits || pickupEvents.length === 0}
+                disabled={orderTotal > credits || pickupEvents.length === 0 || cartInvalid}
               >
                 <Typography variant="h4/bold" component="span">
                   Place Order
@@ -204,7 +206,8 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
         </div>
 
         {/* Event Picker */}
-        {((cart.length > 0 && credits >= orderTotal) || cartState === CartState.CONFIRMED) && (
+        {((cart.length > 0 && credits >= orderTotal && !cartInvalid) ||
+          cartState === CartState.CONFIRMED) && (
           <div className={`${styles.cartCard} ${styles.eventPicker}`}>
             <div className={styles.header}>
               <Typography variant="h4/bold" component="h2">
@@ -249,13 +252,19 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
             </div>
           </div>
         </div>
-
-        {credits < orderTotal && (
-          <Typography variant="h5/regular" component="p" className={styles.warning}>
-            You do not have enough membership points to checkout. Earn more membership points by
-            attending ACM events!
-          </Typography>
-        )}
+        <div className={styles.warning}>
+          {credits < orderTotal && (
+            <Typography variant="h5/regular" component="p">
+              You do not have enough membership points to checkout. Earn more membership points by
+              attending ACM events!
+            </Typography>
+          )}
+          {cartInvalid && (
+            <Typography variant="h5/regular" component="p">
+              Some items in your cart are not available. Remove them to check out!
+            </Typography>
+          )}
+        </div>
       </div>
     </div>
   );

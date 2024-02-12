@@ -17,8 +17,8 @@ const DebugPage = () => {
         onClick={() => {
           const newCart: CookieCartItem[] = [
             {
-              itemUUID: '17774f20-e04d-4ace-a6fc-8dfe9286eca7',
-              optionUUID: 'd75f35b3-e452-46ea-a58b-2a2e010e6ff9',
+              itemUUID: 'af106068-2f3b-4bcd-81a5-229ecef99cdc',
+              optionUUID: '7e8f682f-9fe1-4837-b1d4-5576a41fe55a',
               quantity: 2,
             },
             {
@@ -30,6 +30,11 @@ const DebugPage = () => {
               itemUUID: '2a37de8e-7b5c-41ba-84bc-f7f40804be85',
               optionUUID: 'e3e68f83-d97e-40b0-a5ea-2c169a434403',
               quantity: 10,
+            },
+            {
+              itemUUID: '0623148a-9477-4098-87f6-6ee1f7b1a4a6',
+              optionUUID: '5454b55a-d4e8-443f-9664-131395430b79',
+              quantity: 1,
             },
           ];
           setClientCookie(CookieType.CART, JSON.stringify(newCart));

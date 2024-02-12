@@ -7,6 +7,7 @@ import type {
   PublicProfile,
   ValidatorError,
 } from '@/lib/types/apiResponses';
+import { ClientCartItem } from '@/lib/types/client';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import {
   type StaticImageData,
@@ -299,4 +300,21 @@ export const fixUrl = (input: string, prefix?: string): string => {
   }
   // Add https:// if it was left out
   return `https://${input}`;
+};
+
+/**
+ * Check if a ClientCartItem is in stock and within lifetime/monthly limits
+ * @param item item to validate
+ * @returns an error message string if the item is unavailable, or null otherwise
+ */
+export const validateClientCartItem = (item: ClientCartItem): string | null => {
+  if (item.quantity > item.lifetimeRemaining)
+    return `Cannot purchase more than the lifetime limit of this item (${item.lifetimeRemaining} left)`;
+  if (item.quantity > item.monthlyRemaining)
+    return `Cannot purchase more than the monthly limit of this item (${item.monthlyRemaining} left)`;
+  if (item.hidden) return 'Ordering this item has been temporarily disabled';
+  if (item.option.quantity === 0) return 'This item is out of stock';
+  if (item.quantity > item.option.quantity)
+    return `You have selected more of this item than is in stock (${item.option.quantity} left)`;
+  return null;
 };

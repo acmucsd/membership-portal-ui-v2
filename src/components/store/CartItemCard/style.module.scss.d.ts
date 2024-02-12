@@ -7,6 +7,7 @@ export type Styles = {
   removeBtn: string;
   rightCol: string;
   title: string;
+  unavailable: string;
 };
 
 export type ClassNames = keyof Styles;
