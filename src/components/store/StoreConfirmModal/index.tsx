@@ -3,18 +3,18 @@ import { PropsWithChildren, ReactElement, cloneElement, useState } from 'react';
 import styles from './style.module.scss';
 
 interface StoreConfirmModalProps {
+  /** a button to open the modal on click */
   opener: ReactElement<any>;
+  /** title for modal card */
   title: string;
+  /** called when confirm button is clicked */
   onConfirm?: (...args: any[]) => any;
+  /** called when modal is closed any way   other than the confirm button */
   onCancel?: (...args: any[]) => any;
 }
 
 /**
  * A wrapper for a modal in store style with 'Confirm' and 'Go back' buttons
- * @param props.opener - a button to open the modal on click
- * @param props.title - title for modal card
- * @param props.onConfirm - called when confirm button is clicked
- * @param props.onCancel - called when modal is closed any way other than the confirm button
  * @returns wrapper including opener and modal
  */
 const StoreConfirmModal = ({

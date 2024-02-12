@@ -15,6 +15,9 @@ interface CartItemCardProps {
   removable: boolean;
 }
 
+/**
+ * Card for items displayed on cart page
+ */
 const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
   const itemPage = `${config.itemRoute}${item.uuid}`;
 
