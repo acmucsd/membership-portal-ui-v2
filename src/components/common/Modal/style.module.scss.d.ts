@@ -1,4 +1,5 @@
 export type Styles = {
+  bottomSheet: string;
   close: string;
   hasHeader: string;
   header: string;
