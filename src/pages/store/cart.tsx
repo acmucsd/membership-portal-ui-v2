@@ -96,7 +96,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
         setLiveCredits(credits - orderTotal);
       })
       .catch(err => {
-        showToast('Unable to place order', getMessagesFromError(err).join());
+        showToast('Unable to place order', getMessagesFromError(err.response.data.error).join());
       });
 
   return (
