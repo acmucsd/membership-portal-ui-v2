@@ -50,7 +50,7 @@ const DebugPage = () => {
 export default DebugPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => {
-  if (!config.isDevelopment)
+  if (!config.api.baseUrl.includes('testing'))
     return {
       notFound: true,
     };
