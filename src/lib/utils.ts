@@ -3,7 +3,9 @@ import ranks from '@/lib/constants/ranks';
 import type { URL } from '@/lib/types';
 import type {
   CustomErrorBody,
+  PublicEvent,
   PublicMerchItem,
+  PublicOrderPickupEvent,
   PublicProfile,
   ValidatorError,
 } from '@/lib/types/apiResponses';
@@ -318,3 +320,11 @@ export const validateClientCartItem = (item: ClientCartItem): string | null => {
     return `You have selected more of this item than is in stock (${item.option.quantity} left)`;
   return null;
 };
+
+/**
+ * Type predicate distinguishes between PublicOrderPickupEvent and PublicEvent
+ * @returns true if event is PublicOrderPickupEvent
+ */
+export const isOrderPickupEvent = (
+  event: PublicOrderPickupEvent | PublicEvent
+): event is PublicOrderPickupEvent => 'status' in event;

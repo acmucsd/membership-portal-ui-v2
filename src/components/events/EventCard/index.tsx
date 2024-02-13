@@ -6,14 +6,10 @@ import {
   PublicOrderPickupEvent,
   PublicOrderPickupEventWithLinkedEvent,
 } from '@/lib/types/apiResponses';
-import { formatEventDate } from '@/lib/utils';
+import { formatEventDate, isOrderPickupEvent } from '@/lib/utils';
 import Image from 'next/image';
 import { useState } from 'react';
 import styles from './style.module.scss';
-
-const isOrderPickupEvent = (
-  event: PublicOrderPickupEvent | PublicEvent
-): event is PublicOrderPickupEvent => 'status' in event;
 
 interface EventCardProps {
   event: PublicEvent | PublicOrderPickupEvent;
