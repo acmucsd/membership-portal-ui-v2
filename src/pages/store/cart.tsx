@@ -103,7 +103,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
 
   return (
     <div className={styles.container}>
-      <Navbar balance={liveCredits} />
+      <Navbar balance={liveCredits} showBack />
       <div className={styles.content}>
         {/* Title */}
         <Typography variant="h1/bold" component="h1" className={styles.title}>
