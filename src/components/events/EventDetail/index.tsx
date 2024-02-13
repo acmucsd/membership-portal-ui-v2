@@ -12,7 +12,8 @@ import styles from './style.module.scss';
 interface EventDetailProps {
   event: PublicEvent | PublicOrderPickupEvent;
   attended: boolean;
-  inModal: boolean;
+  /** controls whether a close button is shown */
+  inModal?: boolean;
 }
 
 const EventDetail = ({ event, attended, inModal = true }: EventDetailProps) => {
