@@ -60,7 +60,7 @@ const CartOptionsGroup = ({
         </p>
       ) : null}
 
-      {currOption === undefined ? null : (
+      {currOption === undefined && optionsKey != null ? null : (
         <div className={styles.buttonRow}>
           {!inStock || maxCanBuy <= 1 ? null : (
             <div className={styles.quantityColumn}>
