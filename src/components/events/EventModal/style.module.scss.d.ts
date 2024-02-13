@@ -1,4 +1,6 @@
 export type Styles = {
+  close: string;
+  closeIcon: string;
   contents: string;
   eventDetails: string;
   eventInfo: string;

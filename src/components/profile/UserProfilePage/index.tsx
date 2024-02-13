@@ -18,12 +18,12 @@ export interface UserProfilePageProps {
   handleUser: PublicProfile;
   isSignedInUser: boolean;
   signedInAttendances: PublicAttendance[];
-  attendances?: PublicAttendance[];
+  recentAttendances: PublicAttendance[];
 }
 
 export const UserProfilePage = ({
   handleUser,
-  attendances,
+  recentAttendances,
   signedInAttendances,
   isSignedInUser,
 }: UserProfilePageProps) => {
@@ -143,7 +143,7 @@ export const UserProfilePage = ({
           </div>
         )}
       </div>
-      {(attendances || isSignedInUser) && (
+      {(recentAttendances || isSignedInUser) && (
         <div className={styles.section}>
           <Typography variant="h2/bold">
             Recently Attended Events
@@ -154,16 +154,14 @@ export const UserProfilePage = ({
             )}
           </Typography>
           <Carousel>
-            {(isSignedInUser ? signedInAttendances : (attendances as PublicAttendance[])).map(
-              ({ event }) => (
-                <EventCard
-                  className={styles.card}
-                  key={event.uuid}
-                  event={event}
-                  attended={signedInAttendances.some(({ event: { uuid } }) => uuid === event.uuid)}
-                />
-              )
-            )}
+            {recentAttendances.map(({ event }) => (
+              <EventCard
+                className={styles.card}
+                key={event.uuid}
+                event={event}
+                attended={signedInAttendances.some(({ event: { uuid } }) => uuid === event.uuid)}
+              />
+            ))}
           </Carousel>
         </div>
       )}
