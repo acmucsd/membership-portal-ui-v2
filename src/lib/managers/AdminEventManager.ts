@@ -84,6 +84,7 @@ interface EditEventRequest {
 
 export const editEvent = async (data: EditEventRequest & AuthAPIHandlerProps) => {
   const { onSuccessCallback, onFailCallback, token, event, uuid } = data;
+  console.log(config.file.MAX_EVENT_COVER_SIZE_KB);
   if (data.cover && data.cover.size > config.file.MAX_EVENT_COVER_SIZE_KB * 1024) {
     onFailCallback?.(new Error('Cover size too large'));
     return;
