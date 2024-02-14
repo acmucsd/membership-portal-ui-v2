@@ -1,6 +1,6 @@
 import Cat from '@/public/assets/graphics/cat404.png';
 
-const env = process.env.NODE_ENV;
+const env = process.env.VERCEL_ENV || process.env.NODE_ENV;
 const isDevelopment = env !== 'production';
 
 const config = {
