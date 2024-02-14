@@ -81,6 +81,7 @@ const EventDetailsForm = (props: IProps) => {
   const [selectedCover, setSelectedCover] = useState<File | null>(null);
   const [cover, setCover] = useState<File | null>(null);
   const coverUrl = useObjectUrl(cover);
+  const eventCover = coverUrl || initialValues.cover;
 
   const createEvent: SubmitHandler<FillInLater> = formData => {
     if (!cover) {
@@ -112,7 +113,7 @@ const EventDetailsForm = (props: IProps) => {
             onClick: () => router.push(`https://acmucsd.com/events/${event.uuid}`),
           },
         ]);
-        router.push(config.admin.events.homeRoute);
+        router.replace(config.admin.events.homeRoute);
       },
       onFailCallback: error => {
         setLoading(false);
@@ -138,6 +139,7 @@ const EventDetailsForm = (props: IProps) => {
         start,
         end,
       },
+      cover: cover || undefined,
       onSuccessCallback: event => {
         setLoading(false);
         showToast('Event Details Saved!', '', [
@@ -146,7 +148,7 @@ const EventDetailsForm = (props: IProps) => {
             onClick: () => router.push(`https://acmucsd.com/events/${event.uuid}`),
           },
         ]);
-        router.push(config.admin.events.homeRoute);
+        router.replace(config.admin.events.homeRoute);
       },
       onFailCallback: error => {
         setLoading(false);
@@ -163,7 +165,7 @@ const EventDetailsForm = (props: IProps) => {
       token: AUTH_TOKEN,
       onSuccessCallback: () => {
         setLoading(false);
-        router.push(config.admin.events.homeRoute);
+        router.replace(config.admin.events.homeRoute);
       },
     });
   };
@@ -280,54 +282,49 @@ const EventDetailsForm = (props: IProps) => {
           />
         </EventDetailsFormItem>
 
-        {/* Only show this in create mode */}
-        {editing ? null : (
-          <>
-            <label htmlFor="cover">Cover Image</label>
-            <EventDetailsFormItem>
-              {coverUrl && (
-                <Image src={coverUrl} alt="Selected cover image" width={480} height={270} />
-              )}
-              <input
-                type="file"
-                id="cover"
-                accept="image/*"
-                onChange={e => {
-                  const file = e.currentTarget.files?.[0];
-                  e.currentTarget.value = '';
-                  if (file) {
-                    setSelectedCover(file);
-                  }
-                }}
-              />
-            </EventDetailsFormItem>
-            <Cropper
-              file={selectedCover}
-              aspectRatio={1920 / 1080}
-              maxFileHeight={1080}
-              maxSize={config.file.MAX_EVENT_COVER_SIZE_KB * 1024}
-              onCrop={async file => {
-                setCover(
-                  new File([file], selectedCover?.name ?? 'image', {
-                    type: file.type,
-                  })
-                );
-                setSelectedCover(null);
-              }}
-              onClose={reason => {
-                setSelectedCover(null);
-                if (reason === 'cannot-compress') {
-                  showToast(
-                    'Your image has too much detail and cannot be compressed.',
-                    'Try shrinking your image.'
-                  );
-                } else if (reason !== null) {
-                  showToast('This image format is not supported.');
-                }
-              }}
-            />
-          </>
-        )}
+        <label htmlFor="cover">Cover Image</label>
+        <EventDetailsFormItem>
+          {eventCover && (
+            <Image src={eventCover} alt="Selected cover image" width={480} height={270} />
+          )}
+          <input
+            type="file"
+            id="cover"
+            accept="image/*"
+            onChange={e => {
+              const file = e.currentTarget.files?.[0];
+              e.currentTarget.value = '';
+              if (file) {
+                setSelectedCover(file);
+              }
+            }}
+          />
+        </EventDetailsFormItem>
+        <Cropper
+          file={selectedCover}
+          aspectRatio={1920 / 1080}
+          maxFileHeight={1080}
+          maxSize={config.file.MAX_EVENT_COVER_SIZE_KB * 1024}
+          onCrop={async file => {
+            setCover(
+              new File([file], selectedCover?.name ?? 'image', {
+                type: file.type,
+              })
+            );
+            setSelectedCover(null);
+          }}
+          onClose={reason => {
+            setSelectedCover(null);
+            if (reason === 'cannot-compress') {
+              showToast(
+                'Your image has too much detail and cannot be compressed.',
+                'Try shrinking your image.'
+              );
+            } else if (reason !== null) {
+              showToast('This image format is not supported.');
+            }
+          }}
+        />
       </div>
 
       <div className={style.submitButtons}>
