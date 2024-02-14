@@ -85,6 +85,7 @@ interface EditEventRequest {
 export const editEvent = async (data: EditEventRequest & AuthAPIHandlerProps) => {
   const { onSuccessCallback, onFailCallback, token, event, uuid } = data;
   onFailCallback?.(new Error(`${config.file.MAX_EVENT_COVER_SIZE_KB}`));
+  onFailCallback?.(`vercel: ${process.env.VERCEL_ENV}, node: ${process.env.NODE_ENV}`);
   if (data.cover && data.cover.size > config.file.MAX_EVENT_COVER_SIZE_KB * 1024) {
     onFailCallback?.(new Error('Cover size too large'));
     return;
