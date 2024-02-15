@@ -75,8 +75,7 @@ const ManageAllEventsPage: NextPage<IProps> = (props: IProps) => {
 
 export default ManageAllEventsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ res }) => {
-  res.setHeader('Cache-Control', 'no-store');
+const getServerSidePropsFunc: GetServerSideProps = async () => {
   const allEventsFetch = EventAPI.getAllEvents();
   const pastEventsFetch = EventAPI.getAllPastEvents();
   const futureEventsFetch = EventAPI.getAllFutureEvents();
@@ -95,5 +94,6 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ res }) => {
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canManageEvents,
-  config.admin.homeRoute
+  config.admin.homeRoute,
+  true
 );

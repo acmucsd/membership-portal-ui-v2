@@ -26,7 +26,6 @@ const EditEventPage = ({ editEvent }: EditEventProps) => (
 export default EditEventPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
-  res.setHeader('Cache-Control', 'no-store');
   const uuid = params?.uuid as string;
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
@@ -45,5 +44,6 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canManageEvents,
-  config.admin.homeRoute
+  config.admin.homeRoute,
+  true
 );
