@@ -86,7 +86,7 @@ export const editEvent = async (data: EditEventRequest & AuthAPIHandlerProps) =>
   const { onSuccessCallback, onFailCallback, token, event, uuid } = data;
   onFailCallback?.(
     new Error(
-      `${config.file.MAX_EVENT_COVER_SIZE_KB}, vercel: ${process.env.VERCEL_ENV}, node: ${process.env.NODE_ENV}`
+      `${config.file.MAX_EVENT_COVER_SIZE_KB}, isProd: ${process.env.NEXT_PUBLIC_PRODUCTION}, node: ${process.env.NODE_ENV}`
     )
   );
   if (data.cover && data.cover.size > config.file.MAX_EVENT_COVER_SIZE_KB * 1024) {
