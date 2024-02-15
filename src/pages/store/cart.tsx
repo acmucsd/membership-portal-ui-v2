@@ -8,15 +8,11 @@ import {
   StoreConfirmModal,
 } from '@/components/store';
 import { config, showToast } from '@/lib';
-import { getFutureOrderPickupEvents, getItem, placeMerchOrder } from '@/lib/api/StoreAPI';
+import { getFutureOrderPickupEvents, getItem } from '@/lib/api/StoreAPI';
 import { getCurrentUserAndRefreshCookie } from '@/lib/api/UserAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
-import {
-  getClientCookie,
-  getServerCookie,
-  setClientCookie,
-  setServerCookie,
-} from '@/lib/services/CookieService';
+import { placeMerchOrder } from '@/lib/managers/StoreManager';
+import { getServerCookie, setClientCookie, setServerCookie } from '@/lib/services/CookieService';
 import { loggedInUser } from '@/lib/services/PermissionService';
 import type { UUID } from '@/lib/types';
 import {
@@ -81,13 +77,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
 
   // handle confirming an order
   const placeOrder = () =>
-    placeMerchOrder(getClientCookie(CookieType.ACCESS_TOKEN), {
-      order: cart.map(({ option: { uuid }, quantity }) => ({
-        option: uuid,
-        quantity,
-      })),
-      pickupEvent: pickupEvents[pickupIndex]?.uuid ?? 'x',
-    })
+    placeMerchOrder(cart, pickupEvents[pickupIndex]?.uuid ?? 'x')
       .then(({ items, pickupEvent }) => {
         showToast(
           `Order with ${items.length} item${items.length === 1 ? '' : 's'} placed`,
@@ -98,7 +88,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
         setLiveCredits(credits - orderTotal);
       })
       .catch(err => {
-        showToast('Unable to place order', getMessagesFromError(err.response.data.error).join());
+        showToast('Unable to place order', getMessagesFromError(err).join('; '));
       });
 
   return (
