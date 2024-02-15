@@ -1,7 +1,6 @@
 import Cat from '@/public/assets/graphics/cat404.png';
 
-const env = process.env.NODE_ENV;
-const isDevelopment = env !== 'production';
+const isDevelopment = process.env.NEXT_PUBLIC_PRODUCTION === undefined;
 
 const config = {
   api: {
