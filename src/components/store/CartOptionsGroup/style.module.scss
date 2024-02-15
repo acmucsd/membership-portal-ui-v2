@@ -5,11 +5,6 @@
   flex-direction: column;
   gap: 1rem;
 
-  p {
-    color: var(--theme-text-on-background-1);
-    font-size: vars.$general-heading-4;
-  }
-
   .buttonRow {
     align-items: flex-end;
     display: flex;

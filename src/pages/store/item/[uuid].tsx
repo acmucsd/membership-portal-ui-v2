@@ -1,3 +1,4 @@
+import { Typography } from '@/components/common';
 import { CartOptionsGroup, ItemHeader, Navbar, SizeSelector } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import config from '@/lib/config';
@@ -26,12 +27,6 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
   );
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
-
-  //   const currItemOption: PublicMerchItemOption | null | undefined =
-  // item.options.find(val => val.metadata?.value === selectedOption?.value) ??
-  // item.options.find(option => option.quantity > 0) ??
-  // item.options[0] ??
-  // null;
 
   return (
     <div className={styles.navbarBodyDiv}>
@@ -66,8 +61,15 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
             onAmountChange={setAmount}
             optionsKey={selectedOption?.metadata?.type}
           />
-          <h4>Item Description</h4>
-          <p>{item.description}</p>
+          <Typography variant="h4/bold" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+            Item Description
+          </Typography>
+          <Typography
+            variant="h5/regular"
+            style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+          >
+            {item.description}
+          </Typography>
         </div>
       </div>
     </div>

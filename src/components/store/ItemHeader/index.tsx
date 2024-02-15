@@ -1,3 +1,4 @@
+import { Typography } from '@/components/common';
 import Diamonds from '@/components/store/Diamonds';
 import styles from './style.module.scss';
 
@@ -9,7 +10,9 @@ interface ItemHeaderProps {
 const ItemHeader = ({ itemName, cost }: ItemHeaderProps) => {
   return (
     <div className={styles.itemHeaderGroup}>
-      <h1>{itemName}</h1>
+      <Typography variant="h1/bold" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+        {itemName}
+      </Typography>
       {cost === undefined ? null : (
         <div className={styles.price}>
           <Diamonds count={cost} />

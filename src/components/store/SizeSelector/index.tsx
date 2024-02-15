@@ -1,15 +1,14 @@
+import { Typography } from '@/components/common';
 import styles from '@/components/store/SizeSelector/style.module.scss';
 import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
 import { PublicMerchItemOption } from '@/lib/types/apiResponses';
+import { toTitleCase } from '@/lib/utils';
 import { Fragment, useId } from 'react';
 
 interface SizeSelectorProps {
   currOption: MerchItemOptionMetadata | undefined;
   options: PublicMerchItemOption[];
   onOptionChange: (currSize: PublicMerchItemOption) => void;
-}
-function toTitleCase(str: string) {
-  return str.toLowerCase().replace(/\.\s*([a-z])|^[a-z]/gm, s => s.toUpperCase());
 }
 
 const SizeSelector = ({ currOption, options, onOptionChange }: SizeSelectorProps) => {
@@ -33,9 +32,9 @@ const SizeSelector = ({ currOption, options, onOptionChange }: SizeSelectorProps
   return options.length > 1 && options ? (
     <div className={styles.sizeSelector}>
       {options[0]?.metadata.type === undefined ? (
-        <h4>Options</h4>
+        <Typography variant="h4/bold">Options</Typography>
       ) : (
-        <h4>{toTitleCase(options[0]?.metadata.type)}</h4>
+        <Typography variant="h4/bold">{toTitleCase(options[0]?.metadata.type)}</Typography>
       )}
       <form className={styles.switch}>{myOptions}</form>
     </div>

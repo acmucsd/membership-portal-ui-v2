@@ -14,23 +14,6 @@
   flex-wrap: wrap;
   gap: 1rem;
 
-  h1 {
-    @media (max-width: vars.$breakpoint-md) {
-      font-size: vars.$card-heading-1;
-    }
-    font-size: vars.$general-heading-2;
-    font-style: normal;
-    font-weight: 700;
-    letter-spacing: 0.02rem;
-    line-height: 2.5rem; /* 125% */
-    word-break: break-word;
-  }
-
-  p {
-    color: var(--theme-text-on-background-1);
-    font-size: vars.$general-heading-4;
-  }
-
   .error {
     color: vars.$danger-1;
   }

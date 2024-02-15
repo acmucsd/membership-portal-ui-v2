@@ -1,4 +1,4 @@
-import { Dropdown } from '@/components/common';
+import { Dropdown, Typography } from '@/components/common';
 import { useId } from 'react';
 import styles from './style.module.scss';
 
@@ -50,21 +50,21 @@ const CartOptionsGroup = ({
   return (
     <div className={styles.addCartGroup}>
       {maxCanBuy > 0 ? (
-        <p>You can buy up to {maxCanBuy} of this item.</p>
+        <Typography variant="h5/regular">You can buy up to {maxCanBuy} of this item.</Typography>
       ) : (
-        <p>You can&apos;t buy any more of this item!.</p>
+        <Typography variant="h5/regular">You can&apos;t buy any more of this item!.</Typography>
       )}
       {currOption === undefined && optionsKey != null ? (
-        <p className={styles.error}>
+        <Typography variant="h5/regular" className={styles.error}>
           {`Please select a ${optionsKey?.toLocaleLowerCase() ?? 'option'}`}.
-        </p>
+        </Typography>
       ) : null}
 
       {currOption === undefined && optionsKey != null ? null : (
         <div className={styles.buttonRow}>
           {!inStock || maxCanBuy <= 1 ? null : (
             <div className={styles.quantityColumn}>
-              <h4>Quantity</h4>
+              <Typography variant="h4/bold">Quantity</Typography>
               <Dropdown
                 name={`options${currOption}_${optionsKey}${myID}`}
                 ariaLabel={`Dropdown to select the number of items to purchase for ${myID}`}
