@@ -33,8 +33,8 @@ const CartOptionsGroup = ({
 
   if (maxCanBuy === 0) {
     buyButtonText = 'Limit Reached';
-  } else if (currOption === undefined) {
-    buyButtonText = 'Select a Size';
+  } else if (currOption === undefined && optionsKey !== undefined) {
+    buyButtonText = `Select a ${optionsKey}`;
   } else if (inStock) {
     buyButtonText = 'Add to Cart';
   } else {

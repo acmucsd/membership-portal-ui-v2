@@ -54,7 +54,7 @@
 
   .buttonInStock {
     background-color: var(--theme-primary-2);
-    color: var(--theme-text-on-background1);
+    color: vars.$dark-text-on-background-1;
   }
 
   .buttonNoStock {
