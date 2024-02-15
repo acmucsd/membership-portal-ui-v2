@@ -165,7 +165,7 @@ const EventDetailsForm = (props: IProps) => {
       token: AUTH_TOKEN,
       onSuccessCallback: () => {
         setLoading(false);
-        router.push(`${config.admin.events.homeRoute}?refresh=true`);
+        router.push(config.admin.events.homeRoute);
       },
     });
   };
