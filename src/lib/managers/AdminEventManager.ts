@@ -78,14 +78,24 @@ export const createNewEvent = async (
 
 interface EditEventRequest {
   event: Partial<Event>;
+  cover?: File;
   uuid: UUID;
 }
 
 export const editEvent = async (data: EditEventRequest & AuthAPIHandlerProps) => {
   const { onSuccessCallback, onFailCallback, token, event, uuid } = data;
+  if (data.cover && data.cover.size > config.file.MAX_EVENT_COVER_SIZE_KB * 1024) {
+    onFailCallback?.(new Error('Cover size too large'));
+    return;
+  }
 
   try {
     const modifiedEvent = await EventAPI.editEvent(token, uuid, event);
+    if (data.cover) {
+      // There's some weird behavior that happens when we editEvent after uploading a new
+      // event image, so I've kept the API calls in the same order as createNewEvent
+      await EventAPI.uploadEventImage(token, uuid, data.cover);
+    }
 
     onSuccessCallback?.(modifiedEvent);
   } catch (e: any) {
