@@ -113,7 +113,7 @@ const EventDetailsForm = (props: IProps) => {
             onClick: () => router.push(`https://acmucsd.com/events/${event.uuid}`),
           },
         ]);
-        router.replace(config.admin.events.homeRoute);
+        router.push(config.admin.events.homeRoute);
       },
       onFailCallback: error => {
         setLoading(false);
@@ -148,7 +148,7 @@ const EventDetailsForm = (props: IProps) => {
             onClick: () => router.push(`https://acmucsd.com/events/${event.uuid}`),
           },
         ]);
-        router.replace(config.admin.events.homeRoute);
+        router.push(config.admin.events.homeRoute);
       },
       onFailCallback: error => {
         setLoading(false);
@@ -165,7 +165,7 @@ const EventDetailsForm = (props: IProps) => {
       token: AUTH_TOKEN,
       onSuccessCallback: () => {
         setLoading(false);
-        router.replace(config.admin.events.homeRoute);
+        router.push(`${config.admin.events.homeRoute}?refresh=true`);
       },
     });
   };

@@ -75,7 +75,8 @@ const ManageAllEventsPage: NextPage<IProps> = (props: IProps) => {
 
 export default ManageAllEventsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async () => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ res }) => {
+  res.setHeader('Cache-Control', 'no-store');
   const allEventsFetch = EventAPI.getAllEvents();
   const pastEventsFetch = EventAPI.getAllPastEvents();
   const futureEventsFetch = EventAPI.getAllFutureEvents();
