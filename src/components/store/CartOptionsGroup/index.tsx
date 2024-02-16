@@ -27,6 +27,7 @@ const CartOptionsGroup = ({
 }: CartOptionGroupProps) => {
   const myID = useId();
 
+  // 20 is a number decided upon to prevent large maximum purchase limits from crashing the webpage
   const maxCanBuy = Math.min(20, Math.min(lifetimeRemaining, monthlyRemaining));
 
   let buyButtonText = 'Add to Cart';
@@ -41,11 +42,12 @@ const CartOptionsGroup = ({
     buyButtonText = 'Out of Stock';
   }
 
-  const optionArr: Array<{ value: string; label: string }> = [];
-
-  for (let i = 1; i <= maxCanBuy; i += 1) {
-    optionArr.push({ value: `${i}`, label: `${i}` });
-  }
+  // Fills values of the Dropdown to be increasing sequential numbers
+  const optionArr: Array<{ value: string; label: string }> = Array(maxCanBuy)
+    .fill({ value: `${1}`, label: `${1}` })
+    .map((i, index) => {
+      return { value: `${Number(i.value) + index}`, label: `${Number(i.label) + index}` };
+    });
 
   return (
     <div className={styles.addCartGroup}>
