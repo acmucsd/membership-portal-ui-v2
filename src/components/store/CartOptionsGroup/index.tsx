@@ -30,6 +30,9 @@ const CartOptionsGroup = ({
   // 20 is a number decided upon to prevent large maximum purchase limits from crashing the webpage
   const maxCanBuy = Math.min(20, Math.min(lifetimeRemaining, monthlyRemaining));
 
+  const isPurchasable = inStock && maxCanBuy > 0;
+  const noOptionSelected = currOption === undefined && optionsKey != null;
+
   let buyButtonText = 'Add to Cart';
 
   if (maxCanBuy === 0) {
@@ -45,26 +48,28 @@ const CartOptionsGroup = ({
   // Fills values of the Dropdown to be increasing sequential numbers
   const optionArr: Array<{ value: string; label: string }> = Array(maxCanBuy)
     .fill({ value: `${1}`, label: `${1}` })
-    .map((i, index) => {
-      return { value: `${Number(i.value) + index}`, label: `${Number(i.label) + index}` };
+    .map((_, index) => {
+      return { value: `${index + 1}`, label: `${index + 1}` };
     });
 
   return (
     <div className={styles.addCartGroup}>
+      <p>{`In cart: ${inCart}`}</p>
+
       {maxCanBuy > 0 ? (
         <Typography variant="h5/regular">You can buy up to {maxCanBuy} of this item.</Typography>
       ) : (
         <Typography variant="h5/regular">You can&apos;t buy any more of this item!.</Typography>
       )}
-      {currOption === undefined && optionsKey != null ? (
+      {noOptionSelected ? (
         <Typography variant="h5/regular" className={styles.error}>
           {`Please select a ${optionsKey?.toLocaleLowerCase() ?? 'option'}`}.
         </Typography>
       ) : null}
 
-      {currOption === undefined && optionsKey != null ? null : (
+      {noOptionSelected ? null : (
         <div className={styles.buttonRow}>
-          {!inStock || maxCanBuy <= 1 ? null : (
+          {!isPurchasable ? null : (
             <div className={styles.quantityColumn}>
               <Typography variant="h4/bold">Quantity</Typography>
               <Dropdown
@@ -78,12 +83,12 @@ const CartOptionsGroup = ({
           )}
 
           <button
-            className={`${inStock && maxCanBuy > 0 ? styles.buttonInStock : styles.buttonNoStock} ${
+            className={`${isPurchasable ? styles.buttonInStock : styles.buttonNoStock} ${
               styles.button
             }`}
             type="button"
             onClick={() => onCartChange(!inCart)}
-            disabled={!inStock || maxCanBuy === 0}
+            disabled={!isPurchasable}
           >
             {buyButtonText}
           </button>
