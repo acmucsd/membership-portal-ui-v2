@@ -65,7 +65,7 @@ const ManageUserAccessPage = () => {
         icon={<BsPerson />}
         element="select"
         name="User Access"
-        options={Object.values(UserAccessType)}
+        options={Object.values(UserAccessType).filter(option => option !== 'ADMIN')}
         formRegister={register('accessType')}
         error={errors.user}
       />
