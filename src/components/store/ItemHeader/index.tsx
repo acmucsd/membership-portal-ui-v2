@@ -5,9 +5,10 @@ import styles from './style.module.scss';
 interface ItemHeaderProps {
   itemName: string;
   cost: number | undefined;
+  discountPercentage: number;
 }
 
-const ItemHeader = ({ itemName, cost }: ItemHeaderProps) => {
+const ItemHeader = ({ itemName, cost, discountPercentage }: ItemHeaderProps) => {
   return (
     <div className={styles.itemHeaderGroup}>
       <Typography variant="h1/bold" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
@@ -15,7 +16,7 @@ const ItemHeader = ({ itemName, cost }: ItemHeaderProps) => {
       </Typography>
       {cost === undefined ? null : (
         <div className={styles.price}>
-          <Diamonds count={cost} />
+          <Diamonds count={cost} discount={cost - (cost * discountPercentage) / 100} />
         </div>
       )}
     </div>

@@ -41,7 +41,11 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
           />
         </div>
         <div className={styles.optionsContainer}>
-          <ItemHeader itemName={item.itemName} cost={selectedOption?.price} />
+          <ItemHeader
+            itemName={item.itemName}
+            cost={selectedOption?.price}
+            discountPercentage={selectedOption?.discountPercentage ?? 0}
+          />
           {item.options.length > 1 ? (
             <SizeSelector
               currOption={selectedOption?.metadata}
