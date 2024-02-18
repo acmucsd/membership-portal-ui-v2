@@ -1,3 +1,6 @@
+export { default as CartOptionsGroup } from '@/components/store/CartOptionsGroup';
+export { default as ItemHeader } from '@/components/store/ItemHeader';
+export { default as SizeSelector } from '@/components/store/SizeSelector';
 export { default as CollectionSlider } from './CollectionSlider';
 export { default as Diamonds } from './Diamonds';
 export { default as HelpModal } from './HelpModal';

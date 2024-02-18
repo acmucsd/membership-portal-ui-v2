@@ -1,0 +1,24 @@
+@use 'src/styles/vars.scss' as vars;
+
+.price {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.itemHeaderGroup {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  .error {
+    color: vars.$danger-1;
+  }
+
+  .valid {
+    color: vars.$success-1;
+  }
+}
