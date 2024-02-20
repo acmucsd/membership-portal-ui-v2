@@ -169,7 +169,7 @@ const EventDetailsForm = (props: IProps) => {
       },
       onFailCallback: error => {
         setLoading(false);
-        showToast('Unable to create event', getMessagesFromError(error).join());
+        reportError('Unable to create event', error);
       },
     });
   };
