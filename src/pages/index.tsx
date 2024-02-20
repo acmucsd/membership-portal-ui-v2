@@ -84,7 +84,11 @@ const PortalHomePage = ({
 
   return (
     <div className={styles.page}>
-      <CheckInModal open={checkinModalVisible} event={checkinEvent} onClose={() => {}} />
+      <CheckInModal
+        open={checkinModalVisible}
+        event={checkinEvent}
+        onClose={() => setCheckinModalVisible(false)}
+      />
       <Hero firstName={user.firstName} points={points} checkin={code => checkin(code)} />
 
       {liveEvents.length > 0 && (

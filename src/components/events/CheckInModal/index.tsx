@@ -1,6 +1,7 @@
 import { Modal, Typography } from '@/components/common';
 import { PublicEvent } from '@/lib/types/apiResponses';
 import Image from 'next/image';
+import { useMemo } from 'react';
 import style from './style.module.scss';
 
 interface CheckInModalProps {
@@ -21,6 +22,11 @@ const CHECKIN_TITLES = [
 ];
 
 const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
+  const headerText = useMemo(
+    () => CHECKIN_TITLES[Math.floor(Math.random() * CHECKIN_TITLES.length)],
+    []
+  );
+
   if (!event) {
     return null;
   }
@@ -31,7 +37,11 @@ const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
     <Modal open={open} onClose={onClose}>
       <div className={style.container}>
         <div className={style.graphic}>
-          <Image src="/assets/graphics/portal/treasure.svg" alt="treasure" fill />
+          <Image
+            src="/assets/graphics/portal/treasure.svg"
+            alt="A diamond with a smiley face looks at an open treasure chest."
+            fill
+          />
         </div>
         <div className={style.header}>
           <Typography
@@ -39,7 +49,7 @@ const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
             className={style.headerText}
             suppressHydrationWarning
           >
-            {CHECKIN_TITLES[Math.floor(Math.random() * CHECKIN_TITLES.length)]}
+            {headerText}
           </Typography>
           <div className={style.subheader}>
             <Typography variant="h4/regular" component="span" className={style.subheaderText}>
@@ -52,7 +62,7 @@ const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
           </div>
         </div>
         <button type="submit" className={style.done}>
-          <Typography variant="h4/regular">Done</Typography>
+          <Typography variant="h4/bold">Done</Typography>
         </button>
       </div>
     </Modal>
