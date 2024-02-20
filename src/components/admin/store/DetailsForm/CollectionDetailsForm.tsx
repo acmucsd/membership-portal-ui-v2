@@ -24,7 +24,7 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
   const initialValues: FormValues = {
     title: defaultData.title ?? '',
     // ACM blue
-    themeColorHex: defaultData.themeColorHex ?? '#62b0ff',
+    themeColorHex: defaultData.themeColorHex ?? style.defaultThemeColorHex,
     description: defaultData.description ?? '',
     archived: defaultData.archived ?? false,
   };

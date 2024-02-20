@@ -1,5 +1,6 @@
 export type Styles = {
   addImage: string;
+  defaultThemeColorHex: string;
   form: string;
   header: string;
   photos: string;
