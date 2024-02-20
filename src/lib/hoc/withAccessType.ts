@@ -11,10 +11,6 @@ interface AccessTypeOptions {
    * URL to send users without valid access level
    */
   redirectTo?: URL;
-  /**
-   * Flag to disable page caching and so SSR props are refetched on redirects
-   */
-  disableCaching?: boolean;
 }
 
 /**
@@ -27,7 +23,7 @@ interface AccessTypeOptions {
 export default function withAccessType(
   gssp: GetServerSideProps,
   validAccessTypes: UserAccessType[],
-  { redirectTo = config.loginRoute, disableCaching = false }: AccessTypeOptions = {}
+  { redirectTo = config.loginRoute }: AccessTypeOptions = {}
 ): GetServerSideProps {
   // Generate a new getServerSideProps function by taking the return value of the original function and appending the user prop onto it if the user cookie exists, otherwise force user to login page
   const modified: GetServerSideProps = async (context: GetServerSidePropsContext) => {
@@ -96,10 +92,6 @@ export default function withAccessType(
         existingProps.user = user;
         originalReturnValue.props = existingProps;
       }
-    }
-
-    if (disableCaching) {
-      res.setHeader('Cache-Control', 'no-store');
     }
 
     return originalReturnValue;

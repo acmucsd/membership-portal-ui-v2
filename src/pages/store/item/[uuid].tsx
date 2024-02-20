@@ -112,8 +112,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes,
-  { disableCaching: true }
+  PermissionService.allUserTypes
 );
 
 // Knowledge:
