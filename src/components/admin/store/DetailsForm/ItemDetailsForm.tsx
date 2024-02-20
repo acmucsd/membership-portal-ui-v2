@@ -134,9 +134,10 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
     if (!lastSaved) {
       throw new Error('`editItem` called on create item page.');
     }
-    const { uuid } = lastSaved;
     setLoading(true);
+
     try {
+      const { uuid } = lastSaved;
       const item = await AdminStoreManager.editItem(
         token,
         uuid,
@@ -182,6 +183,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
       return;
     }
     setLoading(true);
+
     try {
       await AdminStoreManager.deleteItem(token, lastSaved.uuid);
       showToast('Item deleted successfully');

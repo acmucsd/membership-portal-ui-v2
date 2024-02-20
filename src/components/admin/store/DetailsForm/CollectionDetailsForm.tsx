@@ -61,9 +61,8 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
   const editCollection: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
 
-    const uuid = defaultData.uuid ?? '';
-
     try {
+      const uuid = defaultData.uuid ?? '';
       await AdminStoreManager.editCollection(token, uuid, formData);
       showToast('Collection details saved!', '', [
         {
@@ -80,8 +79,9 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
 
   const deleteCollection = async () => {
     setLoading(true);
-    await AdminStoreManager.deleteCollection(token, defaultData.uuid ?? '');
+
     try {
+      await AdminStoreManager.deleteCollection(token, defaultData.uuid ?? '');
       showToast('Collection deleted successfully');
       router.replace(config.store.homeRoute);
     } catch (error) {
