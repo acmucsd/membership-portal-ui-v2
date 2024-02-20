@@ -4,7 +4,7 @@ import { config, showToast } from '@/lib';
 import { AuthManager } from '@/lib/managers';
 import { ValidationService } from '@/lib/services';
 import type { SendPasswordResetEmailRequest } from '@/lib/types/apiRequests';
-import { getMessagesFromError } from '@/lib/utils';
+import { reportError } from '@/lib/utils';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -27,7 +27,7 @@ const ForgotPassword: NextPage = () => {
         showToast('Success! Check your email shortly', `Email has been sent to ${email}`);
       },
       onFailCallback: error => {
-        showToast('Error with email!', getMessagesFromError(error)[0]);
+        reportError('Error with email!', error);
       },
     });
   };

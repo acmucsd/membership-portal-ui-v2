@@ -1,5 +1,6 @@
 import defaultProfilePictures from '@/lib/constants/profilePictures';
 import ranks from '@/lib/constants/ranks';
+import showToast from '@/lib/showToast';
 import type { URL } from '@/lib/types';
 import type {
   CustomErrorBody,
@@ -8,6 +9,7 @@ import type {
   ValidatorError,
 } from '@/lib/types/apiResponses';
 import NoImage from '@/public/assets/graphics/cat404.png';
+import { AxiosError } from 'axios';
 import {
   type StaticImageData,
   type StaticImport,
@@ -30,7 +32,7 @@ export const getNextNYears = (num: number) => {
  * @param errBody Obj with validator constraint errors
  * @returns List of all user-friendly error strings
  */
-export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
+const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
   // if error has no suberrors, just return top level error message
   if (!errBody.errors) return [errBody.message];
 
@@ -42,6 +44,23 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
 
   return errBody.errors.map(err => getAllErrMessages(err)).flat();
 };
+
+export function getErrorMessage(error: unknown): string {
+  if (error instanceof AxiosError && error.response?.data?.error) {
+    return getMessagesFromError(error.response.data.error).join('\n\n');
+  }
+  if (error instanceof Error) {
+    return error.message;
+  }
+  if (typeof error === 'string') {
+    return error;
+  }
+  return 'Unknown error';
+}
+
+export function reportError(title: string, error: unknown) {
+  showToast(title, getErrorMessage(error));
+}
 
 export const copy = async (text: string): Promise<void> => {
   if (window === undefined) return;

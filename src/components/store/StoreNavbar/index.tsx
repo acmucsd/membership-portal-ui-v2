@@ -15,12 +15,12 @@ const Navbar = ({ balance, showBack }: NavbarProps) => {
 
   return (
     <nav className={styles.navbar}>
-      {showBack && (
+      {showBack ? (
         <button type="button" className={styles.back} onClick={() => router.back()}>
           <BackArrow aria-hidden="true" />
           Back
         </button>
-      )}
+      ) : null}
       <div className={styles.rightSide}>
         <span>
           <strong>Balance:</strong> <Diamonds count={balance} />

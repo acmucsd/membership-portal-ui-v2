@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import { URL, UUID } from '.';
 import { FeedbackStatus, FeedbackType, SocialMediaType, UserAccessType } from './enums';
 
@@ -221,6 +222,10 @@ export interface CreateMerchItemOptionRequest {
   option: MerchItemOption;
 }
 
+export interface CreateMerchItemPhotoRequest {
+  position: string;
+}
+
 export interface PlaceMerchOrderRequest {
   order: MerchItemOptionAndQuantity[];
   pickupEvent: UUID;
@@ -240,6 +245,7 @@ export interface RescheduleOrderPickupRequest {
 
 export interface MerchCollection {
   title: string;
+  /** 6 digits, starts with `#` */
   themeColorHex?: string;
   description: string;
   archived?: boolean;
@@ -265,16 +271,21 @@ export interface MerchItemOptionMetadata {
   position: number;
 }
 
+export interface MerchItemPhoto {
+  uploadedPhoto: string;
+  position: number;
+}
+
+export interface MerchItemPhotoEdit {
+  uuid: string;
+  position?: number;
+}
+
 export interface MerchItemOption {
   quantity: number;
   price: number;
   discountPercentage?: number;
   metadata?: MerchItemOptionMetadata;
-}
-
-export interface MerchItemPhoto {
-  uploadedPhoto: string;
-  position: number;
 }
 
 export interface MerchItem extends CommonMerchItemProperties {
@@ -292,6 +303,7 @@ export interface MerchItemOptionEdit {
 
 export interface MerchItemEdit extends Partial<CommonMerchItemProperties> {
   options?: MerchItemOptionEdit[];
+  merchPhotos?: MerchItemPhotoEdit[];
 }
 
 export interface MerchOrderEdit {

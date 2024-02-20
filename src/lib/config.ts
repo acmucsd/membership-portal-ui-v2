@@ -87,7 +87,9 @@ const config = {
     cartRoute: '/store/cart',
     myOrdersRoute: '/store/orders',
     collectionRoute: '/store/collection/',
+    createCollectionRoute: '/store/collection/new',
     itemRoute: '/store/item/',
+    createItemRoute: '/store/item/new',
   },
   profile: {
     route: '/profile',
@@ -113,6 +115,10 @@ const config = {
   isDevelopment,
   file: {
     MAX_EVENT_COVER_SIZE_KB: isDevelopment ? 256 : 2048,
+    MAX_PROFILE_PICTURE_SIZE_KB: 256,
+    MAX_BANNER_SIZE_KB: isDevelopment ? 256 : 2048,
+    MAX_MERCH_PHOTO_SIZE_KB: 1024,
+    MAX_RESUME_SIZE_KB: isDevelopment ? 256 : 2048,
   },
 };
 

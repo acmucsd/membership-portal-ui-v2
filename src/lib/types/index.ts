@@ -2,11 +2,11 @@ export type URL = string;
 export type UUID = string;
 export type FillInLater = any;
 
-export type APIHandlerProps = {
-  onSuccessCallback?: (data?: any) => void;
-  onFailCallback?: (error?: any) => void;
+export type APIHandlerProps<T> = {
+  onSuccessCallback?: (data: T) => void;
+  onFailCallback?: (error: unknown) => void;
 };
 
-export interface AuthAPIHandlerProps extends APIHandlerProps {
+export interface AuthAPIHandlerProps<T> extends APIHandlerProps<T> {
   token: string;
 }

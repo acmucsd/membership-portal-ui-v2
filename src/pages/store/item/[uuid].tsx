@@ -1,7 +1,6 @@
 import { Typography } from '@/components/common';
 import { CartOptionsGroup, ItemHeader, Navbar, SizeSelector } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
-import config from '@/lib/config';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import {
@@ -17,11 +16,20 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 interface ItemPageProps {
+  uuid: string;
   user: PrivateProfile;
   item: PublicMerchItemWithPurchaseLimits;
+  previewPublic: boolean;
 }
 
-const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
+const StoreItemPage = ({
+  uuid,
+  user: { credits, accessType },
+  item,
+  previewPublic,
+}: ItemPageProps) => {
+  const storeAdminVisible =
+    PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
   const [selectedOption, setSelectedOption] = useState<PublicMerchItemOption | null | undefined>(
     item.options.find(option => option.quantity > 0) ?? item.options[0] ?? null
   );
@@ -45,10 +53,13 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
             itemName={item.itemName}
             cost={selectedOption?.price}
             discountPercentage={selectedOption?.discountPercentage ?? 0}
+            uuid={uuid}
+            showEdit={storeAdminVisible}
+            isHidden={storeAdminVisible && item.hidden}
           />
           {item.options.length > 1 ? (
             <SizeSelector
-              currOption={selectedOption?.metadata}
+              currOption={selectedOption?.metadata ?? undefined}
               onOptionChange={setSelectedOption}
               options={item.options}
             />
@@ -65,9 +76,7 @@ const StoreItemPage = ({ user: { credits }, item }: ItemPageProps) => {
             onAmountChange={setAmount}
             optionsKey={selectedOption?.metadata?.type}
           />
-          <Typography variant="h4/bold" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-            Item Description
-          </Typography>
+          <Typography variant="h4/bold">Item Description</Typography>
           <Typography
             variant="h5/regular"
             style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
@@ -85,16 +94,19 @@ export default StoreItemPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
   const uuid = params?.uuid as string;
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+  const preview = CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res });
 
   try {
     const item = await StoreAPI.getItem(uuid, token);
     return {
       props: {
+        uuid,
         item,
+        previewPublic: preview === 'member',
       },
     };
-  } catch (err: any) {
-    return { redirect: { destination: config.store.homeRoute, permanent: false } };
+  } catch {
+    return { notFound: true };
   }
 };
 

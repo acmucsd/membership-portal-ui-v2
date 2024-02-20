@@ -3,6 +3,7 @@ import { GoogleCalendarButton } from '@/components/events/CalendarButtons';
 import { config, showToast } from '@/lib';
 import { AdminEventManager } from '@/lib/managers';
 import { PublicEvent } from '@/lib/types/apiResponses';
+import { reportError } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -31,7 +32,7 @@ const ManageEventCard = ({ event }: IProps) => {
         showToast('Successfully created event!', 'Check your server to confirm all details');
       },
       onFailCallback: e => {
-        showToast('Error while generating Discord Event!', e);
+        reportError('Error while generating Discord Event!', e);
       },
     });
   };
@@ -62,7 +63,7 @@ const ManageEventCard = ({ event }: IProps) => {
         },
         onFailCallback: e => {
           setAcmurlLoading(false);
-          showToast('Error while generating ACMURL!', e);
+          reportError('Error while generating ACMURL!', e);
         },
       });
     }

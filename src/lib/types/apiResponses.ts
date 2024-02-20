@@ -1,4 +1,6 @@
-import { MerchItemOptionMetadata, URL, UUID } from '.';
+/* eslint-disable no-use-before-define */
+import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
+import { URL, UUID } from '.';
 import {
   ActivityScope,
   ActivityType,
@@ -8,6 +10,7 @@ import {
   OrderStatus,
   SocialMediaType,
   UserAccessType,
+  UserState,
 } from './enums';
 
 // RESPONSE TYPES
@@ -168,6 +171,7 @@ export interface PublicMerchCollection {
   title: string;
   themeColorHex?: string;
   description: string;
+  archived?: boolean;
   items: PublicMerchItem[];
   createdAt: Date;
 }
@@ -202,11 +206,11 @@ export interface PublicMerchItemOption {
   price: number;
   quantity: number;
   discountPercentage: number;
-  metadata: MerchItemOptionMetadata;
+  metadata: MerchItemOptionMetadata | null;
 }
 
 export interface PublicMerchItemPhoto {
-  uuid: Uuid;
+  uuid: UUID;
   uploadedPhoto: string;
   position: number;
   uploadedAt: Date;
@@ -279,9 +283,11 @@ export interface EditMerchItemResponse extends ApiResponse {
 
 export interface DeleteMerchItemResponse extends ApiResponse {}
 
-export interface UpdateMerchPhotoResponse extends ApiResponse {
-  item: PublicMerchItem;
+export interface CreateMerchPhotoResponse extends ApiResponse {
+  merchPhoto: PublicMerchItemPhoto;
 }
+
+export interface DeleteMerchItemPhotoResponse extends ApiResponse {}
 
 export interface CreateMerchItemOptionResponse extends ApiResponse {
   option: PublicMerchItemOption;
