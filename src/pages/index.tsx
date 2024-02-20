@@ -1,6 +1,6 @@
-import { EventCarousel } from '@/components/events';
+import { CheckInModal, EventCarousel } from '@/components/events';
 import Hero from '@/components/home/Hero';
-import { config, showToast } from '@/lib';
+import { showToast } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { attendEvent } from '@/lib/managers/EventManager';
@@ -30,9 +30,6 @@ const processCheckInResponse = (
 ): PublicEvent | undefined => {
   if ('uuid' in response) {
     // If the response contains a uuid, the response is a PublicEvent.
-    const title = `Checked in to ${response.title}!`;
-    const subtitle = `Thanks for checking in! You earned ${response.pointValue} points.`;
-    showToast(title, subtitle);
     return response;
   }
   showToast('Unable to checkin!', response.message);
@@ -48,6 +45,8 @@ const PortalHomePage = ({
   checkInResponse,
 }: HomePageProps) => {
   const [points, setPoints] = useState<number>(user.points);
+  const [checkinEvent, setCheckinEvent] = useState<PublicEvent | undefined>(undefined);
+  const [checkinModalVisible, setCheckinModalVisible] = useState<boolean>(false);
   const [attendance, setAttendance] = useState<PublicAttendance[]>(attendances);
 
   const checkin = async (attendanceCode: string): Promise<void> => {
@@ -66,6 +65,8 @@ const PortalHomePage = ({
         feedback: [],
       };
       setAttendance(prevAttendances => [...prevAttendances, newAttendance]);
+      setCheckinEvent(event);
+      setCheckinModalVisible(true);
     }
   };
 
@@ -73,14 +74,17 @@ const PortalHomePage = ({
     if (checkInResponse) {
       // In dev mode, this runs twice because of reactStrictMode in nextConfig.
       // This will only be run once in prod or deployment.
-      processCheckInResponse(checkInResponse);
-      // Clear the query params without re-triggering getServerSideProps.
-      window.history.replaceState(null, '', config.homeRoute);
+      const event = processCheckInResponse(checkInResponse);
+      if (event) {
+        setCheckinEvent(event);
+        setCheckinModalVisible(true);
+      }
     }
-  }, [checkInResponse]);
+  }, [checkInResponse, user]);
 
   return (
     <div className={styles.page}>
+      <CheckInModal open={checkinModalVisible} event={checkinEvent} onClose={() => {}} />
       <Hero firstName={user.firstName} points={points} checkin={code => checkin(code)} />
 
       {liveEvents.length > 0 && (
@@ -167,5 +171,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.loggedInUser
+  PermissionService.loggedInUser,
+  undefined,
+  true
 );

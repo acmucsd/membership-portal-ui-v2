@@ -167,6 +167,10 @@ const EventDetailsForm = (props: IProps) => {
         setLoading(false);
         router.push(config.admin.events.homeRoute);
       },
+      onFailCallback: error => {
+        setLoading(false);
+        showToast('Unable to create event', getMessagesFromError(error).join());
+      },
     });
   };
 
