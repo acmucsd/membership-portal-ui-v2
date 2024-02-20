@@ -1,18 +1,17 @@
+import { Typography } from '@/components/common';
 import styles from '@/components/store/SizeSelector/style.module.scss';
 import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
 import { PublicMerchItemOption } from '@/lib/types/apiResponses';
+import { toTitleCase } from '@/lib/utils';
 import { Fragment, useId } from 'react';
 
 interface SizeSelectorProps {
   currOption: MerchItemOptionMetadata | undefined;
   options: PublicMerchItemOption[];
-  onSizeChange: (currSize: MerchItemOptionMetadata) => void;
-}
-function toTitleCase(str: string) {
-  return str.toLowerCase().replace(/\.\s*([a-z])|^[a-z]/gm, s => s.toUpperCase());
+  onOptionChange: (currSize: PublicMerchItemOption) => void;
 }
 
-const SizeSelector = ({ currOption, options, onSizeChange }: SizeSelectorProps) => {
+const SizeSelector = ({ currOption, options, onOptionChange }: SizeSelectorProps) => {
   const myID = useId();
   const myOptions = options
     .sort((a, b) => (a.metadata?.position ?? 0) - (b.metadata?.position ?? 0))
@@ -24,27 +23,23 @@ const SizeSelector = ({ currOption, options, onSizeChange }: SizeSelectorProps) 
             id={tempId}
             name="state-d"
             type="radio"
-            defaultChecked={currOption === val.metadata?.value}
-            onClick={() => val.metadata && onSizeChange(val.metadata)}
+            defaultChecked={currOption?.value === val.metadata?.value}
+            onClick={() => onOptionChange(val)}
           />
           <label htmlFor={tempId}>{val.metadata?.value}</label>
         </Fragment>
       );
     });
 
-  return (
+  return options.length > 1 && options ? (
     <div className={styles.sizeSelector}>
-      {options.length > 1 ? (
-        <>
-          {options[0]?.metadata?.type === undefined ? (
-            <h4>Options</h4>
-          ) : (
-            <h4>{toTitleCase(options[0]?.metadata.type)}</h4>
-          )}
-          <form className={styles.switch}>{myOptions}</form>
-        </>
-      ) : null}
+      {options[0]?.metadata?.type === undefined ? (
+        <Typography variant="h4/bold">Options</Typography>
+      ) : (
+        <Typography variant="h4/bold">{toTitleCase(options[0]?.metadata.type)}</Typography>
+      )}
+      <form className={styles.switch}>{myOptions}</form>
     </div>
-  );
+  ) : null;
 };
 export default SizeSelector;

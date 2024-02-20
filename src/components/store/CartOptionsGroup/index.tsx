@@ -1,4 +1,4 @@
-import { Dropdown } from '@/components/common';
+import { Dropdown, Typography } from '@/components/common';
 import { useId } from 'react';
 import styles from './style.module.scss';
 
@@ -27,44 +27,51 @@ const CartOptionsGroup = ({
 }: CartOptionGroupProps) => {
   const myID = useId();
 
+  // 20 is a number decided upon to prevent large maximum purchase limits from crashing the webpage
   const maxCanBuy = Math.min(20, Math.min(lifetimeRemaining, monthlyRemaining));
+
+  const isPurchasable = inStock && maxCanBuy > 0;
+  const noOptionSelected = currOption === undefined && optionsKey != null;
 
   let buyButtonText = 'Add to Cart';
 
   if (maxCanBuy === 0) {
     buyButtonText = 'Limit Reached';
-  } else if (currOption === undefined) {
-    buyButtonText = 'Select a Size';
+  } else if (currOption === undefined && optionsKey !== undefined) {
+    buyButtonText = `Select a ${optionsKey}`;
   } else if (inStock) {
     buyButtonText = 'Add to Cart';
   } else {
     buyButtonText = 'Out of Stock';
   }
 
-  const optionArr: Array<{ value: string; label: string }> = [];
-
-  for (let i = 1; i <= maxCanBuy; i += 1) {
-    optionArr.push({ value: `${i}`, label: `${i}` });
-  }
+  // Fills values of the Dropdown to be increasing sequential numbers
+  const optionArr: Array<{ value: string; label: string }> = Array(maxCanBuy)
+    .fill({ value: `${1}`, label: `${1}` })
+    .map((_, index) => {
+      return { value: `${index + 1}`, label: `${index + 1}` };
+    });
 
   return (
     <div className={styles.addCartGroup}>
+      <p>{`In cart: ${inCart}`}</p>
+
       {maxCanBuy > 0 ? (
-        <p>You can buy up to {maxCanBuy} of this item.</p>
+        <Typography variant="h5/regular">You can buy up to {maxCanBuy} of this item.</Typography>
       ) : (
-        <p>You can&apos;t buy any more of this item!.</p>
+        <Typography variant="h5/regular">You can&apos;t buy any more of this item!.</Typography>
       )}
-      {currOption === undefined ? (
-        <p className={styles.error}>
+      {noOptionSelected ? (
+        <Typography variant="h5/regular" className={styles.error}>
           {`Please select a ${optionsKey?.toLocaleLowerCase() ?? 'option'}`}.
-        </p>
+        </Typography>
       ) : null}
 
-      {currOption === undefined ? null : (
+      {noOptionSelected ? null : (
         <div className={styles.buttonRow}>
-          {!inStock || maxCanBuy <= 1 ? null : (
+          {!isPurchasable ? null : (
             <div className={styles.quantityColumn}>
-              <h4>Quantity</h4>
+              <Typography variant="h4/bold">Quantity</Typography>
               <Dropdown
                 name={`options${currOption}_${optionsKey}${myID}`}
                 ariaLabel={`Dropdown to select the number of items to purchase for ${myID}`}
@@ -76,12 +83,12 @@ const CartOptionsGroup = ({
           )}
 
           <button
-            className={`${inStock && maxCanBuy > 0 ? styles.buttonInStock : styles.buttonNoStock} ${
+            className={`${isPurchasable ? styles.buttonInStock : styles.buttonNoStock} ${
               styles.button
             }`}
             type="button"
             onClick={() => onCartChange(!inCart)}
-            disabled={!inStock || maxCanBuy === 0}
+            disabled={!isPurchasable}
           >
             {buyButtonText}
           </button>

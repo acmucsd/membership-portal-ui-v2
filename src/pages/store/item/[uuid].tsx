@@ -1,8 +1,8 @@
+import { Typography } from '@/components/common';
 import { CartOptionsGroup, ItemHeader, Navbar, SizeSelector } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
 import {
   PrivateProfile,
   PublicMerchItemOption,
@@ -30,17 +30,11 @@ const StoreItemPage = ({
 }: ItemPageProps) => {
   const storeAdminVisible =
     PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
-  const [selectedOption, setSelectedOption] = useState<MerchItemOptionMetadata | undefined>(
-    item.options.length <= 1 ? { type: 'Y', value: 'Y', position: 0 } : undefined
+  const [selectedOption, setSelectedOption] = useState<PublicMerchItemOption | null | undefined>(
+    item.options.find(option => option.quantity > 0) ?? item.options[0] ?? null
   );
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
-
-  const currItemOption: PublicMerchItemOption | null | undefined =
-    item.options.find(val => val.metadata?.value === selectedOption?.value) ??
-    item.options.find(option => option.quantity > 0) ??
-    item.options[0] ??
-    null;
 
   return (
     <div className={styles.navbarBodyDiv}>
@@ -57,16 +51,16 @@ const StoreItemPage = ({
         <div className={styles.optionsContainer}>
           <ItemHeader
             itemName={item.itemName}
-            cost={currItemOption?.price}
-            discountPercentage={currItemOption?.discountPercentage}
+            cost={selectedOption?.price}
+            discountPercentage={selectedOption?.discountPercentage ?? 0}
             uuid={uuid}
             showEdit={storeAdminVisible}
             isHidden={storeAdminVisible && item.hidden}
           />
           {item.options.length > 1 ? (
             <SizeSelector
-              currOption={selectedOption}
-              onSizeChange={setSelectedOption}
+              currOption={selectedOption?.metadata ?? undefined}
+              onOptionChange={setSelectedOption}
               options={item.options}
             />
           ) : null}
@@ -74,16 +68,23 @@ const StoreItemPage = ({
           <CartOptionsGroup
             inCart={inCart}
             onCartChange={setInCart}
-            currOption={selectedOption?.value}
-            inStock={currItemOption?.quantity != null && currItemOption?.quantity >= 1}
+            currOption={selectedOption?.metadata?.value}
+            inStock={selectedOption?.quantity != null && selectedOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}
             amountToBuy={amount}
             onAmountChange={setAmount}
-            optionsKey={currItemOption?.metadata?.type ?? ''}
+            optionsKey={selectedOption?.metadata?.type ?? ''}
           />
-          <h4>Item Description</h4>
-          <p>{item.description}</p>
+          <Typography variant="h4/bold" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+            Item Description
+          </Typography>
+          <Typography
+            variant="h5/regular"
+            style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+          >
+            {item.description}
+          </Typography>
         </div>
       </div>
     </div>

@@ -213,6 +213,15 @@ export const formatURLEventTitle = (title: string): string => {
   return encodeURIComponent(title.toLowerCase().trim().replace(/ /g, '-'));
 };
 
+/**
+ *
+ * @param str string to capitalize
+ * @returns the same string, but with the first letter of each word capitalized.
+ */
+export function toTitleCase(str: string) {
+  return str.toLowerCase().replace(/\.\s*([a-z])|^[a-z]/gm, s => s.toUpperCase());
+}
+
 /** Year ACM was founded. */
 const START_YEAR = 2019;
 /** Number of seconds in a day. */

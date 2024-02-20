@@ -62,7 +62,7 @@ const ROWS_PER_PAGE = 25;
 const EventsPage = ({ events, attendances }: EventsPageProps) => {
   const [page, setPage] = useState(0);
   const [communityFilter, setCommunityFilter] = useState('all');
-  const [dateFilter, setDateFilter] = useState('all-time');
+  const [dateFilter, setDateFilter] = useState('upcoming');
   const [attendedFilter, setAttendedFilter] = useState('all');
   const [query, setQuery] = useState('');
 
