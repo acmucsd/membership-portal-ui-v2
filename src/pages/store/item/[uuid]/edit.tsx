@@ -44,5 +44,5 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canEditMerchItems,
-  config.admin.homeRoute
+  { redirectTo: config.admin.homeRoute }
 );

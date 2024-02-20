@@ -109,5 +109,5 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canViewAdminPage,
-  config.homeRoute
+  { redirectTo: config.homeRoute, disableCaching: true }
 );
