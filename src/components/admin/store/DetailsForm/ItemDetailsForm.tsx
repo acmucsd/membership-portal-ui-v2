@@ -10,6 +10,7 @@ import {
   PublicMerchItem,
   PublicMerchItemOption,
 } from '@/lib/types/apiResponses';
+import { reportError } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -99,23 +100,23 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
   const createItem: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
 
-    const uuid = await AdminStoreManager.createNewItem(
-      token,
-      {
-        ...formData,
-        hasVariantsEnabled: options.length > 1,
-        merchPhotos: [],
-        options: options.map((option, position) => ({
-          price: +option.price,
-          quantity: +option.quantity,
-          discountPercentage: +option.discountPercentage,
-          metadata:
-            options.length > 1 ? { type: optionType, value: option.value, position } : undefined,
-        })),
-      },
-      merchPhotos.flatMap(photo => (photo.uuid !== undefined ? [] : [photo.blob]))
-    );
-    if (uuid) {
+    try {
+      const uuid = await AdminStoreManager.createNewItem(
+        token,
+        {
+          ...formData,
+          hasVariantsEnabled: options.length > 1,
+          merchPhotos: [],
+          options: options.map((option, position) => ({
+            price: +option.price,
+            quantity: +option.quantity,
+            discountPercentage: +option.discountPercentage,
+            metadata:
+              options.length > 1 ? { type: optionType, value: option.value, position } : undefined,
+          })),
+        },
+        merchPhotos.flatMap(photo => (photo.uuid !== undefined ? [] : [photo.blob]))
+      );
       showToast('Item created successfully!', '', [
         {
           text: 'Continue editing',
@@ -123,7 +124,8 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
         },
       ]);
       router.replace(`${config.store.itemRoute}/${uuid}`);
-    } else {
+    } catch (error) {
+      reportError('Could not create item', error);
       setLoading(false);
     }
   };
@@ -134,22 +136,22 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
     }
     const { uuid } = lastSaved;
     setLoading(true);
-    const item = await AdminStoreManager.editItem(
-      token,
-      uuid,
-      lastSaved,
-      formData,
-      optionType,
-      options.map(option => ({
-        price: +option.price,
-        quantity: +option.quantity,
-        discountPercentage: +option.discountPercentage,
-        uuid: option.uuid,
-        variant: option.value,
-      })),
-      merchPhotos.map(photo => (photo.uuid !== undefined ? photo.uuid : photo.blob))
-    );
-    if (item) {
+    try {
+      const item = await AdminStoreManager.editItem(
+        token,
+        uuid,
+        lastSaved,
+        formData,
+        optionType,
+        options.map(option => ({
+          price: +option.price,
+          quantity: +option.quantity,
+          discountPercentage: +option.discountPercentage,
+          uuid: option.uuid,
+          variant: option.value,
+        })),
+        merchPhotos.map(photo => (photo.uuid !== undefined ? photo.uuid : photo.blob))
+      );
       setLastSaved(item);
       setOptions(
         item.options
@@ -168,8 +170,11 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           onClick: () => router.push(`${config.store.itemRoute}/${uuid}`),
         },
       ]);
+    } catch (error) {
+      reportError('Could not save changes', error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const deleteItem = async () => {
@@ -177,10 +182,12 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
       return;
     }
     setLoading(true);
-    if (await AdminStoreManager.deleteItem(token, lastSaved.uuid)) {
+    try {
+      await AdminStoreManager.deleteItem(token, lastSaved.uuid);
       showToast('Item deleted successfully');
       router.replace(config.store.homeRoute);
-    } else {
+    } catch (error) {
+      reportError('Could not delete item', error);
       setLoading(false);
     }
   };

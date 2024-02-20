@@ -4,6 +4,7 @@ import { config, showToast } from '@/lib';
 import { AdminStoreManager } from '@/lib/managers';
 import { MerchCollection } from '@/lib/types/apiRequests';
 import { PublicMerchCollection } from '@/lib/types/apiResponses';
+import { reportError } from '@/lib/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -42,8 +43,8 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
   const createCollection: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
 
-    const uuid = await AdminStoreManager.createNewCollection(token, formData);
-    if (uuid) {
+    try {
+      const uuid = await AdminStoreManager.createNewCollection(token, formData);
       showToast('Collection created successfully!', '', [
         {
           text: 'Continue editing',
@@ -51,7 +52,8 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
         },
       ]);
       router.replace(`${config.store.collectionRoute}/${uuid}`);
-    } else {
+    } catch (error) {
+      reportError('Could not create collection', error);
       setLoading(false);
     }
   };
@@ -61,23 +63,29 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
 
     const uuid = defaultData.uuid ?? '';
 
-    if (await AdminStoreManager.editCollection(token, uuid, formData)) {
+    try {
+      await AdminStoreManager.editCollection(token, uuid, formData);
       showToast('Collection details saved!', '', [
         {
           text: 'View public collection page',
           onClick: () => router.push(`${config.store.collectionRoute}/${uuid}`),
         },
       ]);
+    } catch (error) {
+      reportError('Could not save changes', error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const deleteCollection = async () => {
     setLoading(true);
-    if (await AdminStoreManager.deleteCollection(token, defaultData.uuid ?? '')) {
+    await AdminStoreManager.deleteCollection(token, defaultData.uuid ?? '');
+    try {
       showToast('Collection deleted successfully');
       router.replace(config.store.homeRoute);
-    } else {
+    } catch (error) {
+      reportError('Could not delete collection', error);
       setLoading(false);
     }
   };
