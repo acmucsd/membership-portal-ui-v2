@@ -23,8 +23,8 @@ const ItemHeader = ({
 }: ItemHeaderProps) => {
   return (
     <div className={styles.itemHeaderGroup}>
-      <Typography variant="h1/bold" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-        {itemName}
+      <Typography variant="h1/bold" className={styles.itemName}>
+        <span>{itemName}</span>
         {uuid && showEdit ? <EditButton type="item" uuid={uuid} /> : null}
         {isHidden ? <HiddenIcon type="item" /> : null}
       </Typography>

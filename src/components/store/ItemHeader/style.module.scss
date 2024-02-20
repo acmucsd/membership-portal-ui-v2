@@ -14,6 +14,16 @@
   flex-wrap: wrap;
   gap: 1rem;
 
+  .itemName {
+    display: flex;
+
+    span {
+      margin-right: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  }
+
   .error {
     color: vars.$danger-1;
   }

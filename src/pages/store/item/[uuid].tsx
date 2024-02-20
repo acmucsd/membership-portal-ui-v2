@@ -74,11 +74,9 @@ const StoreItemPage = ({
             monthlyRemaining={item.monthlyRemaining}
             amountToBuy={amount}
             onAmountChange={setAmount}
-            optionsKey={selectedOption?.metadata?.type ?? ''}
+            optionsKey={selectedOption?.metadata?.type}
           />
-          <Typography variant="h4/bold" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-            Item Description
-          </Typography>
+          <Typography variant="h4/bold">Item Description</Typography>
           <Typography
             variant="h5/regular"
             style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}

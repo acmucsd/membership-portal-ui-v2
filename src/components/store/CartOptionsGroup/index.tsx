@@ -9,7 +9,7 @@ interface CartOptionGroupProps {
   lifetimeRemaining: number;
   monthlyRemaining: number;
   amountToBuy: number;
-  optionsKey: string;
+  optionsKey?: string;
   onCartChange: (inCart: boolean) => void;
   onAmountChange: (amountToBuy: number) => void;
 }
@@ -31,7 +31,7 @@ const CartOptionsGroup = ({
   const maxCanBuy = Math.min(20, Math.min(lifetimeRemaining, monthlyRemaining));
 
   const isPurchasable = inStock && maxCanBuy > 0;
-  const noOptionSelected = currOption === undefined && optionsKey != null;
+  const noOptionSelected = currOption === undefined && optionsKey !== undefined;
 
   let buyButtonText = 'Add to Cart';
 
@@ -46,20 +46,18 @@ const CartOptionsGroup = ({
   }
 
   // Fills values of the Dropdown to be increasing sequential numbers
-  const optionArr: Array<{ value: string; label: string }> = Array(maxCanBuy)
-    .fill({ value: `${1}`, label: `${1}` })
-    .map((_, index) => {
-      return { value: `${index + 1}`, label: `${index + 1}` };
-    });
+  const optionArr = Array.from({ length: maxCanBuy }, (_, index) => {
+    return { value: `${index + 1}`, label: `${index + 1}` };
+  });
 
   return (
     <div className={styles.addCartGroup}>
-      <p>{`In cart: ${inCart}`}</p>
+      <p>In cart: {inCart}</p>
 
       {maxCanBuy > 0 ? (
         <Typography variant="h5/regular">You can buy up to {maxCanBuy} of this item.</Typography>
       ) : (
-        <Typography variant="h5/regular">You can&apos;t buy any more of this item!.</Typography>
+        <Typography variant="h5/regular">You can&rsquo;t buy any more of this item!.</Typography>
       )}
       {noOptionSelected ? (
         <Typography variant="h5/regular" className={styles.error}>

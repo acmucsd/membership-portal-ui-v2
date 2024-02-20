@@ -1,6 +1,7 @@
 export type Styles = {
   error: string;
   itemHeaderGroup: string;
+  itemName: string;
   price: string;
   valid: string;
 };

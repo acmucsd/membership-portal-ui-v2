@@ -33,11 +33,11 @@ const SizeSelector = ({ currOption, options, onOptionChange }: SizeSelectorProps
 
   return options.length > 1 && options ? (
     <div className={styles.sizeSelector}>
-      {options[0]?.metadata?.type === undefined ? (
-        <Typography variant="h4/bold">Options</Typography>
-      ) : (
-        <Typography variant="h4/bold">{toTitleCase(options[0]?.metadata.type)}</Typography>
-      )}
+      <Typography variant="h4/bold">
+        {options[0]?.metadata?.type === undefined
+          ? 'Options'
+          : toTitleCase(options[0]?.metadata.type)}
+      </Typography>
       <form className={styles.switch}>{myOptions}</form>
     </div>
   ) : null;
