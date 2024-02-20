@@ -34,8 +34,7 @@ interface CropperProps {
    *
    * The cropper will first try to produce a PNG image then JPG images of
    * decreasing quality until the threshold is met. If a JPG image of 0 quality
-   * is still too large, the cropper will close with `reason:
-   * 'cannot-compress'`.
+   * is still too large, the cropper will close and show an error.
    */
   maxSize?: number;
   onCrop: (file: Blob) => void;

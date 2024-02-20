@@ -23,7 +23,6 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
   const router = useRouter();
   const initialValues: FormValues = {
     title: defaultData.title ?? '',
-    // ACM blue
     themeColorHex: defaultData.themeColorHex ?? style.defaultThemeColorHex,
     description: defaultData.description ?? '',
     archived: defaultData.archived ?? false,
@@ -144,7 +143,7 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
       <div className={style.submitButtons}>
         {mode === 'edit' ? (
           <>
-            <Button type="submit" disabled={loading}>
+            <Button submit disabled={loading}>
               Save changes
             </Button>
             <Button onClick={resetForm} disabled={loading} destructive>
@@ -156,7 +155,7 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
           </>
         ) : (
           <>
-            <Button type="submit" disabled={loading}>
+            <Button submit disabled={loading}>
               Create collection
             </Button>
             <Button onClick={resetForm} disabled={loading} destructive>

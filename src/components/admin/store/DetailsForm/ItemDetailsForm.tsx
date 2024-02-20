@@ -311,7 +311,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
         <div className={style.submitButtons}>
           {mode === 'edit' ? (
             <>
-              <Button type="submit" disabled={loading}>
+              <Button submit disabled={loading}>
                 Save changes
               </Button>
               <Button onClick={resetForm} disabled={loading} destructive>
@@ -323,7 +323,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
             </>
           ) : (
             <>
-              <Button type="submit" disabled={loading}>
+              <Button submit disabled={loading}>
                 Create item
               </Button>
               <Button onClick={resetForm} disabled={loading} destructive>
