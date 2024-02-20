@@ -74,7 +74,7 @@ const Hero = ({ firstName, points, checkin }: HeroProps) => {
               </button>
             </div>
           </form>
-          <Link href={config.storeRoute} className={styles.link}>
+          <Link href={config.store.homeRoute} className={styles.link}>
             <ShopIcon />
             <Typography variant="h4/regular" className={styles.subheading}>
               Spend points on merch

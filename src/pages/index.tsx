@@ -5,12 +5,7 @@ import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { attendEvent } from '@/lib/managers/EventManager';
 import { CookieService, PermissionService } from '@/lib/services';
-import type {
-  CustomErrorBody,
-  PrivateProfile,
-  PublicAttendance,
-  PublicEvent,
-} from '@/lib/types/apiResponses';
+import type { PrivateProfile, PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/Home.module.scss';
 import { GetServerSideProps } from 'next';
@@ -22,17 +17,17 @@ interface HomePageProps {
   upcomingEvents: PublicEvent[];
   liveEvents: PublicEvent[];
   attendances: PublicAttendance[];
-  checkInResponse: PublicEvent | CustomErrorBody | null;
+  checkInResponse: PublicEvent | { error: string } | null;
 }
 
 const processCheckInResponse = (
-  response: PublicEvent | CustomErrorBody
+  response: PublicEvent | { error: string }
 ): PublicEvent | undefined => {
   if ('uuid' in response) {
     // If the response contains a uuid, the response is a PublicEvent.
     return response;
   }
-  showToast('Unable to checkin!', response.message);
+  showToast('Unable to checkin!', response.error);
   return undefined;
 };
 
@@ -91,32 +86,32 @@ const PortalHomePage = ({
       />
       <Hero firstName={user.firstName} points={points} checkin={code => checkin(code)} />
 
-      {liveEvents.length > 0 && (
+      {liveEvents.length > 0 ? (
         <EventCarousel
           title="Live Events"
           description="Blink and you'll miss it! These events are happening RIGHT NOW!"
           events={liveEvents}
           attendances={attendance}
         />
-      )}
+      ) : null}
 
-      {upcomingEvents.length > 0 && (
+      {upcomingEvents.length > 0 ? (
         <EventCarousel
           title="Upcoming Events"
           description="Mark your calendars! These events are just around the corner!"
           events={upcomingEvents} // Slicing past events so the carousel doesn't balloon.
           attendances={attendance}
         />
-      )}
+      ) : null}
 
-      {pastEvents.length > 0 && (
+      {pastEvents.length > 0 ? (
         <EventCarousel
           title="Past Events"
           description="Take a look at some of ACM's past events!"
           events={pastEvents} // Slicing past events so the carousel doesn't balloon.
           attendances={attendance}
         />
-      )}
+      ) : null}
     </div>
   );
 };

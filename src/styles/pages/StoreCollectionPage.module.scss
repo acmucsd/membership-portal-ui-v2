@@ -8,33 +8,19 @@
   max-width: 81rem;
 
   .header {
-    align-items: center;
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
 
-    h2 {
-      flex: auto;
-      font-size: 1.5rem;
-      @media screen and (max-width: vars.$breakpoint-sm) {
-        font-size: 1.25rem;
-      }
-    }
-
-    .viewToggle {
-      background: none;
-      flex: none;
-      font: inherit;
-      padding: 0;
-
-      &:hover {
-        text-decoration: underline;
-      }
+    h1 {
+      display: flex;
+      gap: 1rem;
     }
   }
 
   .collections {
     display: grid;
-    gap: 2rem;
+    gap: 1rem;
     grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
     @media screen and (max-width: vars.$breakpoint-sm) {
       grid-template-columns: 1fr;

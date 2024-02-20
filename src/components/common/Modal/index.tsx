@@ -44,14 +44,14 @@ const Modal = ({ title, open, onClose, children, bottomSheet }: ModalProps) => {
           bottomSheet ? styles.bottomSheet : ''
         }`}
       >
-        {title && (
+        {title ? (
           <div className={styles.header}>
             <h1>{title}</h1>
             <button type="submit" className={styles.close} aria-label="Close">
               <CloseIcon aria-hidden />
             </button>
           </div>
-        )}
+        ) : null}
         {children}
       </form>
     </dialog>

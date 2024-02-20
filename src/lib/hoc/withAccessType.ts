@@ -5,19 +5,25 @@ import type { URL } from '@/lib/types';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, UserAccessType } from '@/lib/types/enums';
 import type { GetServerSideProps, GetServerSidePropsContext } from 'next';
+
+interface AccessTypeOptions {
+  /**
+   * URL to send users without valid access level
+   */
+  redirectTo?: URL;
+}
+
 /**
  * Redirects to login if user is not logged in and allowed to see the specified page
  * @param gssp Server-side props function to run afterwards
  * @param validAccessTypes Access types that can see this page
- * @param redirectTo URL to send users without valid access level
- * @param disableCaching Flag to disable page caching and so SSR props are refetched on redirects.
+ * @param options Other page-specific options
  * @returns
  */
 export default function withAccessType(
   gssp: GetServerSideProps,
   validAccessTypes: UserAccessType[],
-  redirectTo?: URL,
-  disableCaching?: boolean
+  { redirectTo = config.loginRoute }: AccessTypeOptions = {}
 ): GetServerSideProps {
   // Generate a new getServerSideProps function by taking the return value of the original function and appending the user prop onto it if the user cookie exists, otherwise force user to login page
   const modified: GetServerSideProps = async (context: GetServerSidePropsContext) => {
@@ -29,7 +35,7 @@ export default function withAccessType(
     const currentPageURL = req.url as string;
     const recoveryQueryString = `?destination=${encodeURIComponent(currentPageURL)}`;
     const loginRedirectURL = loginRoute;
-    const missingAccessRedirectURL = redirectTo ?? loginRoute;
+    const missingAccessRedirectURL = redirectTo;
 
     const loginRedirect = {
       redirect: {
@@ -86,10 +92,6 @@ export default function withAccessType(
         existingProps.user = user;
         originalReturnValue.props = existingProps;
       }
-    }
-
-    if (disableCaching) {
-      res.setHeader('Cache-Control', 'no-store');
     }
 
     return originalReturnValue;

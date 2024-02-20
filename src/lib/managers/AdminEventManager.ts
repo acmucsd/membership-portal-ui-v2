@@ -9,13 +9,15 @@ import {
   GenerateACMURLRequest,
   UploadEventImageRequest,
 } from '@/lib/types/apiRequests';
-import type { NotionEventDetails } from '@/lib/types/apiResponses';
+import type { NotionEventDetails, PublicEvent } from '@/lib/types/apiResponses';
 
 interface GetEventFromNotion {
   pageUrl: URL;
 }
 
-export const getEventFromNotionURL = async (data: GetEventFromNotion & APIHandlerProps) => {
+export const getEventFromNotionURL = async (
+  data: GetEventFromNotion & APIHandlerProps<NotionEventDetails>
+) => {
   const { pageUrl, onSuccessCallback, onFailCallback } = data;
 
   // Added this additional check here because it was erroring on empty data
@@ -28,8 +30,8 @@ export const getEventFromNotionURL = async (data: GetEventFromNotion & APIHandle
     const eventInfo: NotionEventDetails = await KlefkiAPI.getNotionEventPage(pageUrl);
 
     onSuccessCallback?.(eventInfo);
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
   }
 };
 
@@ -37,28 +39,30 @@ export const getEventFromNotionURL = async (data: GetEventFromNotion & APIHandle
  * Create Discord event
  * @param data
  */
-export const createDiscordEvent = async (data: CreateDiscordEventRequest & APIHandlerProps) => {
+export const createDiscordEvent = async (
+  data: CreateDiscordEventRequest & APIHandlerProps<void>
+) => {
   const { onSuccessCallback, onFailCallback, ...event } = data;
   try {
     await KlefkiAPI.createDiscordEvent(event);
     onSuccessCallback?.();
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
   }
 };
 
-export const generateACMURL = async (data: GenerateACMURLRequest & APIHandlerProps) => {
+export const generateACMURL = async (data: GenerateACMURLRequest & APIHandlerProps<void>) => {
   const { onSuccessCallback, onFailCallback, ...acmurlInfo } = data;
   try {
     await KlefkiAPI.generateACMURL(acmurlInfo);
     onSuccessCallback?.();
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
   }
 };
 
 export const createNewEvent = async (
-  data: CreateEventRequest & UploadEventImageRequest & AuthAPIHandlerProps
+  data: CreateEventRequest & UploadEventImageRequest & AuthAPIHandlerProps<PublicEvent>
 ) => {
   const { onSuccessCallback, onFailCallback, token, event, cover } = data;
 
@@ -71,8 +75,8 @@ export const createNewEvent = async (
     await EventAPI.uploadEventImage(token, createdEvent.uuid, cover);
 
     onSuccessCallback?.(createdEvent);
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
   }
 };
 
@@ -82,7 +86,7 @@ interface EditEventRequest {
   uuid: UUID;
 }
 
-export const editEvent = async (data: EditEventRequest & AuthAPIHandlerProps) => {
+export const editEvent = async (data: EditEventRequest & AuthAPIHandlerProps<PublicEvent>) => {
   const { onSuccessCallback, onFailCallback, token, event, uuid } = data;
   if (data.cover && data.cover.size > config.file.MAX_EVENT_COVER_SIZE_KB * 1024) {
     onFailCallback?.(new Error('Cover size too large'));
@@ -98,8 +102,8 @@ export const editEvent = async (data: EditEventRequest & AuthAPIHandlerProps) =>
     }
 
     onSuccessCallback?.(modifiedEvent);
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
   }
 };
 interface PatchEventRequest {
@@ -107,26 +111,26 @@ interface PatchEventRequest {
   cover: File;
 }
 
-export const uploadEventImage = async (data: PatchEventRequest & AuthAPIHandlerProps) => {
+export const uploadEventImage = async (data: PatchEventRequest & AuthAPIHandlerProps<void>) => {
   const { onSuccessCallback, onFailCallback, token, uuid, cover } = data;
 
   try {
     await EventAPI.uploadEventImage(token, uuid, cover);
 
     onSuccessCallback?.();
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
   }
 };
 
-export const deleteEvent = async (data: DeleteEventRequest & AuthAPIHandlerProps) => {
+export const deleteEvent = async (data: DeleteEventRequest & AuthAPIHandlerProps<void>) => {
   const { onSuccessCallback, onFailCallback, token, event } = data;
 
   try {
     await EventAPI.deleteEvent(token, event);
 
     onSuccessCallback?.();
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
   }
 };

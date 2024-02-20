@@ -15,20 +15,20 @@ const Navbar = ({ balance, showBack }: NavbarProps) => {
 
   return (
     <nav className={styles.navbar}>
-      {showBack && (
+      {showBack ? (
         <button type="button" className={styles.back} onClick={() => router.back()}>
           <BackArrow aria-hidden="true" />
           Back
         </button>
-      )}
+      ) : null}
       <div className={styles.rightSide}>
         <span>
           <strong>Balance:</strong> <Diamonds count={balance} />
         </span>
-        <Link href={config.cartRoute} className={styles.navlink}>
+        <Link href={config.store.cartRoute} className={styles.navlink}>
           Cart
         </Link>
-        <Link href={config.myOrdersRoute} className={styles.navlink}>
+        <Link href={config.store.myOrdersRoute} className={styles.navlink}>
           My Orders
         </Link>
       </div>
