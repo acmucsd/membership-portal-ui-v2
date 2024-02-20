@@ -342,17 +342,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           setMerchPhotos(photos => [...photos, { blob, uploadedPhoto: URL.createObjectURL(blob) }]);
           setPhoto(null);
         }}
-        onClose={reason => {
-          setPhoto(null);
-          if (reason === 'cannot-compress') {
-            showToast(
-              'Your image has too much detail and cannot be compressed.',
-              'Try shrinking your image.'
-            );
-          } else if (reason !== null) {
-            showToast('This image format is not supported.');
-          }
-        }}
+        onClose={() => setPhoto(null)}
       />
     </>
   );

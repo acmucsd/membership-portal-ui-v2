@@ -1,4 +1,5 @@
 import Modal from '@/components/common/Modal';
+import { showToast } from '@/lib';
 import { useObjectUrl } from '@/lib/utils';
 import Image from 'next/image';
 import { PointerEvent, useCallback, useRef, useState } from 'react';
@@ -38,7 +39,16 @@ interface CropperProps {
    */
   maxSize?: number;
   onCrop: (file: Blob) => void;
-  onClose: (reason: 'invalid-image' | 'cannot-compress' | null) => void;
+  /**
+   * Called when the user cancels cropping or there is an error. `Cropper`
+   * automatically shows toasts for errors, so this callback only needs to set
+   * the `file` prop to null.
+   *
+   * When the user successfully crops, only `onCrop` is called and not
+   * `onClose`. This way, you can keep the modal open for the user to try again
+   * later if uploading the image fails due to RESNET-PROTECTED.
+   */
+  onClose: () => void;
 }
 
 const Cropper = ({
@@ -70,12 +80,13 @@ const Cropper = ({
   // onError callback needs to be memoized lest next/image reload the image
   const handleImageError = useCallback(() => {
     if (file !== null) {
-      onClose('invalid-image');
+      showToast('This image format is not supported.');
+      onClose();
     }
   }, [file, onClose]);
 
   return (
-    <Modal title="Edit image" open={loaded === file && file !== null} onClose={() => onClose(null)}>
+    <Modal title="Edit image" open={loaded === file && file !== null} onClose={onClose}>
       <div
         className={styles.cropWrapper}
         onPointerDown={e => {
@@ -192,7 +203,11 @@ const Cropper = ({
             if (firstSmallEnough) {
               onCrop(firstSmallEnough);
             } else {
-              onClose('cannot-compress');
+              showToast(
+                'Your image has too much detail and cannot be compressed.',
+                'Try shrinking your image.'
+              );
+              onClose();
             }
           }}
         >

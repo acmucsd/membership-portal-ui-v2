@@ -313,17 +313,7 @@ const EventDetailsForm = (props: IProps) => {
             );
             setSelectedCover(null);
           }}
-          onClose={reason => {
-            setSelectedCover(null);
-            if (reason === 'cannot-compress') {
-              showToast(
-                'Your image has too much detail and cannot be compressed.',
-                'Try shrinking your image.'
-              );
-            } else if (reason !== null) {
-              showToast('This image format is not supported.');
-            }
-          }}
+          onClose={() => setSelectedCover(null)}
         />
       </div>
 
