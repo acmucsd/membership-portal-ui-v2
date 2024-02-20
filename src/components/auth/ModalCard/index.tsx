@@ -19,7 +19,7 @@ const ModalCard = ({ title, subtitle, onClick }: ModalCardProps) => {
       </Typography>
       {/* Circle with arrow on the bottom right of the card */}
       <div className={styles.cardFooter}>
-        <RightArrowIcon className={styles.circle} />
+        <RightArrowIcon />
       </div>
     </button>
   );
