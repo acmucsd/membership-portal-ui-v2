@@ -9,7 +9,7 @@ import {
   PublicMerchItemWithPurchaseLimits,
 } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getDefaultMerchItemPhoto } from '@/lib/utils';
+import NoImage from '@/public/assets/graphics/cat404.png';
 import styles from '@/styles/pages/StoreItemPage.module.scss';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
@@ -28,30 +28,52 @@ const StoreItemPage = ({
   item,
   previewPublic,
 }: ItemPageProps) => {
-  const storeAdminVisible =
-    PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
+  // Sort options and photos according to their posiiton
   const options = useMemo(
     () =>
       [...item.options].sort((a, b) => (a.metadata?.position ?? 0) - (b.metadata?.position ?? 0)),
     [item]
   );
-  const [selectedOption, setSelectedOption] = useState<PublicMerchItemOption | null | undefined>(
-    options.find(option => option.quantity > 0) ?? options[0] ?? null
+  const photos = useMemo(
+    () => [...item.merchPhotos].sort((a, b) => a.position - b.position),
+    [item]
   );
-  const [inCart, setInCart] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number>(1);
+
+  const storeAdminVisible =
+    PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
+  const [selectedOption, setSelectedOption] = useState<PublicMerchItemOption | undefined>(
+    options.find(option => option.quantity > 0) ?? options[0]
+  );
+  const [inCart, setInCart] = useState(false);
+  const [amount, setAmount] = useState(1);
+  const [photoIndex, setPhotoIndex] = useState(0);
 
   return (
     <div className={styles.navbarBodyDiv}>
       <Navbar balance={credits} showBack />
       <div className={styles.rowContainer}>
-        <div className={styles.coverContainer}>
-          <Image
-            style={{ objectFit: 'contain' }}
-            src={getDefaultMerchItemPhoto(item)}
-            alt={`Picture of ${item.itemName}`}
-            fill
-          />
+        <div className={styles.imageContainer}>
+          <div className={styles.coverContainer}>
+            <Image
+              src={photos[photoIndex]?.uploadedPhoto ?? NoImage.src}
+              alt={`Picture of ${item.itemName}`}
+              fill
+            />
+          </div>
+          {photos.length > 1 ? (
+            <div className={styles.images}>
+              {photos.map((photo, i) => (
+                <button
+                  className={`${styles.image} ${i === photoIndex ? styles.selected : ''}`}
+                  type="button"
+                  onClick={() => setPhotoIndex(i)}
+                  key={photo.uuid}
+                >
+                  <Image src={photo.uploadedPhoto} alt={`Picture of ${item.itemName}`} fill />
+                </button>
+              ))}
+            </div>
+          ) : null}
         </div>
         <div className={styles.optionsContainer}>
           <ItemHeader
