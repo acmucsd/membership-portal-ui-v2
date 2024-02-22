@@ -85,7 +85,7 @@
       position: relative;
 
       img {
-        object-fit: contain;
+        object-fit: cover;
       }
     }
   }
@@ -98,6 +98,7 @@
 
     .image {
       border-radius: 0.5rem;
+      cursor: pointer;
       height: 4rem;
       overflow: hidden;
       position: relative;

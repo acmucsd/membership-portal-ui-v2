@@ -13,7 +13,7 @@ import NoImage from '@/public/assets/graphics/cat404.png';
 import styles from '@/styles/pages/StoreItemPage.module.scss';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 
 interface ItemPageProps {
   uuid: string;
@@ -47,6 +47,7 @@ const StoreItemPage = ({
   const [inCart, setInCart] = useState(false);
   const [amount, setAmount] = useState(1);
   const [photoIndex, setPhotoIndex] = useState(0);
+  const id = useId();
 
   return (
     <div className={styles.navbarBodyDiv}>
@@ -65,14 +66,13 @@ const StoreItemPage = ({
           {photos.length > 1 ? (
             <div className={styles.images}>
               {photos.map((photo, i) => (
-                <button
+                <label
                   className={`${styles.image} ${i === photoIndex ? styles.selected : ''}`}
-                  type="button"
-                  onClick={() => setPhotoIndex(i)}
                   key={photo.uuid}
                 >
+                  <input type="radio" name={id} onClick={() => setPhotoIndex(i)} />
                   <Image src={photo.uploadedPhoto} alt={`Picture of ${item.itemName}`} fill />
-                </button>
+                </label>
               ))}
             </div>
           ) : null}
