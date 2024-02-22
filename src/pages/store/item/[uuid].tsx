@@ -1,5 +1,6 @@
 import { Typography } from '@/components/common';
 import { CartOptionsGroup, ItemHeader, Navbar, SizeSelector } from '@/components/store';
+import { showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
@@ -44,8 +45,6 @@ const StoreItemPage = ({
   const [selectedOption, setSelectedOption] = useState<PublicMerchItemOption | undefined>(
     options.find(option => option.quantity > 0) ?? options[0]
   );
-  const [inCart, setInCart] = useState(false);
-  const [amount, setAmount] = useState('1');
   const [photoIndex, setPhotoIndex] = useState(0);
   const id = useId();
 
@@ -95,14 +94,17 @@ const StoreItemPage = ({
           ) : null}
 
           <CartOptionsGroup
-            inCart={inCart}
-            onCartChange={setInCart}
+            onAddToCart={amount => {
+              // TEMP
+              showToast(
+                'Cart functionality is coming soon!',
+                `You tried to add ${amount} item(s) to your cart.`
+              );
+            }}
             currOption={selectedOption?.metadata?.value}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}
             available={selectedOption?.quantity ?? 0}
-            amountToBuy={amount}
-            onAmountChange={setAmount}
             optionsKey={selectedOption?.metadata?.type}
           />
           <Typography variant="h4/bold">Item Description</Typography>

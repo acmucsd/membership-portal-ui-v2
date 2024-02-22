@@ -1,31 +1,27 @@
 import { Typography } from '@/components/common';
+import { useState } from 'react';
 import styles from './style.module.scss';
 
 interface CartOptionGroupProps {
   currOption: string | undefined;
-  inCart: boolean;
   lifetimeRemaining: number;
   monthlyRemaining: number;
   available: number;
-  amountToBuy: string;
   optionsKey?: string;
-  onCartChange: (inCart: boolean) => void;
-  onAmountChange: (amountToBuy: string) => void;
+  onAddToCart: (amount: number) => void;
 }
 
 const CartOptionsGroup = ({
   currOption,
-  inCart,
-  onCartChange,
   lifetimeRemaining,
   monthlyRemaining,
   available,
-  amountToBuy,
   optionsKey,
-  onAmountChange,
+  onAddToCart,
 }: CartOptionGroupProps) => {
-  const maxCanBuy = Math.min(lifetimeRemaining, monthlyRemaining, available);
+  const [amount, setAmount] = useState('1');
 
+  const maxCanBuy = Math.min(lifetimeRemaining, monthlyRemaining, available);
   const inStock = available > 0;
   const isPurchasable = inStock && maxCanBuy > 0;
   const noOptionSelected = currOption === undefined && optionsKey !== undefined;
@@ -45,9 +41,6 @@ const CartOptionsGroup = ({
 
   return (
     <div className={styles.addCartGroup}>
-      {/* TEMP until Add to Cart is functional */}
-      <p>In cart: {String(inCart)}</p>
-
       <Typography variant="h5/regular">{disableReason}</Typography>
       {noOptionSelected ? (
         <Typography variant="h5/regular" className={styles.error}>
@@ -59,7 +52,7 @@ const CartOptionsGroup = ({
         <form
           className={styles.buttonRow}
           onSubmit={e => {
-            onCartChange(!inCart);
+            onAddToCart(+amount);
             e.preventDefault();
           }}
         >
@@ -71,8 +64,8 @@ const CartOptionsGroup = ({
                 className={styles.quantity}
                 min={1}
                 max={maxCanBuy}
-                value={amountToBuy}
-                onChange={e => onAmountChange(e.currentTarget.value)}
+                value={amount}
+                onChange={e => setAmount(e.currentTarget.value)}
               />
             </label>
           )}
