@@ -13,7 +13,7 @@ import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/StoreItemPage.module.scss';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 interface ItemPageProps {
   uuid: string;
@@ -30,8 +30,13 @@ const StoreItemPage = ({
 }: ItemPageProps) => {
   const storeAdminVisible =
     PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
+  const options = useMemo(
+    () =>
+      [...item.options].sort((a, b) => (a.metadata?.position ?? 0) - (b.metadata?.position ?? 0)),
+    [item]
+  );
   const [selectedOption, setSelectedOption] = useState<PublicMerchItemOption | null | undefined>(
-    item.options.find(option => option.quantity > 0) ?? item.options[0] ?? null
+    options.find(option => option.quantity > 0) ?? options[0] ?? null
   );
   const [inCart, setInCart] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(1);
@@ -57,11 +62,11 @@ const StoreItemPage = ({
             showEdit={storeAdminVisible}
             isHidden={storeAdminVisible && item.hidden}
           />
-          {item.options.length > 1 ? (
+          {options.length > 1 ? (
             <SizeSelector
               currOption={selectedOption?.metadata ?? undefined}
               onOptionChange={setSelectedOption}
-              options={item.options}
+              options={options}
             />
           ) : null}
 
