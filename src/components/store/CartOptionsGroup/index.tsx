@@ -1,35 +1,32 @@
-import { Dropdown, Typography } from '@/components/common';
-import { useId } from 'react';
+import { Typography } from '@/components/common';
 import styles from './style.module.scss';
 
 interface CartOptionGroupProps {
   currOption: string | undefined;
-  inStock: boolean;
   inCart: boolean;
   lifetimeRemaining: number;
   monthlyRemaining: number;
-  amountToBuy: number;
+  available: number;
+  amountToBuy: string;
   optionsKey?: string;
   onCartChange: (inCart: boolean) => void;
-  onAmountChange: (amountToBuy: number) => void;
+  onAmountChange: (amountToBuy: string) => void;
 }
 
 const CartOptionsGroup = ({
   currOption,
-  inStock,
   inCart,
   onCartChange,
   lifetimeRemaining,
   monthlyRemaining,
+  available,
   amountToBuy,
   optionsKey,
   onAmountChange,
 }: CartOptionGroupProps) => {
-  const myID = useId();
+  const maxCanBuy = Math.min(lifetimeRemaining, monthlyRemaining, available);
 
-  // 20 is a number decided upon to prevent large maximum purchase limits from crashing the webpage
-  const maxCanBuy = Math.min(20, Math.min(lifetimeRemaining, monthlyRemaining));
-
+  const inStock = available > 0;
   const isPurchasable = inStock && maxCanBuy > 0;
   const noOptionSelected = currOption === undefined && optionsKey !== undefined;
 
@@ -45,14 +42,9 @@ const CartOptionsGroup = ({
     buyButtonText = 'Out of Stock';
   }
 
-  // Fills values of the Dropdown to be increasing sequential numbers
-  const optionArr = Array.from({ length: maxCanBuy }, (_, index) => {
-    return { value: `${index + 1}`, label: `${index + 1}` };
-  });
-
   return (
     <div className={styles.addCartGroup}>
-      <p>In cart: {inCart}</p>
+      <p>In cart: {String(inCart)}</p>
 
       {maxCanBuy > 0 ? (
         <Typography variant="h5/regular">You can buy up to {maxCanBuy} of this item.</Typography>
@@ -67,17 +59,18 @@ const CartOptionsGroup = ({
 
       {noOptionSelected ? null : (
         <div className={styles.buttonRow}>
-          {!isPurchasable ? null : (
-            <div className={styles.quantityColumn}>
+          {!isPurchasable || maxCanBuy <= 1 ? null : (
+            <label className={styles.quantityColumn}>
               <Typography variant="h4/bold">Quantity</Typography>
-              <Dropdown
-                name={`options${currOption}_${optionsKey}${myID}`}
-                ariaLabel={`Dropdown to select the number of items to purchase for ${myID}`}
-                options={optionArr}
-                value={`${amountToBuy}`}
-                onChange={val => onAmountChange(Number(val))}
+              <input
+                type="number"
+                className={styles.quantity}
+                min={1}
+                max={maxCanBuy}
+                value={amountToBuy}
+                onChange={e => onAmountChange(e.currentTarget.value)}
               />
-            </div>
+            </label>
           )}
 
           <button

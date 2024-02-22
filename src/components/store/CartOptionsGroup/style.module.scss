@@ -15,18 +15,14 @@
   .quantityColumn {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    @media (max-width: vars.$breakpoint-md) {
-      gap: 0.75rem;
-    }
+    gap: 0.5rem;
 
-    div > select {
-      font-size: 1.25rem;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 2.5rem;
-
-      text-align: center;
+    .quantity {
+      background-color: var(--theme-surface-1);
+      border: 0;
+      border-radius: 10px;
+      font-size: vars.$input-text-medium;
+      padding: 0.3rem 1rem;
     }
   }
 
@@ -42,7 +38,6 @@
     border-radius: 10px;
     font-size: vars.$input-text-medium;
     font-weight: bold;
-    margin: 0.2rem 0;
     padding: 0.3rem 1rem;
     word-break: break-word;
   }

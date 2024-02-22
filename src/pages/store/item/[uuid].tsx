@@ -45,7 +45,7 @@ const StoreItemPage = ({
     options.find(option => option.quantity > 0) ?? options[0]
   );
   const [inCart, setInCart] = useState(false);
-  const [amount, setAmount] = useState(1);
+  const [amount, setAmount] = useState('1');
   const [photoIndex, setPhotoIndex] = useState(0);
   const id = useId();
 
@@ -98,9 +98,9 @@ const StoreItemPage = ({
             inCart={inCart}
             onCartChange={setInCart}
             currOption={selectedOption?.metadata?.value}
-            inStock={selectedOption?.quantity != null && selectedOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}
+            available={selectedOption?.quantity ?? Infinity}
             amountToBuy={amount}
             onAmountChange={setAmount}
             optionsKey={selectedOption?.metadata?.type}
