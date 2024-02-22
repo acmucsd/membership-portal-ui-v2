@@ -31,7 +31,7 @@ const CartOptionsGroup = ({
     disableReason = 'You have reached your lifetime limit on this item.';
   } else if (monthlyRemaining === 0) {
     disableReason = 'You have reached your limit on this item. Come back next month!';
-  } else if (available === 0) {
+  } else if (!inStock) {
     disableReason = `This ${
       optionsKey?.toLocaleLowerCase() ?? 'option'
     } is currently out of stock.`;
