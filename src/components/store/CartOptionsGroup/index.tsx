@@ -30,30 +30,28 @@ const CartOptionsGroup = ({
   const isPurchasable = inStock && maxCanBuy > 0;
   const noOptionSelected = currOption === undefined && optionsKey !== undefined;
 
-  let buyButtonText = 'Add to Cart';
-
-  if (maxCanBuy === 0) {
-    buyButtonText = 'Limit Reached';
-  } else if (currOption === undefined && optionsKey !== undefined) {
-    buyButtonText = `Select a ${optionsKey}`;
-  } else if (inStock) {
-    buyButtonText = 'Add to Cart';
+  let disableReason = '';
+  if (lifetimeRemaining === 0) {
+    disableReason = 'You have reached your lifetime limit on this item.';
+  } else if (monthlyRemaining === 0) {
+    disableReason = 'You have reached your limit on this item. Come back next month!';
+  } else if (available === 0) {
+    disableReason = `This ${
+      optionsKey?.toLocaleLowerCase() ?? 'option'
+    } is currently out of stock.`;
   } else {
-    buyButtonText = 'Out of Stock';
+    disableReason = `You can buy up to ${maxCanBuy} of this item.`;
   }
 
   return (
     <div className={styles.addCartGroup}>
+      {/* TEMP until Add to Cart is functional */}
       <p>In cart: {String(inCart)}</p>
 
-      {maxCanBuy > 0 ? (
-        <Typography variant="h5/regular">You can buy up to {maxCanBuy} of this item.</Typography>
-      ) : (
-        <Typography variant="h5/regular">You can&rsquo;t buy any more of this item!.</Typography>
-      )}
+      <Typography variant="h5/regular">{disableReason}</Typography>
       {noOptionSelected ? (
         <Typography variant="h5/regular" className={styles.error}>
-          {`Please select a ${optionsKey?.toLocaleLowerCase() ?? 'option'}`}.
+          Please select a ${optionsKey?.toLocaleLowerCase() ?? 'option'}.
         </Typography>
       ) : null}
 
@@ -86,7 +84,7 @@ const CartOptionsGroup = ({
             type="submit"
             disabled={!isPurchasable}
           >
-            {buyButtonText}
+            Add to Cart
           </button>
         </form>
       )}

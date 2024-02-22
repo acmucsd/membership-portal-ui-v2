@@ -40,6 +40,10 @@
     font-weight: bold;
     padding: 0.3rem 1rem;
     word-break: break-word;
+
+    &:disabled {
+      cursor: default;
+    }
   }
 
   .buttonInStock {
