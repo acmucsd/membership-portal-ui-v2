@@ -58,7 +58,13 @@ const CartOptionsGroup = ({
       ) : null}
 
       {noOptionSelected ? null : (
-        <div className={styles.buttonRow}>
+        <form
+          className={styles.buttonRow}
+          onSubmit={e => {
+            onCartChange(!inCart);
+            e.preventDefault();
+          }}
+        >
           {!isPurchasable || maxCanBuy <= 1 ? null : (
             <label className={styles.quantityColumn}>
               <Typography variant="h4/bold">Quantity</Typography>
@@ -77,13 +83,12 @@ const CartOptionsGroup = ({
             className={`${isPurchasable ? styles.buttonInStock : styles.buttonNoStock} ${
               styles.button
             }`}
-            type="button"
-            onClick={() => onCartChange(!inCart)}
+            type="submit"
             disabled={!isPurchasable}
           >
             {buyButtonText}
           </button>
-        </div>
+        </form>
       )}
     </div>
   );
