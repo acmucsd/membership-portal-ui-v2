@@ -54,11 +54,13 @@ const StoreItemPage = ({
       <div className={styles.rowContainer}>
         <div className={styles.imageContainer}>
           <div className={styles.coverContainer}>
-            <Image
-              src={photos[photoIndex]?.uploadedPhoto ?? NoImage.src}
-              alt={`Picture of ${item.itemName}`}
-              fill
-            />
+            <div className={styles.cover}>
+              <Image
+                src={photos[photoIndex]?.uploadedPhoto ?? NoImage.src}
+                alt={`Picture of ${item.itemName}`}
+                fill
+              />
+            </div>
           </div>
           {photos.length > 1 ? (
             <div className={styles.images}>

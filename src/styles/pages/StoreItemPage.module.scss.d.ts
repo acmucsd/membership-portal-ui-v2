@@ -1,4 +1,5 @@
 export type Styles = {
+  cover: string;
   coverContainer: string;
   image: string;
   imageContainer: string;
