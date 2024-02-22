@@ -30,7 +30,7 @@ const CartOptionsGroup = ({
   if (lifetimeRemaining === 0) {
     disableReason = 'You have reached your lifetime limit on this item.';
   } else if (monthlyRemaining === 0) {
-    disableReason = 'You have reached your limit on this item. Come back next month!';
+    disableReason = 'You have reached your monthly limit on this item. Come back next month!';
   } else if (!inStock) {
     disableReason = `This ${
       optionsKey?.toLocaleLowerCase() ?? 'option'
