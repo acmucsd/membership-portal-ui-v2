@@ -50,6 +50,7 @@
     position: relative;
 
     img {
+      background-color: var(--theme-surface-1);
       border-radius: 20px;
       object-fit: cover;
     }

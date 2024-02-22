@@ -22,6 +22,7 @@
   }
 
   .imageWrapper {
+    background-color: var(--theme-surface-1);
     // Enforce a square image while allowing the card to be squished
     padding-bottom: 100%;
     position: relative;
