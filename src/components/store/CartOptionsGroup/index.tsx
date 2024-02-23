@@ -1,96 +1,85 @@
-import { Dropdown, Typography } from '@/components/common';
-import { useId } from 'react';
+import { Typography } from '@/components/common';
+import { useState } from 'react';
 import styles from './style.module.scss';
 
 interface CartOptionGroupProps {
   currOption: string | undefined;
-  inStock: boolean;
-  inCart: boolean;
   lifetimeRemaining: number;
   monthlyRemaining: number;
-  amountToBuy: number;
+  available: number;
   optionsKey?: string;
-  onCartChange: (inCart: boolean) => void;
-  onAmountChange: (amountToBuy: number) => void;
+  onAddToCart: (amount: number) => void;
 }
 
 const CartOptionsGroup = ({
   currOption,
-  inStock,
-  inCart,
-  onCartChange,
   lifetimeRemaining,
   monthlyRemaining,
-  amountToBuy,
+  available,
   optionsKey,
-  onAmountChange,
+  onAddToCart,
 }: CartOptionGroupProps) => {
-  const myID = useId();
+  const [amount, setAmount] = useState('1');
 
-  // 20 is a number decided upon to prevent large maximum purchase limits from crashing the webpage
-  const maxCanBuy = Math.min(20, Math.min(lifetimeRemaining, monthlyRemaining));
-
+  const maxCanBuy = Math.min(lifetimeRemaining, monthlyRemaining, available);
+  const inStock = available > 0;
   const isPurchasable = inStock && maxCanBuy > 0;
   const noOptionSelected = currOption === undefined && optionsKey !== undefined;
 
-  let buyButtonText = 'Add to Cart';
-
-  if (maxCanBuy === 0) {
-    buyButtonText = 'Limit Reached';
-  } else if (currOption === undefined && optionsKey !== undefined) {
-    buyButtonText = `Select a ${optionsKey}`;
-  } else if (inStock) {
-    buyButtonText = 'Add to Cart';
+  let disableReason = '';
+  if (lifetimeRemaining === 0) {
+    disableReason = 'You have reached your lifetime limit on this item.';
+  } else if (monthlyRemaining === 0) {
+    disableReason = 'You have reached your monthly limit on this item. Come back next month!';
+  } else if (!inStock) {
+    disableReason = `This ${
+      optionsKey?.toLocaleLowerCase() ?? 'option'
+    } is currently out of stock.`;
   } else {
-    buyButtonText = 'Out of Stock';
+    disableReason = `You can buy up to ${maxCanBuy} of this item.`;
   }
-
-  // Fills values of the Dropdown to be increasing sequential numbers
-  const optionArr = Array.from({ length: maxCanBuy }, (_, index) => {
-    return { value: `${index + 1}`, label: `${index + 1}` };
-  });
 
   return (
     <div className={styles.addCartGroup}>
-      <p>In cart: {inCart}</p>
-
-      {maxCanBuy > 0 ? (
-        <Typography variant="h5/regular">You can buy up to {maxCanBuy} of this item.</Typography>
-      ) : (
-        <Typography variant="h5/regular">You can&rsquo;t buy any more of this item!.</Typography>
-      )}
+      <Typography variant="h5/regular">{disableReason}</Typography>
       {noOptionSelected ? (
         <Typography variant="h5/regular" className={styles.error}>
-          {`Please select a ${optionsKey?.toLocaleLowerCase() ?? 'option'}`}.
+          Please select a ${optionsKey?.toLocaleLowerCase() ?? 'option'}.
         </Typography>
       ) : null}
 
       {noOptionSelected ? null : (
-        <div className={styles.buttonRow}>
-          {!isPurchasable ? null : (
-            <div className={styles.quantityColumn}>
+        <form
+          className={styles.buttonRow}
+          onSubmit={e => {
+            onAddToCart(+amount);
+            e.preventDefault();
+          }}
+        >
+          {!isPurchasable || maxCanBuy <= 1 ? null : (
+            <label className={styles.quantityColumn}>
               <Typography variant="h4/bold">Quantity</Typography>
-              <Dropdown
-                name={`options${currOption}_${optionsKey}${myID}`}
-                ariaLabel={`Dropdown to select the number of items to purchase for ${myID}`}
-                options={optionArr}
-                value={`${amountToBuy}`}
-                onChange={val => onAmountChange(Number(val))}
+              <input
+                type="number"
+                className={styles.quantity}
+                min={1}
+                max={maxCanBuy}
+                value={amount}
+                onChange={e => setAmount(e.currentTarget.value)}
               />
-            </div>
+            </label>
           )}
 
           <button
             className={`${isPurchasable ? styles.buttonInStock : styles.buttonNoStock} ${
               styles.button
             }`}
-            type="button"
-            onClick={() => onCartChange(!inCart)}
+            type="submit"
             disabled={!isPurchasable}
           >
-            {buyButtonText}
+            Add to Cart
           </button>
-        </div>
+        </form>
       )}
     </div>
   );

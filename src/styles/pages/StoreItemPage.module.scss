@@ -58,16 +58,55 @@
   }
 }
 
-.coverContainer {
-  aspect-ratio: 1/1;
-  max-height: 37.5rem;
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   max-width: 37.5rem;
-  overflow: hidden;
-  position: relative;
   width: 100%;
 
   @media (max-width: vars.$breakpoint-md) {
-    max-height: 30rem;
     max-width: 30rem;
+  }
+
+  .coverContainer {
+    aspect-ratio: 1/1;
+    display: flex;
+    max-height: min(calc(100vh - 12rem), 37.5rem);
+    max-width: 100%;
+
+    .cover {
+      aspect-ratio: 1/1;
+      background-color: var(--theme-surface-1);
+      border-radius: 1rem;
+      height: 100%;
+      margin: 0 auto;
+      overflow: hidden;
+      position: relative;
+
+      img {
+        object-fit: cover;
+      }
+    }
+  }
+
+  .images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+
+    .image {
+      border-radius: 0.5rem;
+      cursor: pointer;
+      height: 4rem;
+      overflow: hidden;
+      position: relative;
+      width: 4rem;
+
+      &.selected {
+        box-shadow: 0 0 0 3px var(--theme-primary-2);
+      }
+    }
   }
 }
