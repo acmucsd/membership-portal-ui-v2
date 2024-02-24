@@ -1,4 +1,4 @@
-import PickupEventCard from '@/components/admin/store/PickupEventCard';
+import { PickupEventCard } from '@/components/admin/store';
 import { Typography } from '@/components/common';
 import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
