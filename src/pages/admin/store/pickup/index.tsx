@@ -53,8 +53,12 @@ export default AdminPickupPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  const futurePickupEvents = await StoreAPI.getFutureOrderPickupEvents(token);
-  const pastPickupEvents = await StoreAPI.getPastOrderPickupEvents(token);
+  const futurePickupEventsPromise = StoreAPI.getFutureOrderPickupEvents(token);
+  const pastPickupEventsPromise = StoreAPI.getPastOrderPickupEvents(token);
+  const [futurePickupEvents, pastPickupEvents] = await Promise.all([
+    futurePickupEventsPromise,
+    pastPickupEventsPromise,
+  ]);
   return { props: { futurePickupEvents, pastPickupEvents } };
 };
 
