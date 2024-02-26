@@ -25,12 +25,14 @@ import type {
   GetOneMerchCollectionResponse,
   GetOneMerchItemResponse,
   GetOneMerchOrderResponse,
+  GetOrderPickupEventsResponse,
   PublicMerchCollection,
   PublicMerchItem,
   PublicMerchItemOption,
   PublicMerchItemPhoto,
   PublicMerchItemWithPurchaseLimits,
   PublicOrder,
+  PublicOrderPickupEvent,
   PublicOrderWithItems,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
@@ -315,4 +317,32 @@ export const getCollection = async (
   });
 
   return response.data.collection;
+};
+
+export const getFutureOrderPickupEvents = async (
+  token: string
+): Promise<PublicOrderPickupEvent[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.future}`;
+
+  const response = await axios.get<GetOrderPickupEventsResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.pickupEvents;
+};
+
+export const getPastOrderPickupEvents = async (
+  token: string
+): Promise<PublicOrderPickupEvent[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.past}`;
+
+  const response = await axios.get<GetOrderPickupEventsResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.pickupEvents;
 };
