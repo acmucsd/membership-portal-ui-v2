@@ -46,8 +46,8 @@ import axios from 'axios';
  * @returns Item info
  */
 export const getItem = async (
-  uuid: UUID,
-  token: string
+  token: string,
+  uuid: UUID
 ): Promise<PublicMerchItemWithPurchaseLimits> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.item}/${uuid}`;
 

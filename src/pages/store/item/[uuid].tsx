@@ -128,7 +128,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
   const preview = CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res });
 
   try {
-    const item = await StoreAPI.getItem(uuid, token);
+    const item = await StoreAPI.getItem(token, uuid);
     return {
       props: {
         uuid,
