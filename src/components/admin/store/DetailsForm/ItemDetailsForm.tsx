@@ -1,4 +1,5 @@
 import DetailsFormItem from '@/components/admin/DetailsFormItem';
+import { Photo } from '@/components/admin/store/DetailsForm/types';
 import ItemOptionsEditor, { type Option } from '@/components/admin/store/ItemOptionsEditor';
 import { Button, Cropper, DRAG_HANDLE, Draggable } from '@/components/common';
 import { config, showToast } from '@/lib';
@@ -20,9 +21,7 @@ import { BsArrowRight, BsPlus } from 'react-icons/bs';
 import style from './style.module.scss';
 
 type FormValues = Omit<MerchItem, 'uuid' | 'hasVariantsEnabled' | 'merchPhotos' | 'options'>;
-type Photo =
-  | { uuid: UUID; uploadedPhoto: string }
-  | { uuid?: undefined; blob: Blob; uploadedPhoto: string };
+
 const stringifyOption = ({
   uuid,
   price,
@@ -77,8 +76,8 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
   ];
   const [options, setOptions] = useState<Option[]>(defaultOptions);
 
-  const defaultMerchPhotos = lastSaved?.merchPhotos?.sort((a, b) => a.position - b.position) ?? [];
-  const [merchPhotos, setMerchPhotos] = useState<Photo[]>(defaultMerchPhotos);
+  const defaultPhotos = lastSaved?.merchPhotos?.sort((a, b) => a.position - b.position) ?? [];
+  const [photos, setPhotos] = useState<Photo[]>(defaultPhotos);
   const [photo, setPhoto] = useState<File | null>(null);
 
   const {
@@ -94,7 +93,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
     reset(initialValues);
     setOptionType(defaultOptionType);
     setOptions(defaultOptions);
-    setMerchPhotos(defaultMerchPhotos);
+    setPhotos(defaultPhotos);
   };
 
   const createItem: SubmitHandler<FormValues> = async formData => {
@@ -115,7 +114,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
               options.length > 1 ? { type: optionType, value: option.value, position } : undefined,
           })),
         },
-        merchPhotos.flatMap(photo => (photo.uuid !== undefined ? [] : [photo.blob]))
+        photos.flatMap(photo => (photo.uuid !== undefined ? [] : [photo.blob]))
       );
       showToast('Item created successfully!', '', [
         {
@@ -151,7 +150,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           uuid: option.uuid,
           variant: option.value,
         })),
-        merchPhotos.map(photo => (photo.uuid !== undefined ? photo.uuid : photo.blob))
+        photos.map(photo => (photo.uuid !== undefined ? photo.uuid : photo.blob))
       );
       setLastSaved(item);
       setOptions(
@@ -159,12 +158,12 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
           .sort((a, b) => (a.metadata?.position ?? 0) - (b.metadata?.position ?? 0))
           .map(stringifyOption)
       );
-      merchPhotos.forEach(photo => {
+      photos.forEach(photo => {
         if (!photo.uuid) {
           URL.revokeObjectURL(photo.uploadedPhoto);
         }
       });
-      setMerchPhotos(item.merchPhotos.sort((a, b) => a.position - b.position));
+      setPhotos(item.merchPhotos.sort((a, b) => a.position - b.position));
       showToast('Item details saved!', '', [
         {
           text: 'View public item page',
@@ -259,7 +258,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
         </div>
 
         <ul className={style.photos}>
-          <Draggable items={merchPhotos} onReorder={setMerchPhotos}>
+          <Draggable items={photos} onReorder={setPhotos}>
             {(props, photo, i) => (
               <li key={photo.uuid ?? i} {...props}>
                 <Image
@@ -271,7 +270,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
                 />
                 <Button
                   onClick={() => {
-                    setMerchPhotos(merchPhotos.filter((_, index) => index !== i));
+                    setPhotos(photos.filter((_, index) => index !== i));
                     if (photo.uuid === undefined) {
                       URL.revokeObjectURL(photo.uploadedPhoto);
                     }
@@ -348,7 +347,7 @@ const ItemDetailsForm = ({ mode, defaultData, token, collections }: IProps) => {
         maxSize={config.file.MAX_MERCH_PHOTO_SIZE_KB * 1024}
         maxFileHeight={1080}
         onCrop={async blob => {
-          setMerchPhotos(photos => [...photos, { blob, uploadedPhoto: URL.createObjectURL(blob) }]);
+          setPhotos(photos => [...photos, { blob, uploadedPhoto: URL.createObjectURL(blob) }]);
           setPhoto(null);
         }}
         onClose={() => setPhoto(null)}
