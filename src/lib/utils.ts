@@ -5,6 +5,8 @@ import type { URL } from '@/lib/types';
 import type {
   CustomErrorBody,
   PublicMerchItem,
+  PublicOrderItem,
+  PublicOrderItemWithQuantity,
   PublicProfile,
   ValidatorError,
 } from '@/lib/types/apiResponses';
@@ -325,4 +327,22 @@ export const fixUrl = (input: string, prefix?: string): string => {
   }
   // Add https:// if it was left out
   return `https://${input}`;
+};
+
+/**
+ * Condenses a list of ordered items into unique items with quantities.
+ */
+export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderItemWithQuantity[] => {
+  const itemMap = new Map<string, PublicOrderItemWithQuantity>();
+
+  items.forEach(item => {
+    const existingItem = itemMap.get(item.option.uuid);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      itemMap.set(item.option.uuid, { ...item, quantity: 1 });
+    }
+  });
+
+  return Array.from(itemMap.values());
 };
