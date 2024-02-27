@@ -144,14 +144,14 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
               Please pick up your items on the date you selected. Thank you!
             </Typography>
             <div>
-              <Link href={config.storeRoute}>
+              <Link href={config.store.homeRoute}>
                 <button type="button" className={styles.storeButton}>
                   <Typography variant="h5/bold" component="span">
                     Continue Shopping
                   </Typography>
                 </button>
               </Link>
-              <Link href={config.myOrdersRoute}>
+              <Link href={config.store.myOrdersRoute}>
                 <button type="button" className={styles.storeButton}>
                   <Typography variant="h5/bold" component="span">
                     My Orders
@@ -185,7 +185,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
               <Typography variant="h6/regular" component="p">
                 Your cart is empty. Visit the ACM Store to add items!
               </Typography>
-              <Link href={config.storeRoute}>
+              <Link href={config.store.homeRoute}>
                 <button type="button" className={styles.storeButton}>
                   <Typography variant="h5/medium" component="span">
                     Go to Store

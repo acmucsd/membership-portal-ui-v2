@@ -35,7 +35,7 @@ export const getNextNYears = (num: number) => {
  * @param errBody Obj with validator constraint errors
  * @returns List of all user-friendly error strings
  */
-const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
+export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
   // if error has no suberrors, just return top level error message
   if (!errBody.errors) return [errBody.message];
 

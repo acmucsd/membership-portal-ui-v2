@@ -19,7 +19,7 @@ interface CartItemCardProps {
  * Card for items displayed on cart page
  */
 const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
-  const itemPage = `${config.itemRoute}${item.uuid}`;
+  const itemPage = `${config.store.itemRoute}${item.uuid}`;
 
   const unavailableReason = validateClientCartItem(item);
 
