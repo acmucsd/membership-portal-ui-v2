@@ -23,7 +23,7 @@ import {
 } from '@/lib/types/apiResponses';
 import { ClientCartItem, CookieCartItem } from '@/lib/types/client';
 import { CookieType } from '@/lib/types/enums';
-import { getMessagesFromError, validateClientCartItem } from '@/lib/utils';
+import { reportError, validateClientCartItem } from '@/lib/utils';
 import EmptyCartIcon from '@/public/assets/icons/empty-cart.svg';
 import styles from '@/styles/pages/store/cart/index.module.scss';
 import { GetServerSideProps } from 'next';
@@ -88,7 +88,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
         setLiveCredits(credits - orderTotal);
       })
       .catch(err => {
-        showToast('Unable to place order', getMessagesFromError(err).join('; '));
+        reportError('Unable to place order', err);
       });
 
   return (
@@ -141,7 +141,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
             <Typography variant="h3/regular" component="p">
               You will receive a confirmation email with your order details soon.
               <br />
-              Please pick up your items on the date you selected. Thank you!
+              Please pick up your items at the event you selected. Thank you!
             </Typography>
             <div>
               <Link href={config.store.homeRoute}>
@@ -152,11 +152,9 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
                 </button>
               </Link>
               <Link href={config.store.myOrdersRoute}>
-                <button type="button" className={styles.storeButton}>
-                  <Typography variant="h5/bold" component="span">
-                    My Orders
-                  </Typography>
-                </button>
+                <Typography variant="h5/bold" className={styles.storeButton}>
+                  My Orders
+                </Typography>
               </Link>
             </div>
           </div>
@@ -186,11 +184,9 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
                 Your cart is empty. Visit the ACM Store to add items!
               </Typography>
               <Link href={config.store.homeRoute}>
-                <button type="button" className={styles.storeButton}>
-                  <Typography variant="h5/medium" component="span">
-                    Go to Store
-                  </Typography>
-                </button>
+                <Typography variant="h5/medium" className={styles.storeButton}>
+                  Go to Store
+                </Typography>
               </Link>
             </div>
           )}
@@ -282,14 +278,14 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
         const { options, ...publicItem } = await getItem(AUTH_TOKEN, itemUUID);
 
         // form the ClientCartItem from the PublicMerchItem
-        const ClientCartItem: Partial<ClientCartItem> = { ...publicItem, quantity };
-        ClientCartItem.option = options.find(
+        const clientCartItem: Partial<ClientCartItem> = { ...publicItem, quantity };
+        clientCartItem.option = options.find(
           (option: PublicMerchItemOption) => option.uuid === optionUUID
         );
 
         // check for invalid cart cookie item
-        if (!ClientCartItem.option || typeof quantity !== 'number') throw new Error();
-        return ClientCartItem as ClientCartItem;
+        if (!clientCartItem.option || typeof quantity !== 'number') throw new Error();
+        return clientCartItem as ClientCartItem;
       } catch {
         return undefined;
       }

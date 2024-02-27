@@ -73,7 +73,7 @@ const EventDetail = ({ event, attended, inModal = true }: EventDetailProps) => {
         </Typography>
         <Link className={styles.link} href={displayEventLink}>
           <div style={{ width: 11 }}>
-            <LinkIcon role="link" />
+            <LinkIcon aria-hidden />
           </div>
           <Typography
             variant="body/medium"

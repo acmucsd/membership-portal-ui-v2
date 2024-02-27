@@ -33,11 +33,13 @@
     }
 
     .storeButton {
+      align-items: center;
       background-color: var(--theme-primary-2);
       border-radius: 0.625rem;
       color: vars.$light-background;
+      display: flex;
+      justify-content: center;
       min-height: 2rem;
-      padding: 0 0.5rem;
       width: 100%;
     }
 
