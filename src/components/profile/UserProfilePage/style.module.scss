@@ -23,8 +23,9 @@
 
     .profileCard {
       background-color: var(--theme-background);
-      border-radius: 0.25rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--theme-shadow);
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 4px var(--theme-shadow);
       display: flex;
       gap: 1rem;
       margin: 0 2rem;
@@ -84,8 +85,6 @@
         .rank {
           color: var(--theme-text-on-background-1);
           display: flex;
-          font-size: 1.25rem;
-          font-weight: 500;
           margin-top: calc(2.375rem + 0.5rem); // give space for edit button
 
           @media (max-width: vars.$breakpoint-md) {
@@ -96,9 +95,6 @@
 
         .points {
           color: var(--theme-text-on-background-1);
-          font-size: 1.125rem;
-          font-weight: 400;
-          line-height: 1.25;
           text-align: end;
 
           @media (max-width: vars.$breakpoint-md) {
@@ -118,8 +114,10 @@
   }
 
   .section {
-    border: 2px solid #808184;
+    background-color: var(--theme-background);
+    border: 1px solid var(--theme-shadow);
     border-radius: 0.75rem;
+    box-shadow: 0 2px 4px var(--theme-shadow);
     padding: 1rem 1.5rem;
   }
 
