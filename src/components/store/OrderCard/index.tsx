@@ -87,7 +87,7 @@ const OrderCard = ({ order, token }: OrderCardProps) => {
           <Typography variant="body/medium">{statusName}</Typography>
         </div>
       </button>
-      {orderOpen && <OrderSummary order={orderData} />}
+      {orderOpen ? <OrderSummary order={orderData} /> : null}
     </div>
   );
 };

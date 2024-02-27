@@ -16,12 +16,12 @@ const Diamonds = ({ count, discount, className }: DiamondsProps) => {
       <span className={`${styles.originalPrice} ${discountActive && styles.discount}`}>
         {(count >= 1e5 ? compactFormat : numberFormat).format(count)}
       </span>
-      {discountActive && (
+      {discountActive ? (
         <span className={styles.discountPrice}>
           &nbsp;
           {(discount >= 1e5 ? compactFormat : numberFormat).format(discount)}
         </span>
-      )}
+      ) : null}
       <span className={styles.diamond}>diamonds</span>
     </span>
   );

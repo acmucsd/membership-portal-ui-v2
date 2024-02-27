@@ -1,6 +1,7 @@
 export type Styles = {
   back: string;
   container: string;
+  eventCover: string;
   form: string;
   submitButtons: string;
 };

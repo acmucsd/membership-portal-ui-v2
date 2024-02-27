@@ -72,14 +72,14 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
               <Typography variant="h5/bold">Quantity: </Typography>
               <Typography variant="h5/regular">{item.quantity}</Typography>
             </div>
-            {item.option.metadata && (
+            {item.option.metadata ? (
               <div className={styles.label}>
                 <Typography variant="h5/bold">{`${capitalize(
                   item.option.metadata.type
                 )}: `}</Typography>
                 <Typography variant="h5/regular">{item.option.metadata.value}</Typography>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       ))}
@@ -87,14 +87,14 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
       <div className={styles.footer}>
         <div className={styles.buttons}>
           <Button onClick={() => {}}>Pickup Details</Button>
-          {actionable && (
+          {actionable ? (
             <>
               <Button onClick={() => {}}>Reschedule Pickup</Button>
               <Button onClick={() => {}} destructive>
                 Cancel Order
               </Button>
             </>
-          )}
+          ) : null}
         </div>
         <div className={styles.totalPrice}>
           <Typography variant="h4/bold">Total: </Typography>

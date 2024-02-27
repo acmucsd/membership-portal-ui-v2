@@ -1,6 +1,7 @@
 @use 'src/styles/vars.scss' as vars;
 
 .label {
+  align-items: center;
   display: flex;
   gap: 0.5em;
 

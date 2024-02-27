@@ -7,13 +7,16 @@ import type {
   SendPasswordResetEmailRequest,
   UserRegistration,
 } from '@/lib/types/apiRequests';
+import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 
 /**
  * Handle login with user data, set cookies correctly, and provide callbacks
  * @param data Login form data
  */
-export const login = async (data: LoginRequest & APIHandlerProps): Promise<void> => {
+export const login = async (
+  data: LoginRequest & APIHandlerProps<PrivateProfile>
+): Promise<void> => {
   const COOKIE_EXPIRATION_LENGTH = 60 * 60 * 24 * 14; // 60 * 60 * 24 * 14 is 2 weeks in seconds
 
   const { email, password, onSuccessCallback, onFailCallback } = data;
@@ -28,8 +31,8 @@ export const login = async (data: LoginRequest & APIHandlerProps): Promise<void>
     CookieService.setClientCookie(CookieType.USER, JSON.stringify(user), { maxAge: 5 * 60 });
 
     onSuccessCallback?.(user);
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
   }
 };
 
@@ -37,13 +40,15 @@ export const login = async (data: LoginRequest & APIHandlerProps): Promise<void>
  * Registers a new user account and provides callback
  * @param data
  */
-export const register = async (data: UserRegistration & APIHandlerProps): Promise<void> => {
+export const register = async (
+  data: UserRegistration & APIHandlerProps<PrivateProfile>
+): Promise<void> => {
   const { onSuccessCallback, onFailCallback, ...userRegistration } = data;
   try {
     const user = await AuthAPI.register(userRegistration);
     onSuccessCallback?.(user);
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
   }
 };
 
@@ -52,15 +57,15 @@ export const register = async (data: UserRegistration & APIHandlerProps): Promis
  * @param data Reset request data
  */
 export const sendPasswordResetEmail = async (
-  data: SendPasswordResetEmailRequest & APIHandlerProps
+  data: SendPasswordResetEmailRequest & APIHandlerProps<void>
 ): Promise<void> => {
   const { email, onSuccessCallback, onFailCallback } = data;
 
   try {
     await AuthAPI.sendPasswordResetEmail(email);
     onSuccessCallback?.();
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
   }
 };
 
@@ -69,14 +74,14 @@ export const sendPasswordResetEmail = async (
  * @param dataasync
  */
 export const resetPassword = async (
-  data: PasswordResetRequest & APIHandlerProps & { code: string }
+  data: PasswordResetRequest & APIHandlerProps<void> & { code: string }
 ): Promise<void> => {
   const { code, user, onSuccessCallback, onFailCallback } = data;
 
   try {
     await AuthAPI.resetPassword(code, { user });
     onSuccessCallback?.();
-  } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+  } catch (e) {
+    onFailCallback?.(e);
   }
 };

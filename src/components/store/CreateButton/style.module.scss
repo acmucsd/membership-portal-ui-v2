@@ -1,0 +1,22 @@
+@use 'src/styles/vars.scss' as vars;
+
+.itemCard {
+  align-items: center;
+  border: 1px solid var(--theme-shadow);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  min-height: 8rem;
+
+  &.horizontal {
+    flex-direction: row;
+    min-height: 4rem;
+  }
+
+  .icon {
+    height: 2rem;
+    width: 2rem;
+  }
+}

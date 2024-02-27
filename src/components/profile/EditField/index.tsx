@@ -61,7 +61,7 @@ export const EditField = ({
           disabled ? styles.disabled : ''
         }`}
       >
-        {prefix && <span className={styles.prefix}>{prefix}</span>}
+        {prefix ? <span className={styles.prefix}>{prefix}</span> : null}
         <Input
           className={styles.field}
           type={type}
@@ -86,16 +86,16 @@ export const EditField = ({
           ))}
         </Input>
       </div>
-      {(description || maxLength) && (
+      {description || maxLength ? (
         <div className={styles.info}>
-          {description && <p className={styles.description}>{description}</p>}
-          {maxLength && (
+          {description ? <p className={styles.description}>{description}</p> : null}
+          {maxLength ? (
             <span className={styles.chars}>
               {value.length}/{maxLength}
             </span>
-          )}
+          ) : null}
         </div>
-      )}
+      ) : null}
     </EditBlock>
   );
 };
