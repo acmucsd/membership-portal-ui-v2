@@ -349,3 +349,17 @@ export const placeMerchOrder = async (
 
   return response.data.order;
 };
+
+export const getPastOrderPickupEvents = async (
+  token: string
+): Promise<PublicOrderPickupEvent[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.past}`;
+
+  const response = await axios.get<GetOrderPickupEventsResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.pickupEvents;
+};
