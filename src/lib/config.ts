@@ -40,6 +40,7 @@ const config = {
       leaderboard: '/leaderboard',
       store: {
         collection: '/merch/collection',
+        collectionPicture: '/merch/collection/picture',
         item: '/merch/item',
         itemPicture: '/merch/item/picture',
         option: '/merch/option',
@@ -118,6 +119,7 @@ const config = {
     MAX_PROFILE_PICTURE_SIZE_KB: 256,
     MAX_BANNER_SIZE_KB: isDevelopment ? 256 : 2048,
     MAX_MERCH_PHOTO_SIZE_KB: 1024,
+    MAX_COLLECTION_PHOTO_SIZE_KB: 1024,
     MAX_RESUME_SIZE_KB: isDevelopment ? 256 : 2048,
   },
 };
