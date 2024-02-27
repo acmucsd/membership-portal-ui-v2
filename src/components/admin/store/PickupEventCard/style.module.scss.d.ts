@@ -1,9 +1,10 @@
 export type Styles = {
-  back: string;
-  container: string;
-  eventCover: string;
-  form: string;
-  submitButtons: string;
+  active: string;
+  cancelled: string;
+  card: string;
+  completed: string;
+  header: string;
+  title: string;
 };
 
 export type ClassNames = keyof Styles;

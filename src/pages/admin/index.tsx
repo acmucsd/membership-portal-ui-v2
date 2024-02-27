@@ -56,7 +56,7 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
         <LinkButton href={config.store.homeRoute}>
           {storeAdminVisible ? 'Manage Store Merchandise' : 'View Merch Store'}
         </LinkButton>
-        <LinkButton href={config.admin.store.pickupEvents}>Manage Pickup Events</LinkButton>
+        <LinkButton href={config.admin.store.pickup}>Manage Pickup Events</LinkButton>
       </div>
       <br />
       <Typography variant="h2/bold">User Points</Typography>

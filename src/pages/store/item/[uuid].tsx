@@ -1,5 +1,6 @@
 import { Typography } from '@/components/common';
 import { CartOptionsGroup, ItemHeader, Navbar, SizeSelector } from '@/components/store';
+import { showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
@@ -9,11 +10,11 @@ import {
   PublicMerchItemWithPurchaseLimits,
 } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getDefaultMerchItemPhoto } from '@/lib/utils';
+import NoImage from '@/public/assets/graphics/cat404.png';
 import styles from '@/styles/pages/StoreItemPage.module.scss';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 
 interface ItemPageProps {
   uuid: string;
@@ -28,25 +29,52 @@ const StoreItemPage = ({
   item,
   previewPublic,
 }: ItemPageProps) => {
+  // Sort options and photos according to their posiiton
+  const options = useMemo(
+    () =>
+      [...item.options].sort((a, b) => (a.metadata?.position ?? 0) - (b.metadata?.position ?? 0)),
+    [item]
+  );
+  const photos = useMemo(
+    () => [...item.merchPhotos].sort((a, b) => a.position - b.position),
+    [item]
+  );
+
   const storeAdminVisible =
     PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
-  const [selectedOption, setSelectedOption] = useState<PublicMerchItemOption | null | undefined>(
-    item.options.find(option => option.quantity > 0) ?? item.options[0] ?? null
+  const [selectedOption, setSelectedOption] = useState<PublicMerchItemOption | undefined>(
+    options.find(option => option.quantity > 0) ?? options[0]
   );
-  const [inCart, setInCart] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number>(1);
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const id = useId();
 
   return (
     <div className={styles.navbarBodyDiv}>
       <Navbar balance={credits} showBack />
       <div className={styles.rowContainer}>
-        <div className={styles.coverContainer}>
-          <Image
-            style={{ objectFit: 'contain' }}
-            src={getDefaultMerchItemPhoto(item)}
-            alt={`Picture of ${item.itemName}`}
-            fill
-          />
+        <div className={styles.imageContainer}>
+          <div className={styles.coverContainer}>
+            <div className={styles.cover}>
+              <Image
+                src={photos[photoIndex]?.uploadedPhoto ?? NoImage.src}
+                alt={`Picture of ${item.itemName}`}
+                fill
+              />
+            </div>
+          </div>
+          {photos.length > 1 ? (
+            <div className={styles.images}>
+              {photos.map((photo, i) => (
+                <label
+                  className={`${styles.image} ${i === photoIndex ? styles.selected : ''}`}
+                  key={photo.uuid}
+                >
+                  <input type="radio" name={id} onClick={() => setPhotoIndex(i)} />
+                  <Image src={photo.uploadedPhoto} alt={`Picture of ${item.itemName}`} fill />
+                </label>
+              ))}
+            </div>
+          ) : null}
         </div>
         <div className={styles.optionsContainer}>
           <ItemHeader
@@ -57,23 +85,26 @@ const StoreItemPage = ({
             showEdit={storeAdminVisible}
             isHidden={storeAdminVisible && item.hidden}
           />
-          {item.options.length > 1 ? (
+          {options.length > 1 ? (
             <SizeSelector
               currOption={selectedOption?.metadata ?? undefined}
               onOptionChange={setSelectedOption}
-              options={item.options}
+              options={options}
             />
           ) : null}
 
           <CartOptionsGroup
-            inCart={inCart}
-            onCartChange={setInCart}
+            onAddToCart={amount => {
+              // TEMP
+              showToast(
+                'Cart functionality is coming soon!',
+                `You tried to add ${amount} item(s) to your cart.`
+              );
+            }}
             currOption={selectedOption?.metadata?.value}
-            inStock={selectedOption?.quantity != null && selectedOption?.quantity >= 1}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}
-            amountToBuy={amount}
-            onAmountChange={setAmount}
+            available={selectedOption?.quantity ?? 0}
             optionsKey={selectedOption?.metadata?.type}
           />
           <Typography variant="h4/bold">Item Description</Typography>

@@ -44,24 +44,6 @@
         }
       }
     }
-
-    .close {
-      align-items: center;
-      background: none;
-      display: flex;
-      height: 3.75rem;
-      margin-left: 1rem;
-      padding: 0;
-    }
-  }
-
-  .image {
-    aspect-ratio: 1920 / 1080;
-    border-radius: 10px;
-    flex-shrink: 0;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
   }
 
   .done {

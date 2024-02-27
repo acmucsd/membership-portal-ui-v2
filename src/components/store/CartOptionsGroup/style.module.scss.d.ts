@@ -5,6 +5,7 @@ export type Styles = {
   buttonNoStock: string;
   buttonRow: string;
   error: string;
+  quantity: string;
   quantityColumn: string;
   valid: string;
 };

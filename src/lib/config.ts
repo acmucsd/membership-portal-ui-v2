@@ -103,7 +103,7 @@ const config = {
     viewResumes: '/admin/resumes',
     store: {
       items: '/admin/store/items',
-      pickupEvents: '/admin/store/pickupEvents',
+      pickup: '/admin/store/pickup',
       homeRoute: '/admin/store',
     },
     events: {

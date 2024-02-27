@@ -288,9 +288,6 @@ const EventDetailsForm = (props: IProps) => {
 
         <label htmlFor="cover">Cover Image</label>
         <DetailsFormItem>
-          {eventCover ? (
-            <Image src={eventCover} alt="Selected cover image" width={480} height={270} />
-          ) : null}
           <input
             type="file"
             id="cover"
@@ -303,6 +300,16 @@ const EventDetailsForm = (props: IProps) => {
               }
             }}
           />
+          {eventCover ? (
+            <div className={style.eventCover}>
+              <Image
+                src={eventCover}
+                alt="Selected cover image"
+                style={{ objectFit: 'cover' }}
+                fill
+              />
+            </div>
+          ) : null}
         </DetailsFormItem>
         <Cropper
           file={selectedCover}

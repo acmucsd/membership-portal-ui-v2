@@ -1,0 +1,36 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+
+    .displayButtons {
+      border-radius: 1rem;
+      box-shadow: 0 0 4px var(--theme-accent-line-1-transparent);
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+
+      .displayButton {
+        padding: 0.5rem 1rem;
+        transition: 0.3s background-color;
+
+        &.active {
+          background-color: var(--theme-primary-2);
+        }
+      }
+    }
+  }
+
+  .cardContainer {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
