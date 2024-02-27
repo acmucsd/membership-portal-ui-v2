@@ -15,4 +15,3 @@ export { default as OrdersDisplay } from './OrdersDisplay';
 export { default as PickupEventPicker } from './PickupEventPicker';
 export { default as StoreConfirmModal } from './StoreConfirmModal';
 export { default as Navbar } from './StoreNavbar';
-

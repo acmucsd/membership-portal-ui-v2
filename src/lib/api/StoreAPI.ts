@@ -29,6 +29,10 @@ import type {
   GetOrderPickupEventsResponse,
   PlaceMerchOrderResponse,
   PublicMerchCollection,
+  PublicMerchItem,
+  PublicMerchItemOption,
+  PublicMerchItemPhoto,
+  PublicMerchItemWithPurchaseLimits,
   PublicOrder,
   PublicOrderPickupEvent,
   PublicOrderWithItems,
@@ -315,21 +319,6 @@ export const getCollection = async (
   });
 
   return response.data.collection;
-};
-
-export const getItem = async (
-  token: string,
-  uuid: string
-): Promise<PublicMerchItemWithPurchaseLimits> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.item}/${uuid}`;
-
-  const response = await axios.get<GetOneMerchItemResponse>(requestUrl, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response.data.item;
 };
 
 export const getFutureOrderPickupEvents = async (
