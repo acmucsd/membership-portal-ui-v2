@@ -1,7 +1,8 @@
 import { Modal, Typography } from '@/components/common';
 import { PublicEvent } from '@/lib/types/apiResponses';
 import Image from 'next/image';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import Confetti from 'react-confetti';
 import style from './style.module.scss';
 
 interface CheckInModalProps {
@@ -10,7 +11,7 @@ interface CheckInModalProps {
   onClose: () => void;
 }
 
-const CHECKIN_TITLES = [
+const CHECKIN_TITLES: string[] = [
   'Yippee!',
   'Brilliant!',
   'Wahoo!',
@@ -21,11 +22,45 @@ const CHECKIN_TITLES = [
   'Welcome!',
 ];
 
+// This is a mix of community colors and colors taken from the ACM rainbow.
+const colors: string[] = [
+  '#e981a0',
+  '#f9a857',
+  '#51c0c0',
+  '#62b0ff',
+  '#816dff',
+  style.general,
+  style.hack,
+  style.cyber,
+  style.ai,
+  style.design,
+  style.innovate,
+];
+
+const drawDiamond = (ctx: CanvasRenderingContext2D) => {
+  ctx.beginPath();
+  ctx.moveTo(-15, 0);
+  ctx.lineTo(0, 15);
+  ctx.lineTo(15, 0);
+  ctx.lineTo(0, -15);
+  ctx.stroke();
+  ctx.closePath();
+  ctx.fill();
+};
+
 const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
   const headerText = useMemo(
     () => CHECKIN_TITLES[Math.floor(Math.random() * CHECKIN_TITLES.length)],
     []
   );
+
+  const [refreshConfetti, setRefreshConfetti] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (open) {
+      setRefreshConfetti((r: boolean) => !r);
+    }
+  }, [open]);
 
   if (!event) {
     return null;
@@ -35,6 +70,15 @@ const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
 
   return (
     <Modal open={open} onClose={onClose}>
+      <Confetti
+        key={`${refreshConfetti}`}
+        numberOfPieces={1000}
+        initialVelocityY={-10}
+        tweenDuration={15000}
+        recycle={false}
+        drawShape={drawDiamond}
+        colors={colors}
+      />
       <div className={style.container}>
         <div className={style.graphic}>
           <Image
