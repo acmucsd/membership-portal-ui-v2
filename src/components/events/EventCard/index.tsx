@@ -20,7 +20,6 @@ interface EventCardProps {
 }
 
 const EventCard = ({ event, attended, className, showYear, borderless }: EventCardProps) => {
-  // const { cover, title, start, end, location } = event;
   const { cover, title, start, end, location, committee } = isOrderPickupEvent(event)
     ? {
         ...(event.linkedEvent ?? {}),
@@ -29,12 +28,13 @@ const EventCard = ({ event, attended, className, showYear, borderless }: EventCa
     : event;
 
   const [expanded, setExpanded] = useState(false);
+  const hasModal = !isOrderPickupEvent(event) || event.linkedEvent;
 
   const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
 
   return (
     <>
-      {isOrderPickupEvent(event) && !event.linkedEvent ? null : (
+      {hasModal && (
         <EventModal
           open={expanded}
           attended={attended}
@@ -51,6 +51,7 @@ const EventCard = ({ event, attended, className, showYear, borderless }: EventCa
         type="button"
         className={`${styles.container} ${borderless ? '' : styles.bordered} ${className || ''}`}
         onClick={() => setExpanded(true)}
+        disabled={!hasModal}
       >
         <div className={styles.image}>
           {!isOrderPickupEvent(event) && (

@@ -13,9 +13,13 @@
     border-radius: 10px;
   }
 
-  &:hover {
+  &:not([disabled]):hover {
     box-shadow: 0 0 8px var(--theme-primary-6);
     transform: scale(1.025);
+  }
+
+  &:disabled {
+    cursor: default;
   }
 
   .image {
