@@ -1,8 +1,9 @@
 export type Styles = {
   body: string;
+  cancel: string;
   card: string;
   confirm: string;
-  goBack: string;
+  confirmRemove: string;
   header: string;
   options: string;
 };

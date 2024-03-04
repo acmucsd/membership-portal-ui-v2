@@ -44,11 +44,16 @@
     }
 
     .confirm {
-      background: vars.$success-1;
+      background: var(--theme-primary-2);
     }
 
-    .goBack {
+    .confirmRemove {
       background: vars.$danger-1;
+    }
+
+    .cancel {
+      background: var(--theme-surface-1);
+      color: var(--theme-text-on-surface-1);
     }
   }
 }

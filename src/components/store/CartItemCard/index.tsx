@@ -37,6 +37,7 @@ const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
         // remove with delay to so modal-closing animation can play
         setTimeout(() => removeItem && removeItem(item.option.uuid), 100);
       }}
+      confirmRemove
     >
       <CartItemCard item={item} removable={false} />
     </StoreConfirmModal>

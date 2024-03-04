@@ -9,8 +9,10 @@ interface StoreConfirmModalProps {
   title: string;
   /** called when confirm button is clicked */
   onConfirm?: (...args: any[]) => any;
-  /** called when modal is closed any way   other than the confirm button */
+  /** called when modal is closed any way other than the confirm button */
   onCancel?: (...args: any[]) => any;
+  /** make confirm button red and say "remove" */
+  confirmRemove?: boolean;
 }
 
 /**
@@ -22,6 +24,7 @@ const StoreConfirmModal = ({
   title,
   onConfirm = () => {},
   onCancel = () => {},
+  confirmRemove = false,
   children,
 }: PropsWithChildren<StoreConfirmModalProps>) => {
   const [open, setOpen] = useState(false);
@@ -55,15 +58,15 @@ const StoreConfirmModal = ({
                   setOpen(false);
                   onConfirm();
                 }}
-                className={styles.confirm}
+                className={confirmRemove ? styles.confirmRemove : styles.confirm}
               >
                 <Typography variant="h4/medium" component="span">
-                  Confirm
+                  {confirmRemove ? 'Remove' : 'Confirm'}
                 </Typography>
               </button>
-              <button type="button" onClick={onClose} className={styles.goBack}>
+              <button type="button" onClick={onClose} className={styles.cancel}>
                 <Typography variant="h4/medium" component="span">
-                  Go back
+                  Cancel
                 </Typography>
               </button>
             </div>
