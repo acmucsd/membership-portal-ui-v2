@@ -19,7 +19,7 @@ const PickupEventPicker = ({ events, eventIndex, setEventIndex, active }: EventP
         {events.length > 0 ? (
           <div
             className={styles.slider}
-            style={{ transform: `translateX(${-320 * eventIndex}px)` }}
+            style={{ transform: `translateX(calc(-1 * var(--width) * ${eventIndex}))` }}
           >
             {events.map(event => (
               <EventCard

@@ -4,10 +4,11 @@
   flex-direction: column;
 
   .window {
+    --width: 320px;
     height: 270px;
     overflow: hidden;
     position: relative;
-    width: 320px;
+    width: var(--width);
 
     .slider {
       display: flex;
