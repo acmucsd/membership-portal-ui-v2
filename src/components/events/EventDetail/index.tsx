@@ -26,7 +26,9 @@ const EventDetail = ({ event, attended, inModal = true }: EventDetailProps) => {
       : event;
 
   const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
-  const displayEventLink = fixUrl(eventLink ?? '') || `https://acmucsd.com/events/${event.uuid}`;
+  const uuidForLink = isOrderPickupEvent(event) ? event.linkedEvent?.uuid : event.uuid;
+  const displayEventLink =
+    fixUrl(eventLink ?? '') || (uuidForLink && `https://acmucsd.com/events/${uuidForLink}`) || '';
   const isUpcomingEvent = new Date(start) > new Date();
 
   return (
@@ -71,17 +73,19 @@ const EventDetail = ({ event, attended, inModal = true }: EventDetailProps) => {
         <Typography variant="body/medium" style={{ wordBreak: 'break-word' }}>
           {description}
         </Typography>
-        <Link className={styles.link} href={displayEventLink}>
-          <div style={{ width: 11 }}>
-            <LinkIcon aria-hidden />
-          </div>
-          <Typography
-            variant="body/medium"
-            style={{ color: 'var(--theme-primary-2)', wordBreak: 'break-all' }}
-          >
-            {displayEventLink}
-          </Typography>
-        </Link>
+        {displayEventLink && (
+          <Link className={styles.link} href={displayEventLink}>
+            <div style={{ width: 11 }}>
+              <LinkIcon aria-hidden />
+            </div>
+            <Typography
+              variant="body/medium"
+              style={{ color: 'var(--theme-primary-2)', wordBreak: 'break-all' }}
+            >
+              {displayEventLink}
+            </Typography>
+          </Link>
+        )}
       </div>
     </>
   );
