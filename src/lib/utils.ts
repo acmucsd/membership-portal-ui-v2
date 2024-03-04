@@ -339,9 +339,13 @@ export const fixUrl = (input: string, prefix?: string): string => {
  */
 export const validateClientCartItem = (item: ClientCartItem): string | null => {
   if (item.quantity > item.lifetimeRemaining)
-    return `Cannot purchase more than the lifetime limit of this item (${item.lifetimeRemaining} left)`;
+    return item.lifetimeRemaining === 0
+      ? 'You have already reached your lifetime limit for this item'
+      : `You can only purchase ${item.lifetimeRemaining} more of this item`;
   if (item.quantity > item.monthlyRemaining)
-    return `Cannot purchase more than the monthly limit of this item (${item.monthlyRemaining} left)`;
+    return item.monthlyRemaining === 0
+      ? 'You have already reached your monthly limit for this item'
+      : `You can only purchase ${item.monthlyRemaining} more of this item this month`;
   if (item.hidden) return 'Ordering this item has been temporarily disabled';
   if (item.option.quantity === 0) return 'This item is out of stock';
   if (item.quantity > item.option.quantity)
