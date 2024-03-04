@@ -65,7 +65,7 @@ const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
                 {item.itemName}
               </Typography>
             </Link>
-            <Diamonds count={item.option.price * item.quantity ?? 0} className={styles.price} />
+            <Diamonds count={item.option.price * item.quantity} className={styles.price} />
           </div>
 
           {item.option.metadata && (
