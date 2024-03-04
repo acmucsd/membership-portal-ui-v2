@@ -7,12 +7,14 @@ import {
   EditMerchCollectionRequest,
   EditMerchItemRequest,
   MerchCollection,
+  MerchCollectionEdit,
   MerchItem,
   MerchItemEdit,
   MerchItemOption,
   PlaceMerchOrderRequest,
 } from '@/lib/types/apiRequests';
 import type {
+  CreateCollectionPhotoResponse,
   CreateMerchCollectionResponse,
   CreateMerchItemOptionResponse,
   CreateMerchItemResponse,
@@ -29,6 +31,7 @@ import type {
   GetOrderPickupEventsResponse,
   PlaceMerchOrderResponse,
   PublicMerchCollection,
+  PublicMerchCollectionPhoto,
   PublicMerchItem,
   PublicMerchItemOption,
   PublicMerchItemPhoto,
@@ -240,7 +243,7 @@ export const createCollection = async (
 export const editCollection = async (
   token: string,
   uuid: UUID,
-  collection: MerchCollection
+  collection: MerchCollectionEdit
 ): Promise<PublicMerchCollection> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collection}/${uuid}`;
 
@@ -319,6 +322,50 @@ export const getCollection = async (
   });
 
   return response.data.collection;
+};
+
+/**
+ * Upload a photo for a store collection
+ * @param token Authorization bearer token
+ * @param uuid Store collection UUID
+ * @param image Photo
+ * @param position The position of the image
+ * @returns The store collection photo object
+ */
+export const createCollectionPhoto = async (
+  token: string,
+  uuid: UUID,
+  image: Blob,
+  position = 0
+): Promise<PublicMerchCollectionPhoto> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collectionPicture}/${uuid}`;
+
+  const requestBody = new FormData();
+  requestBody.append('position', `${position}`);
+  requestBody.append('image', image);
+
+  const response = await axios.post<CreateCollectionPhotoResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.collectionPhoto;
+};
+
+/**
+ * Delete a merch collection photo
+ * @param token Authorization bearer token
+ * @param uuid Merch collection *photo* UUID
+ */
+export const deleteCollectionPhoto = async (token: string, uuid: UUID): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collectionPicture}/${uuid}`;
+
+  await axios.delete(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const getFutureOrderPickupEvents = async (
