@@ -30,6 +30,7 @@ export const UserProfilePage = ({
   // animate the progress bar
   const [progress, setProgress] = useState<Number>(0);
   useEffect(() => setProgress(handleUser.points % 100), [handleUser.points]);
+  const levelText = `Level ${getLevel(handleUser.points)}: ${getUserRank(handleUser.points)}`;
 
   return (
     <div className={styles.profilePage}>
@@ -92,9 +93,7 @@ export const UserProfilePage = ({
           {isSignedInUser ? 'My' : `${handleUser.firstName}'s`} Progress
         </Typography>
         <div className={styles.progressInfo}>
-          <Typography variant="h4/regular">
-            Level {getLevel(handleUser.points)}: {getUserRank(handleUser.points)}
-          </Typography>
+          <Typography variant="h4/regular">{levelText}</Typography>
           <Typography variant="h4/regular">{handleUser.points % 100}/100</Typography>
           <div className={styles.progressBar}>
             <div className={styles.inner} style={{ width: `${progress}%` }} />
@@ -104,7 +103,7 @@ export const UserProfilePage = ({
           {isSignedInUser ? 'You need ' : `${handleUser.firstName} needs `}
           {100 - (handleUser.points % 100)} more points to level up to
           <Typography variant="h5/bold" component="span">
-            &nbsp;Level {getLevel(handleUser.points) + 1}: {getUserRank(handleUser.points + 100)}
+            &nbsp;{levelText}
           </Typography>
         </Typography>
       </div>

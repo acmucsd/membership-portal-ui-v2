@@ -23,7 +23,7 @@
 
     .profileCard {
       background-color: var(--theme-background);
-      border: 1px solid var(--theme-shadow);
+      border: 1px solid var(--theme-accent-line-2-transparent);
       border-radius: 0.75rem;
       box-shadow: 0 2px 4px var(--theme-shadow);
       display: flex;
@@ -115,7 +115,7 @@
 
   .section {
     background-color: var(--theme-background);
-    border: 1px solid var(--theme-shadow);
+    border: 1px solid var(--theme-accent-line-2-transparent);
     border-radius: 0.75rem;
     box-shadow: 0 2px 4px var(--theme-shadow);
     padding: 1rem 1.5rem;
