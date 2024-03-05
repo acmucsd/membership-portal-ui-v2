@@ -19,6 +19,11 @@
       flex-direction: row;
       gap: 3rem;
 
+      .description {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
       .noEvent {
         align-items: center;
         border: 1px solid var(--theme-danger-1);

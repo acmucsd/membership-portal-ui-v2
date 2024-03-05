@@ -1,16 +1,11 @@
-import PickupOrdersPrepareDisplay from '@/components/admin/store/PickupOrdersDisplay/PickupOrdersPrepareDisplay';
 import { Typography } from '@/components/common';
 import { PublicOrderWithItems } from '@/lib/types/apiResponses';
 
-interface PickupOrdersDisplayProps {
-  mode: 'prepare' | 'fulfill';
+interface PickupOrdersFulfillDisplayProps {
   orders: PublicOrderWithItems[];
 }
 
-const PickupOrdersDisplay = ({ mode, orders }: PickupOrdersDisplayProps) => {
-  if (mode === 'prepare') {
-    return <PickupOrdersPrepareDisplay orders={orders} />;
-  }
+const PickupOrdersFulfillDisplay = ({ orders }: PickupOrdersFulfillDisplayProps) => {
   return (
     <div>
       {orders.map(order => (
@@ -22,4 +17,4 @@ const PickupOrdersDisplay = ({ mode, orders }: PickupOrdersDisplayProps) => {
   );
 };
 
-export default PickupOrdersDisplay;
+export default PickupOrdersFulfillDisplay;

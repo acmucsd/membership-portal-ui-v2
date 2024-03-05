@@ -1,9 +1,5 @@
 import { Typography } from '@/components/common';
-import {
-  PublicOrderItem,
-  PublicOrderItemWithQuantity,
-  PublicOrderWithItems,
-} from '@/lib/types/apiResponses';
+import { PublicOrderItemWithQuantity, PublicOrderWithItems } from '@/lib/types/apiResponses';
 import { getOrderItemQuantities } from '@/lib/utils';
 import { useMemo } from 'react';
 import styles from './style.module.scss';
@@ -21,9 +17,7 @@ const itemToString = (item: PublicOrderItemWithQuantity): string => {
 const PickupOrdersPrepareDisplay = ({ orders }: PickupOrdersDisplayPrepareProps) => {
   const itemBreakdown: PublicOrderItemWithQuantity[] = useMemo(() => {
     // Concatenate all items together into one large order to display the item breakdown.
-    const allItems = orders.reduce((aggregate: PublicOrderItem[], next) => {
-      return aggregate.concat(next.items);
-    }, []);
+    const allItems = orders.flatMap(a => a.items);
     return getOrderItemQuantities(allItems);
   }, [orders]);
 
@@ -42,10 +36,10 @@ const PickupOrdersPrepareDisplay = ({ orders }: PickupOrdersDisplayPrepareProps)
             return (
               <tr key={item.uuid}>
                 <td>
-                  <Typography variant="h4/regular">{item.quantity}</Typography>
+                  <Typography variant="h5/regular">{item.quantity}</Typography>
                 </td>
                 <td>
-                  <Typography variant="h4/regular">{itemToString(item)}</Typography>
+                  <Typography variant="h5/regular">{itemToString(item)}</Typography>
                 </td>
               </tr>
             );
@@ -66,16 +60,18 @@ const PickupOrdersPrepareDisplay = ({ orders }: PickupOrdersDisplayPrepareProps)
             return (
               <tr key={order.uuid}>
                 <td>
-                  <Typography variant="h4/regular">{`${order.user.firstName} ${order.user.lastName}`}</Typography>
+                  <Typography variant="h5/regular">{`${order.user.firstName} ${order.user.lastName}`}</Typography>
                 </td>
                 <td>
-                  {itemQuantities.map(item => (
-                    <div key={item.uuid}>
-                      <Typography variant="h4/regular">{`• ${item.quantity} x ${itemToString(
-                        item
-                      )}`}</Typography>
-                    </div>
-                  ))}
+                  <ul className={styles.itemList}>
+                    {itemQuantities.map(item => (
+                      <li key={item.uuid}>
+                        <Typography variant="h5/regular">{`${item.quantity} x ${itemToString(
+                          item
+                        )}`}</Typography>
+                      </li>
+                    ))}
+                  </ul>
                 </td>
               </tr>
             );

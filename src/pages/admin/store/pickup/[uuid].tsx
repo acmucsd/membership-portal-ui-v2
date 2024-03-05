@@ -1,5 +1,8 @@
-import { PickupOrdersDisplay } from '@/components/admin/store';
-import { PickupEventStatus } from '@/components/admin/store/PickupEventCard';
+import {
+  PickupEventStatus,
+  PickupOrdersFulfillDisplay,
+  PickupOrdersPrepareDisplay,
+} from '@/components/admin/store';
 import { Typography } from '@/components/common';
 import { EventCard } from '@/components/events';
 import { config } from '@/lib';
@@ -22,6 +25,15 @@ const PickupEventDetailsPage = ({ pickupEvent }: PickupEventDetailsPageProps) =>
   const { status, title, start, end, orderLimit, description, linkedEvent, orders } = pickupEvent;
   const [ordersView, setOrdersView] = useState<'fulfill' | 'prepare'>('fulfill');
 
+  let ordersComponent;
+  if (orders && orders.length > 0)
+    ordersComponent =
+      ordersView === 'fulfill' ? (
+        <PickupOrdersFulfillDisplay orders={orders} />
+      ) : (
+        <PickupOrdersPrepareDisplay orders={orders} />
+      );
+
   return (
     <div className={styles.page}>
       <Link href={config.admin.store.pickup} className={styles.back}>
@@ -43,7 +55,9 @@ const PickupEventDetailsPage = ({ pickupEvent }: PickupEventDetailsPageProps) =>
               {formatEventDate(start, end, true)}
             </Typography>
             <Typography variant="h4/regular">{`Max Orders: ${orderLimit}`}</Typography>
-            <Typography variant="h4/regular">{description}</Typography>
+            <Typography variant="h4/regular" className={styles.description}>
+              {description}
+            </Typography>
           </div>
         </div>
         <div className={styles.orders}>
@@ -66,11 +80,7 @@ const PickupEventDetailsPage = ({ pickupEvent }: PickupEventDetailsPageProps) =>
               </button>
             </div>
           </div>
-          {orders && orders.length > 0 ? (
-            <PickupOrdersDisplay mode={ordersView} orders={orders} />
-          ) : (
-            'No orders placed.'
-          )}
+          {ordersComponent || 'No orders placed.'}
         </div>
       </div>
     </div>

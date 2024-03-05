@@ -2,6 +2,7 @@ export type Styles = {
   active: string;
   back: string;
   container: string;
+  description: string;
   displayButton: string;
   displayButtons: string;
   header: string;
