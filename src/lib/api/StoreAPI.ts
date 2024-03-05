@@ -27,6 +27,7 @@ import type {
   GetOneMerchCollectionResponse,
   GetOneMerchItemResponse,
   GetOneMerchOrderResponse,
+  GetOrderPickupEventResponse,
   GetOrderPickupEventsResponse,
   PublicMerchCollection,
   PublicMerchCollectionPhoto,
@@ -320,6 +321,21 @@ export const getCollection = async (
   });
 
   return response.data.collection;
+};
+
+export const getPickupEvent = async (
+  token: string,
+  uuid: string
+): Promise<PublicOrderPickupEvent> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${uuid}`;
+
+  const response = await axios.get<GetOrderPickupEventResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.pickupEvent;
 };
 
 /**

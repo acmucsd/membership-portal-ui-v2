@@ -2,14 +2,16 @@ import defaultProfilePictures from '@/lib/constants/profilePictures';
 import ranks from '@/lib/constants/ranks';
 import showToast from '@/lib/showToast';
 import type { URL } from '@/lib/types';
-import {
+import type {
+  CustomErrorBody,
+  PublicMerchCollection,
   PublicMerchCollectionPhoto,
+  PublicMerchItem,
   PublicMerchItemPhoto,
-  type CustomErrorBody,
-  type PublicMerchCollection,
-  type PublicMerchItem,
-  type PublicProfile,
-  type ValidatorError,
+  PublicOrderItem,
+  PublicOrderItemWithQuantity,
+  PublicProfile,
+  ValidatorError,
 } from '@/lib/types/apiResponses';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import { AxiosError } from 'axios';
@@ -362,4 +364,22 @@ export const fixUrl = (input: string, prefix?: string): string => {
   }
   // Add https:// if it was left out
   return `https://${input}`;
+};
+
+/**
+ * Condenses a list of ordered items into unique items with quantities.
+ */
+export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderItemWithQuantity[] => {
+  const itemMap = new Map<string, PublicOrderItemWithQuantity>();
+
+  items.forEach(item => {
+    const existingItem = itemMap.get(item.option.uuid);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      itemMap.set(item.option.uuid, { ...item, quantity: 1 });
+    }
+  });
+
+  return Array.from(itemMap.values());
 };

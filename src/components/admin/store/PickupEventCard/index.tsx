@@ -1,34 +1,43 @@
 import { Typography } from '@/components/common';
+import { Variant } from '@/components/common/Typography';
+import { config } from '@/lib';
 import { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
 import { OrderPickupEventStatus } from '@/lib/types/enums';
 import { formatEventDate } from '@/lib/utils';
+import Link from 'next/link';
 import styles from './style.module.scss';
+
+interface PickupEventStatusProps {
+  status: OrderPickupEventStatus;
+  variant: Variant;
+}
+
+export const PickupEventStatus = ({ status, variant }: PickupEventStatusProps) => {
+  let statusStyling = styles.cancelled;
+  if (status === OrderPickupEventStatus.ACTIVE) {
+    statusStyling = styles.active;
+  }
+  if (status === OrderPickupEventStatus.COMPLETED) {
+    statusStyling = styles.completed;
+  }
+  return (
+    <Typography variant={variant} className={statusStyling}>
+      {status}
+    </Typography>
+  );
+};
 
 interface PickupEventCardProps {
   pickupEvent: PublicOrderPickupEvent;
 }
 
-const getStatusStyling = (status: OrderPickupEventStatus): string => {
-  if (status === OrderPickupEventStatus.ACTIVE) {
-    return styles.active;
-  }
-  if (status === OrderPickupEventStatus.COMPLETED) {
-    return styles.completed;
-  }
-  return styles.cancelled;
-};
-
 const PickupEventCard = ({ pickupEvent }: PickupEventCardProps) => {
-  const { title, start, end, orders, status } = pickupEvent;
-
-  const statusStyling = getStatusStyling(status);
+  const { title, start, end, orders, status, uuid } = pickupEvent;
 
   return (
-    <div className={styles.card}>
+    <Link className={styles.card} href={`${config.admin.store.pickup}/${uuid}`}>
       <div className={styles.header}>
-        <Typography variant="h5/bold" className={statusStyling}>
-          {status}
-        </Typography>
+        <PickupEventStatus status={status} variant="h5/bold" />
         <Typography variant="h5/regular">{`${orders?.length || 0} orders`}</Typography>
       </div>
       <Typography variant="h3/bold" className={styles.title}>
@@ -37,7 +46,7 @@ const PickupEventCard = ({ pickupEvent }: PickupEventCardProps) => {
       <Typography variant="h5/regular" suppressHydrationWarning>
         {formatEventDate(start, end, true)}
       </Typography>
-    </div>
+    </Link>
   );
 };
 
