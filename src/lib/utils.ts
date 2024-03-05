@@ -2,17 +2,6 @@ import defaultProfilePictures from '@/lib/constants/profilePictures';
 import ranks from '@/lib/constants/ranks';
 import showToast from '@/lib/showToast';
 import type { URL } from '@/lib/types';
-import type {
-  CustomErrorBody,
-  PublicEvent,
-  PublicMerchCollection,
-  PublicMerchCollectionPhoto,
-  PublicMerchItem,
-  PublicMerchItemPhoto,
-  PublicOrderPickupEvent,
-  PublicProfile,
-  ValidatorError,
-} from '@/lib/types/apiResponses';
 import { ClientCartItem } from '@/lib/types/client';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import { AxiosError } from 'axios';
@@ -22,6 +11,22 @@ import {
   type StaticRequire,
 } from 'next/dist/shared/lib/get-img-props';
 import { useEffect, useState } from 'react';
+import type {
+  CustomErrorBody,
+  PublicEvent,
+  PublicMerchCollection,
+  import, type
+} from {
+    CustomErrorBody,
+    PublicMerchCollection,
+    PublicMerchCollectionPhoto,
+    PublicMerchItem,
+    PublicMerchItemPhoto,
+    PublicOrderPickupEvent,
+    PublicProfile,
+    ValidatorError,
+  };
+from '@/lib/types/apiResponses';
 
 /**
  * Get next `num` years from today in a number array to generate dropdown options for future selections
@@ -397,3 +402,21 @@ export const validateClientCartItem = (item: ClientCartItem): string | null => {
 export const isOrderPickupEvent = (
   event: PublicOrderPickupEvent | PublicEvent
 ): event is PublicOrderPickupEvent => 'status' in event;
+
+/**
+ * Condenses a list of ordered items into unique items with quantities.
+ */
+export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderItemWithQuantity[] => {
+  const itemMap = new Map<string, PublicOrderItemWithQuantity>();
+
+  items.forEach(item => {
+    const existingItem = itemMap.get(item.option.uuid);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      itemMap.set(item.option.uuid, { ...item, quantity: 1 });
+    }
+  });
+
+  return Array.from(itemMap.values());
+};

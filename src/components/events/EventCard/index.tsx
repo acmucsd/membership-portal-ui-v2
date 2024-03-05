@@ -17,9 +17,17 @@ interface EventCardProps {
   className?: string;
   showYear?: boolean;
   borderless?: boolean;
+  hideInfo?: boolean;
 }
 
-const EventCard = ({ event, attended, className, showYear, borderless }: EventCardProps) => {
+const EventCard = ({
+  event,
+  attended,
+  className,
+  showYear,
+  borderless,
+  hideInfo,
+}: EventCardProps) => {
   const { cover, title, start, end, location, committee } = isOrderPickupEvent(event)
     ? {
         ...(event.linkedEvent ?? {}),
@@ -65,32 +73,34 @@ const EventCard = ({ event, attended, className, showYear, borderless }: EventCa
             fill
           />
         </div>
-        <div className={styles.info}>
-          <div className={styles.header}>
-            <CommunityLogo community={committee ?? 'General'} size={50} />
-            <div className={styles.eventDetails}>
-              <Typography
-                variant="body/medium"
-                style={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis' }}
-              >
-                {title}
-              </Typography>
-              <Typography
-                variant="body/small"
-                style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-                suppressHydrationWarning
-              >
-                {formatEventDate(start, end, showYear)}
-              </Typography>
-              <Typography
-                variant="body/small"
-                style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-              >
-                {location}
-              </Typography>
+        {!hideInfo && (
+          <div className={styles.info}>
+            <div className={styles.header}>
+              <CommunityLogo community={committee ?? 'General'} size={50} />
+              <div className={styles.eventDetails}>
+                <Typography
+                  variant="body/medium"
+                  style={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                >
+                  {title}
+                </Typography>
+                <Typography
+                  variant="body/small"
+                  style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+                  suppressHydrationWarning
+                >
+                  {formatEventDate(start, end, showYear)}
+                </Typography>
+                <Typography
+                  variant="body/small"
+                  style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+                >
+                  {location}
+                </Typography>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </button>
     </>
   );

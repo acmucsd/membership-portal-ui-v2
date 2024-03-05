@@ -9,9 +9,7 @@
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false,
-  "stylelint.validate": [
-    "scss"
-  ],
+  "stylelint.validate": ["scss"],
   "files.associations": {
     "*.env.development": "env",
     "*.env.production": "env"

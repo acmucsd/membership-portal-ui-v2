@@ -1,5 +1,8 @@
 .container {
   background: transparent;
+  border: 1px solid var(--theme-primary-6);
+  border-radius: 10px;
+  height: fit-content;
   -ms-overflow-style: none;
   overflow-x: hidden;
   padding: 0;
