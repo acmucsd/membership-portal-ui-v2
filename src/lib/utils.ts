@@ -4,7 +4,10 @@ import showToast from '@/lib/showToast';
 import type { URL } from '@/lib/types';
 import type {
   CustomErrorBody,
+  PublicMerchCollection,
+  PublicMerchCollectionPhoto,
   PublicMerchItem,
+  PublicMerchItemPhoto,
   PublicOrderItem,
   PublicOrderItemWithQuantity,
   PublicProfile,
@@ -296,13 +299,47 @@ export const getDateRange = (sort: string | number) => {
  * Returns the default (first) photo for a merchandise item.
  * If there are no photos for this item, returns the default 404 image.
  */
-export const getDefaultMerchItemPhoto = (item: PublicMerchItem | undefined): string => {
+export const getDefaultMerchItemPhoto = (item?: PublicMerchItem): string => {
   if (item && item.merchPhotos.length > 0) {
     // Get the photo with the smallest position.
     const defaultPhoto = item.merchPhotos.reduce((prevImage, currImage) => {
       return prevImage.position < currImage.position ? prevImage : currImage;
     });
     return defaultPhoto.uploadedPhoto;
+  }
+  return NoImage.src;
+};
+
+/**
+ * Returns the default (first) photo for a merchandise collection.
+ * If there are no photos for this collection, returns the first photo of the first item.
+ * If there are no photos at all in the collection, returns the default 404 image.
+ */
+export const getDefaultMerchCollectionPhoto = (collection?: PublicMerchCollection): string => {
+  if (collection) {
+    // Get the photo with the smallest position.
+    const defaultCollectionPhoto =
+      collection.collectionPhotos.reduce<PublicMerchCollectionPhoto | null>(
+        (prevImage, currImage) => {
+          return prevImage && prevImage.position < currImage.position ? prevImage : currImage;
+        },
+        null
+      );
+    if (defaultCollectionPhoto) {
+      return defaultCollectionPhoto.uploadedPhoto;
+    }
+    const defaultItemPhoto = collection.items.reduce<PublicMerchItemPhoto | null>((image, item) => {
+      if (image) {
+        return image;
+      }
+      // Get the photo with the smallest position.
+      return item.merchPhotos.reduce<PublicMerchItemPhoto | null>((prevImage, currImage) => {
+        return prevImage && prevImage.position < currImage.position ? prevImage : currImage;
+      }, null);
+    }, null);
+    if (defaultItemPhoto) {
+      return defaultItemPhoto.uploadedPhoto;
+    }
   }
   return NoImage.src;
 };

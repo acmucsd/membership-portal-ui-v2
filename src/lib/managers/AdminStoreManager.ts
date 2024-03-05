@@ -2,22 +2,23 @@ import { StoreAPI } from '@/lib/api';
 import { UUID } from '@/lib/types';
 import {
   MerchCollection,
+  MerchCollectionEdit,
   MerchItem,
   MerchItemEdit,
   MerchItemOption,
 } from '@/lib/types/apiRequests';
-import { PublicMerchItem } from '@/lib/types/apiResponses';
+import { PublicMerchCollection, PublicMerchItem } from '@/lib/types/apiResponses';
 
 export const createNewItem = async (
   token: string,
   merchandise: MerchItem,
-  merchPhotos: Blob[]
+  photos: Blob[]
 ): Promise<UUID> => {
   if (merchandise.monthlyLimit && merchandise.monthlyLimit > (merchandise.lifetimeLimit ?? 0)) {
     throw new Error('Monthly limit cannot exceed lifetime limit.');
   }
   const item = await StoreAPI.createItem(token, merchandise);
-  await Promise.all(merchPhotos.map(blob => StoreAPI.createItemPhoto(token, item.uuid, blob)));
+  await Promise.all(photos.map(blob => StoreAPI.createItemPhoto(token, item.uuid, blob)));
   return item.uuid;
 };
 
@@ -28,7 +29,7 @@ export const editItem = async (
   merchandise: MerchItemEdit,
   optionType: string,
   options: (MerchItemOption & { uuid?: string; variant: string })[],
-  merchPhotos: (string | Blob)[]
+  photos: (string | Blob)[]
 ): Promise<PublicMerchItem> => {
   if (merchandise.monthlyLimit && merchandise.monthlyLimit > (merchandise.lifetimeLimit ?? 0)) {
     throw new Error('Monthly limit cannot exceed lifetime limit.');
@@ -78,8 +79,8 @@ export const editItem = async (
           }));
     })
   );
-  const newMerchPhotos = await Promise.all(
-    merchPhotos.map(async (photo, position) => {
+  const newPhotos = await Promise.all(
+    photos.map(async (photo, position) => {
       if (photo instanceof Blob) {
         return { ...(await StoreAPI.createItemPhoto(token, uuid, photo)), position };
       }
@@ -94,14 +95,14 @@ export const editItem = async (
   );
   await Promise.all(
     previousMerchandise.merchPhotos
-      .filter(photo => !newMerchPhotos.some(p => p.uuid === photo.uuid))
+      .filter(photo => !newPhotos.some(p => p.uuid === photo.uuid))
       .map(({ uuid }) => StoreAPI.deleteItemPhoto(token, uuid))
   );
   const item = await StoreAPI.editItem(token, uuid, {
     ...merchandise,
     hasVariantsEnabled: options.length > 1,
     options: newOptions,
-    merchPhotos: newMerchPhotos,
+    merchPhotos: newPhotos,
   });
   return item;
 };
@@ -112,18 +113,35 @@ export const deleteItem = async (token: string, uuid: UUID): Promise<void> => {
 
 export const createNewCollection = async (
   token: string,
-  collection: MerchCollection
+  collection: MerchCollection,
+  photos: Blob[]
 ): Promise<UUID | null> => {
   const { uuid } = await StoreAPI.createCollection(token, collection);
+  await Promise.all(photos.map(blob => StoreAPI.createCollectionPhoto(token, uuid, blob)));
   return uuid;
 };
 
 export const editCollection = async (
   token: string,
   uuid: string,
-  collection: MerchCollection
-): Promise<void> => {
-  await StoreAPI.editCollection(token, uuid, collection);
+  previousCollection: PublicMerchCollection,
+  collection: MerchCollectionEdit,
+  photos: (string | Blob)[]
+): Promise<PublicMerchCollection> => {
+  const newPhotos = await Promise.all(
+    photos.map(async (photo, position) => {
+      if (photo instanceof Blob) {
+        return { ...(await StoreAPI.createCollectionPhoto(token, uuid, photo)), position };
+      }
+      return { uuid: photo, position };
+    })
+  );
+  await Promise.all(
+    previousCollection.collectionPhotos
+      .filter(photo => !newPhotos.some(p => p.uuid === photo.uuid))
+      .map(({ uuid }) => StoreAPI.deleteCollectionPhoto(token, uuid))
+  );
+  return StoreAPI.editCollection(token, uuid, { ...collection, collectionPhotos: newPhotos });
 };
 
 export const deleteCollection = async (token: string, uuid: UUID): Promise<void> => {
