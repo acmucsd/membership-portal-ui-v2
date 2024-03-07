@@ -1,10 +1,11 @@
 export type Styles = {
-  bordered: string;
-  container: string;
-  eventDetails: string;
+  body: string;
+  cancel: string;
+  card: string;
+  confirm: string;
+  confirmRemove: string;
   header: string;
-  image: string;
-  info: string;
+  options: string;
 };
 
 export type ClassNames = keyof Styles;

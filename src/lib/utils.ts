@@ -4,15 +4,18 @@ import showToast from '@/lib/showToast';
 import type { URL } from '@/lib/types';
 import type {
   CustomErrorBody,
+  PublicEvent,
   PublicMerchCollection,
   PublicMerchCollectionPhoto,
   PublicMerchItem,
   PublicMerchItemPhoto,
   PublicOrderItem,
   PublicOrderItemWithQuantity,
+  PublicOrderPickupEvent,
   PublicProfile,
   ValidatorError,
 } from '@/lib/types/apiResponses';
+import { ClientCartItem } from '@/lib/types/client';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import { AxiosError } from 'axios';
 import {
@@ -37,7 +40,7 @@ export const getNextNYears = (num: number) => {
  * @param errBody Obj with validator constraint errors
  * @returns List of all user-friendly error strings
  */
-const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
+export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
   // if error has no suberrors, just return top level error message
   if (!errBody.errors) return [errBody.message];
 
@@ -299,7 +302,9 @@ export const getDateRange = (sort: string | number) => {
  * Returns the default (first) photo for a merchandise item.
  * If there are no photos for this item, returns the default 404 image.
  */
-export const getDefaultMerchItemPhoto = (item?: PublicMerchItem): string => {
+export const getDefaultMerchItemPhoto = (
+  item: Pick<PublicMerchItem, 'merchPhotos'> | undefined
+): string => {
   if (item && item.merchPhotos.length > 0) {
     // Get the photo with the smallest position.
     const defaultPhoto = item.merchPhotos.reduce((prevImage, currImage) => {
@@ -365,6 +370,35 @@ export const fixUrl = (input: string, prefix?: string): string => {
   // Add https:// if it was left out
   return `https://${input}`;
 };
+
+/**
+ * Check if a ClientCartItem is in stock and within lifetime/monthly limits
+ * @param item item to validate
+ * @returns an error message string if the item is unavailable, or null otherwise
+ */
+export const validateClientCartItem = (item: ClientCartItem): string | null => {
+  if (item.quantity > item.lifetimeRemaining)
+    return item.lifetimeRemaining === 0
+      ? 'You have already reached your lifetime limit for this item'
+      : `You can only purchase ${item.lifetimeRemaining} more of this item`;
+  if (item.quantity > item.monthlyRemaining)
+    return item.monthlyRemaining === 0
+      ? 'You have already reached your monthly limit for this item'
+      : `You can only purchase ${item.monthlyRemaining} more of this item this month`;
+  if (item.hidden) return 'Ordering this item has been temporarily disabled';
+  if (item.option.quantity === 0) return 'This item is out of stock';
+  if (item.quantity > item.option.quantity)
+    return `You have selected more of this item than is in stock (${item.option.quantity} left)`;
+  return null;
+};
+
+/**
+ * Type predicate distinguishes between PublicOrderPickupEvent and PublicEvent
+ * @returns true if event is PublicOrderPickupEvent
+ */
+export const isOrderPickupEvent = (
+  event: PublicOrderPickupEvent | PublicEvent
+): event is PublicOrderPickupEvent => 'status' in event;
 
 /**
  * Condenses a list of ordered items into unique items with quantities.

@@ -453,6 +453,10 @@ export interface PublicOrderPickupEvent {
   linkedEvent?: PublicEvent;
 }
 
+export interface PublicOrderPickupEventWithLinkedEvent extends PublicOrderPickupEvent {
+  linkedEvent: PublicEvent;
+}
+
 export interface GetOrderPickupEventsResponse extends ApiResponse {
   pickupEvents: PublicOrderPickupEvent[];
 }

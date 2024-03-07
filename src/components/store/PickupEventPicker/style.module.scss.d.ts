@@ -1,10 +1,9 @@
 export type Styles = {
-  bordered: string;
-  container: string;
-  eventDetails: string;
-  header: string;
-  image: string;
-  info: string;
+  eventNavigation: string;
+  eventPicker: string;
+  noEvents: string;
+  slider: string;
+  window: string;
 };
 
 export type ClassNames = keyof Styles;
