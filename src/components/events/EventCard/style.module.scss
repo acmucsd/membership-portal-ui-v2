@@ -3,13 +3,14 @@
   border: 1px solid var(--theme-primary-6);
   border-radius: 10px;
   height: fit-content;
+  max-width: 35rem;
+  min-width: 20rem;
   -ms-overflow-style: none;
   overflow-x: hidden;
   padding: 0;
   position: relative;
   text-align: left;
   transition: all 0.3s;
-  width: 20rem;
 
   &:hover {
     box-shadow: 0 0 8px var(--theme-primary-6);
