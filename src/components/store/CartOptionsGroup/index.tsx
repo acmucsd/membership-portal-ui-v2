@@ -8,6 +8,7 @@ interface CartOptionGroupProps {
   monthlyRemaining: number;
   available: number;
   optionsKey?: string;
+  hidden?: boolean;
   onAddToCart: (amount: number) => void;
 }
 
@@ -17,14 +18,16 @@ const CartOptionsGroup = ({
   monthlyRemaining,
   available,
   optionsKey,
+  hidden,
   onAddToCart,
 }: CartOptionGroupProps) => {
   const [amount, setAmount] = useState('1');
 
   const maxCanBuy = Math.min(lifetimeRemaining, monthlyRemaining, available);
   const inStock = available > 0;
-  const isPurchasable = inStock && maxCanBuy > 0;
   const noOptionSelected = currOption === undefined && optionsKey !== undefined;
+  const limitHit = maxCanBuy <= 0;
+  const isPurchasable = inStock && !limitHit && !noOptionSelected && !hidden;
 
   let disableReason = '';
   if (lifetimeRemaining === 0) {
@@ -35,6 +38,8 @@ const CartOptionsGroup = ({
     disableReason = `This ${
       optionsKey?.toLocaleLowerCase() ?? 'option'
     } is currently out of stock.`;
+  } else if (hidden) {
+    disableReason = 'Ordering this item has been temporarily disabled.';
   } else {
     disableReason = `You can buy up to ${maxCanBuy} of this item.`;
   }

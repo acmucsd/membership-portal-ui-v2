@@ -1,9 +1,9 @@
 import { Typography } from '@/components/common';
 import { CartOptionsGroup, ItemHeader, Navbar, SizeSelector } from '@/components/store';
-import { showToast } from '@/lib';
+import { config, showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
+import { CartService, CookieService, PermissionService } from '@/lib/services';
 import {
   PrivateProfile,
   PublicMerchItemOption,
@@ -14,6 +14,7 @@ import NoImage from '@/public/assets/graphics/cat404.png';
 import styles from '@/styles/pages/StoreItemPage.module.scss';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useId, useMemo, useState } from 'react';
 
 interface ItemPageProps {
@@ -29,6 +30,7 @@ const StoreItemPage = ({
   item,
   previewPublic,
 }: ItemPageProps) => {
+  const router = useRouter();
   // Sort options and photos according to their posiiton
   const options = useMemo(
     () =>
@@ -96,16 +98,22 @@ const StoreItemPage = ({
           <CartOptionsGroup
             onAddToCart={amount => {
               // TEMP
-              showToast(
-                'Cart functionality is coming soon!',
-                `You tried to add ${amount} item(s) to your cart.`
-              );
+              if (selectedOption?.uuid) {
+                CartService.addItem(item, selectedOption, amount);
+                showToast(`Added ${item.itemName} to your cart!`, '', [
+                  {
+                    text: 'View Cart',
+                    onClick: () => router.push(config.store.cartRoute),
+                  },
+                ]);
+              }
             }}
             currOption={selectedOption?.metadata?.value}
             lifetimeRemaining={item.lifetimeRemaining}
             monthlyRemaining={item.monthlyRemaining}
             available={selectedOption?.quantity ?? 0}
             optionsKey={selectedOption?.metadata?.type}
+            hidden={item.hidden}
           />
           <Typography variant="h4/bold">Item Description</Typography>
           <Typography

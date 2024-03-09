@@ -2,9 +2,10 @@ import { Typography } from '@/components/common';
 import Diamonds from '@/components/store/Diamonds';
 import StoreConfirmModal from '@/components/store/StoreConfirmModal';
 import { config } from '@/lib';
+import { CartService } from '@/lib/services';
 import type { UUID } from '@/lib/types';
 import { ClientCartItem } from '@/lib/types/client';
-import { capitalize, getDefaultMerchItemPhoto, validateClientCartItem } from '@/lib/utils';
+import { capitalize, getDefaultMerchItemPhoto } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './style.module.scss';
@@ -21,7 +22,7 @@ interface CartItemCardProps {
 const CartItemCard = ({ item, removeItem, removable }: CartItemCardProps) => {
   const itemPage = `${config.store.itemRoute}${item.uuid}`;
 
-  const unavailableReason = validateClientCartItem(item);
+  const unavailableReason = CartService.validateClientCartItem(item);
 
   const remover = removable && (
     <StoreConfirmModal
