@@ -53,7 +53,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
     setOrderTotal(CartService.calculateOrderTotal(cart));
   }, [cart, credits]);
 
-  const cartInvalid = useMemo(() => CartService.validateClientCart(cart), [cart]);
+  const cartInvalid = useMemo(() => !CartService.validateClientCart(cart), [cart]);
 
   // prop for item cards to remove their item
   const removeItem = (item: ClientCartItem) => {

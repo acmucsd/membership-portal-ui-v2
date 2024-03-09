@@ -71,12 +71,12 @@ export const validateClientCartItem = (item: ClientCartItem): string | null => {
 };
 
 /**
- * Checks if a ClientCart contains any invalid items (not in stock, not purchaseable, etc.)
+ * Checks if a ClientCart contains only valid items (not in stock, not purchaseable, etc.)
  * @param cart cart to validate
  * @returns if the cart is valid to checkout or not.
  */
 export const validateClientCart = (cart: ClientCartItem[]): boolean => {
-  return !cart.some(item => validateClientCartItem(item) !== null);
+  return cart.every(item => validateClientCartItem(item) === null);
 };
 
 // Cart CRUD operations.
@@ -103,7 +103,7 @@ const getClientCartCookie = (): CookieCartItem[] => {
   try {
     const cartCookie = getClientCookie(CookieType.CART);
     const cart = JSON.parse(cartCookie);
-    if (!Array.isArray(cart)) throw new Error();
+    if (!Array.isArray(cart)) throw new Error('Error: Invalid cart cookie');
     return cart;
   } catch {
     return [];
@@ -114,7 +114,7 @@ const getServerCartCookie = (options: OptionsType): CookieCartItem[] => {
   try {
     const cartCookie = getServerCookie(CookieType.CART, options);
     const cart = JSON.parse(cartCookie);
-    if (!Array.isArray(cart)) throw new Error();
+    if (!Array.isArray(cart)) throw new Error('Error: Invalid cart cookie');
     return cart;
   } catch {
     return [];
