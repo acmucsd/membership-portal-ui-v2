@@ -21,10 +21,6 @@ const clientCartToCookie = (items: ClientCartItem[]): string =>
     }))
   );
 
-export const calculateOrderTotal = (cart: ClientCartItem[]): number => {
-  return cart.reduce((total, { quantity, option: { price } }) => total + quantity * price, 0);
-};
-
 /**
  * Given a public merch item, convert it to a cart-friendly item.
  * @param item The public merch item
@@ -47,6 +43,10 @@ const merchItemToClientCartItem = (
   // check for invalid cart cookie item
   if (!clientCartItem.option || typeof quantity !== 'number') throw new Error();
   return clientCartItem as ClientCartItem;
+};
+
+export const calculateOrderTotal = (cart: ClientCartItem[]): number => {
+  return cart.reduce((total, { quantity, option: { price } }) => total + quantity * price, 0);
 };
 
 /**
@@ -82,21 +82,24 @@ export const validateClientCart = (cart: ClientCartItem[]): boolean => {
 // Cart CRUD operations.
 
 /**
- * Given a cart, save it as a cookie. This is done client-side.
+ * Given a ClientCart, save it as a cookie. This is done client-side.
  */
-const saveCartClient = (cart: ClientCartItem[]): void => {
+const saveClientCart = (cart: ClientCartItem[]): void => {
   setClientCookie(CookieType.CART, clientCartToCookie(cart));
 };
 
-const saveCartCookie = (cart: CookieCartItem[]): void => {
+/**
+ * Given a CookieCart, save it as a cookie. This is done client-side.
+ */
+const saveCookieCart = (cart: CookieCartItem[]): void => {
   setClientCookie(CookieType.CART, JSON.stringify(cart));
 };
 
 export const clearCart = (): void => {
-  saveCartCookie([]);
+  saveCookieCart([]);
 };
 
-export const getCartCookieClient = (): CookieCartItem[] => {
+const getCookieCartClient = (): CookieCartItem[] => {
   try {
     const cartCookie = getClientCookie(CookieType.CART);
     const cart = JSON.parse(cartCookie);
@@ -107,7 +110,7 @@ export const getCartCookieClient = (): CookieCartItem[] => {
   }
 };
 
-export const getCartCookieServer = (options: OptionsType): CookieCartItem[] => {
+const getCookieCartServer = (options: OptionsType): CookieCartItem[] => {
   try {
     const cartCookie = getServerCookie(CookieType.CART, options);
     const cart = JSON.parse(cartCookie);
@@ -129,7 +132,7 @@ export const getCart = async (options: OptionsType): Promise<ClientCartItem[]> =
   const AUTH_TOKEN = getServerCookie(CookieType.ACCESS_TOKEN, options);
 
   // recover saved items and reset the cart to [] if the cookie is malformed.
-  const savedItems = getCartCookieServer(options);
+  const savedItems = getCookieCartServer(options);
 
   const savedCart = await Promise.all(
     savedItems.map(async ({ itemUUID, optionUUID, quantity }: CookieCartItem) => {
@@ -157,7 +160,7 @@ export const getCart = async (options: OptionsType): Promise<ClientCartItem[]> =
 export const removeItem = (cart: ClientCartItem[], item: ClientCartItem): ClientCartItem[] => {
   const optionUUID = item.option.uuid;
   const newCart = cart.filter(item => item.option.uuid !== optionUUID);
-  saveCartClient(newCart);
+  saveClientCart(newCart);
   return newCart;
 };
 
@@ -173,7 +176,7 @@ export const addItem = (
   option: PublicMerchItemOption,
   quantity: number
 ): void => {
-  const cart = getCartCookieClient();
+  const cart = getCookieCartClient();
   if (cart.some(item => item.optionUUID === option.uuid)) {
     // If the item exists in the cart, increment its value.
     const newCart = cart.map(item => {
@@ -182,10 +185,10 @@ export const addItem = (
         quantity: item.optionUUID === option.uuid ? item.quantity + quantity : item.quantity,
       };
     });
-    saveCartCookie(newCart);
+    saveCookieCart(newCart);
   } else {
     // Otherwise, append it to the cart.
     const newCart = [...cart, { itemUUID: item.uuid, optionUUID: option.uuid, quantity }];
-    saveCartCookie(newCart);
+    saveCookieCart(newCart);
   }
 };
