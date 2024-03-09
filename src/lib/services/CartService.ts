@@ -99,7 +99,7 @@ export const clearCart = (): void => {
   saveCookieCart([]);
 };
 
-const getCookieCartClient = (): CookieCartItem[] => {
+const getClientCartCookie = (): CookieCartItem[] => {
   try {
     const cartCookie = getClientCookie(CookieType.CART);
     const cart = JSON.parse(cartCookie);
@@ -110,7 +110,7 @@ const getCookieCartClient = (): CookieCartItem[] => {
   }
 };
 
-const getCookieCartServer = (options: OptionsType): CookieCartItem[] => {
+const getServerCartCookie = (options: OptionsType): CookieCartItem[] => {
   try {
     const cartCookie = getServerCookie(CookieType.CART, options);
     const cart = JSON.parse(cartCookie);
@@ -132,7 +132,7 @@ export const getCart = async (options: OptionsType): Promise<ClientCartItem[]> =
   const AUTH_TOKEN = getServerCookie(CookieType.ACCESS_TOKEN, options);
 
   // recover saved items and reset the cart to [] if the cookie is malformed.
-  const savedItems = getCookieCartServer(options);
+  const savedItems = getServerCartCookie(options);
 
   const savedCart = await Promise.all(
     savedItems.map(async ({ itemUUID, optionUUID, quantity }: CookieCartItem) => {
@@ -152,7 +152,7 @@ export const getCart = async (options: OptionsType): Promise<ClientCartItem[]> =
 };
 
 /**
- * Given a cart, remove the requested item from the cart.
+ * Given a ClientCart, remove the requested item from the cart.
  * @param cart The cart to modify.
  * @param item The item to remove from the cart, if it exists.
  * @returns The modified cart.
@@ -165,7 +165,7 @@ export const removeItem = (cart: ClientCartItem[], item: ClientCartItem): Client
 };
 
 /**
- * Given a cart, add the requested item and its quantity to the cart.
+ * Add the requested item and its quantity to the cart.
  * This is performed client side, so cookies are used.
  * @param cart The cart to modify.
  * @param item The item to add to the cart.
@@ -176,9 +176,9 @@ export const addItem = (
   option: PublicMerchItemOption,
   quantity: number
 ): void => {
-  const cart = getCookieCartClient();
+  const cart = getClientCartCookie();
   if (cart.some(item => item.optionUUID === option.uuid)) {
-    // If the item exists in the cart, increment its value.
+    // If the item exists in the cart, find it and increment its value.
     const newCart = cart.map(item => {
       return {
         ...item,
