@@ -417,3 +417,9 @@ export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderIte
 
   return Array.from(itemMap.values());
 };
+
+export const getDefaultEventCover = (src: any): string => {
+  if (!src || typeof src !== 'string' || !/^(http|\/)/.test(src))
+    return '/assets/graphics/store/hero-photo.jpg';
+  return src;
+};

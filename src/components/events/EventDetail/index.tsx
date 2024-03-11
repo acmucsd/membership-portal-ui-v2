@@ -2,7 +2,7 @@ import { CommunityLogo, Typography } from '@/components/common';
 import CalendarButtons from '@/components/events/CalendarButtons';
 import PointsDisplay from '@/components/events/PointsDisplay';
 import { PublicEvent, PublicOrderPickupEvent } from '@/lib/types/apiResponses';
-import { fixUrl, formatEventDate, isOrderPickupEvent } from '@/lib/utils';
+import { fixUrl, formatEventDate, getDefaultEventCover, isOrderPickupEvent } from '@/lib/utils';
 import CloseIcon from '@/public/assets/icons/close-icon.svg';
 import LinkIcon from '@/public/assets/icons/link.svg';
 import Image from 'next/image';
@@ -25,7 +25,7 @@ const EventDetail = ({ event, attended, inModal = true }: EventDetailProps) => {
         }
       : event;
 
-  const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
+  const displayCover = getDefaultEventCover(cover);
   const uuidForLink = isOrderPickupEvent(event) ? event.linkedEvent?.uuid : event.uuid;
   const displayEventLink =
     fixUrl(eventLink ?? '') || (uuidForLink && `https://acmucsd.com/events/${uuidForLink}`) || '';
