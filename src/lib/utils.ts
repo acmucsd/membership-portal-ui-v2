@@ -418,6 +418,11 @@ export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderIte
   return Array.from(itemMap.values());
 };
 
+/**
+ * Validates src for event cover image, returning a default if invalid
+ * @param src src for cover image
+ * @returns a valid image src
+ */
 export const getDefaultEventCover = (src: any): string => {
   if (!src || typeof src !== 'string' || !/^(http|\/)/.test(src))
     return '/assets/graphics/store/hero-photo.jpg';
