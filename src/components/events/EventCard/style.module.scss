@@ -1,6 +1,7 @@
+@use 'src/styles/vars.scss' as vars;
+
 .container {
   background: transparent;
-  border: 1px solid var(--theme-primary-6);
   border-radius: 10px;
   height: fit-content;
   -ms-overflow-style: none;
@@ -11,13 +12,13 @@
   transition: all 0.3s;
   width: 20rem;
 
-  &.bordered { 
-    border: 1px solid var(--theme-primary-6);
+  &.bordered {
+    border: 1px solid var(--theme-card-outline);
     border-radius: 10px;
   }
 
   &:not([disabled]):hover {
-    box-shadow: 0 0 8px var(--theme-primary-6);
+    box-shadow: 0 3px 10px var(--theme-shadow);
     transform: scale(1.025);
   }
 
@@ -36,18 +37,54 @@
   .info {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 5px;
     padding: 1rem;
 
-    .header {
-      align-items: center;
+    .badges {
       display: flex;
-      flex-direction: row;
-      gap: 0.5rem;
+      flex-wrap: wrap;
+      gap: 0.25rem;
 
-      .eventDetails {
-        overflow: hidden;
-        white-space: nowrap;
+      .badge {
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+        font-size: 10px;
+        padding: 2px 5px;
+
+        &.badgeGeneral {
+          background-color: vars.$blue-3;
+          border-color: vars.$blue-5;
+        }
+
+        &.badgeAi {
+          background-color: vars.$scarlet-2;
+          border-color: vars.$scarlet-4;
+        }
+
+        &.badgeHack {
+          background-color: vars.$orange-3;
+          border-color: vars.$orange-5;
+        }
+
+        &.badgeCyber {
+          background-color: vars.$cyan-2;
+          border-color: vars.$cyan-5;
+        }
+
+        &.badgeDesign {
+          background-color: vars.$pink-2;
+          border-color: vars.$pink-4;
+        }
+
+        &.badgePoints {
+          background-color: #e4e4e4;
+          border-color: vars.$gray-4;
+        }
+
+        &.badgeAttended {
+          background-color: #b6e0ba;
+          border-color: vars.$success-1;
+        }
       }
     }
   }

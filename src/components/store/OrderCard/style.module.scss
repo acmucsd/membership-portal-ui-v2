@@ -34,10 +34,10 @@
 }
 
 .orderStatus {
-  background: vars.$gray-400;
-  border: 1px solid vars.$gray-900;
+  background: vars.$gray-2;
+  border: 1px solid vars.$gray-7;
   border-radius: 0.875rem;
-  color: vars.$gray-900;
+  color: vars.$gray-7;
   margin-right: 1rem;
   padding: 0.25rem 0.5rem;
 
@@ -54,9 +54,9 @@
   }
 
   &.gray {
-    background: vars.$gray-400;
-    border: 1px solid vars.$gray-900;
-    color: vars.$gray-900;
+    background: vars.$gray-2;
+    border: 1px solid vars.$gray-7;
+    color: vars.$gray-7;
   }
 
   &.blue {

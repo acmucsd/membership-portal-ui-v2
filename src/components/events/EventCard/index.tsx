@@ -1,12 +1,12 @@
-import { CommunityLogo, Typography } from '@/components/common';
+import { Typography } from '@/components/common';
 import EventModal from '@/components/events/EventModal';
-import PointsDisplay from '@/components/events/PointsDisplay';
+import { communityNames } from '@/lib/constants/communities';
 import {
   PublicEvent,
   PublicOrderPickupEvent,
   PublicOrderPickupEventWithLinkedEvent,
 } from '@/lib/types/apiResponses';
-import { formatEventDate, isOrderPickupEvent } from '@/lib/utils';
+import { formatEventDate, isOrderPickupEvent, toCommunity } from '@/lib/utils';
 import Image from 'next/image';
 import { useState } from 'react';
 import styles from './style.module.scss';
@@ -34,6 +34,7 @@ const EventCard = ({
         ...event,
       }
     : event;
+  const community = toCommunity(committee);
 
   const [expanded, setExpanded] = useState(false);
   const hasModal = !isOrderPickupEvent(event) || event.linkedEvent;
@@ -62,9 +63,6 @@ const EventCard = ({
         disabled={!hasModal}
       >
         <div className={styles.image}>
-          {!isOrderPickupEvent(event) && (
-            <PointsDisplay points={event.pointValue} attended={attended} />
-          )}
           <Image
             src={displayCover}
             alt="Event Cover Image"
@@ -75,29 +73,37 @@ const EventCard = ({
         </div>
         {!hideInfo && (
           <div className={styles.info}>
-            <div className={styles.header}>
-              <CommunityLogo community={committee ?? 'General'} size={50} />
-              <div className={styles.eventDetails}>
-                <Typography
-                  variant="body/medium"
-                  style={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis' }}
-                >
-                  {title}
-                </Typography>
-                <Typography
-                  variant="body/small"
-                  style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-                  suppressHydrationWarning
-                >
-                  {formatEventDate(start, end, showYear)}
-                </Typography>
-                <Typography
-                  variant="body/small"
-                  style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-                >
-                  {location}
-                </Typography>
+            <Typography
+              variant="body/small"
+              style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+              suppressHydrationWarning
+            >
+              {formatEventDate(start, end, showYear)}
+            </Typography>
+            <Typography
+              variant="body/medium"
+              style={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis' }}
+            >
+              {title}
+            </Typography>
+            <Typography
+              variant="body/small"
+              style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+            >
+              {location}
+            </Typography>
+            <div className={styles.badges}>
+              <div className={`${styles.badge} ${styles[`badge${community}`]}`}>
+                {communityNames[community]}
               </div>
+              {!isOrderPickupEvent(event) && (
+                <div className={`${styles.badge} ${styles.badgePoints}`}>
+                  {event.pointValue} point{event.pointValue === 1 ? '' : 's'}
+                </div>
+              )}
+              {!isOrderPickupEvent(event) && attended && (
+                <div className={`${styles.badge} ${styles.badgeAttended}`}>Attended</div>
+              )}
             </div>
           </div>
         )}
