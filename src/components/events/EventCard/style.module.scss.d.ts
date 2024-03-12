@@ -12,6 +12,7 @@ export type Styles = {
   container: string;
   image: string;
   info: string;
+  infoText: string;
 };
 
 export type ClassNames = keyof Styles;
