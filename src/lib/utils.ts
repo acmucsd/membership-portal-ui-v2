@@ -424,7 +424,7 @@ export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderIte
  * @returns a valid image src
  */
 export const getDefaultEventCover = (src: unknown): string => {
-  if (!src || typeof src !== 'string' || !/^(http|\/)/.test(src))
+  if (!src || typeof src !== 'string' || !/^(http|\/).+(jpg|png|jpeg)$/i.test(src))
     return '/assets/graphics/store/hero-photo.jpg';
   return src;
 };
