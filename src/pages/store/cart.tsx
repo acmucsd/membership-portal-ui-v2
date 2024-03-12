@@ -8,22 +8,21 @@ import {
   StoreConfirmModal,
 } from '@/components/store';
 import { config, showToast } from '@/lib';
-import { getFutureOrderPickupEvents, getItem } from '@/lib/api/StoreAPI';
+import { getFutureOrderPickupEvents } from '@/lib/api/StoreAPI';
 import { getCurrentUserAndRefreshCookie } from '@/lib/api/UserAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { placeMerchOrder } from '@/lib/managers/StoreManager';
-import { getServerCookie, setClientCookie, setServerCookie } from '@/lib/services/CookieService';
+import { CartService } from '@/lib/services';
+import { getServerCookie } from '@/lib/services/CookieService';
 import { loggedInUser } from '@/lib/services/PermissionService';
-import type { UUID } from '@/lib/types';
 import {
   PrivateProfile,
-  PublicMerchItemOption,
   PublicOrderPickupEvent,
   PublicOrderPickupEventWithLinkedEvent,
 } from '@/lib/types/apiResponses';
-import { ClientCartItem, CookieCartItem } from '@/lib/types/client';
+import { ClientCartItem } from '@/lib/types/client';
 import { CookieType } from '@/lib/types/enums';
-import { reportError, validateClientCartItem } from '@/lib/utils';
+import { reportError } from '@/lib/utils';
 import EmptyCartIcon from '@/public/assets/icons/empty-cart.svg';
 import styles from '@/styles/pages/store/cart/index.module.scss';
 import { GetServerSideProps } from 'next';
@@ -42,37 +41,23 @@ enum CartState {
   CONFIRMED,
 }
 
-const clientCartToCookie = (items: ClientCartItem[]): string =>
-  JSON.stringify(
-    items.map(item => ({
-      itemUUID: item.uuid,
-      optionUUID: item.option.uuid,
-      quantity: item.quantity,
-    }))
-  );
-
-const calculateOrderTotal = (cart: ClientCartItem[]): number => {
-  return cart.reduce((total, { quantity, option: { price } }) => total + quantity * price, 0);
-};
-
 const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageProps) => {
   const [cart, setCart] = useState(savedCart);
   const [pickupIndex, setPickupIndex] = useState(0);
   const [cartState, setCartState] = useState(CartState.PRECHECKOUT);
-  const [orderTotal, setOrderTotal] = useState(calculateOrderTotal(savedCart));
+  const [orderTotal, setOrderTotal] = useState(CartService.calculateOrderTotal(savedCart));
   const [liveCredits, setLiveCredits] = useState(credits);
 
   // update the cart cookie and order total
   useEffect(() => {
-    setOrderTotal(calculateOrderTotal(cart));
-    setClientCookie(CookieType.CART, clientCartToCookie(cart));
+    setOrderTotal(CartService.calculateOrderTotal(cart));
   }, [cart, credits]);
 
-  const cartInvalid = useMemo(() => cart.some(item => validateClientCartItem(item)), [cart]);
+  const cartInvalid = useMemo(() => !CartService.validateClientCart(cart), [cart]);
 
   // prop for item cards to remove their item
-  const removeItem = (optionUUID: UUID) => {
-    setCart(cart => cart.filter(item => item.option.uuid !== optionUUID));
+  const removeItem = (item: ClientCartItem) => {
+    setCart(cart => CartService.removeItem(cart, item));
   };
 
   // handle confirming an order
@@ -84,7 +69,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
           `Pick up at ${pickupEvent.title}`
         );
         setCartState(CartState.CONFIRMED);
-        setClientCookie(CookieType.CART, clientCartToCookie([]));
+        CartService.clearCart();
         setLiveCredits(credits - orderTotal);
       })
       .catch(err => {
@@ -173,7 +158,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
             <CartItemCard
               key={item.option.uuid}
               item={item}
-              removeItem={removeItem}
+              removeItem={() => removeItem(item)}
               removable={cartState !== CartState.CONFIRMED}
             />
           ))}
@@ -262,36 +247,7 @@ export default StoreCartPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const AUTH_TOKEN = getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
-  // recover saved items and reset cart to [] if it's invalid
-  let savedItems;
-  try {
-    const cartCookie = getServerCookie(CookieType.CART, { req, res });
-    savedItems = JSON.parse(cartCookie);
-    if (!Array.isArray(savedItems)) throw new Error();
-  } catch {
-    savedItems = [];
-  }
-
-  const savedCartPromises = Promise.all(
-    savedItems.map(async ({ itemUUID, optionUUID, quantity }: CookieCartItem) => {
-      try {
-        const { options, ...publicItem } = await getItem(AUTH_TOKEN, itemUUID);
-
-        // form the ClientCartItem from the PublicMerchItem
-        const clientCartItem: Partial<ClientCartItem> = { ...publicItem, quantity };
-        clientCartItem.option = options.find(
-          (option: PublicMerchItemOption) => option.uuid === optionUUID
-        );
-
-        // check for invalid cart cookie item
-        if (!clientCartItem.option || typeof quantity !== 'number') throw new Error();
-        return clientCartItem as ClientCartItem;
-      } catch {
-        return undefined;
-      }
-    })
-  ).then((items): ClientCartItem[] => items.filter(item => item !== undefined) as ClientCartItem[]);
-
+  const savedCartPromise = CartService.getCart({ req, res });
   const pickupEventsPromise = getFutureOrderPickupEvents(AUTH_TOKEN).then(events =>
     events.filter(event => event.status !== 'CANCELLED')
   );
@@ -299,13 +255,10 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   // gather the API request promises and await them concurrently
   const [savedCart, pickupEvents, user] = await Promise.all([
-    savedCartPromises,
+    savedCartPromise,
     pickupEventsPromise,
     userPromise,
   ]);
-
-  // update the cart cookie if part of it was malformed
-  setServerCookie(CookieType.CART, clientCartToCookie(savedCart), { req, res });
 
   return {
     props: {

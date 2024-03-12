@@ -6,7 +6,12 @@ import {
   PublicOrderPickupEvent,
   PublicOrderPickupEventWithLinkedEvent,
 } from '@/lib/types/apiResponses';
-import { formatEventDate, isOrderPickupEvent, toCommunity } from '@/lib/utils';
+import {
+  formatEventDate,
+  getDefaultEventCover,
+  isOrderPickupEvent,
+  toCommunity,
+} from '@/lib/utils';
 import Image from 'next/image';
 import { useState } from 'react';
 import styles from './style.module.scss';
@@ -39,7 +44,7 @@ const EventCard = ({
   const [expanded, setExpanded] = useState(false);
   const hasModal = !isOrderPickupEvent(event) || event.linkedEvent;
 
-  const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
+  const displayCover = getDefaultEventCover(cover);
 
   return (
     <>

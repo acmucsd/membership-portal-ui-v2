@@ -31,6 +31,9 @@ export const UserProfilePage = ({
   const [progress, setProgress] = useState<Number>(0);
   useEffect(() => setProgress(handleUser.points % 100), [handleUser.points]);
   const levelText = `Level ${getLevel(handleUser.points)}: ${getUserRank(handleUser.points)}`;
+  const nextLevelText = `Level ${getLevel(handleUser.points + 100)}: ${getUserRank(
+    handleUser.points + 100
+  )}`;
 
   return (
     <div className={styles.profilePage}>
@@ -103,7 +106,7 @@ export const UserProfilePage = ({
           {isSignedInUser ? 'You need ' : `${handleUser.firstName} needs `}
           {100 - (handleUser.points % 100)} more points to level up to
           <Typography variant="h5/bold" component="span">
-            &nbsp;{levelText}
+            &nbsp;{nextLevelText}
           </Typography>
         </Typography>
       </div>
