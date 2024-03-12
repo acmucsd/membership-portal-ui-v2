@@ -1,7 +1,6 @@
 export type Styles = {
   aboutMeSection: string;
   aboutSection: string;
-  banner: string;
   bioSection: string;
   card: string;
   cardName: string;

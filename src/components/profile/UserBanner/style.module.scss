@@ -1,0 +1,19 @@
+@use 'src/styles/vars.scss' as vars;
+
+.banner {
+  background-color: var(--theme-surface-1);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+  height: 90%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
+
+  .communityColor {
+    border-radius: 0.5rem;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+  }
+}
