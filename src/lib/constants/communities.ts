@@ -16,9 +16,9 @@ export const communityLogos: Record<Community, StaticImageData> = {
 };
 
 export const communityNames: Record<Community, string> = {
-  Ai: 'ACM AI',
-  Cyber: 'ACM Cyber',
-  Design: 'ACM Design',
-  Hack: 'ACM Hack',
-  General: 'ACM',
+  Ai: 'AI',
+  Cyber: 'Cyber',
+  Design: 'Design',
+  Hack: 'Hack',
+  General: 'General',
 };
