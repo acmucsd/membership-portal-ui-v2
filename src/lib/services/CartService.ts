@@ -41,7 +41,8 @@ const merchItemToClientCartItem = (
   );
 
   // check for invalid cart cookie item
-  if (!clientCartItem.option || typeof quantity !== 'number') throw new Error();
+  if (!clientCartItem.option || typeof quantity !== 'number')
+    throw new Error('Malformed cart cookie: item missing option or quantity');
   return clientCartItem as ClientCartItem;
 };
 
