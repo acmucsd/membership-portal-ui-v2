@@ -26,6 +26,7 @@ const config = {
         attendance: '/admin/attendance',
         bonus: '/admin/bonus',
         emails: '/admin/email',
+        access: '/admin/access',
       },
       event: {
         event: '/event',
@@ -102,6 +103,7 @@ const config = {
     grantPastAttendance: '/admin/attendance',
     awardMilestone: '/admin/milestone',
     viewResumes: '/admin/resumes',
+    manageUserAccess: '/admin/manage-user-access',
     store: {
       items: '/admin/store/items',
       pickup: '/admin/store/pickup',

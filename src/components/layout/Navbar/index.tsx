@@ -81,7 +81,7 @@ const Navbar = ({ accessType }: NavbarProps) => {
           <p aria-hidden>·</p>
           <Link href={config.eventsRoute}>Events</Link>
           <p aria-hidden>·</p>
-          <Link href="/leaderboard">Leaderboard</Link>
+          <Link href={config.leaderboardRoute}>Leaderboard</Link>
         </nav>
         <nav className={styles.iconLinks}>
           <ThemeToggle />
