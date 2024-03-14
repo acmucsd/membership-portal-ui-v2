@@ -1,4 +1,5 @@
 import Modal from '@/components/common/Modal';
+import { showToast } from '@/lib';
 import { useObjectUrl } from '@/lib/utils';
 import Image from 'next/image';
 import { PointerEvent, useCallback, useRef, useState } from 'react';
@@ -27,9 +28,26 @@ interface CropperProps {
   aspectRatio: number;
   circle?: boolean;
   maxFileHeight: number;
+  /**
+   * Maximum number of bytes (not kilobytes) of the image. If unspecified, there
+   * is no limit.
+   *
+   * The cropper will first try to produce a PNG image then JPG images of
+   * decreasing quality until the threshold is met. If a JPG image of 0 quality
+   * is still too large, the cropper will close and show an error.
+   */
   maxSize?: number;
   onCrop: (file: Blob) => void;
-  onClose: (reason: 'invalid-image' | 'cannot-compress' | null) => void;
+  /**
+   * Called when the user cancels cropping or there is an error. `Cropper`
+   * automatically shows toasts for errors, so this callback only needs to set
+   * the `file` prop to null.
+   *
+   * When the user successfully crops, only `onCrop` is called and not
+   * `onClose`. This way, you can keep the modal open for the user to try again
+   * later if uploading the image fails due to RESNET-PROTECTED.
+   */
+  onClose: () => void;
 }
 
 const Cropper = ({
@@ -61,12 +79,13 @@ const Cropper = ({
   // onError callback needs to be memoized lest next/image reload the image
   const handleImageError = useCallback(() => {
     if (file !== null) {
-      onClose('invalid-image');
+      showToast('This image format is not supported.');
+      onClose();
     }
   }, [file, onClose]);
 
   return (
-    <Modal title="Edit image" open={loaded === file && file !== null} onClose={() => onClose(null)}>
+    <Modal title="Edit image" open={loaded === file && file !== null} onClose={onClose}>
       <div
         className={styles.cropWrapper}
         onPointerDown={e => {
@@ -93,7 +112,7 @@ const Cropper = ({
         onPointerUp={handlePointerEnd}
         onPointerCancel={handlePointerEnd}
       >
-        {url && (
+        {url ? (
           <Image
             src={url}
             alt="Selected file"
@@ -119,7 +138,7 @@ const Cropper = ({
             draggable={false}
             ref={image}
           />
-        )}
+        ) : null}
         <div
           className={`${styles.frame} ${circle ? styles.circle : ''}`}
           style={{ aspectRatio: `${aspectRatio}` }}
@@ -183,7 +202,11 @@ const Cropper = ({
             if (firstSmallEnough) {
               onCrop(firstSmallEnough);
             } else {
-              onClose('cannot-compress');
+              showToast(
+                'Your image has too much detail and cannot be compressed.',
+                'Try shrinking your image.'
+              );
+              onClose();
             }
           }}
         >

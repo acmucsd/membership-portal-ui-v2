@@ -6,12 +6,17 @@
   gap: 0.5rem;
 
   .title {
+    align-items: center;
+    display: flex;
     font-size: 1.25rem;
+    gap: 1rem;
     margin: 0;
+    word-break: break-word;
   }
 
   .description {
     margin: 0;
+    word-break: break-word;
   }
 
   .card {

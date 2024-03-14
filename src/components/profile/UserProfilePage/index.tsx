@@ -18,7 +18,7 @@ export interface UserProfilePageProps {
   handleUser: PublicProfile;
   isSignedInUser: boolean;
   signedInAttendances: PublicAttendance[];
-  recentAttendances?: PublicAttendance[];
+  recentAttendances: PublicAttendance[];
 }
 
 export const UserProfilePage = ({
@@ -30,6 +30,10 @@ export const UserProfilePage = ({
   // animate the progress bar
   const [progress, setProgress] = useState<Number>(0);
   useEffect(() => setProgress(handleUser.points % 100), [handleUser.points]);
+  const levelText = `Level ${getLevel(handleUser.points)}: ${getUserRank(handleUser.points)}`;
+  const nextLevelText = `Level ${getLevel(handleUser.points + 100)}: ${getUserRank(
+    handleUser.points + 100
+  )}`;
 
   return (
     <div className={styles.profilePage}>
@@ -66,13 +70,17 @@ export const UserProfilePage = ({
             </Tooltip>
           </div>
           <div className={styles.cardRank}>
-            <div className={styles.rank}>{getUserRank(handleUser.points)}</div>
+            <Typography variant="h4/regular" className={styles.rank}>
+              {getUserRank(handleUser.points)}
+            </Typography>
             <div className={styles.points}>
               <LeaderboardIcon /> &nbsp;
-              {handleUser.points.toLocaleString()} Leaderboard Points
+              <Typography variant="h5/regular" component="span">
+                {handleUser.points.toLocaleString()} Leaderboard Points
+              </Typography>
             </div>
           </div>
-          {isSignedInUser && (
+          {isSignedInUser ? (
             <div className={styles.editWrapper}>
               <Link href={config.profile.editRoute}>
                 <div>
@@ -80,7 +88,7 @@ export const UserProfilePage = ({
                 </div>
               </Link>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
       <div className={`${styles.section} ${styles.progressSection}`}>
@@ -88,7 +96,7 @@ export const UserProfilePage = ({
           {isSignedInUser ? 'My' : `${handleUser.firstName}'s`} Progress
         </Typography>
         <div className={styles.progressInfo}>
-          <Typography variant="h4/regular">Level {getLevel(handleUser.points)}</Typography>
+          <Typography variant="h4/regular">{levelText}</Typography>
           <Typography variant="h4/regular">{handleUser.points % 100}/100</Typography>
           <div className={styles.progressBar}>
             <div className={styles.inner} style={{ width: `${progress}%` }} />
@@ -98,7 +106,7 @@ export const UserProfilePage = ({
           {isSignedInUser ? 'You need ' : `${handleUser.firstName} needs `}
           {100 - (handleUser.points % 100)} more points to level up to
           <Typography variant="h5/bold" component="span">
-            &nbsp;{getUserRank(handleUser.points + 100)}
+            &nbsp;{nextLevelText}
           </Typography>
         </Typography>
       </div>
@@ -108,9 +116,9 @@ export const UserProfilePage = ({
           <Typography variant="h2/bold">About me</Typography>
           <div className={styles.aboutMeSection}>
             <ProfileIcon className={styles.icon} />
-            <Typography variant="h4/regular">Class of {handleUser.graduationYear}</Typography>
+            <Typography variant="h5/regular">Class of {handleUser.graduationYear}</Typography>
             <MajorIcon className={styles.icon} />
-            <Typography variant="h4/regular">{handleUser.major}</Typography>
+            <Typography variant="h5/regular">{handleUser.major}</Typography>
           </div>
           <div className={styles.socialIcons}>
             {handleUser.userSocialMedia?.map(social => (
@@ -133,43 +141,29 @@ export const UserProfilePage = ({
             {handleUser.bio || <i>Nothing here...</i>}
           </Typography>
         </div>
-        {isSignedInUser && (
-          <div className={styles.editWrapper}>
-            <Link href={`${config.profile.editRoute}#about`}>
-              <div>
-                <EditIcon />
-              </div>
-            </Link>
-          </div>
-        )}
       </div>
-      {(recentAttendances || isSignedInUser) && (
+      {recentAttendances || isSignedInUser ? (
         <div className={styles.section}>
           <Typography variant="h2/bold">
             Recently Attended Events
-            {!handleUser.isAttendancePublic && (
+            {!handleUser.isAttendancePublic ? (
               <Typography variant="h5/medium" component="span">
                 &nbsp;<i>(hidden for other users)</i>
               </Typography>
-            )}
+            ) : null}
           </Typography>
           <Carousel>
-            {(isSignedInUser
-              ? signedInAttendances.slice(-10)
-              : (recentAttendances as PublicAttendance[])
-            )
-              .reverse()
-              .map(({ event }) => (
-                <EventCard
-                  className={styles.card}
-                  key={event.uuid}
-                  event={event}
-                  attended={signedInAttendances.some(({ event: { uuid } }) => uuid === event.uuid)}
-                />
-              ))}
+            {recentAttendances.map(({ event }) => (
+              <EventCard
+                className={styles.card}
+                key={event.uuid}
+                event={event}
+                attended={signedInAttendances.some(({ event: { uuid } }) => uuid === event.uuid)}
+              />
+            ))}
           </Carousel>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

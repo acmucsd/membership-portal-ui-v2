@@ -1,0 +1,51 @@
+@use 'src/styles/vars.scss' as vars;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 0 auto;
+  max-width: 81rem;
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    h1 {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+
+  .photos {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+
+    .photo {
+      aspect-ratio: 1;
+      position: relative;
+
+      img {
+        object-fit: cover;
+      }
+    }
+  }
+
+  @media (max-width: vars.$breakpoint-md) {
+    .photos,
+    .browseItems {
+      display: none;
+    }
+  }
+
+  .collections {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    @media screen and (max-width: vars.$breakpoint-sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+}

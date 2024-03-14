@@ -1,7 +1,6 @@
 import Cat from '@/public/assets/graphics/cat404.png';
 
-const env = process.env.NODE_ENV;
-const isDevelopment = env !== 'production';
+const isDevelopment = process.env.NEXT_PUBLIC_PRODUCTION === undefined;
 
 const config = {
   api: {
@@ -42,6 +41,7 @@ const config = {
       leaderboard: '/leaderboard',
       store: {
         collection: '/merch/collection',
+        collectionPicture: '/merch/collection/picture',
         item: '/merch/item',
         itemPicture: '/merch/item/picture',
         option: '/merch/option',
@@ -84,11 +84,15 @@ const config = {
   profileRoute: '/profile',
   aboutRoute: '/about',
   userProfileRoute: '/u/',
-  storeRoute: '/store',
-  cartRoute: '/store/cart',
-  myOrdersRoute: '/store/orders',
-  collectionRoute: '/store/collection/',
-  itemRoute: '/store/item/',
+  store: {
+    homeRoute: '/store',
+    cartRoute: '/store/cart',
+    myOrdersRoute: '/store/orders',
+    collectionRoute: '/store/collection/',
+    createCollectionRoute: '/store/collection/new',
+    itemRoute: '/store/item/',
+    createItemRoute: '/store/item/new',
+  },
   profile: {
     route: '/profile',
     editRoute: '/profile/edit',
@@ -102,7 +106,7 @@ const config = {
     manageUserAccess: '/admin/manage-user-access',
     store: {
       items: '/admin/store/items',
-      pickupEvents: '/admin/store/pickupEvents',
+      pickup: '/admin/store/pickup',
       homeRoute: '/admin/store',
     },
     events: {
@@ -114,6 +118,11 @@ const config = {
   isDevelopment,
   file: {
     MAX_EVENT_COVER_SIZE_KB: isDevelopment ? 256 : 2048,
+    MAX_PROFILE_PICTURE_SIZE_KB: 256,
+    MAX_BANNER_SIZE_KB: isDevelopment ? 256 : 2048,
+    MAX_MERCH_PHOTO_SIZE_KB: 1024,
+    MAX_COLLECTION_PHOTO_SIZE_KB: 1024,
+    MAX_RESUME_SIZE_KB: isDevelopment ? 256 : 2048,
   },
 };
 

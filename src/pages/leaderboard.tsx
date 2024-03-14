@@ -118,7 +118,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
           }}
         />
       </div>
-      {topThreeUsers.length > 0 && (
+      {topThreeUsers.length > 0 ? (
         <div className={styles.topThreeContainer}>
           {topThreeUsers.map(user => (
             <TopThreeCard
@@ -132,8 +132,8 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             />
           ))}
         </div>
-      )}
-      {leaderboardRows.length > 0 && (
+      ) : null}
+      {leaderboardRows.length > 0 ? (
         <div className={styles.leaderboard}>
           {leaderboardRows.map(user => {
             return (
@@ -151,7 +151,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             );
           })}
         </div>
-      )}
+      ) : null}
       {allRows.length > 0 ? (
         <PaginationControls
           page={page}

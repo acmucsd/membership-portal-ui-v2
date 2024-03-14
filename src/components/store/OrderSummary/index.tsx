@@ -1,8 +1,8 @@
 import { Button, Typography } from '@/components/common';
 import Diamonds from '@/components/store/Diamonds';
-import { PublicOrderItemWithQuantity, PublicOrderWithItems } from '@/lib/types/apiResponses';
+import { PublicOrderWithItems } from '@/lib/types/apiResponses';
 import { OrderStatus } from '@/lib/types/enums';
-import { capitalize } from '@/lib/utils';
+import { capitalize, getOrderItemQuantities } from '@/lib/utils';
 import Image from 'next/image';
 import styles from './style.module.scss';
 
@@ -27,20 +27,9 @@ const isOrderActionable = ({ status, pickupEvent }: PublicOrderWithItems): boole
 };
 
 const OrderSummary = ({ order }: OrderSummaryProps) => {
-  const itemMap = new Map<string, PublicOrderItemWithQuantity>();
+  const items = getOrderItemQuantities(order.items);
 
-  order.items.forEach(item => {
-    const existingItem = itemMap.get(item.option.uuid);
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      itemMap.set(item.option.uuid, { ...item, quantity: 1 });
-    }
-  });
-
-  const updatedItems = Array.from(itemMap.values());
-
-  const totalCostWithoutDiscount = updatedItems.reduce((cost, item) => {
+  const totalCostWithoutDiscount = items.reduce((cost, item) => {
     return cost + item.quantity * item.option.price;
   }, 0);
 
@@ -48,7 +37,7 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
 
   return (
     <div className={styles.container}>
-      {updatedItems.map(item => (
+      {items.map(item => (
         <div key={item.uuid} className={styles.itemInfo}>
           <div className={styles.image}>
             <Image
@@ -72,14 +61,14 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
               <Typography variant="h5/bold">Quantity: </Typography>
               <Typography variant="h5/regular">{item.quantity}</Typography>
             </div>
-            {item.option.metadata && (
+            {item.option.metadata ? (
               <div className={styles.label}>
                 <Typography variant="h5/bold">{`${capitalize(
                   item.option.metadata.type
                 )}: `}</Typography>
                 <Typography variant="h5/regular">{item.option.metadata.value}</Typography>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       ))}
@@ -87,14 +76,14 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
       <div className={styles.footer}>
         <div className={styles.buttons}>
           <Button onClick={() => {}}>Pickup Details</Button>
-          {actionable && (
+          {actionable ? (
             <>
               <Button onClick={() => {}}>Reschedule Pickup</Button>
               <Button onClick={() => {}} destructive>
                 Cancel Order
               </Button>
             </>
-          )}
+          ) : null}
         </div>
         <div className={styles.totalPrice}>
           <Typography variant="h4/bold">Total: </Typography>

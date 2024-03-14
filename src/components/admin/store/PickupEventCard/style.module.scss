@@ -1,0 +1,33 @@
+.card {
+  background-color: var(--theme-surface-1);
+  border-radius: 1rem;
+  box-shadow: 0 0 4px var(--theme-accent-line-1-transparent);
+  padding: 1rem;
+
+  .title {
+    transition: 0.3s color;
+  }
+
+  &:hover > .title {
+    color: var(--theme-primary-2);
+  }
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+}
+
+.active {
+  color: var(--theme-primary-2);
+}
+
+.completed {
+  color: var(--theme-success-1);
+}
+
+.cancelled {
+  color: var(--theme-danger-1);
+}
