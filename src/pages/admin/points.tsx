@@ -82,5 +82,5 @@ const getServerSidePropsFunc: GetServerSideProps = async () => ({
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canAwardPoints,
-  config.admin.homeRoute
+  { redirectTo: config.admin.homeRoute }
 );

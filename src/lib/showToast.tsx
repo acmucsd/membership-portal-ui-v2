@@ -1,4 +1,4 @@
-import { Button } from '@/components/common';
+import Button from '@/components/common/Button';
 import { toast, type ToastOptions } from 'react-toastify';
 
 interface ButtonOptions {

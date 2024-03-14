@@ -17,10 +17,20 @@
     display: grid;
     grid-template-columns: 1fr 3fr;
     row-gap: 1rem;
+
+    .eventCover {
+      aspect-ratio: 1920 / 1080;
+      position: relative;
+      width: 100%;
+    }
+    @media screen and (width <= vars.$breakpoint-md) {
+      grid-template-columns: unset;
+    }
   }
 
   .submitButtons {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
   }
 }

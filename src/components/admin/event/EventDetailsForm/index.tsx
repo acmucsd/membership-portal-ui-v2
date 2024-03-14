@@ -1,4 +1,4 @@
-import EventDetailsFormItem from '@/components/admin/event/EventDetailsFormItem';
+import DetailsFormItem from '@/components/admin/DetailsFormItem';
 import NotionAutofill from '@/components/admin/event/NotionAutofill';
 import { Button, Cropper } from '@/components/common';
 import { config, showToast } from '@/lib';
@@ -9,7 +9,7 @@ import { FillInLater } from '@/lib/types';
 import { Event } from '@/lib/types/apiRequests';
 import { NotionEventDetails, NotionEventPreview, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getMessagesFromError, useObjectUrl } from '@/lib/utils';
+import { reportError, useObjectUrl } from '@/lib/utils';
 import { DateTime } from 'luxon';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -81,6 +81,7 @@ const EventDetailsForm = (props: IProps) => {
   const [selectedCover, setSelectedCover] = useState<File | null>(null);
   const [cover, setCover] = useState<File | null>(null);
   const coverUrl = useObjectUrl(cover);
+  const eventCover = coverUrl || initialValues.cover;
 
   const createEvent: SubmitHandler<FillInLater> = formData => {
     if (!cover) {
@@ -116,7 +117,7 @@ const EventDetailsForm = (props: IProps) => {
       },
       onFailCallback: error => {
         setLoading(false);
-        showToast('Unable to create event', getMessagesFromError(error).join());
+        reportError('Unable to create event', error);
       },
     });
   };
@@ -138,6 +139,7 @@ const EventDetailsForm = (props: IProps) => {
         start,
         end,
       },
+      cover: cover || undefined,
       onSuccessCallback: event => {
         setLoading(false);
         showToast('Event Details Saved!', '', [
@@ -150,7 +152,7 @@ const EventDetailsForm = (props: IProps) => {
       },
       onFailCallback: error => {
         setLoading(false);
-        showToast('Unable to create event', getMessagesFromError(error).join());
+        reportError('Unable to create event', error);
       },
     });
   };
@@ -164,6 +166,10 @@ const EventDetailsForm = (props: IProps) => {
       onSuccessCallback: () => {
         setLoading(false);
         router.push(config.admin.events.homeRoute);
+      },
+      onFailCallback: error => {
+        setLoading(false);
+        reportError('Unable to create event', error);
       },
     });
   };
@@ -181,7 +187,7 @@ const EventDetailsForm = (props: IProps) => {
       <h1>{editing ? 'Modify' : 'Create'} Event</h1>
       <div className={style.form}>
         <label htmlFor="name">Event Name</label>
-        <EventDetailsFormItem error={errors.title?.message}>
+        <DetailsFormItem error={errors.title?.message}>
           <input
             type="text"
             id="name"
@@ -190,10 +196,10 @@ const EventDetailsForm = (props: IProps) => {
               required: 'Required',
             })}
           />
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
         <label htmlFor="committee">Community</label>
-        <EventDetailsFormItem error={errors.committee?.message}>
+        <DetailsFormItem error={errors.committee?.message}>
           <select
             id="committee"
             placeholder="General"
@@ -207,10 +213,10 @@ const EventDetailsForm = (props: IProps) => {
             <option>Hack</option>
             <option>Design</option>
           </select>
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
         <label htmlFor="location">Location</label>
-        <EventDetailsFormItem error={errors.location?.message}>
+        <DetailsFormItem error={errors.location?.message}>
           <input
             type="text"
             id="location"
@@ -219,10 +225,10 @@ const EventDetailsForm = (props: IProps) => {
               required: 'Required',
             })}
           />
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
         <label htmlFor="points">Points</label>
-        <EventDetailsFormItem error={errors.pointValue?.message}>
+        <DetailsFormItem error={errors.pointValue?.message}>
           <input
             type="number"
             id="points"
@@ -230,10 +236,10 @@ const EventDetailsForm = (props: IProps) => {
               required: 'Required',
             })}
           />
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
         <label htmlFor="start">Starts At</label>
-        <EventDetailsFormItem error={errors.start?.message}>
+        <DetailsFormItem error={errors.start?.message}>
           <input
             type="datetime-local"
             id="start"
@@ -241,10 +247,10 @@ const EventDetailsForm = (props: IProps) => {
               required: 'Required',
             })}
           />
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
         <label htmlFor="end">Ends At</label>
-        <EventDetailsFormItem error={errors.end?.message}>
+        <DetailsFormItem error={errors.end?.message}>
           <input
             type="datetime-local"
             id="end"
@@ -252,10 +258,10 @@ const EventDetailsForm = (props: IProps) => {
               required: 'Required',
             })}
           />
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
         <label htmlFor="checkin">Check In Code</label>
-        <EventDetailsFormItem error={errors.attendanceCode?.message}>
+        <DetailsFormItem error={errors.attendanceCode?.message}>
           <input
             type="text"
             id="checkin"
@@ -263,71 +269,63 @@ const EventDetailsForm = (props: IProps) => {
               required: 'Required',
             })}
           />
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
         <label htmlFor="description">Event Link</label>
-        <EventDetailsFormItem error={errors.eventLink?.message}>
+        <DetailsFormItem error={errors.eventLink?.message}>
           <input type="text" id="eventLink" {...register('eventLink')} />
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
         <label htmlFor="description">Description</label>
-        <EventDetailsFormItem error={errors.description?.message}>
+        <DetailsFormItem error={errors.description?.message}>
           <textarea
             id="description"
             {...register('description', {
               required: 'Required',
             })}
           />
-        </EventDetailsFormItem>
+        </DetailsFormItem>
 
-        {/* Only show this in create mode */}
-        {editing ? null : (
-          <>
-            <label htmlFor="cover">Cover Image</label>
-            <EventDetailsFormItem>
-              {coverUrl && (
-                <Image src={coverUrl} alt="Selected cover image" width={480} height={270} />
-              )}
-              <input
-                type="file"
-                id="cover"
-                accept="image/*"
-                onChange={e => {
-                  const file = e.currentTarget.files?.[0];
-                  e.currentTarget.value = '';
-                  if (file) {
-                    setSelectedCover(file);
-                  }
-                }}
+        <label htmlFor="cover">Cover Image</label>
+        <DetailsFormItem>
+          <input
+            type="file"
+            id="cover"
+            accept="image/*"
+            onChange={e => {
+              const file = e.currentTarget.files?.[0];
+              e.currentTarget.value = '';
+              if (file) {
+                setSelectedCover(file);
+              }
+            }}
+          />
+          {eventCover ? (
+            <div className={style.eventCover}>
+              <Image
+                src={eventCover}
+                alt="Selected cover image"
+                style={{ objectFit: 'cover' }}
+                fill
               />
-            </EventDetailsFormItem>
-            <Cropper
-              file={selectedCover}
-              aspectRatio={1920 / 1080}
-              maxFileHeight={1080}
-              maxSize={config.file.MAX_EVENT_COVER_SIZE_KB * 1024}
-              onCrop={async file => {
-                setCover(
-                  new File([file], selectedCover?.name ?? 'image', {
-                    type: file.type,
-                  })
-                );
-                setSelectedCover(null);
-              }}
-              onClose={reason => {
-                setSelectedCover(null);
-                if (reason === 'cannot-compress') {
-                  showToast(
-                    'Your image has too much detail and cannot be compressed.',
-                    'Try shrinking your image.'
-                  );
-                } else if (reason !== null) {
-                  showToast('This image format is not supported.');
-                }
-              }}
-            />
-          </>
-        )}
+            </div>
+          ) : null}
+        </DetailsFormItem>
+        <Cropper
+          file={selectedCover}
+          aspectRatio={1920 / 1080}
+          maxFileHeight={1080}
+          maxSize={config.file.MAX_EVENT_COVER_SIZE_KB * 1024}
+          onCrop={async file => {
+            setCover(
+              new File([file], selectedCover?.name ?? 'image', {
+                type: file.type,
+              })
+            );
+            setSelectedCover(null);
+          }}
+          onClose={() => setSelectedCover(null)}
+        />
       </div>
 
       <div className={style.submitButtons}>

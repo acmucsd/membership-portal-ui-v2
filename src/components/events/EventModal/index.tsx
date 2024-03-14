@@ -1,12 +1,6 @@
-import { CommunityLogo, Modal, Typography } from '@/components/common';
-import CalendarButtons from '@/components/events/CalendarButtons';
-import PointsDisplay from '@/components/events/PointsDisplay';
+import { Modal } from '@/components/common';
+import EventDetail from '@/components/events/EventDetail';
 import { PublicEvent } from '@/lib/types/apiResponses';
-import { fixUrl, formatEventDate } from '@/lib/utils';
-import LinkIcon from '@/public/assets/icons/link.svg';
-import Image from 'next/image';
-import Link from 'next/link';
-import styles from './style.module.scss';
 
 interface EventModalProps {
   open: boolean;
@@ -16,58 +10,9 @@ interface EventModalProps {
 }
 
 const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
-  const { cover, title, start, end, location, description, eventLink } = event;
-
-  const displayCover = cover || '/assets/graphics/store/hero-photo.jpg';
-  const displayEventLink = fixUrl(eventLink) || `https://acmucsd.com/events/${event.uuid}`;
-
   return (
-    <Modal open={open} onClose={onClose}>
-      <div className={styles.image}>
-        <PointsDisplay points={event.pointValue} attended={attended} />
-        <Image src={displayCover} alt="Event Cover Image" style={{ objectFit: 'cover' }} fill />
-      </div>
-      <div className={styles.contents}>
-        <div className={styles.header}>
-          <div className={styles.eventDetails}>
-            <CommunityLogo community={event.committee} size={100} />
-            <div>
-              <Typography
-                className={styles.eventTitle}
-                variant="title/large"
-                style={{ fontWeight: 700 }}
-              >
-                {title}
-              </Typography>
-              <Typography
-                className={styles.eventInfo}
-                variant="title/medium"
-                suppressHydrationWarning
-              >
-                {formatEventDate(start, end, true)}
-              </Typography>
-              <Typography className={styles.eventInfo} variant="title/medium">
-                {location}
-              </Typography>
-            </div>
-          </div>
-
-          <CalendarButtons event={event} />
-        </div>
-
-        <Typography variant="body/medium">{description}</Typography>
-        <Link className={styles.link} href={displayEventLink}>
-          <div style={{ width: 11 }}>
-            <LinkIcon role="link" />
-          </div>
-          <Typography
-            variant="body/medium"
-            style={{ color: 'var(--theme-primary-2)', wordBreak: 'break-all' }}
-          >
-            {displayEventLink}
-          </Typography>
-        </Link>
-      </div>
+    <Modal open={open} onClose={onClose} bottomSheet>
+      <EventDetail event={event} attended={attended} />
     </Modal>
   );
 };

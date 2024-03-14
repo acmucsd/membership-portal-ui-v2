@@ -24,7 +24,7 @@ function isStandardVariant(variant: V2Variant): variant is V2StandardVariant {
 }
 
 // shared
-type Variant = V1Variant | V2Variant;
+export type Variant = V1Variant | V2Variant;
 
 type ComponentType = Heading | 'p' | 'span' | 'div';
 

@@ -1,8 +1,10 @@
 export type Styles = {
   cost: string;
   details: string;
+  icons: string;
   imageWrapper: string;
   itemCard: string;
+  linkWrapper: string;
   outOfStock: string;
   title: string;
 };

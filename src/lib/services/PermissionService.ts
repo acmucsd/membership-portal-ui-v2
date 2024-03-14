@@ -5,6 +5,12 @@ import { UserAccessType } from '@/lib/types/enums';
  */
 export const canEditMerchItems = [UserAccessType.ADMIN, UserAccessType.MERCH_STORE_MANAGER];
 
+export const canManagePickupEvents = [
+  UserAccessType.ADMIN,
+  UserAccessType.MERCH_STORE_DISTRIBUTOR,
+  UserAccessType.MERCH_STORE_MANAGER,
+];
+
 export const canManageEvents = [UserAccessType.ADMIN, UserAccessType.MARKETING];
 
 export const canAwardPoints = [UserAccessType.ADMIN];

@@ -1,12 +1,11 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
-import { showToast } from '@/lib';
 import majors from '@/lib/constants/majors';
 import { AuthManager } from '@/lib/managers';
 import { ValidationService } from '@/lib/services';
 import type { UserRegistration } from '@/lib/types/apiRequests';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
-import { getMessagesFromError, getNextNYears } from '@/lib/utils';
+import { getNextNYears, reportError } from '@/lib/utils';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -43,7 +42,7 @@ const RegisterPage: NextPage = () => {
         router.push(`/check-email?email=${encodeURIComponent(user.email)}`);
       },
       onFailCallback: error => {
-        showToast('Error with registration!', getMessagesFromError(error)[0]);
+        reportError('Error with registration!', error);
       },
     });
   };

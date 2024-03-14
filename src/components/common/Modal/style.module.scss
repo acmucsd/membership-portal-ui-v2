@@ -13,6 +13,7 @@
   padding: 2rem 0;
   pointer-events: none;
   position: fixed;
+  scrollbar-color: auto;
   top: 0;
   transition: all 0.2s;
   user-select: none;
@@ -37,12 +38,19 @@
     background: none;
   }
 
+  @media screen and (width <= vars.$breakpoint-md) {
+    &.bottomSheet {
+      padding: 4rem 0 0;
+    }
+  }
+
   .modalBody {
     background-color: var(--theme-background);
     border-radius: 10px;
     margin: auto;
     max-width: 100%;
     overflow: hidden;
+    overscroll-behavior: none;
     transform: scale(0.95);
     transition: transform 0.2s;
 
@@ -67,6 +75,12 @@
         display: flex;
         margin-left: 1rem;
         padding: 0;
+      }
+    }
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      &.bottomSheet {
+        border-radius: 10px 10px 0 0;
       }
     }
   }

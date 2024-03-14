@@ -7,6 +7,11 @@
   overflow-x: auto;
   padding: 1rem;
   scrollbar-color: var(--theme-primary-2) var(--theme-primary-1);
+  // Prefer the custom scrollbar on Chrome 121+
+  // https://stackoverflow.com/a/77931548
+  @supports selector(::-webkit-scrollbar) {
+    scrollbar-color: auto;
+  }
 
   &::-webkit-scrollbar {
     background-color: var(--theme-primary-1);
