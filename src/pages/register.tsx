@@ -135,7 +135,6 @@ const RegisterPage: NextPage = () => {
         name="major"
         options={majors}
         element="select"
-        placeholder="Major"
         error={errors.major}
         formRegister={register('major')}
         inputHeight="1.25rem"
@@ -145,7 +144,6 @@ const RegisterPage: NextPage = () => {
         name="major"
         element="select"
         options={getNextNYears(6)}
-        placeholder="Graduation Year"
         error={errors.graduationYear}
         formRegister={register('graduationYear', {
           valueAsNumber: true,
