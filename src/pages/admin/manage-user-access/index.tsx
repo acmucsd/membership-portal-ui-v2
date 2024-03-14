@@ -1,6 +1,6 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import { VerticalForm } from '@/components/common';
-import { config, showToast } from '@/lib';
+import { showToast } from '@/lib';
 import withAccessType from '@/lib/hoc/withAccessType';
 import manageUserAccess from '@/lib/managers/AdminUserManager';
 import { PermissionService, ValidationService } from '@/lib/services';
@@ -36,7 +36,7 @@ const ManageUserAccessPage = () => {
       user,
       accessType,
       onSuccessCallback: updatedUsers => {
-        showToast(`User access type updated for user ${updatedUsers[0].email}!`);
+        updatedUsers[0] && showToast(`User access type updated for user ${updatedUsers[0].email}!`);
       },
       onFailCallback: error => {
         reportError('Failed to update user access type', error);
@@ -88,5 +88,4 @@ const getServerSidePropsFunc: GetServerSideProps = async () => ({
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canViewAdminPage,
-  config.homeRoute
 );

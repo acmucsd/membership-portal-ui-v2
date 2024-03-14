@@ -2,9 +2,10 @@ import { AdminAPI } from '@/lib/api';
 import { CookieService } from '@/lib/services';
 import { APIHandlerProps } from '@/lib/types';
 import { UserAccessUpdates } from '@/lib/types/apiRequests';
+import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 
-const manageUserAccess = async (data: UserAccessUpdates & APIHandlerProps) => {
+const manageUserAccess = async (data: UserAccessUpdates & APIHandlerProps<PrivateProfile[]>) => {
   const { user, accessType, onSuccessCallback, onFailCallback } = data;
 
   try {
