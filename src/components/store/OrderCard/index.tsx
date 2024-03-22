@@ -1,8 +1,14 @@
 import { Typography } from '@/components/common';
 import { showToast } from '@/lib';
 import { getOrder } from '@/lib/api/StoreAPI';
-import { PublicOrder, PublicOrderWithItems } from '@/lib/types/apiResponses';
-import { OrderStatus } from '@/lib/types/enums';
+import { StoreManager } from '@/lib/managers';
+import { getClientCookie } from '@/lib/services/CookieService';
+import {
+  PublicOrder,
+  PublicOrderPickupEvent,
+  PublicOrderWithItems,
+} from '@/lib/types/apiResponses';
+import { CookieType, OrderStatus } from '@/lib/types/enums';
 import { formatDate, formatEventDate } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import OrderSummary from '../OrderSummary';
@@ -32,28 +38,41 @@ export const orderStatusColor: { [_ in OrderStatus]: string } = {
 
 interface OrderCardProps {
   order: PublicOrder;
-  token: string;
+  futurePickupEvents: PublicOrderPickupEvent[];
 }
 
-const OrderCard = ({ order, token }: OrderCardProps) => {
+const OrderCard = ({ order, futurePickupEvents }: OrderCardProps) => {
   const [open, setOpen] = useState(false);
   const [orderData, setOrderData] = useState<PublicOrderWithItems | null>(null);
+  const [pickupEvent, setPickupEvent] = useState<PublicOrderPickupEvent>(order.pickupEvent);
+  const [orderStatus, setOrderStatus] = useState<OrderStatus>(order.status);
   const orderOpen = open && orderData !== null;
 
   useEffect(() => {
     if (open && orderData === null) {
       // Only run if we haven't fetched the data yet (orderData === null)
-      getOrder(token, order.uuid)
+      const AUTH_TOKEN = getClientCookie(CookieType.ACCESS_TOKEN);
+      getOrder(AUTH_TOKEN, order.uuid)
         .then(data => setOrderData(data))
         .catch(e => {
           showToast(e.message);
           setOrderData(null);
         });
     }
-  }, [open, order.uuid, orderData, token]);
+  }, [open, order.uuid, orderData]);
 
-  const statusColor = orderStatusColor[order.status];
-  const statusName = orderStatusName[order.status];
+  const cancelOrder = async () => {
+    await StoreManager.cancelMerchOrder(order.uuid);
+    setOrderStatus(OrderStatus.CANCELLED);
+  };
+
+  const rescheduleOrderPickup = async (pickup: PublicOrderPickupEvent) => {
+    await StoreManager.rescheduleOrderPickup(order.uuid, pickup.uuid);
+    setPickupEvent(pickup);
+  };
+
+  const statusColor = orderStatusColor[orderStatus];
+  const statusName = orderStatusName[orderStatus];
 
   return (
     <div className={styles.card}>
@@ -78,7 +97,7 @@ const OrderCard = ({ order, token }: OrderCardProps) => {
           <div className={styles.label}>
             <Typography variant="label/small">PICK UP</Typography>
             <Typography variant="body/large" style={{ fontWeight: 700 }} suppressHydrationWarning>
-              {formatEventDate(order.pickupEvent.start, order.pickupEvent.end, true)}
+              {formatEventDate(pickupEvent.start, pickupEvent.end, true)}
             </Typography>
           </div>
         </div>
@@ -87,7 +106,16 @@ const OrderCard = ({ order, token }: OrderCardProps) => {
           <Typography variant="body/medium">{statusName}</Typography>
         </div>
       </button>
-      {orderOpen ? <OrderSummary order={orderData} /> : null}
+      {orderOpen ? (
+        <OrderSummary
+          order={orderData}
+          orderStatus={orderStatus}
+          futurePickupEvents={futurePickupEvents}
+          pickupEvent={pickupEvent}
+          reschedulePickupEvent={rescheduleOrderPickup}
+          cancelOrder={cancelOrder}
+        />
+      ) : null}
     </div>
   );
 };

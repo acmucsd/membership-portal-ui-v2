@@ -12,34 +12,36 @@ import {
   MerchItemEdit,
   MerchItemOption,
   PlaceMerchOrderRequest,
+  RescheduleOrderPickupRequest,
 } from '@/lib/types/apiRequests';
-import type {
-  CreateCollectionPhotoResponse,
-  CreateMerchCollectionResponse,
-  CreateMerchItemOptionResponse,
-  CreateMerchItemResponse,
-  CreateMerchPhotoResponse,
-  DeleteMerchCollectionResponse,
-  DeleteMerchItemResponse,
-  EditMerchCollectionResponse,
-  EditMerchItemResponse,
-  GetAllMerchCollectionsResponse,
-  GetMerchOrdersResponse,
-  GetOneMerchCollectionResponse,
-  GetOneMerchItemResponse,
-  GetOneMerchOrderResponse,
-  GetOrderPickupEventResponse,
-  GetOrderPickupEventsResponse,
-  PlaceMerchOrderResponse,
-  PublicMerchCollection,
-  PublicMerchCollectionPhoto,
-  PublicMerchItem,
-  PublicMerchItemOption,
-  PublicMerchItemPhoto,
-  PublicMerchItemWithPurchaseLimits,
-  PublicOrder,
-  PublicOrderPickupEvent,
-  PublicOrderWithItems,
+import {
+  ApiResponse,
+  type CreateCollectionPhotoResponse,
+  type CreateMerchCollectionResponse,
+  type CreateMerchItemOptionResponse,
+  type CreateMerchItemResponse,
+  type CreateMerchPhotoResponse,
+  type DeleteMerchCollectionResponse,
+  type DeleteMerchItemResponse,
+  type EditMerchCollectionResponse,
+  type EditMerchItemResponse,
+  type GetAllMerchCollectionsResponse,
+  type GetMerchOrdersResponse,
+  type GetOneMerchCollectionResponse,
+  type GetOneMerchItemResponse,
+  type GetOneMerchOrderResponse,
+  type GetOrderPickupEventResponse,
+  type GetOrderPickupEventsResponse,
+  type PlaceMerchOrderResponse,
+  type PublicMerchCollection,
+  type PublicMerchCollectionPhoto,
+  type PublicMerchItem,
+  type PublicMerchItemOption,
+  type PublicMerchItemPhoto,
+  type PublicMerchItemWithPurchaseLimits,
+  type PublicOrder,
+  type PublicOrderPickupEvent,
+  type PublicOrderWithItems,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
 
@@ -425,4 +427,34 @@ export const getPastOrderPickupEvents = async (
   });
 
   return response.data.pickupEvents;
+};
+
+export const rescheduleOrderPickup = async (
+  token: string,
+  order: string,
+  pickupEvent: string
+): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${order}/reschedule`;
+
+  const requestBody: RescheduleOrderPickupRequest = { pickupEvent };
+
+  await axios.post<ApiResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const cancelMerchOrder = async (token: string, order: string): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${order}/cancel`;
+
+  await axios.post(
+    requestUrl,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };

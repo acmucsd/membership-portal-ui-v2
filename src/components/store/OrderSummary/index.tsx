@@ -1,13 +1,21 @@
 import { Button, Typography } from '@/components/common';
+import CancelPickupModal from '@/components/store/CancelPickupModal';
 import Diamonds from '@/components/store/Diamonds';
-import { PublicOrderWithItems } from '@/lib/types/apiResponses';
+import PickupEventPreviewModal from '@/components/store/PickupEventPreviewModal';
+import { PublicOrderPickupEvent, PublicOrderWithItems } from '@/lib/types/apiResponses';
 import { OrderStatus } from '@/lib/types/enums';
-import { capitalize, getOrderItemQuantities } from '@/lib/utils';
+import { capitalize, getDefaultOrderItemPhoto, getOrderItemQuantities } from '@/lib/utils';
 import Image from 'next/image';
+import { useState } from 'react';
 import styles from './style.module.scss';
 
 interface OrderSummaryProps {
   order: PublicOrderWithItems;
+  orderStatus: OrderStatus;
+  futurePickupEvents: PublicOrderPickupEvent[];
+  pickupEvent: PublicOrderPickupEvent;
+  reschedulePickupEvent: (pickup: PublicOrderPickupEvent) => Promise<void>;
+  cancelOrder: () => Promise<void>;
 }
 
 const isOrderActionable = ({ status, pickupEvent }: PublicOrderWithItems): boolean => {
@@ -26,22 +34,44 @@ const isOrderActionable = ({ status, pickupEvent }: PublicOrderWithItems): boole
   return true;
 };
 
-const OrderSummary = ({ order }: OrderSummaryProps) => {
+const OrderSummary = ({
+  order,
+  orderStatus,
+  futurePickupEvents,
+  pickupEvent,
+  reschedulePickupEvent,
+  cancelOrder,
+}: OrderSummaryProps) => {
   const items = getOrderItemQuantities(order.items);
 
   const totalCostWithoutDiscount = items.reduce((cost, item) => {
     return cost + item.quantity * item.option.price;
   }, 0);
 
-  const actionable = isOrderActionable(order);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
+  const actionable = isOrderActionable({ ...order, status: orderStatus, pickupEvent });
 
   return (
     <div className={styles.container}>
+      <PickupEventPreviewModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        pickupEvent={pickupEvent}
+        reschedulePickupEvent={reschedulePickupEvent}
+        futurePickupEvents={futurePickupEvents}
+        reschedulable
+      />
+      <CancelPickupModal
+        open={cancelModalOpen}
+        onClose={() => setCancelModalOpen(false)}
+        cancelOrder={cancelOrder}
+      />
       {items.map(item => (
         <div key={item.uuid} className={styles.itemInfo}>
           <div className={styles.image}>
             <Image
-              src={item.option.item.uploadedPhoto}
+              src={getDefaultOrderItemPhoto(item)}
               style={{ objectFit: 'cover' }}
               sizes="9.375rem"
               alt="Store item picture"
@@ -75,11 +105,11 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
       <hr className={styles.divider} />
       <div className={styles.footer}>
         <div className={styles.buttons}>
-          <Button onClick={() => {}}>Pickup Details</Button>
+          <Button onClick={() => setModalOpen(true)}>Pickup Details</Button>
           {actionable ? (
             <>
-              <Button onClick={() => {}}>Reschedule Pickup</Button>
-              <Button onClick={() => {}} destructive>
+              <Button onClick={() => setModalOpen(true)}>Reschedule Pickup</Button>
+              <Button onClick={() => setCancelModalOpen(true)} destructive>
                 Cancel Order
               </Button>
             </>

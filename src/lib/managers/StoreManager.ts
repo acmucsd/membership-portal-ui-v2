@@ -25,3 +25,17 @@ export const placeMerchOrder = async (items: ClientCartItem[], pickupEvent: UUID
     pickupEvent,
   });
 };
+
+export const rescheduleOrderPickup = async (order: UUID, pickupEvent: UUID) => {
+  const token = getClientCookie(CookieType.ACCESS_TOKEN);
+  if (!token) throw new Error('Missing access token');
+
+  return StoreAPI.rescheduleOrderPickup(token, order, pickupEvent);
+};
+
+export const cancelMerchOrder = async (order: UUID) => {
+  const token = getClientCookie(CookieType.ACCESS_TOKEN);
+  if (!token) throw new Error('Missing access token');
+
+  return StoreAPI.cancelMerchOrder(token, order);
+};
