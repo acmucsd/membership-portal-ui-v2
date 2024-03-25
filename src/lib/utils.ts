@@ -15,6 +15,7 @@ import type {
   PublicProfile,
   ValidatorError,
 } from '@/lib/types/apiResponses';
+import { Community } from '@/lib/types/enums';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import { AxiosError } from 'axios';
 import {
@@ -401,6 +402,15 @@ export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderIte
   });
 
   return Array.from(itemMap.values());
+};
+
+/** Normalizes string as a capitalized community name. Defaults to General. */
+export const toCommunity = (community = ''): Community => {
+  const formattedName = capitalize(community) as Community;
+
+  if (Object.values(Community).includes(formattedName)) return formattedName;
+
+  return Community.GENERAL;
 };
 
 /**

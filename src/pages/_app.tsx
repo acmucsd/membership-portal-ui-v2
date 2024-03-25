@@ -11,7 +11,7 @@ import type { AppProps } from 'next/app';
 import { DM_Sans as DMSans } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
 
-const dmSans = DMSans({ subsets: ['latin'], weight: ['400', '500', '700'] });
+const dmSans = DMSans({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
