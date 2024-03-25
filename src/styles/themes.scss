@@ -24,6 +24,7 @@
   --theme-background: #{vars.$light-background};
 
   --theme-elevated-background: #{vars.$light-elevated-background};
+  --theme-elevated-background-transparent: #{vars.$light-elevated-background-transparent};
   --theme-elevated-stroke: #{vars.$light-elevated-stroke};
 
   --theme-surface-1: #{vars.$light-surface-1}; // table rows
@@ -76,6 +77,7 @@
   --theme-background: #{vars.$dark-background};
 
   --theme-elevated-background: #{vars.$dark-elevated-background};
+  --theme-elevated-background-transparent: #{vars.$dark-elevated-background-transparent};
   --theme-elevated-stroke: #{vars.$dark-elevated-stroke};
 
   --theme-surface-1: #{vars.$dark-surface-1}; // table rows

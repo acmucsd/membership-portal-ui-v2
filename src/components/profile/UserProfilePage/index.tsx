@@ -1,16 +1,16 @@
 import { Carousel, GifSafeImage, Typography } from '@/components/common';
 import { EventCard } from '@/components/events';
 import SocialMediaIcon from '@/components/profile/SocialMediaIcon';
+import { UserProgress } from '@/components/profile/UserProgress';
 import { config, showToast } from '@/lib';
 import { PublicAttendance, type PublicProfile } from '@/lib/types/apiResponses';
 import { SocialMediaType } from '@/lib/types/enums';
-import { copy, fixUrl, getLevel, getProfilePicture, getUserRank } from '@/lib/utils';
+import { copy, fixUrl, getProfilePicture } from '@/lib/utils';
 import EditIcon from '@/public/assets/icons/edit.svg';
 import GradCapIcon from '@/public/assets/icons/grad-cap-icon.svg';
 import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
 import MajorIcon from '@/public/assets/icons/major-icon.svg';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import styles from './style.module.scss';
 
 export interface UserProfilePageProps {
@@ -26,16 +26,7 @@ export const UserProfilePage = ({
   signedInAttendances,
   isSignedInUser,
 }: UserProfilePageProps) => {
-  // animate the progress bar
-  const [progress, setProgress] = useState<Number>(0);
-  useEffect(() => setProgress(handleUser.points % 100), [handleUser.points]);
-  const currentRank = getUserRank(handleUser.points);
-  const nextLevelRank = getUserRank(handleUser.points + 100);
-  const levelText = `Level ${getLevel(handleUser.points)}: ${currentRank}`;
   const fullName = `${handleUser.firstName} ${handleUser.lastName}`;
-  // If levelling up doesn't yield a new rank, just put the next level instead.
-  const nextLevelText =
-    currentRank === nextLevelRank ? `Level ${getLevel(handleUser.points + 100)}` : nextLevelRank;
 
   return (
     <div className={styles.profilePage}>
@@ -86,30 +77,14 @@ export const UserProfilePage = ({
           ) : null}
         </div>
       </div>
-      <div className={`${styles.section} ${styles.progressSection}`}>
-        <Typography variant="h2/bold" className={styles.sectionHeader}>
-          {isSignedInUser ? 'My' : `${handleUser.firstName}'s`} Progress
-        </Typography>
-        <div className={styles.progressInfo}>
-          <div className={styles.progressText}>
-            <Typography variant="h4/regular" className={styles.levelText}>
-              {levelText}
-            </Typography>
-            <Typography variant="h4/regular" className={styles.levelProgress}>
-              {handleUser.points % 100}/100
-            </Typography>
-          </div>
-          <div className={styles.progressBar}>
-            <div className={styles.inner} style={{ width: `${progress}%` }} />
-          </div>
-        </div>
-        <Typography variant="h5/regular" component="p">
-          {isSignedInUser ? 'You need ' : `${handleUser.firstName} needs `}
-          {100 - (handleUser.points % 100)} more points to level up to
-          <Typography variant="h5/bold" component="span">
-            &nbsp;{nextLevelText}
-          </Typography>
-        </Typography>
+      <div className={styles.section}>
+        <UserProgress
+          user={handleUser}
+          points={handleUser.points}
+          isSignedInUser={isSignedInUser}
+          levelTextVariant="h4/regular"
+          levelDescriptionVariant="h5/regular"
+        />
       </div>
 
       <div className={`${styles.section} ${styles.aboutSection}`}>

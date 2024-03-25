@@ -1,5 +1,6 @@
 import { CheckInModal, EventCarousel } from '@/components/events';
 import Hero from '@/components/home/Hero';
+import HomeActions from '@/components/home/HomeActions';
 import { showToast } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -13,9 +14,8 @@ import { useEffect, useState } from 'react';
 
 interface HomePageProps {
   user: PrivateProfile;
-  pastEvents: PublicEvent[];
+  attendedEvents: PublicEvent[];
   upcomingEvents: PublicEvent[];
-  liveEvents: PublicEvent[];
   attendances: PublicAttendance[];
   checkInResponse: PublicEvent | { error: string } | null;
 }
@@ -33,9 +33,8 @@ const processCheckInResponse = (
 
 const PortalHomePage = ({
   user,
-  pastEvents,
+  attendedEvents,
   upcomingEvents,
-  liveEvents,
   attendances,
   checkInResponse,
 }: HomePageProps) => {
@@ -84,31 +83,21 @@ const PortalHomePage = ({
         event={checkinEvent}
         onClose={() => setCheckinModalVisible(false)}
       />
-      <Hero firstName={user.firstName} points={points} checkin={code => checkin(code)} />
+      <Hero user={user} points={points} checkin={code => checkin(code)} />
 
-      {liveEvents.length > 0 ? (
-        <EventCarousel
-          title="Live Events"
-          description="Blink and you'll miss it! These events are happening RIGHT NOW!"
-          events={liveEvents}
-          attendances={attendance}
-        />
-      ) : null}
+      <div className={styles.row}>
+        <div className={styles.desktop}>
+          <HomeActions user={user} points={points} checkin={checkin} />
+        </div>
+        {upcomingEvents.length > 0 ? (
+          <EventCarousel title="Upcoming Events" events={upcomingEvents} attendances={attendance} />
+        ) : null}
+      </div>
 
-      {upcomingEvents.length > 0 ? (
+      {attendedEvents.length > 0 ? (
         <EventCarousel
-          title="Upcoming Events"
-          description="Mark your calendars! These events are just around the corner!"
-          events={upcomingEvents} // Slicing past events so the carousel doesn't balloon.
-          attendances={attendance}
-        />
-      ) : null}
-
-      {pastEvents.length > 0 ? (
-        <EventCarousel
-          title="Past Events"
-          description="Take a look at some of ACM's past events!"
-          events={pastEvents} // Slicing past events so the carousel doesn't balloon.
+          title="Recently Attended Events"
+          events={attendedEvents}
           attendances={attendance}
         />
       ) : null}
@@ -140,28 +129,24 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
   // Filter out events by time.
   const now = new Date();
-  const pastEvents: PublicEvent[] = [];
+  const attendedEvents: PublicEvent[] = [];
   const upcomingEvents: PublicEvent[] = [];
-  const liveEvents: PublicEvent[] = [];
 
   events.forEach(e => {
-    const start = new Date(e.start);
     const end = new Date(e.end);
-    if (end < now) {
-      pastEvents.push(e);
-    } else if (start > now) {
+    if (attendances.some(a => a.event.uuid === e.uuid)) {
+      attendedEvents.push(e);
+    }
+    if (end >= now) {
       upcomingEvents.push(e);
-    } else {
-      liveEvents.push(e);
     }
   });
 
   return {
     props: {
       user,
-      pastEvents: pastEvents.slice(-10).reverse(),
+      attendedEvents: attendedEvents.slice(-10).reverse(),
       upcomingEvents: upcomingEvents.slice(0, 10),
-      liveEvents,
       attendances,
       checkInResponse: checkInResponse,
     },

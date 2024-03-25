@@ -1,8 +1,14 @@
 @use 'src/styles/vars.scss' as vars;
 
 .wrapper {
+  background-color: var(--theme-elevated-background);
+  border: 1px solid var(--theme-elevated-stroke);
+  border-radius: 0.75rem;
   display: flex;
+  flex: 1;
   flex-direction: column;
+  overflow: hidden;
+  padding: 1.5rem;
 
   .header {
     align-items: center;
