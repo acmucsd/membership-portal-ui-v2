@@ -15,14 +15,14 @@
 
   &::-webkit-scrollbar {
     background-color: var(--theme-primary-1);
-    border: 1rem solid var(--theme-background);
+    border: 1rem solid var(--theme-elevated-background);
     border-radius: 3rem;
     height: 2.75rem;
   }
 
   &::-webkit-scrollbar-thumb {
     background-color: var(--theme-primary-2);
-    border: 1rem solid var(--theme-background);
+    border: 1rem solid var(--theme-elevated-background);
     border-radius: 3rem;
   }
 }

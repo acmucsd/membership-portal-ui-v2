@@ -9,31 +9,45 @@
   width: 100%;
 
   .cardWrapper {
-    padding-top: 3rem;
+    padding-top: 6.5rem;
     position: relative;
+
+    @media screen and (max-width: vars.$breakpoint-md) {
+      padding-top: 1.5rem;
+    }
 
     .banner {
       background-color: vars.$pink-2;
-      border-radius: 0.5rem;
-      height: 90%;
+      border: 1px solid var(--theme-elevated-stroke);
+      border-bottom: 0;
+      border-radius: 0.75rem;
+      height: 100%;
       position: absolute;
       top: 0;
       width: 100%;
+
+      @media screen and (max-width: vars.$breakpoint-md) {
+        border: 0;
+        border-radius: 0;
+        margin: -2rem;
+        width: 100vw;
+      }
     }
 
     .profileCard {
-      background-color: var(--theme-background);
-      border: 1px solid var(--theme-accent-line-2-transparent);
-      border-radius: 0.75rem;
-      box-shadow: 0 2px 4px var(--theme-shadow);
+      background-color: var(--theme-elevated-background);
+      border: 1px solid var(--theme-elevated-stroke);
+      border-radius: 0 0 0.75rem 0.75rem;
+      border-top: 0;
       display: flex;
       gap: 1rem;
-      margin: 0 2rem;
       padding: 1rem 2rem;
       position: relative;
 
       @media (max-width: vars.$breakpoint-md) {
         align-items: center;
+        border-radius: 0.75rem;
+        border-top: 1px solid var(--theme-elevated-stroke);
         flex-direction: column;
       }
 
@@ -47,49 +61,36 @@
         width: 7rem;
       }
 
-      .cardName {
-        align-items: flex-start;
+      .userInfo {
+        align-items: start;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
+        padding: 0.5rem 0;
 
         @media (max-width: vars.$breakpoint-md) {
           align-items: center;
-          flex-direction: column;
-
-          h1,
-          div {
-            text-align: center;
-          }
+          padding: 0;
         }
 
-        .handle {
-          cursor: pointer;
-        }
-      }
-
-      .cardRank {
-        align-items: flex-end;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        gap: 0.5rem;
-        justify-content: flex-end;
-
-        @media (max-width: vars.$breakpoint-md) {
-          align-items: center;
-          color: var(--theme-text-on-background-2);
-          flex-direction: column;
-        }
-
-        .rank {
-          color: var(--theme-text-on-background-1);
+        .cardName {
+          align-items: flex-start;
           display: flex;
-          margin-top: calc(2.375rem + 0.5rem); // give space for edit button
+          flex-direction: column;
+          justify-content: center;
 
           @media (max-width: vars.$breakpoint-md) {
-            margin-top: 0;
-            text-align: center;
+            align-items: center;
+            flex-direction: column;
+
+            h1,
+            div {
+              text-align: center;
+            }
+          }
+
+          .handle {
+            cursor: pointer;
           }
         }
 
@@ -114,11 +115,17 @@
   }
 
   .section {
-    background-color: var(--theme-background);
-    border: 1px solid var(--theme-accent-line-2-transparent);
+    background-color: var(--theme-elevated-background);
+    border: 1px solid var(--theme-elevated-stroke);
     border-radius: 0.75rem;
-    box-shadow: 0 2px 4px var(--theme-shadow);
     padding: 1rem 1.5rem;
+
+    .sectionHeader {
+      @media screen and (max-width: vars.$breakpoint-md) {
+        font-size: 1.5rem !important;
+        line-height: 2.25rem !important;
+      }
+    }
   }
 
   .progressSection {
@@ -128,8 +135,27 @@
 
     .progressInfo {
       display: flex;
-      flex-flow: row wrap;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      .progressText {
+        align-items: flex-end;
+        display: flex;
+        gap: 0.5rem;
+        justify-content: space-between;
+
+        @media screen and (max-width: vars.$breakpoint-md) {
+          .levelText,
+          .levelProgress {
+            font-size: 1rem !important;
+            line-height: 1.5rem !important;
+          }
+
+          .levelProgress {
+            justify-self: flex-end;
+          }
+        }
+      }
     }
 
     .progressBar {
@@ -143,12 +169,6 @@
         border-radius: 0.5rem;
         height: 100%;
         transition: width 1s ease;
-      }
-    }
-
-    p {
-      @media (max-width: vars.$breakpoint-md) {
-        text-align: center;
       }
     }
   }
@@ -179,6 +199,7 @@
 
     .socialIcons {
       display: flex;
+      flex-wrap: wrap;
       gap: 0.25rem;
 
       svg {
@@ -208,10 +229,9 @@
 
     div {
       align-items: center;
-      background: var(--theme-background);
-      border: 1px solid var(--theme-accent-1-transparent);
+      background-color: var(--theme-background);
+      border: 1px solid var(--theme-elevated-stroke);
       border-radius: 0.625rem;
-      box-shadow: 0 0.0625rem 0.25rem 0 var(--theme-shadow);
       display: flex;
       height: 2.375rem;
       justify-content: center;
