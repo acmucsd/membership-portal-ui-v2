@@ -78,25 +78,31 @@ const EventCard = ({
         </div>
         {!hideInfo ? (
           <div className={styles.info}>
-            <Typography
-              variant="body/small"
-              style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-              suppressHydrationWarning
-            >
-              {formatEventDate(start, end, showYear)}
-            </Typography>
-            <Typography
-              variant="body/medium"
-              style={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis' }}
-            >
-              {title}
-            </Typography>
-            <Typography
-              variant="body/small"
-              style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-            >
-              {location}
-            </Typography>
+            <div className={styles.infoText}>
+              <Typography
+                variant="body/small"
+                style={{
+                  fontWeight: 500,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+                suppressHydrationWarning
+              >
+                {formatEventDate(start, end, showYear)}
+              </Typography>
+              <Typography
+                variant="body/medium"
+                style={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis' }}
+              >
+                {title}
+              </Typography>
+              <Typography
+                variant="body/small"
+                style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+              >
+                {location}
+              </Typography>
+            </div>
             <div className={styles.badges}>
               <div className={`${styles.badge} ${styles[`badge${community}`]}`}>
                 {communityNames[community]}
