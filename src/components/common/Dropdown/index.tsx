@@ -15,9 +15,10 @@ interface DropdownProps {
   options: (Option | typeof DIVIDER)[];
   value: string;
   onChange: (value: string) => void;
+  className?: string;
 }
 
-const Dropdown = ({ name, ariaLabel, options, value, onChange }: DropdownProps) => {
+const Dropdown = ({ name, ariaLabel, options, value, onChange, className }: DropdownProps) => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const Dropdown = ({ name, ariaLabel, options, value, onChange }: DropdownProps) 
     // mouse/touch users.
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
-      className={styles.dropdownWrapper}
+      className={`${styles.dropdownWrapper} ${className}`}
       onClick={e => {
         // Using the keyboard to select an option fires the click event on
         // <select>; prevent it from opening the fake dropdown. The <select> has
