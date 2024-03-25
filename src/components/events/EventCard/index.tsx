@@ -104,9 +104,11 @@ const EventCard = ({
               </Typography>
             </div>
             <div className={styles.badges}>
-              <div className={`${styles.badge} ${styles[`badge${community}`]}`}>
-                {communityNames[community]}
-              </div>
+              {committee ? (
+                <div className={`${styles.badge} ${styles[`badge${community}`]}`}>
+                  {communityNames[community]}
+                </div>
+              ) : null}
               {!isOrderPickupEvent(event) ? (
                 <div className={`${styles.badge} ${styles.badgePoints}`}>
                   {event.pointValue} point{event.pointValue === 1 ? '' : 's'}
