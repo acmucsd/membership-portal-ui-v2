@@ -6,10 +6,9 @@ import { PublicAttendance, type PublicProfile } from '@/lib/types/apiResponses';
 import { SocialMediaType } from '@/lib/types/enums';
 import { copy, fixUrl, getLevel, getProfilePicture, getUserRank } from '@/lib/utils';
 import EditIcon from '@/public/assets/icons/edit.svg';
+import GradCapIcon from '@/public/assets/icons/grad-cap-icon.svg';
 import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
 import MajorIcon from '@/public/assets/icons/major-icon.svg';
-import ProfileIcon from '@/public/assets/icons/profile-icon.svg';
-import { Tooltip } from '@mui/material';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import styles from './style.module.scss';
@@ -30,10 +29,13 @@ export const UserProfilePage = ({
   // animate the progress bar
   const [progress, setProgress] = useState<Number>(0);
   useEffect(() => setProgress(handleUser.points % 100), [handleUser.points]);
-  const levelText = `Level ${getLevel(handleUser.points)}: ${getUserRank(handleUser.points)}`;
-  const nextLevelText = `Level ${getLevel(handleUser.points + 100)}: ${getUserRank(
-    handleUser.points + 100
-  )}`;
+  const currentRank = getUserRank(handleUser.points);
+  const nextLevelRank = getUserRank(handleUser.points + 100);
+  const levelText = `Level ${getLevel(handleUser.points)}: ${currentRank}`;
+  const fullName = `${handleUser.firstName} ${handleUser.lastName}`;
+  // If levelling up doesn't yield a new rank, just put the next level instead.
+  const nextLevelText =
+    currentRank === nextLevelRank ? `Level ${getLevel(handleUser.points + 100)}` : nextLevelRank;
 
   return (
     <div className={styles.profilePage}>
@@ -50,33 +52,26 @@ export const UserProfilePage = ({
               className={styles.profilePic}
             />
           </div>
-          <div className={styles.cardName}>
-            <Typography
-              variant="h1/bold"
-              component="h1"
-            >{`${handleUser.firstName} ${handleUser.lastName}`}</Typography>
-            <Tooltip title="Copy profile link" arrow>
-              <div className={styles.handle}>
-                <Typography
-                  variant="h5/medium"
-                  onClick={() => {
-                    copy(window.location.href);
-                    showToast('Profile link copied!');
-                  }}
-                >
-                  @{handleUser.handle}
-                </Typography>
-              </div>
-            </Tooltip>
-          </div>
-          <div className={styles.cardRank}>
-            <Typography variant="h4/regular" className={styles.rank}>
-              {getUserRank(handleUser.points)}
-            </Typography>
+          <div className={styles.userInfo}>
+            <div className={styles.cardName}>
+              <Typography variant="h1/bold" component="h1">
+                {fullName}
+              </Typography>
+              <Typography
+                variant="h5/regular"
+                onClick={() => {
+                  copy(window.location.href);
+                  showToast(`Copied link to ${handleUser.firstName}'s profile!`);
+                }}
+                className={styles.handle}
+              >
+                @{handleUser.handle}
+              </Typography>
+            </div>
             <div className={styles.points}>
               <LeaderboardIcon /> &nbsp;
               <Typography variant="h5/regular" component="span">
-                {handleUser.points.toLocaleString()} Leaderboard Points
+                {handleUser.points.toLocaleString()} Points
               </Typography>
             </div>
           </div>
@@ -92,12 +87,18 @@ export const UserProfilePage = ({
         </div>
       </div>
       <div className={`${styles.section} ${styles.progressSection}`}>
-        <Typography variant="h2/bold">
+        <Typography variant="h2/bold" className={styles.sectionHeader}>
           {isSignedInUser ? 'My' : `${handleUser.firstName}'s`} Progress
         </Typography>
         <div className={styles.progressInfo}>
-          <Typography variant="h4/regular">{levelText}</Typography>
-          <Typography variant="h4/regular">{handleUser.points % 100}/100</Typography>
+          <div className={styles.progressText}>
+            <Typography variant="h4/regular" className={styles.levelText}>
+              {levelText}
+            </Typography>
+            <Typography variant="h4/regular" className={styles.levelProgress}>
+              {handleUser.points % 100}/100
+            </Typography>
+          </div>
           <div className={styles.progressBar}>
             <div className={styles.inner} style={{ width: `${progress}%` }} />
           </div>
@@ -113,9 +114,11 @@ export const UserProfilePage = ({
 
       <div className={`${styles.section} ${styles.aboutSection}`}>
         <div>
-          <Typography variant="h2/bold">About me</Typography>
+          <Typography variant="h2/bold" className={styles.sectionHeader}>
+            About me
+          </Typography>
           <div className={styles.aboutMeSection}>
-            <ProfileIcon className={styles.icon} />
+            <GradCapIcon className={styles.icon} />
             <Typography variant="h5/regular">Class of {handleUser.graduationYear}</Typography>
             <MajorIcon className={styles.icon} />
             <Typography variant="h5/regular">{handleUser.major}</Typography>
@@ -136,18 +139,20 @@ export const UserProfilePage = ({
           </div>
         </div>
         <div className={styles.bioSection}>
-          <Typography variant="h2/bold">Bio</Typography>
-          <Typography variant="h5/medium" component="p">
+          <Typography variant="h2/bold" className={styles.sectionHeader}>
+            Bio
+          </Typography>
+          <Typography variant="h5/regular" component="p">
             {handleUser.bio || <i>Nothing here...</i>}
           </Typography>
         </div>
       </div>
       {recentAttendances || isSignedInUser ? (
         <div className={styles.section}>
-          <Typography variant="h2/bold">
+          <Typography variant="h2/bold" className={styles.sectionHeader}>
             Recently Attended Events
             {!handleUser.isAttendancePublic ? (
-              <Typography variant="h5/medium" component="span">
+              <Typography variant="h5/regular" component="span">
                 &nbsp;<i>(hidden for other users)</i>
               </Typography>
             ) : null}
