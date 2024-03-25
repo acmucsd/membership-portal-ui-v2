@@ -12,8 +12,10 @@ import {
   MerchItemEdit,
   MerchItemOption,
   PlaceMerchOrderRequest,
+  RescheduleOrderPickupRequest,
 } from '@/lib/types/apiRequests';
 import type {
+  ApiResponse,
   CreateCollectionPhotoResponse,
   CreateMerchCollectionResponse,
   CreateMerchItemOptionResponse,
@@ -425,4 +427,34 @@ export const getPastOrderPickupEvents = async (
   });
 
   return response.data.pickupEvents;
+};
+
+export const rescheduleOrderPickup = async (
+  token: string,
+  order: string,
+  pickupEvent: string
+): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${order}/reschedule`;
+
+  const requestBody: RescheduleOrderPickupRequest = { pickupEvent };
+
+  await axios.post<ApiResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const cancelMerchOrder = async (token: string, order: string): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${order}/cancel`;
+
+  await axios.post(
+    requestUrl,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };

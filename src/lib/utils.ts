@@ -315,6 +315,13 @@ export const getDefaultMerchItemPhoto = (
   return NoImage.src;
 };
 
+export const getDefaultOrderItemPhoto = (item: PublicOrderItem): string => {
+  if (item.option.item.uploadedPhoto) {
+    return item.option.item.uploadedPhoto;
+  }
+  return NoImage.src;
+};
+
 /**
  * Returns the default (first) photo for a merchandise collection.
  * If there are no photos for this collection, returns the first photo of the first item.
