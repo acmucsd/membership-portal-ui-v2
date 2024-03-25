@@ -75,11 +75,10 @@
         }
 
         @media (max-width: vars.$breakpoint-md) {
-          background-color: vars.$blue-100;
+          background-color: var(--theme-elevated-background);
+          border: 1px solid var(--theme-elevated-stroke);
           border-radius: 4px;
-          box-shadow: 0 1px 3px var(--theme-shadow);
-          color: var(--theme-text-on-background-1);
-          padding: 4px 0.7rem;
+          padding: 0.75rem;
 
           h2 {
             color: inherit;

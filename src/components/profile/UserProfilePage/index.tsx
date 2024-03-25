@@ -29,9 +29,13 @@ export const UserProfilePage = ({
   // animate the progress bar
   const [progress, setProgress] = useState<Number>(0);
   useEffect(() => setProgress(handleUser.points % 100), [handleUser.points]);
-  const levelText = `Level ${getLevel(handleUser.points)}: ${getUserRank(handleUser.points)}`;
+  const currentRank = getUserRank(handleUser.points);
   const nextLevelRank = getUserRank(handleUser.points + 100);
-  const userName = `${handleUser.firstName} ${handleUser.lastName}`;
+  const levelText = `Level ${getLevel(handleUser.points)}: ${currentRank}`;
+  const fullName = `${handleUser.firstName} ${handleUser.lastName}`;
+  // If levelling up doesn't yield a new rank, just put the next level instead.
+  const nextLevelText =
+    currentRank === nextLevelRank ? `Level ${getLevel(handleUser.points + 100)}` : nextLevelRank;
 
   return (
     <div className={styles.profilePage}>
@@ -51,13 +55,13 @@ export const UserProfilePage = ({
           <div className={styles.userInfo}>
             <div className={styles.cardName}>
               <Typography variant="h1/bold" component="h1">
-                {userName}
+                {fullName}
               </Typography>
               <Typography
                 variant="h5/regular"
                 onClick={() => {
                   copy(window.location.href);
-                  showToast(`Copied link to ${userName}'s profile!`);
+                  showToast(`Copied link to ${handleUser.firstName}'s profile!`);
                 }}
                 className={styles.handle}
               >
@@ -103,7 +107,7 @@ export const UserProfilePage = ({
           {isSignedInUser ? 'You need ' : `${handleUser.firstName} needs `}
           {100 - (handleUser.points % 100)} more points to level up to
           <Typography variant="h5/bold" component="span">
-            &nbsp;{nextLevelRank}
+            &nbsp;{nextLevelText}
           </Typography>
         </Typography>
       </div>
