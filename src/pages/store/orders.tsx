@@ -3,7 +3,7 @@ import { Navbar, OrdersDisplay } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
-import { PrivateProfile, PublicOrder } from '@/lib/types/apiResponses';
+import { PrivateProfile, PublicOrder, PublicOrderPickupEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/StoreOrders.module.scss';
 import { GetServerSideProps } from 'next';
@@ -12,7 +12,7 @@ import { useState } from 'react';
 interface OrderPageProps {
   user: PrivateProfile;
   orders: PublicOrder[];
-  token: string;
+  futurePickupEvents: PublicOrderPickupEvent[];
 }
 
 const orderInFilter = (order: PublicOrder, filter: string): boolean => {
@@ -32,7 +32,7 @@ const orderInFilter = (order: PublicOrder, filter: string): boolean => {
   return new Date(order.orderedAt) >= lastDay;
 };
 
-const StoreOrderPage = ({ user: { credits }, orders, token }: OrderPageProps) => {
+const StoreOrderPage = ({ user: { credits }, orders, futurePickupEvents }: OrderPageProps) => {
   const [filter, setFilter] = useState('past-6-months');
 
   const filteredOrders = orders.filter(o => orderInFilter(o, filter));
@@ -60,7 +60,7 @@ const StoreOrderPage = ({ user: { credits }, orders, token }: OrderPageProps) =>
             />
           </div>
         </div>
-        <OrdersDisplay orders={filteredOrders} token={token} />
+        <OrdersDisplay orders={filteredOrders} futurePickupEvents={futurePickupEvents} />
       </div>
     </div>
   );
@@ -71,9 +71,17 @@ export default StoreOrderPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
-  const orders = await StoreAPI.getAllOrders(AUTH_TOKEN);
+  const ordersPromise = StoreAPI.getAllOrders(AUTH_TOKEN);
+  const futurePickupEventsPromise = StoreAPI.getFutureOrderPickupEvents(AUTH_TOKEN);
 
-  return { props: { orders, token: AUTH_TOKEN } };
+  const [orders, futurePickupEvents] = await Promise.all([
+    ordersPromise,
+    futurePickupEventsPromise,
+  ]);
+
+  orders.sort((a, b) => new Date(b.orderedAt).getTime() - new Date(a.orderedAt).getTime());
+
+  return { props: { orders, futurePickupEvents } };
 };
 
 export const getServerSideProps = withAccessType(
