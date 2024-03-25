@@ -23,6 +23,9 @@
 
   --theme-background: #{vars.$light-background};
 
+  --theme-elevated-background: #{vars.$light-elevated-background};
+  --theme-elevated-stroke: #{vars.$light-elevated-stroke};
+
   --theme-surface-1: #{vars.$light-surface-1}; // table rows
   --theme-surface-2: #{vars.$light-surface-2}; // nav bar background
 
@@ -70,6 +73,9 @@
   --theme-bronze-hover: #{vars.$dark-bronze-hover};
 
   --theme-background: #{vars.$dark-background};
+
+  --theme-elevated-background: #{vars.$dark-elevated-background};
+  --theme-elevated-stroke: #{vars.$dark-elevated-stroke};
 
   --theme-surface-1: #{vars.$dark-surface-1}; // table rows
   --theme-surface-2: #{vars.$dark-surface-2}; // nav bar background
