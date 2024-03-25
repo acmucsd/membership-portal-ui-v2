@@ -48,7 +48,7 @@ const EventCard = ({
 
   return (
     <>
-      {hasModal && (
+      {hasModal ? (
         <EventModal
           open={expanded}
           attended={attended}
@@ -59,7 +59,7 @@ const EventCard = ({
           }
           onClose={() => setExpanded(false)}
         />
-      )}
+      ) : null}
 
       <button
         type="button"
@@ -76,7 +76,7 @@ const EventCard = ({
             fill
           />
         </div>
-        {!hideInfo && (
+        {!hideInfo ? (
           <div className={styles.info}>
             <Typography
               variant="body/small"
@@ -101,17 +101,17 @@ const EventCard = ({
               <div className={`${styles.badge} ${styles[`badge${community}`]}`}>
                 {communityNames[community]}
               </div>
-              {!isOrderPickupEvent(event) && (
+              {!isOrderPickupEvent(event) ? (
                 <div className={`${styles.badge} ${styles.badgePoints}`}>
                   {event.pointValue} point{event.pointValue === 1 ? '' : 's'}
                 </div>
-              )}
-              {!isOrderPickupEvent(event) && attended && (
+              ) : null}
+              {!isOrderPickupEvent(event) && attended ? (
                 <div className={`${styles.badge} ${styles.badgeAttended}`}>Attended</div>
-              )}
+              ) : null}
             </div>
           </div>
-        )}
+        ) : null}
       </button>
     </>
   );
