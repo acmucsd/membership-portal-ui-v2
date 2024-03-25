@@ -1,7 +1,7 @@
 @use 'src/styles/vars.scss' as vars;
 
 .header {
-  background-color: var(--theme-elevated-background);
+  background-color: var(--theme-background);
   height: vars.$header-height;
   left: 0;
   position: fixed;
@@ -11,7 +11,7 @@
 
   .content {
     align-items: center;
-    background-color: var(--theme-elevated-background);
+    background-color: var(--theme-background);
     display: flex;
     height: 4rem;
     padding: 0 1rem;
@@ -113,7 +113,7 @@
 
   .mobileNav {
     align-items: flex-start;
-    background-color: var(--theme-elevated-background);
+    background-color: var(--theme-background);
     display: flex;
     flex-flow: column nowrap;
     font-size: 20px;
