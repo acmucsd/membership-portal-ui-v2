@@ -1,0 +1,61 @@
+@use 'src/styles/vars.scss' as vars;
+
+.container {
+  height: fit-content;
+
+  .header {
+    align-items: center;
+    background-color: var(--theme-surface-1);
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      .heading {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+      }
+    }
+
+    .close {
+      background-color: transparent;
+    }
+  }
+
+  .body {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+
+    .bodyText {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      @media screen and (width <= vars.$breakpoint-md) {
+        align-items: center;
+
+        .text {
+          font-size: 1.25rem !important;
+          line-height: 1.75rem !important;
+        }
+      }
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      button {
+        font-size: 1rem;
+      }
+    }
+  }
+}

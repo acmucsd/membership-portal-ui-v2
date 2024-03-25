@@ -11,7 +11,7 @@ import { config, showToast } from '@/lib';
 import { getFutureOrderPickupEvents } from '@/lib/api/StoreAPI';
 import { getCurrentUserAndRefreshCookie } from '@/lib/api/UserAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
-import { placeMerchOrder } from '@/lib/managers/StoreManager';
+import { StoreManager } from '@/lib/managers';
 import { CartService } from '@/lib/services';
 import { getServerCookie } from '@/lib/services/CookieService';
 import { loggedInUser } from '@/lib/services/PermissionService';
@@ -62,7 +62,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
 
   // handle confirming an order
   const placeOrder = () =>
-    placeMerchOrder(cart, pickupEvents[pickupIndex]?.uuid ?? 'x')
+    StoreManager.placeMerchOrder(cart, pickupEvents[pickupIndex]?.uuid ?? 'x')
       .then(({ items, pickupEvent }) => {
         showToast(
           `Order with ${items.length} item${items.length === 1 ? '' : 's'} placed`,
