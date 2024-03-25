@@ -7,7 +7,7 @@ export enum CookieType {
 
 export enum Community {
   HACK = 'Hack',
-  AI = 'AI',
+  AI = 'Ai',
   CYBER = 'Cyber',
   DESIGN = 'Design',
   GENERAL = 'General',

@@ -1,6 +1,5 @@
-import { communityLogos } from '@/lib/constants/communityLogos';
-import { Community } from '@/lib/types/enums';
-import { capitalize } from '@/lib/utils';
+import { communityLogos } from '@/lib/constants/communities';
+import { toCommunity } from '@/lib/utils';
 import Image from 'next/image';
 
 interface CommunityLogoProps {
@@ -9,14 +8,8 @@ interface CommunityLogoProps {
 }
 
 const CommunityLogo = ({ community, size }: CommunityLogoProps) => {
-  const formattedName = capitalize(community) as Community;
-
-  if (!Object.values(Community).includes(formattedName))
-    return <Image src={communityLogos.General} width={size} alt="ACM General Logo" />;
-
-  return (
-    <Image src={communityLogos[formattedName]} width={size} alt={`ACM ${formattedName} Logo`} />
-  );
+  const name = toCommunity(community);
+  return <Image src={communityLogos[name]} width={size} alt={`ACM ${name} Logo`} />;
 };
 
 export default CommunityLogo;

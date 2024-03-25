@@ -8,9 +8,17 @@ import ACMLogo from '@/public/assets/acm-logos/general/light-mode.png';
 import type { StaticImageData } from 'next/image';
 
 export const communityLogos: Record<Community, StaticImageData> = {
-  AI: AILogo,
+  Ai: AILogo,
   Cyber: CyberLogo,
   Design: DesignLogo,
   Hack: HackLogo,
   General: ACMLogo,
+};
+
+export const communityNames: Record<Community, string> = {
+  Ai: 'AI',
+  Cyber: 'Cyber',
+  Design: 'Design',
+  Hack: 'Hack',
+  General: 'General',
 };
