@@ -1,5 +1,4 @@
 import { Typography } from '@/components/common';
-import { showToast } from '@/lib';
 import { getOrder } from '@/lib/api/StoreAPI';
 import { StoreManager } from '@/lib/managers';
 import { getClientCookie } from '@/lib/services/CookieService';
@@ -9,7 +8,7 @@ import {
   PublicOrderWithItems,
 } from '@/lib/types/apiResponses';
 import { CookieType, OrderStatus } from '@/lib/types/enums';
-import { formatDate, formatEventDate } from '@/lib/utils';
+import { formatDate, formatEventDate, reportError } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import OrderSummary from '../OrderSummary';
 import styles from './style.module.scss';
@@ -54,8 +53,8 @@ const OrderCard = ({ order, futurePickupEvents }: OrderCardProps) => {
       const AUTH_TOKEN = getClientCookie(CookieType.ACCESS_TOKEN);
       getOrder(AUTH_TOKEN, order.uuid)
         .then(data => setOrderData(data))
-        .catch(e => {
-          showToast(e.message);
+        .catch((e): void => {
+          reportError('Error loading order!', e);
           setOrderData(null);
         });
     }

@@ -61,7 +61,7 @@ const PickupEventPreviewModal = ({
   }, [rescheduledPickupUUID, pickupEventsByUUID]);
 
   return (
-    <Modal open={open} onClose={onClose} bottomSheet>
+    <Modal open={open} onClose={onClose}>
       <div className={styles.container}>
         <div className={styles.header}>
           <Typography variant="h2/bold" className={styles.heading}>

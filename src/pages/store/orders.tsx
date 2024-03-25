@@ -71,9 +71,15 @@ export default StoreOrderPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
-  const orders = await StoreAPI.getAllOrders(AUTH_TOKEN);
+  const ordersPromise = StoreAPI.getAllOrders(AUTH_TOKEN);
+  const futurePickupEventsPromise = StoreAPI.getFutureOrderPickupEvents(AUTH_TOKEN);
+
+  const [orders, futurePickupEvents] = await Promise.all([
+    ordersPromise,
+    futurePickupEventsPromise,
+  ]);
+
   orders.sort((a, b) => new Date(b.orderedAt).getTime() - new Date(a.orderedAt).getTime());
-  const futurePickupEvents = await StoreAPI.getFutureOrderPickupEvents(AUTH_TOKEN);
 
   return { props: { orders, futurePickupEvents } };
 };

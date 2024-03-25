@@ -2,10 +2,12 @@ import { Button, Typography } from '@/components/common';
 import CancelPickupModal from '@/components/store/CancelPickupModal';
 import Diamonds from '@/components/store/Diamonds';
 import PickupEventPreviewModal from '@/components/store/PickupEventPreviewModal';
+import { config } from '@/lib';
 import { PublicOrderPickupEvent, PublicOrderWithItems } from '@/lib/types/apiResponses';
 import { OrderStatus } from '@/lib/types/enums';
 import { capitalize, getDefaultOrderItemPhoto, getOrderItemQuantities } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import styles from './style.module.scss';
 
@@ -18,7 +20,7 @@ interface OrderSummaryProps {
   cancelOrder: () => Promise<void>;
 }
 
-const isOrderActionable = ({ status, pickupEvent }: PublicOrderWithItems): boolean => {
+const isOrderActionable = (status: OrderStatus, pickupEvent: PublicOrderPickupEvent): boolean => {
   if (status === OrderStatus.CANCELLED || status === OrderStatus.FULFILLED) {
     // If the order is cancelled by the user or fulfilled, no further action can be taken.
     return false;
@@ -50,7 +52,7 @@ const OrderSummary = ({
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
-  const actionable = isOrderActionable({ ...order, status: orderStatus, pickupEvent });
+  const actionable = isOrderActionable(orderStatus, pickupEvent);
 
   return (
     <div className={styles.container}>
@@ -60,7 +62,7 @@ const OrderSummary = ({
         pickupEvent={pickupEvent}
         reschedulePickupEvent={reschedulePickupEvent}
         futurePickupEvents={futurePickupEvents}
-        reschedulable
+        reschedulable={actionable}
       />
       <CancelPickupModal
         open={cancelModalOpen}
@@ -68,7 +70,11 @@ const OrderSummary = ({
         cancelOrder={cancelOrder}
       />
       {items.map(item => (
-        <div key={item.uuid} className={styles.itemInfo}>
+        <Link
+          href={`${config.store.itemRoute}${item.option.item.uuid}`}
+          key={item.uuid}
+          className={styles.itemInfo}
+        >
           <div className={styles.image}>
             <Image
               src={getDefaultOrderItemPhoto(item)}
@@ -100,7 +106,7 @@ const OrderSummary = ({
               </div>
             ) : null}
           </div>
-        </div>
+        </Link>
       ))}
       <hr className={styles.divider} />
       <div className={styles.footer}>
