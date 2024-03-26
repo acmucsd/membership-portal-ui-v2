@@ -118,10 +118,11 @@ export const createPickupEvent = async (
   event: OrderPickupEvent
 ): Promise<UUID | null> => {
   try {
+    console.log(event);
     const { uuid } = await EventAPI.createPickupEvent(token, event);
     return uuid;
   } catch (error) {
-    reportError('Could not create collection', error);
+    reportError('Could not create pickup event', error);
     return null;
   }
 };

@@ -45,7 +45,6 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
 
   const createPickupEvent: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
-    console.log(formData);
     try {
       const uuid = await AdminEventManager.createPickupEvent(token, formData);
       showToast('Pickup Event created successfully!', '', [
@@ -57,6 +56,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       // router.replace(`${config.eventsRoute}/${uuid}`);
     } catch (error) {
       reportError('Could not create pickup event', error);
+    } finally {
       setLoading(false);
     }
   };
@@ -64,9 +64,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
   const editPickupEvent: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
     try {
-      const uuid = defaultData?.uuid ?? '';
-      console.log(formData);
-      // await AdminEventManager.editPickupEvent({ token, uuid, formData }); // ???????
+      const uuid = await AdminEventManager.createPickupEvent(token, formData);
       showToast('Event details saved!', '', [
         {
           text: 'View pickup event page',

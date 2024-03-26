@@ -133,11 +133,11 @@ export const deleteEvent = async (token: string, event: UUID): Promise<void> => 
 
 export const createPickupEvent = async (
   token: string,
-  event: OrderPickupEvent
+  pickupEvent: OrderPickupEvent
 ): Promise<PublicOrderPickupEvent> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}`;
 
-  const requestBody = { event };
+  const requestBody = { pickupEvent };
 
   const response = await axios.post<CreatePickupEventResponse>(requestUrl, requestBody, {
     headers: {
