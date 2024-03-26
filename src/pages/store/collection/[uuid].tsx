@@ -9,6 +9,8 @@ import { CookieType } from '@/lib/types/enums';
 import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/StoreCollectionPage.module.scss';
 import { GetServerSideProps } from 'next';
+import Image from 'next/image';
+import { useMemo } from 'react';
 
 interface CollectionProps {
   uuid: string;
@@ -20,11 +22,16 @@ interface CollectionProps {
 const CollectionsPage = ({
   uuid,
   user: { credits, accessType },
-  collection: { title, description, items = [], archived },
+  collection: { title, description, items = [], archived, collectionPhotos },
   previewPublic,
 }: CollectionProps) => {
   const storeAdminVisible =
     PermissionService.canEditMerchItems.includes(accessType) && !previewPublic;
+
+  const photos = useMemo(
+    () => [...collectionPhotos].sort((a, b) => a.position - b.position),
+    [collectionPhotos]
+  );
 
   return (
     <div className={styles.container}>
@@ -39,6 +46,20 @@ const CollectionsPage = ({
           {description}
         </Typography>
       </div>
+      {photos.length > 0 ? (
+        <>
+          <div className={styles.photos}>
+            {photos.map(photo => (
+              <div className={styles.photo} key={photo.uuid}>
+                <Image src={photo.uploadedPhoto} alt={`Photo of ${title}`} fill />
+              </div>
+            ))}
+          </div>
+          <Typography variant="h2/bold" component="h2" className={styles.browseItems}>
+            Browse items
+          </Typography>
+        </>
+      ) : null}
       <div className={styles.collections}>
         {items
           .filter(item => storeAdminVisible || !item.hidden)

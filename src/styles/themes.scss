@@ -23,6 +23,9 @@
 
   --theme-background: #{vars.$light-background};
 
+  --theme-elevated-background: #{vars.$light-elevated-background};
+  --theme-elevated-stroke: #{vars.$light-elevated-stroke};
+
   --theme-surface-1: #{vars.$light-surface-1}; // table rows
   --theme-surface-2: #{vars.$light-surface-2}; // nav bar background
 
@@ -32,6 +35,7 @@
   --theme-accent-line-1-transparent: #{vars.$light-accent-line-1-transparent}; // light accent lines
   --theme-accent-line-2-transparent: #{vars.$light-accent-line-2-transparent}; // light accent lines
   --theme-shadow: #{vars.$light-accent-line-2-transparent};
+  --theme-card-outline: #{vars.$light-text-on-background-3}; // event card outline
 
   --theme-text-on-background-1: #{vars.$light-text-on-background-1}; // text on primary titles and input borders
   --theme-text-on-background-2: #{vars.$light-text-on-background-2}; // text on primary subtitles (LVL, Dates)
@@ -71,6 +75,9 @@
 
   --theme-background: #{vars.$dark-background};
 
+  --theme-elevated-background: #{vars.$dark-elevated-background};
+  --theme-elevated-stroke: #{vars.$dark-elevated-stroke};
+
   --theme-surface-1: #{vars.$dark-surface-1}; // table rows
   --theme-surface-2: #{vars.$dark-surface-2}; // nav bar background
 
@@ -80,6 +87,7 @@
   --theme-accent-line-1-transparent: #{vars.$dark-accent-line-1-transparent}; // dark accent lines
   --theme-accent-line-2-transparent: #{vars.$dark-accent-line-2-transparent}; // dark accent lines
   --theme-shadow: #{vars.$dark-accent-line-1-transparent};
+  --theme-card-outline: #{vars.$dark-surface-1}; // event card outline
 
   --theme-text-on-background-1: #{vars.$dark-text-on-background-1}; // text on primary titles and input borders
   --theme-text-on-background-2: #{vars.$dark-text-on-background-2}; // text on primary subtitles (LVL, Dates)

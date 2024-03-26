@@ -5,12 +5,13 @@ export type Styles = {
   bioSection: string;
   card: string;
   cardName: string;
-  cardRank: string;
   cardWrapper: string;
   editWrapper: string;
   handle: string;
   icon: string;
   inner: string;
+  levelProgress: string;
+  levelText: string;
   points: string;
   profileCard: string;
   profilePage: string;
@@ -18,9 +19,11 @@ export type Styles = {
   progressBar: string;
   progressInfo: string;
   progressSection: string;
-  rank: string;
+  progressText: string;
   section: string;
+  sectionHeader: string;
   socialIcons: string;
+  userInfo: string;
 };
 
 export type ClassNames = keyof Styles;

@@ -14,7 +14,7 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getDefaultMerchItemPhoto } from '@/lib/utils';
+import { getDefaultMerchCollectionPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/StoreHomePage.module.scss';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
@@ -99,7 +99,7 @@ const StoreHomePage = ({
           <div className={styles.collections}>
             {visibleCollections.map(collection => (
               <ItemCard
-                image={getDefaultMerchItemPhoto(collection.items[0])}
+                image={getDefaultMerchCollectionPhoto(collection)}
                 title={collection.title}
                 description={collection.description}
                 href={`${config.store.collectionRoute}${collection.uuid}`}
