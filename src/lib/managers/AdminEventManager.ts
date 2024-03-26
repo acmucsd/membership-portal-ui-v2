@@ -7,9 +7,15 @@ import {
   DeleteEventRequest,
   Event,
   GenerateACMURLRequest,
+  OrderPickupEvent,
   UploadEventImageRequest,
 } from '@/lib/types/apiRequests';
-import type { NotionEventDetails, PublicEvent } from '@/lib/types/apiResponses';
+import type {
+  NotionEventDetails,
+  PublicEvent,
+  PublicOrderPickupEvent,
+} from '@/lib/types/apiResponses';
+import { reportError } from '@/lib/utils';
 
 interface GetEventFromNotion {
   pageUrl: URL;
@@ -46,8 +52,8 @@ export const createDiscordEvent = async (
   try {
     await KlefkiAPI.createDiscordEvent(event);
     onSuccessCallback?.();
-  } catch (e) {
-    onFailCallback?.(e);
+  } catch (e: any) {
+    onFailCallback?.(e.response.data.error);
   }
 };
 
@@ -106,6 +112,49 @@ export const editEvent = async (data: EditEventRequest & AuthAPIHandlerProps<Pub
     onFailCallback?.(e);
   }
 };
+
+export const createPickupEvent = async (
+  token: string,
+  event: OrderPickupEvent
+): Promise<UUID | null> => {
+  try {
+    const { uuid } = await EventAPI.createPickupEvent(token, event);
+    return uuid;
+  } catch (error) {
+    reportError('Could not create collection', error);
+    return null;
+  }
+};
+
+interface EditPickupEventRequest {
+  event: Partial<OrderPickupEvent>;
+  cover?: File;
+  uuid: UUID;
+}
+
+export const editPickupEvent = async (
+  data: EditPickupEventRequest & AuthAPIHandlerProps<PublicOrderPickupEvent>
+) => {
+  const { onSuccessCallback, onFailCallback, token, event, uuid } = data;
+  if (data.cover && data.cover.size > config.file.MAX_EVENT_COVER_SIZE_KB * 1024) {
+    onFailCallback?.(new Error('Cover size too large'));
+    return;
+  }
+
+  try {
+    const modifiedEvent = await EventAPI.editPickupEvent(token, uuid, event);
+    if (data.cover) {
+      // There's some weird behavior that happens when we editEvent after uploading a new
+      // event image, so I've kept the API calls in the same order as createNewEvent
+      await EventAPI.uploadEventImage(token, uuid, data.cover);
+    }
+
+    onSuccessCallback?.(modifiedEvent);
+  } catch (e) {
+    onFailCallback?.(e);
+  }
+};
+
 interface PatchEventRequest {
   uuid: UUID;
   cover: File;

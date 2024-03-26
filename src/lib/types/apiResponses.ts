@@ -158,6 +158,14 @@ export interface CreateEventResponse extends ApiResponse {
   event: PublicEvent;
 }
 
+export interface CreatePickupEventResponse extends ApiResponse {
+  pickupEvent: PublicOrderPickupEvent;
+}
+
+export interface PatchPickupEventResponse extends ApiResponse {
+  event: PublicOrderPickupEvent;
+}
+
 // LEADERBOARD
 
 export interface GetLeaderboardResponse extends ApiResponse {
@@ -430,6 +438,7 @@ export interface PublicOrderPickupEvent {
   orders?: PublicOrderWithItems[];
   orderLimit?: number;
   status: OrderPickupEventStatus;
+  linkedEvent?: PublicEvent;
 }
 
 export interface GetOrderPickupEventsResponse extends ApiResponse {

@@ -48,10 +48,10 @@ const CollectionDetailsForm = ({ mode, defaultData = {}, token }: IProps) => {
       showToast('Collection created successfully!', '', [
         {
           text: 'Continue editing',
-          onClick: () => router.push(`${config.store.collectionRoute}/${uuid}/edit`),
+          onClick: () => router.push(`${config.store.collectionRoute}/${uuid}/edit`), // link to continue editing the item page
         },
       ]);
-      router.replace(`${config.store.collectionRoute}/${uuid}`);
+      router.replace(`${config.store.collectionRoute}/${uuid}`); // change link of page to be view, not new item
     } catch (error) {
       reportError('Could not create collection', error);
       setLoading(false);
