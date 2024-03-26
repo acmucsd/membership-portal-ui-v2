@@ -65,3 +65,12 @@
     max-width: calc(100vw - 2rem);
   }
 }
+
+:export {
+  #{general}: vars.$light-primary-2;
+  #{hack}: vars.$orange-4;
+  #{cyber}: vars.$cyan-4;
+  #{design}: vars.$pink-3;
+  #{ai}: vars.$scarlet-4;
+  #{innovate}: vars.$purple-3;
+}

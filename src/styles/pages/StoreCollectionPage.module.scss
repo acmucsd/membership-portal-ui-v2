@@ -18,6 +18,28 @@
     }
   }
 
+  .photos {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+
+    .photo {
+      aspect-ratio: 1;
+      position: relative;
+
+      img {
+        object-fit: cover;
+      }
+    }
+  }
+
+  @media (max-width: vars.$breakpoint-md) {
+    .photos,
+    .browseItems {
+      display: none;
+    }
+  }
+
   .collections {
     display: grid;
     gap: 1rem;

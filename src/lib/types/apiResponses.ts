@@ -84,6 +84,12 @@ export interface AttendEventResponse extends ApiResponse {
   event: PublicEvent;
 }
 
+export interface PublicExpressCheckin {
+  email: string;
+  event: PublicEvent;
+  timestamp: Date;
+}
+
 // AUTH
 
 export interface RegistrationResponse extends ApiResponse {
@@ -181,6 +187,7 @@ export interface PublicMerchCollection {
   description: string;
   archived?: boolean;
   items: PublicMerchItem[];
+  collectionPhotos: PublicMerchCollectionPhoto[];
   createdAt: Date;
 }
 
@@ -218,6 +225,13 @@ export interface PublicMerchItemOption {
 }
 
 export interface PublicMerchItemPhoto {
+  uuid: UUID;
+  uploadedPhoto: string;
+  position: number;
+  uploadedAt: Date;
+}
+
+export interface PublicMerchCollectionPhoto {
   uuid: UUID;
   uploadedPhoto: string;
   position: number;
@@ -276,6 +290,12 @@ export interface EditMerchCollectionResponse extends ApiResponse {
 }
 
 export interface DeleteMerchCollectionResponse extends ApiResponse {}
+
+export interface CreateCollectionPhotoResponse extends ApiResponse {
+  collectionPhoto: PublicMerchCollectionPhoto;
+}
+
+export interface DeleteCollectionPhotoResponse extends ApiResponse {}
 
 export interface GetOneMerchItemResponse extends ApiResponse {
   item: PublicMerchItemWithPurchaseLimits;
@@ -346,7 +366,7 @@ export interface PublicProfile {
   major: string;
   bio: string | null;
   points: number;
-  userSocialMedia: PublicUserSocialMedia[];
+  userSocialMedia?: PublicUserSocialMedia[];
   isAttendancePublic: boolean;
 }
 
@@ -439,6 +459,10 @@ export interface PublicOrderPickupEvent {
   orderLimit?: number;
   status: OrderPickupEventStatus;
   linkedEvent?: PublicEvent;
+}
+
+export interface PublicOrderPickupEventWithLinkedEvent extends PublicOrderPickupEvent {
+  linkedEvent: PublicEvent;
 }
 
 export interface GetOrderPickupEventsResponse extends ApiResponse {

@@ -4,10 +4,18 @@ import showToast from '@/lib/showToast';
 import type { URL } from '@/lib/types';
 import type {
   CustomErrorBody,
+  PublicEvent,
+  PublicMerchCollection,
+  PublicMerchCollectionPhoto,
   PublicMerchItem,
+  PublicMerchItemPhoto,
+  PublicOrderItem,
+  PublicOrderItemWithQuantity,
+  PublicOrderPickupEvent,
   PublicProfile,
   ValidatorError,
 } from '@/lib/types/apiResponses';
+import { Community } from '@/lib/types/enums';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import { AxiosError } from 'axios';
 import {
@@ -32,7 +40,7 @@ export const getNextNYears = (num: number) => {
  * @param errBody Obj with validator constraint errors
  * @returns List of all user-friendly error strings
  */
-const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
+export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
   // if error has no suberrors, just return top level error message
   if (!errBody.errors) return [errBody.message];
 
@@ -294,13 +302,56 @@ export const getDateRange = (sort: string | number) => {
  * Returns the default (first) photo for a merchandise item.
  * If there are no photos for this item, returns the default 404 image.
  */
-export const getDefaultMerchItemPhoto = (item: PublicMerchItem | undefined): string => {
+export const getDefaultMerchItemPhoto = (
+  item: Pick<PublicMerchItem, 'merchPhotos'> | undefined
+): string => {
   if (item && item.merchPhotos.length > 0) {
     // Get the photo with the smallest position.
     const defaultPhoto = item.merchPhotos.reduce((prevImage, currImage) => {
       return prevImage.position < currImage.position ? prevImage : currImage;
     });
     return defaultPhoto.uploadedPhoto;
+  }
+  return NoImage.src;
+};
+
+export const getDefaultOrderItemPhoto = (item: PublicOrderItem): string => {
+  if (item.option.item.uploadedPhoto) {
+    return item.option.item.uploadedPhoto;
+  }
+  return NoImage.src;
+};
+
+/**
+ * Returns the default (first) photo for a merchandise collection.
+ * If there are no photos for this collection, returns the first photo of the first item.
+ * If there are no photos at all in the collection, returns the default 404 image.
+ */
+export const getDefaultMerchCollectionPhoto = (collection?: PublicMerchCollection): string => {
+  if (collection) {
+    // Get the photo with the smallest position.
+    const defaultCollectionPhoto =
+      collection.collectionPhotos.reduce<PublicMerchCollectionPhoto | null>(
+        (prevImage, currImage) => {
+          return prevImage && prevImage.position < currImage.position ? prevImage : currImage;
+        },
+        null
+      );
+    if (defaultCollectionPhoto) {
+      return defaultCollectionPhoto.uploadedPhoto;
+    }
+    const defaultItemPhoto = collection.items.reduce<PublicMerchItemPhoto | null>((image, item) => {
+      if (image) {
+        return image;
+      }
+      // Get the photo with the smallest position.
+      return item.merchPhotos.reduce<PublicMerchItemPhoto | null>((prevImage, currImage) => {
+        return prevImage && prevImage.position < currImage.position ? prevImage : currImage;
+      }, null);
+    }, null);
+    if (defaultItemPhoto) {
+      return defaultItemPhoto.uploadedPhoto;
+    }
   }
   return NoImage.src;
 };
@@ -325,4 +376,50 @@ export const fixUrl = (input: string, prefix?: string): string => {
   }
   // Add https:// if it was left out
   return `https://${input}`;
+};
+
+/**
+ * Type predicate distinguishes between PublicOrderPickupEvent and PublicEvent
+ * @returns true if event is PublicOrderPickupEvent
+ */
+export const isOrderPickupEvent = (
+  event: PublicOrderPickupEvent | PublicEvent
+): event is PublicOrderPickupEvent => 'status' in event;
+
+/**
+ * Condenses a list of ordered items into unique items with quantities.
+ */
+export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderItemWithQuantity[] => {
+  const itemMap = new Map<string, PublicOrderItemWithQuantity>();
+
+  items.forEach(item => {
+    const existingItem = itemMap.get(item.option.uuid);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      itemMap.set(item.option.uuid, { ...item, quantity: 1 });
+    }
+  });
+
+  return Array.from(itemMap.values());
+};
+
+/** Normalizes string as a capitalized community name. Defaults to General. */
+export const toCommunity = (community = ''): Community => {
+  const formattedName = capitalize(community) as Community;
+
+  if (Object.values(Community).includes(formattedName)) return formattedName;
+
+  return Community.GENERAL;
+};
+
+/**
+ * Validates src for event cover image, returning a default if invalid
+ * @param src src for cover image
+ * @returns a valid image src
+ */
+export const getDefaultEventCover = (src: unknown): string => {
+  if (!src || typeof src !== 'string' || !/^(http|\/).+(jpg|png|jpeg)$/i.test(src))
+    return '/assets/graphics/store/hero-photo.jpg';
+  return src;
 };

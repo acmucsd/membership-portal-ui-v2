@@ -1,5 +1,5 @@
 import { config } from '@/lib';
-import { UUID } from '@/lib/types';
+import type { UUID } from '@/lib/types';
 import { PatchResumeRequest } from '@/lib/types/apiRequests';
 import type {
   PatchResumeResponse,

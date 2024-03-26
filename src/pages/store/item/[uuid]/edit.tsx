@@ -32,7 +32,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
 
   try {
     const [item, collections] = await Promise.all([
-      StoreAPI.getItem(uuid, token),
+      StoreAPI.getItem(token, uuid),
       StoreAPI.getAllCollections(token),
     ]);
     return { props: { token, item, collections } };

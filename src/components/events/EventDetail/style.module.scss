@@ -2,6 +2,7 @@
 
 .image {
   aspect-ratio: 1920 / 1080;
+  border-radius: 10px 10px 0 0;
   flex-shrink: 0;
   overflow: hidden;
   position: relative;
@@ -43,6 +44,12 @@
     flex-direction: row;
     gap: 1rem;
     justify-content: space-between;
+
+    .eventTitle,
+    .eventDetails {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
 
     .eventDetails {
       align-items: center;

@@ -7,11 +7,16 @@ import {
   EditMerchCollectionRequest,
   EditMerchItemRequest,
   MerchCollection,
+  MerchCollectionEdit,
   MerchItem,
   MerchItemEdit,
   MerchItemOption,
+  PlaceMerchOrderRequest,
+  RescheduleOrderPickupRequest,
 } from '@/lib/types/apiRequests';
 import type {
+  ApiResponse,
+  CreateCollectionPhotoResponse,
   CreateMerchCollectionResponse,
   CreateMerchItemOptionResponse,
   CreateMerchItemResponse,
@@ -25,8 +30,11 @@ import type {
   GetOneMerchCollectionResponse,
   GetOneMerchItemResponse,
   GetOneMerchOrderResponse,
+  GetOrderPickupEventResponse,
   GetOrderPickupEventsResponse,
+  PlaceMerchOrderResponse,
   PublicMerchCollection,
+  PublicMerchCollectionPhoto,
   PublicMerchItem,
   PublicMerchItemOption,
   PublicMerchItemPhoto,
@@ -44,8 +52,8 @@ import axios from 'axios';
  * @returns Item info
  */
 export const getItem = async (
-  uuid: UUID,
-  token: string
+  token: string,
+  uuid: UUID
 ): Promise<PublicMerchItemWithPurchaseLimits> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.item}/${uuid}`;
 
@@ -238,7 +246,7 @@ export const createCollection = async (
 export const editCollection = async (
   token: string,
   uuid: UUID,
-  collection: MerchCollection
+  collection: MerchCollectionEdit
 ): Promise<PublicMerchCollection> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collection}/${uuid}`;
 
@@ -319,6 +327,65 @@ export const getCollection = async (
   return response.data.collection;
 };
 
+export const getPickupEvent = async (
+  token: string,
+  uuid: string
+): Promise<PublicOrderPickupEvent> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${uuid}`;
+
+  const response = await axios.get<GetOrderPickupEventResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.pickupEvent;
+};
+
+/**
+ * Upload a photo for a store collection
+ * @param token Authorization bearer token
+ * @param uuid Store collection UUID
+ * @param image Photo
+ * @param position The position of the image
+ * @returns The store collection photo object
+ */
+export const createCollectionPhoto = async (
+  token: string,
+  uuid: UUID,
+  image: Blob,
+  position = 0
+): Promise<PublicMerchCollectionPhoto> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collectionPicture}/${uuid}`;
+
+  const requestBody = new FormData();
+  requestBody.append('position', `${position}`);
+  requestBody.append('image', image);
+
+  const response = await axios.post<CreateCollectionPhotoResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.collectionPhoto;
+};
+
+/**
+ * Delete a merch collection photo
+ * @param token Authorization bearer token
+ * @param uuid Merch collection *photo* UUID
+ */
+export const deleteCollectionPhoto = async (token: string, uuid: UUID): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.collectionPicture}/${uuid}`;
+
+  await axios.delete(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const getFutureOrderPickupEvents = async (
   token: string
 ): Promise<PublicOrderPickupEvent[]> => {
@@ -333,6 +400,21 @@ export const getFutureOrderPickupEvents = async (
   return response.data.pickupEvents;
 };
 
+export const placeMerchOrder = async (
+  token: string,
+  data: PlaceMerchOrderRequest
+): Promise<PublicOrderWithItems> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}`;
+
+  const response = await axios.post<PlaceMerchOrderResponse>(requestUrl, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.order;
+};
+
 export const getPastOrderPickupEvents = async (
   token: string
 ): Promise<PublicOrderPickupEvent[]> => {
@@ -345,4 +427,34 @@ export const getPastOrderPickupEvents = async (
   });
 
   return response.data.pickupEvents;
+};
+
+export const rescheduleOrderPickup = async (
+  token: string,
+  order: string,
+  pickupEvent: string
+): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${order}/reschedule`;
+
+  const requestBody: RescheduleOrderPickupRequest = { pickupEvent };
+
+  await axios.post<ApiResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const cancelMerchOrder = async (token: string, order: string): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${order}/cancel`;
+
+  await axios.post(
+    requestUrl,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
