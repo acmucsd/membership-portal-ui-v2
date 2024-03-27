@@ -49,8 +49,8 @@
     }
 
     .placeOrder {
-      background: var(--primaries-primary-2, #62B0FF);
-      border: 1px solid var(--theme-accent-line-2, #E4E4E4);
+      background: var(--primaries-primary-2, #62b0ff);
+      border: 1px solid var(--theme-accent-line-2, #e4e4e4);
       border-radius: 10px;
       color: vars.$light-background;
       font-size: 20px;
@@ -71,12 +71,14 @@
     }
 
     .cartCard {
+      border: 1px solid var(--theme-elevated-stroke);
       border-radius: 0.625rem;
-      box-shadow: 0 0.25rem 0.25rem var(--theme-shadow);
+      overflow: hidden;
 
       .header {
         align-items: center;
         background-color: var(--theme-surface-1);
+        border-bottom: 1px solid var(--theme-elevated-stroke);
         border-top-left-radius: 0.625rem;
         border-top-right-radius: 0.625rem;
         display: flex;
@@ -87,7 +89,7 @@
 
     .confirmation {
       align-items: center;
-      background-color: var(--theme-surface-1);
+      background-color: var(--theme-elevated-background);
       display: flex;
       flex-direction: column;
       gap: 1rem;
@@ -111,6 +113,7 @@
     }
 
     .items {
+      background-color: var(--theme-elevated-background);
       display: flex;
       flex-direction: column;
       grid-area: items;
@@ -121,7 +124,7 @@
         align-items: center;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1rem;
         padding: 2rem 0;
         text-align: center;
         width: 100%;
@@ -134,6 +137,7 @@
     }
 
     .pointsCard {
+      background-color: var(--theme-elevated-background);
       grid-area: summary;
       margin-bottom: 2rem;
 
@@ -142,18 +146,18 @@
         flex-direction: column;
         gap: 0.5rem;
         justify-content: space-around;
-        padding: 0.5rem 0.625rem;
-  
+        padding: 1rem;
+
         > div {
           align-items: baseline;
           display: flex;
           justify-content: space-between;
-  
+
           span {
             text-align: end;
           }
         }
-  
+
         hr {
           border: 0.0625rem solid var(--theme-accent-line-1-transparent);
         }
@@ -162,11 +166,7 @@
 
     .eventPicker {
       grid-area: event;
-      margin-bottom: 0.5rem;
-
-      @media (max-width: vars.$breakpoint-md) {
-        margin-bottom: 2rem;
-      }
+      margin-bottom: 2rem;
     }
 
     .warning {
@@ -175,7 +175,7 @@
       gap: 1rem;
       grid-area: warning;
       margin-bottom: 2rem;
-      
+
       p {
         color: var(--theme-danger-1);
       }
