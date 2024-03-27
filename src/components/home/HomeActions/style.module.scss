@@ -15,7 +15,7 @@
   max-width: fit-content;
 
   @media screen and (width <= vars.$breakpoint-sm) {
-    gap: 1rem;
+    max-width: 100%;
   }
 
   .checkin,
