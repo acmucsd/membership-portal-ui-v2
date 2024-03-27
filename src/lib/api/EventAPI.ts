@@ -139,10 +139,6 @@ export const createPickupEvent = async (
 
   const requestBody = { pickupEvent };
 
-  console.log('eventAPI');
-  console.log(JSON.stringify(pickupEvent, null, 4));
-  console.log('endJsonString');
-
   const response = await axios.post<CreatePickupEventResponse>(requestUrl, requestBody, {
     headers: {
       Authorization: `Bearer ${token}`,

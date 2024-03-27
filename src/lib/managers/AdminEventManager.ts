@@ -118,7 +118,6 @@ export const createPickupEvent = async (
   pickupEvent: OrderPickupEvent
 ): Promise<UUID | null> => {
   try {
-    console.log(`AdminEventManager ${JSON.stringify(pickupEvent)}`);
     const { linkedEvent } = await EventAPI.createPickupEvent(token, pickupEvent);
     return linkedEvent?.uuid ?? null;
   } catch (error) {

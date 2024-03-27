@@ -59,8 +59,6 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     const end = new Date(isoEnd).toISOString();
     const orderLimit = parseInt(`${rawOrderLimit}`, 10);
 
-    console.log(linkedEventUuid);
-
     try {
       const uuid = await AdminEventManager.createPickupEvent(token, {
         title,

@@ -113,7 +113,6 @@ const config = {
       editRoute: '/admin/event/edit',
       createRoute: '/admin/event/create',
     },
-    pickup: '/admin/merch/pickupEvent/create',
   },
   isDevelopment,
   file: {
