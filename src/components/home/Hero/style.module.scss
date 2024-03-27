@@ -39,6 +39,7 @@
     @media screen and (width <= vars.$breakpoint-md) {
       gap: 2rem;
       justify-content: space-between;
+      padding: 0;
     }
 
     .header {
