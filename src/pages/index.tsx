@@ -83,24 +83,29 @@ const PortalHomePage = ({
         event={checkinEvent}
         onClose={() => setCheckinModalVisible(false)}
       />
-      <Hero user={user} points={points} checkin={code => checkin(code)} />
+      <div className={styles.hero}>
+        <Hero user={user} />
+      </div>
 
-      <div className={styles.row}>
-        <div className={styles.desktop}>
-          <HomeActions user={user} points={points} checkin={checkin} />
-        </div>
+      <div className={styles.actions}>
+        <HomeActions user={user} points={points} checkin={checkin} />
+      </div>
+
+      <div className={styles.upcoming}>
         {upcomingEvents.length > 0 ? (
           <EventCarousel title="Upcoming Events" events={upcomingEvents} attendances={attendance} />
         ) : null}
       </div>
 
-      {attendedEvents.length > 0 ? (
-        <EventCarousel
-          title="Recently Attended Events"
-          events={attendedEvents}
-          attendances={attendance}
-        />
-      ) : null}
+      <div className={styles.attended}>
+        {attendedEvents.length > 0 ? (
+          <EventCarousel
+            title="Recently Attended Events"
+            events={attendedEvents}
+            attendances={attendance}
+          />
+        ) : null}
+      </div>
     </div>
   );
 };

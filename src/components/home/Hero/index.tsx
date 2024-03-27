@@ -1,5 +1,4 @@
 import { Typography } from '@/components/common';
-import HomeActions from '@/components/home/HomeActions';
 import { config } from '@/lib';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import Image from 'next/image';
@@ -8,11 +7,9 @@ import styles from './style.module.scss';
 
 interface HeroProps {
   user: PrivateProfile;
-  points: number;
-  checkin: (code: string) => void;
 }
 
-const Hero = ({ user, points, checkin }: HeroProps) => {
+const Hero = ({ user }: HeroProps) => {
   const today = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -45,9 +42,6 @@ const Hero = ({ user, points, checkin }: HeroProps) => {
             </strong>
             !
           </Typography>
-        </div>
-        <div className={styles.mobile}>
-          <HomeActions user={user} points={points} checkin={checkin} />
         </div>
       </div>
     </div>

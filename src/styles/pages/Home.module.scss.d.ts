@@ -1,7 +1,9 @@
 export type Styles = {
-  desktop: string;
+  actions: string;
+  attended: string;
+  hero: string;
   page: string;
-  row: string;
+  upcoming: string;
 };
 
 export type ClassNames = keyof Styles;

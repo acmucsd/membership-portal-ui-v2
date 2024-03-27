@@ -5,7 +5,6 @@ export type Styles = {
   heading: string;
   hero: string;
   image: string;
-  mobile: string;
   subheading: string;
 };
 

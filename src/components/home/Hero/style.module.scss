@@ -14,7 +14,7 @@
   height: 20rem;
   overflow: hidden;
   /* Header height: 4.25 rem, padding: 2 rem */
-  padding: 2rem 3rem;
+  padding: 2rem 3.125rem;
   position: relative;
 
   @media screen and (width <= vars.$breakpoint-md) {
@@ -75,13 +75,5 @@
         display: none;
       }
     }
-  }
-}
-
-.mobile {
-  display: none;
-
-  @media screen and (width <= vars.$breakpoint-md) {
-    display: unset;
   }
 }
