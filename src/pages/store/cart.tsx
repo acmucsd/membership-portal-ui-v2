@@ -1,9 +1,9 @@
 import { Typography } from '@/components/common';
-import EventDetail from '@/components/events/EventDetail';
 import {
   CartItemCard,
   Diamonds,
   Navbar,
+  PickupEventDetail,
   PickupEventPicker,
   StoreConfirmModal,
 } from '@/components/store';
@@ -109,11 +109,11 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
             onCancel={() => setCartState(CartState.PRECHECKOUT)}
           >
             {pickupEvents[pickupIndex] && (
-              <EventDetail
-                event={pickupEvents[pickupIndex] as PublicOrderPickupEvent}
-                attended={false}
-                inModal={false}
-              />
+              <div className={styles.pickupEventDetail}>
+                <PickupEventDetail
+                  pickupEvent={pickupEvents[pickupIndex] as PublicOrderPickupEvent}
+                />
+              </div>
             )}
           </StoreConfirmModal>
         ) : (

@@ -27,6 +27,10 @@
     gap: 2rem;
     padding: 2rem 1rem;
     width: 100%;
+
+    > div {
+      background-color: var(--theme-background);
+    }
   }
 
   .options {
