@@ -115,12 +115,12 @@ export const editEvent = async (data: EditEventRequest & AuthAPIHandlerProps<Pub
 
 export const createPickupEvent = async (
   token: string,
-  event: OrderPickupEvent
+  pickupEvent: OrderPickupEvent
 ): Promise<UUID | null> => {
   try {
-    console.log(event);
-    const { uuid } = await EventAPI.createPickupEvent(token, event);
-    return uuid;
+    console.log(`AdminEventManager ${JSON.stringify(pickupEvent)}`);
+    const { linkedEvent } = await EventAPI.createPickupEvent(token, pickupEvent);
+    return linkedEvent?.uuid ?? null;
   } catch (error) {
     reportError('Could not create pickup event', error);
     return null;

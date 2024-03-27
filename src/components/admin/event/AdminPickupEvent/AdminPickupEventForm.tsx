@@ -26,8 +26,8 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
   const router = useRouter();
   const initialValues: FormValues = {
     title: defaultData.title ?? '',
-    start: defaultData?.start || new Date(),
-    end: defaultData?.end || new Date(),
+    start: defaultData?.start || '',
+    end: defaultData?.end || '',
     description: defaultData.description ?? '',
     orderLimit: 0,
     linkedEventUuid: defaultData.linkedEvent?.uuid ?? '',
@@ -45,12 +45,35 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
 
   const createPickupEvent: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
+
+    const {
+      title,
+      start: isoStart,
+      end: isoEnd,
+      linkedEventUuid,
+      description,
+      orderLimit: rawOrderLimit,
+    } = formData;
+
+    const start = new Date(isoStart).toISOString();
+    const end = new Date(isoEnd).toISOString();
+    const orderLimit = parseInt(`${rawOrderLimit}`, 10);
+
+    console.log(linkedEventUuid);
+
     try {
-      const uuid = await AdminEventManager.createPickupEvent(token, formData);
+      const uuid = await AdminEventManager.createPickupEvent(token, {
+        title,
+        start,
+        end,
+        description,
+        orderLimit,
+        linkedEventUuid,
+      });
       showToast('Pickup Event created successfully!', '', [
         {
           text: 'Continue editing',
-          onClick: () => router.push(`${config.admin.pickup}/${uuid}`),
+          onClick: () => router.push(`${config.admin.store.pickup}/${uuid}`),
         },
       ]);
       // router.replace(`${config.eventsRoute}/${uuid}`);
@@ -92,7 +115,6 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
   // };
 
   const defaultFormText = loading ? 'Loading events from API...' : 'Select an Event';
-  const [activeOption, setActiveOption] = useState<string | undefined>(undefined);
 
   return (
     <form onSubmit={handleSubmit(mode === 'edit' ? editPickupEvent : createPickupEvent)}>
@@ -152,15 +174,26 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
           />
         </DetailsFormItem>
 
-        <label htmlFor="OrderLimit">Linked Event</label>
+        <label htmlFor="points">Order Limit</label>
         <DetailsFormItem error={errors.orderLimit?.message}>
+          <input
+            type="number"
+            id="orderLimit"
+            {...register('orderLimit', {
+              required: 'Required',
+            })}
+          />
+        </DetailsFormItem>
+
+        <label htmlFor="LinkedEvent">Linked Event</label>
+        <DetailsFormItem error={errors.linkedEventUuid?.message}>
           <select
-            name=""
             id=""
             placeholder={defaultFormText}
-            onChange={e => setActiveOption(e.target.value)}
-            value={activeOption}
             defaultValue={defaultFormText}
+            {...register('linkedEventUuid', {
+              required: 'Required',
+            })}
           >
             <option disabled>{defaultFormText}</option>
 

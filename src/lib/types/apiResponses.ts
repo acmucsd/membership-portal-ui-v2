@@ -452,8 +452,8 @@ export interface DeleteSocialMediaResponse extends ApiResponse {}
 export interface PublicOrderPickupEvent {
   uuid: UUID;
   title: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   description: string;
   orders?: PublicOrderWithItems[];
   orderLimit?: number;
