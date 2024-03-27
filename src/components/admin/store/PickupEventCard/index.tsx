@@ -1,5 +1,4 @@
-import { Typography } from '@/components/common';
-import { Variant } from '@/components/common/Typography';
+import { Typography, type Variant } from '@/components/common';
 import { config } from '@/lib';
 import { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
 import { OrderPickupEventStatus } from '@/lib/types/enums';

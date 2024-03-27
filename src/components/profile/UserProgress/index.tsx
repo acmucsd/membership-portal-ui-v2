@@ -1,5 +1,4 @@
-import { Typography } from '@/components/common';
-import { Variant } from '@/components/common/Typography';
+import { Typography, type Variant } from '@/components/common';
 import { type PublicProfile } from '@/lib/types/apiResponses';
 import { getLevel, getUserRank } from '@/lib/utils';
 import { useEffect, useState } from 'react';
@@ -22,7 +21,7 @@ export const UserProgress = ({
 }: UserProgressProps) => {
   const { firstName } = user;
   // animate the progress bar
-  const [progress, setProgress] = useState<Number>(0);
+  const [progress, setProgress] = useState<number>(0);
   useEffect(() => setProgress(points % 100), [points]);
   const currentRank = getUserRank(points);
   const nextLevelRank = getUserRank(points + 100);

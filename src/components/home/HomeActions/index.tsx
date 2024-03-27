@@ -18,6 +18,7 @@ const HomeActions = ({ user, points, checkin }: HomeActionsProps) => {
     e.preventDefault();
     if (checkinCode !== '') {
       checkin(checkinCode);
+      setCheckinCode('');
     }
   };
 

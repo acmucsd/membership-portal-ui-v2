@@ -10,4 +10,5 @@ export { default as Modal } from './Modal';
 export { default as PaginationControls } from './PaginationControls';
 export { default as SEO } from './SEO';
 export { default as Typography } from './Typography';
+export type { Variant } from './Typography';
 export { default as VerticalForm } from './VerticalForm';
