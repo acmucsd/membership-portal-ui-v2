@@ -84,8 +84,26 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
 
   const editPickupEvent: SubmitHandler<FormValues> = async formData => {
     setLoading(true);
+
+    const {
+      title,
+      start: isoStart,
+      end: isoEnd,
+      linkedEventUuid,
+      description,
+      orderLimit: rawOrderLimit,
+    } = formData;
+
+    const start = new Date(isoStart).toISOString();
+    const end = new Date(isoEnd).toISOString();
+    const orderLimit = parseInt(`${rawOrderLimit}`, 10);
+
     try {
-      const uuid = await AdminEventManager.createPickupEvent(token, formData);
+      const uuid = await AdminEventManager.editPickupEvent({
+        pickupEvent: { title, start, end, description, orderLimit, linkedEventUuid },
+        uuid: defaultData.uuid ?? '',
+        token: token,
+      });
       showToast('Event details saved!', '', [
         {
           text: 'View pickup event page',
@@ -99,18 +117,18 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     }
   };
 
-  // const deletePickupEvent = async () => {
-  //   setLoading(true);
+  const deletePickupEvent = async () => {
+    setLoading(true);
 
-  //   try {
-  //     await AdminEventManager.deletePickupEvent(token, defaultData.uuid ?? '');
-  //     showToast('Pickup event deleted successfully');
-  //     router.replace(config.store.homeRoute);
-  //   } catch (error) {
-  //     reportError('Could not delete collection', error);
-  //     setLoading(false);
-  //   }
-  // };
+    try {
+      await AdminEventManager.deletePickupEvent(token, defaultData.uuid ?? '');
+      showToast('Pickup event deleted successfully');
+      router.replace(config.store.homeRoute);
+    } catch (error) {
+      reportError('Could not delete collection', error);
+      setLoading(false);
+    }
+  };
 
   const defaultFormText = loading ? 'Loading events from API...' : 'Select an Event';
 
@@ -212,9 +230,9 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
             <Button onClick={resetForm} disabled={loading} destructive>
               Discard changes
             </Button>
-            {/* <Button onClick={deletePickupEvent} disabled={loading} destructive> //TODO later
+            <Button onClick={deletePickupEvent} disabled={loading} destructive>
               Delete pickup event
-            </Button> */}
+            </Button>
           </>
         ) : (
           <>

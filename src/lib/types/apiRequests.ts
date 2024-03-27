@@ -353,6 +353,10 @@ export interface OrderPickupEvent {
   linkedEventUuid?: UUID;
 }
 
+export interface DeletePickupEventRequest {
+  event: UUID;
+}
+
 export interface OrderPickupEventEdit extends Partial<OrderPickupEvent> {}
 
 export interface CreateOrderPickupEventRequest {

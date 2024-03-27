@@ -6,7 +6,6 @@ import {
   ActivityType,
   FeedbackStatus,
   FeedbackType,
-  OrderPickupEventStatus,
   OrderStatus,
   SocialMediaType,
   UserAccessType,
@@ -455,10 +454,7 @@ export interface PublicOrderPickupEvent {
   start: string;
   end: string;
   description: string;
-  orders?: PublicOrderWithItems[];
   orderLimit?: number;
-  status: OrderPickupEventStatus;
-  linkedEvent?: PublicEvent;
 }
 
 export interface PublicOrderPickupEventWithLinkedEvent extends PublicOrderPickupEvent {

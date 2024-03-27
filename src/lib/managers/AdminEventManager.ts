@@ -5,6 +5,7 @@ import {
   CreateDiscordEventRequest,
   CreateEventRequest,
   DeleteEventRequest,
+  DeletePickupEventRequest,
   Event,
   GenerateACMURLRequest,
   OrderPickupEvent,
@@ -118,8 +119,8 @@ export const createPickupEvent = async (
   pickupEvent: OrderPickupEvent
 ): Promise<UUID | null> => {
   try {
-    const { linkedEvent } = await EventAPI.createPickupEvent(token, pickupEvent);
-    return linkedEvent?.uuid ?? null;
+    const { uuid } = await EventAPI.createPickupEvent(token, pickupEvent);
+    return uuid ?? null;
   } catch (error) {
     reportError('Could not create pickup event', error);
     return null;
@@ -127,7 +128,7 @@ export const createPickupEvent = async (
 };
 
 interface EditPickupEventRequest {
-  event: Partial<OrderPickupEvent>;
+  pickupEvent: Partial<OrderPickupEvent>;
   cover?: File;
   uuid: UUID;
 }
@@ -135,14 +136,14 @@ interface EditPickupEventRequest {
 export const editPickupEvent = async (
   data: EditPickupEventRequest & AuthAPIHandlerProps<PublicOrderPickupEvent>
 ) => {
-  const { onSuccessCallback, onFailCallback, token, event, uuid } = data;
+  const { onSuccessCallback, onFailCallback, pickupEvent, uuid, token } = data;
   if (data.cover && data.cover.size > config.file.MAX_EVENT_COVER_SIZE_KB * 1024) {
     onFailCallback?.(new Error('Cover size too large'));
     return;
   }
 
   try {
-    const modifiedEvent = await EventAPI.editPickupEvent(token, uuid, event);
+    const modifiedEvent = await EventAPI.editPickupEvent(token, uuid, pickupEvent);
     if (data.cover) {
       // There's some weird behavior that happens when we editEvent after uploading a new
       // event image, so I've kept the API calls in the same order as createNewEvent
@@ -150,6 +151,20 @@ export const editPickupEvent = async (
     }
 
     onSuccessCallback?.(modifiedEvent);
+  } catch (e) {
+    onFailCallback?.(e);
+  }
+};
+
+export const deletePickupEvent = async (
+  data: DeletePickupEventRequest & AuthAPIHandlerProps<void>
+) => {
+  const { onSuccessCallback, onFailCallback, token, event } = data;
+
+  try {
+    await EventAPI.deleteEvent(token, event);
+
+    onSuccessCallback?.();
   } catch (e) {
     onFailCallback?.(e);
   }
