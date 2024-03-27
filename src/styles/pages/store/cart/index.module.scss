@@ -184,5 +184,11 @@
 }
 
 .pickupEventDetail {
+  max-width: 80rem;
   padding: 0 1rem;
+  width: 80vw;
+
+  @media screen and (width <= vars.$breakpoint-md) {
+    width: 100vw;
+  }
 }
