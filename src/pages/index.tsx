@@ -89,18 +89,20 @@ const PortalHomePage = ({
         <div className={styles.desktop}>
           <HomeActions user={user} points={points} checkin={checkin} />
         </div>
-        {upcomingEvents.length > 0 ? (
-          <EventCarousel title="Upcoming Events" events={upcomingEvents} attendances={attendance} />
-        ) : null}
+        <EventCarousel
+          title="Upcoming Events"
+          events={upcomingEvents}
+          attendances={attendance}
+          placeholder="Check back soon for upcoming events!"
+        />
       </div>
 
-      {attendedEvents.length > 0 ? (
-        <EventCarousel
-          title="Recently Attended Events"
-          events={attendedEvents}
-          attendances={attendance}
-        />
-      ) : null}
+      <EventCarousel
+        title="Recently Attended Events"
+        events={attendedEvents}
+        attendances={attendance}
+        placeholder="Attend your first event and earn membership points!"
+      />
     </div>
   );
 };
