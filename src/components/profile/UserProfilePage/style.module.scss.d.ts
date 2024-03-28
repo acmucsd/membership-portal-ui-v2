@@ -9,17 +9,10 @@ export type Styles = {
   editWrapper: string;
   handle: string;
   icon: string;
-  inner: string;
-  levelProgress: string;
-  levelText: string;
   points: string;
   profileCard: string;
   profilePage: string;
   profilePic: string;
-  progressBar: string;
-  progressInfo: string;
-  progressSection: string;
-  progressText: string;
   section: string;
   sectionHeader: string;
   socialIcons: string;

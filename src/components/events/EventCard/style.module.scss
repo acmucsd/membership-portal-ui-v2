@@ -1,7 +1,7 @@
 @use 'src/styles/vars.scss' as vars;
 
 .container {
-  background: transparent;
+  background: var(--theme-background);
   border-radius: 10px;
   height: fit-content;
   -ms-overflow-style: none;

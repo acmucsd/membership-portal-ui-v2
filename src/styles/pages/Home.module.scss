@@ -1,7 +1,21 @@
+@use 'src/styles/vars.scss' as vars;
+
 .page {
   display: flex;
   flex-direction: column;
   gap: 3rem;
   margin: auto;
   max-width: 1920px;
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    gap: 3.125rem;
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      .desktop {
+        display: none;
+      }
+    }
+  }
 }

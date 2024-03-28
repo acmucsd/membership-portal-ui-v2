@@ -7,18 +7,16 @@ import styles from './style.module.scss';
 
 interface EventCarouselProps {
   title: string;
-  description: string;
   events: PublicEvent[];
   attendances: PublicAttendance[];
 }
 
-const EventCarousel = ({ title, description, events, attendances }: EventCarouselProps) => {
+const EventCarousel = ({ title, events, attendances }: EventCarouselProps) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <div className={styles.headerText}>
-          <Typography variant="headline/heavy/small">{title}</Typography>
-          <Typography variant="body/medium">{description}</Typography>
+          <Typography variant="h2/bold">{title}</Typography>
         </div>
         <Link className={styles.viewToggle} href={config.eventsRoute}>
           See all events &gt;

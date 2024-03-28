@@ -1,12 +1,11 @@
 export type Styles = {
-  content: string;
-  desktopOnly: string;
-  header: string;
-  heading: string;
-  hero: string;
-  image: string;
-  mobile: string;
+  actions: string;
+  checkin: string;
+  checkinButtons: string;
+  checkinInput: string;
   subheading: string;
+  submit: string;
+  userProgress: string;
 };
 
 export type ClassNames = keyof Styles;
