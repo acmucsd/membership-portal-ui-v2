@@ -30,6 +30,10 @@
       font: inherit;
       padding: 0;
 
+      @media screen and (width <= vars.$breakpoint-md) {
+        display: none;
+      }
+
       &:hover {
         text-decoration: underline;
       }
@@ -38,7 +42,9 @@
 
   .card {
     flex: none;
-    max-width: 20rem;
+    // (2 rem (content) + 1.5rem (carousel)) * 2 (on both sides) + 2 rem (gap) = 9 rem
+    // We then add 1 more rem so we can see the start of the next card.
+    width: min(100vw - 10rem, 20rem);
   }
 
   .noEvents {
