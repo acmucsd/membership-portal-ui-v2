@@ -1,15 +1,17 @@
 import { config } from '@/lib';
 import { FillInLater, UUID } from '@/lib/types';
-import { AttendEventRequest, Event } from '@/lib/types/apiRequests';
+import { AttendEventRequest, Event, OrderPickupEvent } from '@/lib/types/apiRequests';
 import {
   AttendEventResponse,
   CreateEventResponse,
+  CreatePickupEventResponse,
   GetAllEventsResponse,
   GetFutureEventsResponse,
   GetOneEventResponse,
   GetPastEventsResponse,
   PatchEventResponse,
   PublicEvent,
+  PublicOrderPickupEvent,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
 
@@ -121,6 +123,52 @@ export const editEvent = async (
 
 export const deleteEvent = async (token: string, event: UUID): Promise<void> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.event.event}/${event}`;
+
+  await axios.delete(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const createPickupEvent = async (
+  token: string,
+  pickupEvent: Partial<OrderPickupEvent>
+): Promise<PublicOrderPickupEvent> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}`;
+
+  const requestBody = { pickupEvent };
+
+  const response = await axios.post<CreatePickupEventResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.pickupEvent;
+};
+
+export const editPickupEvent = async (
+  token: string,
+  uuid: UUID,
+  pickupEvent: Partial<OrderPickupEvent>
+): Promise<PublicOrderPickupEvent> => {
+  // PublicOrderPickupEvent part of apiResponses
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.update}/${uuid}`;
+
+  const requestBody = { pickupEvent };
+
+  const response = await axios.post<CreatePickupEventResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.pickupEvent;
+};
+
+export const deletePickupEvent = async (token: string, linkedEventUuid: UUID): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${linkedEventUuid}`;
 
   await axios.delete(requestUrl, {
     headers: {

@@ -50,7 +50,8 @@ const config = {
         pickup: {
           future: '/merch/order/pickup/future',
           past: '/merch/order/pickup/past',
-          single: '/merch/order/pickup',
+          single: '/merch/order/pickup', // Create & update endpoint
+          cleanup: '/merch/order/cleanup',
         },
       },
     },

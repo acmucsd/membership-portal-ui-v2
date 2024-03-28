@@ -6,7 +6,6 @@ import {
   ActivityType,
   FeedbackStatus,
   FeedbackType,
-  OrderPickupEventStatus,
   OrderStatus,
   SocialMediaType,
   UserAccessType,
@@ -162,6 +161,14 @@ export interface GetAllEventsResponse extends ApiResponse {
 
 export interface CreateEventResponse extends ApiResponse {
   event: PublicEvent;
+}
+
+export interface CreatePickupEventResponse extends ApiResponse {
+  pickupEvent: PublicOrderPickupEvent;
+}
+
+export interface PatchPickupEventResponse extends ApiResponse {
+  event: PublicOrderPickupEvent;
 }
 
 // LEADERBOARD
@@ -444,13 +451,10 @@ export interface DeleteSocialMediaResponse extends ApiResponse {}
 export interface PublicOrderPickupEvent {
   uuid: UUID;
   title: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   description: string;
-  orders?: PublicOrderWithItems[];
   orderLimit?: number;
-  status: OrderPickupEventStatus;
-  linkedEvent?: PublicEvent;
 }
 
 export interface PublicOrderPickupEventWithLinkedEvent extends PublicOrderPickupEvent {
