@@ -38,6 +38,22 @@
 
   .card {
     flex: none;
-    width: 20rem;
+    max-width: 20rem;
+  }
+
+  .noEvents {
+    align-items: center;
+    background-color: var(--theme-background);
+    border: 1px solid var(--theme-elevated-stroke);
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1rem 0;
+    overflow: hidden;
+    padding: 2rem 1rem;
+    text-align: center;
   }
 }

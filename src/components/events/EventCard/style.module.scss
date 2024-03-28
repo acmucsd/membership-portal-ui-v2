@@ -60,6 +60,13 @@
         font-weight: 500;
         padding: 2px 5px;
 
+        &.badgeLive {
+          background-color: vars.$danger-1;
+          border-color: vars.$danger-1;
+          color: #fff;
+          font-weight: 700;
+        }
+
         &.badgeGeneral {
           background-color: vars.$blue-3;
           border-color: vars.$blue-5;
