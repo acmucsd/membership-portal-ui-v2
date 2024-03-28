@@ -1,9 +1,9 @@
 import { Button, Dropdown, Modal, Typography } from '@/components/common';
+import PickupEventDetail from '@/components/store/PickupEventDetail';
 import { showToast } from '@/lib';
 import { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
-import { formatEventDate, getDefaultEventCover, reportError } from '@/lib/utils';
+import { formatEventDate, reportError } from '@/lib/utils';
 import CloseIcon from '@/public/assets/icons/close-icon.svg';
-import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './style.module.scss';
 
@@ -12,7 +12,7 @@ interface PickupEventPreviewModalProps {
   onClose: () => void;
   // The original pickup event connected to the order.
   pickupEvent: PublicOrderPickupEvent;
-  reschedulePickupEvent: (pickup: PublicOrderPickupEvent) => Promise<void>;
+  reschedulePickupEvent?: (pickup: PublicOrderPickupEvent) => Promise<void>;
   futurePickupEvents: PublicOrderPickupEvent[];
   reschedulable?: boolean;
 }
@@ -38,13 +38,9 @@ const PickupEventPreviewModal = ({
   // Stores if the pickup event has been changed from the original.
   const pickupModified = pickupEvent.uuid !== rescheduledPickupUUID;
 
-  const { linkedEvent, title, start, end, description } = rescheduledPickupEvent;
-  const hasLinkedEvent = linkedEvent !== null;
-  const pickupEventCover = getDefaultEventCover(linkedEvent?.cover);
-
   const rescheduleOrderPickup = async (pickup: string) => {
     const pickupEvent = pickupEventsByUUID.get(pickup);
-    if (pickupEvent) {
+    if (pickupEvent && reschedulePickupEvent) {
       reschedulePickupEvent(pickupEvent)
         .then(() => showToast('Order pickup rescheduled!', pickupEvent.title))
         .catch(e => reportError("Couldn't reschedule pickup", e))
@@ -72,30 +68,7 @@ const PickupEventPreviewModal = ({
           </button>
         </div>
         <div className={styles.contents}>
-          <div className={styles.pickupEvent}>
-            <div className={styles.image}>
-              <Image
-                src={pickupEventCover}
-                alt="Pickup Event Cover Image"
-                style={{ objectFit: 'cover' }}
-                fill
-              />
-            </div>
-            <div className={styles.details}>
-              <div className={styles.eventInfo}>
-                <Typography variant="h2/bold" className={styles.title}>
-                  {title}
-                </Typography>
-                <Typography variant="h2/regular" className={styles.title}>
-                  {formatEventDate(start, end)}
-                </Typography>
-                {hasLinkedEvent ? (
-                  <Typography variant="h3/regular">{linkedEvent?.location}</Typography>
-                ) : null}
-              </div>
-              <Typography variant="body/medium">{description}</Typography>
-            </div>
-          </div>
+          <PickupEventDetail pickupEvent={rescheduledPickupEvent} />
 
           {reschedulable ? (
             <div className={styles.reschedule}>

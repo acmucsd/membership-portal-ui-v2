@@ -1,7 +1,7 @@
 @use 'src/styles/vars.scss' as vars;
 
 .itemCard {
-  background-color: var(--theme-background);
+  background-color: var(--theme-elevated-background);
   border: 1px solid var(--theme-shadow);
   border-radius: 0.5rem;
   box-shadow: 0 4px 4px var(--theme-shadow);

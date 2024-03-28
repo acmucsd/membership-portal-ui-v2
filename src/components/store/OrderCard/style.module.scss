@@ -1,12 +1,12 @@
 @use 'src/styles/vars.scss' as vars;
 
 .card {
+  border: 1px solid var(--theme-elevated-stroke);
   border-radius: 0.5rem;
-  box-shadow: 0 4px 4px 0 var(--theme-accent-line-2-transparent);
 
   .container {
     align-items: center;
-    background-color: var(--theme-surface-1);
+    background-color: var(--theme-elevated-background);
     border-radius: 0.5rem;
     display: flex;
     flex-wrap: wrap;
@@ -29,6 +29,7 @@
     }
 
     &.focused {
+      border-bottom: 1px solid var(--theme-elevated-stroke);
       border-radius: 0.5rem 0.5rem 0 0;
     }
   }

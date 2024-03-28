@@ -3,19 +3,20 @@
 .cartItem {
   --desktop-image-size: 150px;
   --mobile-image-size: 100px;
+  background-color: var(--theme-elevated-background);
   display: grid;
   gap: 1.5rem;
-  grid-template-areas: 
-    "left right"
-    "left remove";
+  grid-template-areas:
+    'left right'
+    'left remove';
   grid-template-columns: var(--desktop-image-size) 1fr;
   padding: 0.75rem 1rem;
   position: relative;
 
   @media (max-width: vars.$breakpoint-md) {
-    grid-template-areas: 
-    "left right"
-    "remove right";
+    grid-template-areas:
+      'left right'
+      'remove right';
     grid-template-columns: var(--mobile-image-size) 1fr;
   }
 
@@ -31,14 +32,14 @@
       height: var(--desktop-image-size);
       position: relative;
       width: var(--desktop-image-size);
-  
+
       @media (max-width: vars.$breakpoint-md) {
         height: var(--mobile-image-size);
         width: var(--mobile-image-size);
       }
     }
   }
-  
+
   .rightCol {
     display: flex;
     flex: 1;
@@ -52,21 +53,21 @@
       flex-direction: column;
       flex-grow: 1;
       gap: 0.5rem;
-  
+
       .title {
         align-items: baseline;
         display: flex;
         gap: 1rem;
         justify-content: space-between;
-  
+
         @media (max-width: vars.$breakpoint-md) {
           flex-direction: column;
         }
-  
+
         h3:hover {
           text-decoration: underline;
         }
-  
+
         .price {
           justify-self: flex-end;
           white-space: nowrap;
@@ -82,7 +83,7 @@
     grid-area: remove;
     padding: 0;
     width: fit-content;
-    
+
     @media (max-width: vars.$breakpoint-md) {
       margin: auto;
     }

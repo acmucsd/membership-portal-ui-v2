@@ -8,6 +8,7 @@ export type Styles = {
   eventPicker: string;
   header: string;
   items: string;
+  pickupEventDetail: string;
   placeOrder: string;
   points: string;
   pointsCard: string;

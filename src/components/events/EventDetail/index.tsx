@@ -12,11 +12,9 @@ import styles from './style.module.scss';
 interface EventDetailProps {
   event: PublicEvent | PublicOrderPickupEvent;
   attended: boolean;
-  /** controls whether a close button is shown */
-  inModal?: boolean;
 }
 
-const EventDetail = ({ event, attended, inModal = true }: EventDetailProps) => {
+const EventDetail = ({ event, attended }: EventDetailProps) => {
   const { cover, title, start, end, location, committee, pointValue, eventLink, description } =
     isOrderPickupEvent(event)
       ? {
@@ -34,11 +32,9 @@ const EventDetail = ({ event, attended, inModal = true }: EventDetailProps) => {
   return (
     <>
       <div className={styles.image}>
-        {inModal && (
-          <button type="submit" aria-label="Close" className={styles.close}>
-            <CloseIcon aria-hidden className={styles.closeIcon} />
-          </button>
-        )}
+        <button type="submit" aria-label="Close" className={styles.close}>
+          <CloseIcon aria-hidden className={styles.closeIcon} />
+        </button>
         {pointValue && <PointsDisplay points={pointValue} attended={attended} />}
         <Image src={displayCover} alt="Event Cover Image" style={{ objectFit: 'cover' }} fill />
       </div>
