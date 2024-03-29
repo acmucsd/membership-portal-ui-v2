@@ -104,7 +104,9 @@ const PortalHomePage = ({
       </div>
 
       <div className={styles.content}>
-        <Typography variant="h5/regular">{today}</Typography>
+        <Typography variant="h5/regular" className={styles.date}>
+          {today}
+        </Typography>
         <Typography variant="display/light/small" className={styles.heading} component="span">
           {'Welcome to ACM, '}
           <strong>

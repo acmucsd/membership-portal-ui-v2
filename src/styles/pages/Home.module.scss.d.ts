@@ -5,6 +5,9 @@ export type Styles = {
   checkinButtons: string;
   checkinInput: string;
   content: string;
+  date: string;
+  fadeIn: string;
+  gradientIn: string;
   heading: string;
   hero: string;
   image: string;

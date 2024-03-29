@@ -112,6 +112,7 @@
   }
 
   .content {
+    align-items: flex-start;
     animation: card-appear $card-appear-duration;
     display: flex;
     flex-direction: column;
@@ -125,7 +126,55 @@
       padding: 0;
     }
 
+    .date {
+      animation: fade-in 0.5s 1s backwards;
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+    }
+
     .heading {
+      animation: gradient-in 2s 0.5s backwards;
+      background-clip: text;
+      background-image: linear-gradient(
+        -90deg,
+        transparent 0%,
+        #e981a0 20%,
+        #f9a857 30%,
+        #80ce1c 40%,
+        #51c0c0 50%,
+        #62b0ff 60%,
+        #816dff 70%,
+        var(--theme-text-on-background-1) 80%,
+        var(--theme-text-on-background-1) 100%
+      );
+      background-position: left;
+      background-repeat: no-repeat;
+      background-size: 500%;
+      color: transparent;
+
+      @keyframes gradient-in {
+        from {
+          background-position: 125%;
+        }
+
+        to {
+          background-position: left;
+        }
+      }
+
+      strong,
+      a {
+        color: transparent;
+      }
+
       @media screen and (width <= vars.$breakpoint-md) {
         font-size: 2rem !important;
         line-height: 2.5rem !important;
