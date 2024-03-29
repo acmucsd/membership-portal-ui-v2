@@ -91,6 +91,7 @@ const PortalHomePage = ({
         </div>
         <EventCarousel
           title="Upcoming Events"
+          titleClassName={styles.subheading}
           events={upcomingEvents}
           attendances={attendance}
           placeholder="Check back soon for upcoming events!"
@@ -99,6 +100,7 @@ const PortalHomePage = ({
 
       <EventCarousel
         title="Recently Attended Events"
+        titleClassName={styles.subheading}
         events={attendedEvents}
         attendances={attendance}
         placeholder="Attend your first event and earn membership points!"

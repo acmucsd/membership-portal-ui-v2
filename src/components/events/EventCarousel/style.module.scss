@@ -30,10 +30,6 @@
       font: inherit;
       padding: 0;
 
-      @media screen and (width <= vars.$breakpoint-md) {
-        display: none;
-      }
-
       &:hover {
         text-decoration: underline;
       }
