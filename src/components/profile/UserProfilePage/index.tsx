@@ -1,5 +1,5 @@
-import { Carousel, GifSafeImage, Typography } from '@/components/common';
-import { EventCard } from '@/components/events';
+import { GifSafeImage, Typography } from '@/components/common';
+import { EventCarousel } from '@/components/events';
 import SocialMediaIcon from '@/components/profile/SocialMediaIcon';
 import { UserProgress } from '@/components/profile/UserProgress';
 import { config, showToast } from '@/lib';
@@ -123,26 +123,26 @@ export const UserProfilePage = ({
         </div>
       </div>
       {recentAttendances || isSignedInUser ? (
-        <div className={styles.section}>
-          <Typography variant="h2/bold" className={styles.sectionHeader}>
-            Recently Attended Events
-            {!handleUser.isAttendancePublic ? (
-              <Typography variant="h5/regular" component="span">
-                &nbsp;<i>(hidden for other users)</i>
-              </Typography>
-            ) : null}
-          </Typography>
-          <Carousel>
-            {recentAttendances.map(({ event }) => (
-              <EventCard
-                className={styles.card}
-                key={event.uuid}
-                event={event}
-                attended={signedInAttendances.some(({ event: { uuid } }) => uuid === event.uuid)}
-              />
-            ))}
-          </Carousel>
-        </div>
+        <EventCarousel
+          title={
+            handleUser.isAttendancePublic ? (
+              'Recently Attended Events'
+            ) : (
+              <>
+                Recently Attended Events
+                <Typography variant="h5/regular" component="span">
+                  &nbsp;<i>(hidden for other users)</i>
+                </Typography>
+              </>
+            )
+          }
+          titleClassName={styles.sectionHeader}
+          events={recentAttendances.map(({ event }) => event)}
+          attendances={signedInAttendances}
+          placeholder={`${
+            isSignedInUser ? "You haven't" : `${handleUser.firstName} hasn't`
+          } attended any events yet :(`}
+        />
       ) : null}
     </div>
   );

@@ -443,19 +443,21 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   <Switch
                     checked={isResumeVisible}
                     onCheck={checked => {
-                      resumes.forEach(async resume => {
-                        try {
+                      Promise.all(
+                        resumes.map(async resume => {
                           const { isResumeVisible } = await ResumeAPI.uploadResumeVisibility(
                             authToken,
                             resume.uuid,
                             checked
                           );
-                          setIsResumeVisible(isResumeVisible);
+                          return isResumeVisible;
+                        })
+                      )
+                        .then(() => {
+                          setIsResumeVisible(visible => !visible);
                           showToast('Resume visibility preference saved!');
-                        } catch (error) {
-                          reportError('Failed to update resume visibility', error);
-                        }
-                      });
+                        })
+                        .catch(error => reportError('Failed to update resume visibility', error));
                     }}
                   >
                     Share my resume with recruiters from ACM sponsor companies

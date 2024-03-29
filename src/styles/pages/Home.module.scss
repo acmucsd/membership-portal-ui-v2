@@ -19,3 +19,10 @@
     }
   }
 }
+
+@media screen and (width <= vars.$breakpoint-md) {
+  .subheading {
+    font-size: 1.5rem !important;
+    line-height: 2.25rem !important;
+  }
+}
