@@ -37,6 +37,7 @@ const config = {
         attendance: '/attendance',
         forUserByUUID: '/attendance/user',
       },
+      feedback: '/feedback',
       leaderboard: '/leaderboard',
       store: {
         collection: '/merch/collection',
