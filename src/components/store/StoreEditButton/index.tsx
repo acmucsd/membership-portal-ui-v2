@@ -7,13 +7,12 @@ interface StoreEditButtonProps {
 }
 
 const StoreEditButton = ({ type, uuid }: StoreEditButtonProps) => {
-  const label = `Edit ${type}`;
   return (
     <EditButton
       href={`${
         type === 'collection' ? config.store.collectionRoute : config.store.itemRoute
       }${uuid}/edit`}
-      label={label}
+      label={`Edit ${type}`}
     />
   );
 };

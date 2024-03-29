@@ -3,7 +3,7 @@ import { config } from '@/lib';
 import { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import DiamondFriends from '@/public/assets/graphics/portal/diamond-friends.svg';
 import Link from 'next/link';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import EventCard from '../EventCard';
 import styles from './style.module.scss';
 
