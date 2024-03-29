@@ -112,16 +112,14 @@ const PortalHomePage = ({
       </div>
 
       <div className={styles.content}>
-        <div className={styles.header}>
-          <Typography variant="h5/regular">{today}</Typography>
-          <Typography variant="display/light/small" className={styles.heading} component="span">
-            {'Welcome to ACM, '}
-            <strong>
-              <Link href={config.profileRoute}>{user.firstName}</Link>
-            </strong>
-            !
-          </Typography>
-        </div>
+        <Typography variant="h5/regular">{today}</Typography>
+        <Typography variant="display/light/small" className={styles.heading} component="span">
+          {'Welcome to ACM, '}
+          <strong>
+            <Link href={config.profileRoute}>{user.firstName}</Link>
+          </strong>
+          !
+        </Typography>
       </div>
 
       <form
