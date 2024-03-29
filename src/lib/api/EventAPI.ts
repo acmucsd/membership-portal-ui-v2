@@ -154,7 +154,6 @@ export const editPickupEvent = async (
   uuid: UUID,
   pickupEvent: Partial<OrderPickupEvent>
 ): Promise<PublicOrderPickupEvent> => {
-  // PublicOrderPickupEvent part of apiResponses
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${uuid}`;
 
   const requestBody = { pickupEvent };
@@ -168,8 +167,8 @@ export const editPickupEvent = async (
   return response.data.pickupEvent;
 };
 
-export const deletePickupEvent = async (token: string, linkedEventUuid: UUID): Promise<void> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${linkedEventUuid}`;
+export const deletePickupEvent = async (token: string, pickupEvent: UUID): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${pickupEvent}`;
 
   await axios.delete(requestUrl, {
     headers: {

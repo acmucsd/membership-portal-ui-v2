@@ -50,7 +50,7 @@ const config = {
         pickup: {
           future: '/merch/order/pickup/future',
           past: '/merch/order/pickup/past',
-          single: '/merch/order/pickup', // Create, update & delete endpoint
+          single: '/merch/order/pickup',
           cleanup: '/merch/order/cleanup',
         },
       },
@@ -106,6 +106,8 @@ const config = {
     store: {
       items: '/admin/store/items',
       pickup: '/admin/store/pickup',
+      pickupCreate: '/admin/store/pickup/create',
+      pickupEdit: '/admin/store/pickup/edit',
       homeRoute: '/admin/store',
     },
     events: {

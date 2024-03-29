@@ -23,8 +23,6 @@ const EditPickupEventPage = ({
   futureEvents,
   pickupEvent,
 }: EditPickupEventProps) => {
-  // console.log(`Edit ${JSON.stringify(pickupEvent, null, 4)}`);
-
   return (
     <div className={styles.container}>
       <Navbar balance={credits} showBack />

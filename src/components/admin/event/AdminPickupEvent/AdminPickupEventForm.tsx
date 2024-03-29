@@ -72,10 +72,10 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       showToast('Pickup Event created successfully!', '', [
         {
           text: 'Continue editing',
-          onClick: () => router.push(`${config.admin.store.pickup}/${uuid}`),
+          onClick: () => router.push(`${config.admin.store.pickupEdit}/${uuid}`),
         },
       ]);
-      // router.replace(`${config.eventsRoute}/${uuid}`);
+      router.push(`${config.admin.store.pickup}/${uuid}`);
     } catch (error) {
       reportError('Could not create pickup event', error);
     } finally {
@@ -110,11 +110,9 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
           showToast('Pickup Event Edit Successfully!', '', [
             {
               text: 'View Live Pickup Event Page',
-              onClick: () =>
-                router.push(`https://acmucsd.com/${config.admin.store.pickup}/${event.uuid}`),
+              onClick: () => router.push(`${config.admin.store.pickup}/${event.uuid}`),
             },
           ]);
-          // router.push(config.admin.events.homeRoute);
         },
         onFailCallback: error => {
           setLoading(false);
@@ -160,8 +158,11 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
         <h1>{mode === 'edit' ? 'Modify' : 'Create'} Pickup Event</h1>
 
         {defaultData.uuid ? (
-          <Link className={style.viewPage} href={`${config.eventsRoute}/${defaultData.uuid}`}>
-            View event page
+          <Link
+            className={style.viewPage}
+            href={`${config.admin.store.pickup}/${defaultData.uuid}`}
+          >
+            View pickup event page
             <BsArrowRight aria-hidden />
           </Link>
         ) : null}

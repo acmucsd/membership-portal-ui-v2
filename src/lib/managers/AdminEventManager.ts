@@ -16,7 +16,6 @@ import type {
   PublicEvent,
   PublicOrderPickupEvent,
 } from '@/lib/types/apiResponses';
-import { reportError } from '@/lib/utils';
 
 interface GetEventFromNotion {
   pageUrl: URL;
@@ -118,13 +117,8 @@ export const createPickupEvent = async (
   token: string,
   pickupEvent: OrderPickupEvent
 ): Promise<UUID | null> => {
-  try {
-    const { uuid } = await EventAPI.createPickupEvent(token, pickupEvent);
-    return uuid;
-  } catch (error) {
-    reportError('Could not create pickup event', error);
-    return null;
-  }
+  const { uuid } = await EventAPI.createPickupEvent(token, pickupEvent);
+  return uuid;
 };
 
 interface EditPickupEventRequest {
