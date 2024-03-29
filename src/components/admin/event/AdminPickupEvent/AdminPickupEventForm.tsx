@@ -30,7 +30,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     start: DateTime.fromISO(defaultData?.start ?? '').toFormat("yyyy-MM-dd'T'HH:mm"),
     end: DateTime.fromISO(defaultData?.end ?? '').toFormat("yyyy-MM-dd'T'HH:mm"),
     description: defaultData.description ?? '',
-    orderLimit: 0,
+    orderLimit: defaultData.orderLimit ?? 0,
     linkedEventUuid: defaultData.linkedEvent?.uuid ?? '',
   };
 
@@ -100,17 +100,27 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     const orderLimit = parseInt(`${rawOrderLimit}`, 10);
 
     try {
-      const uuid = await AdminEventManager.editPickupEvent({
+      await AdminEventManager.editPickupEvent({
         pickupEvent: { title, start, end, description, orderLimit, linkedEventUuid },
         uuid: defaultData.uuid ?? '',
         token: token,
-      });
-      showToast('Event details saved!', '', [
-        {
-          text: 'View pickup event page',
-          onClick: () => router.push(`${config.admin.store.pickup}/${uuid}`),
+
+        onSuccessCallback: event => {
+          setLoading(false);
+          showToast('Pickup Event Edit Successfully!', '', [
+            {
+              text: 'View Live Pickup Event Page',
+              onClick: () =>
+                router.push(`https://acmucsd.com/${config.admin.store.pickup}/${event.uuid}`),
+            },
+          ]);
+          // router.push(config.admin.events.homeRoute);
         },
-      ]);
+        onFailCallback: error => {
+          setLoading(false);
+          reportError('Unable to edit pickup event', error);
+        },
+      });
     } catch (error) {
       reportError('Could not save changes', error);
     } finally {
@@ -118,18 +128,29 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     }
   };
 
-  // const deletePickupEvent = async () => {
-  //   setLoading(true);
+  const deletePickupEvent = async () => {
+    setLoading(true);
 
-  //   try {
-  //     await AdminEventManager.deletePickupEvent(token, defaultData.uuid ?? '');
-  //     showToast('Pickup event deleted successfully');
-  //     router.replace(config.store.homeRoute);
-  //   } catch (error) {
-  //     reportError('Could not delete collection', error);
-  //     setLoading(false);
-  //   }
-  // };
+    try {
+      await AdminEventManager.deletePickupEvent({
+        event: defaultData.uuid ?? '',
+        token: token,
+
+        onSuccessCallback: () => {
+          setLoading(false);
+          showToast('Pickup Event Deleted Successfully!', '');
+          router.push(config.admin.store.pickup);
+        },
+        onFailCallback: error => {
+          setLoading(false);
+          reportError('Unable to delete pickup event', error);
+        },
+      });
+    } catch (error) {
+      reportError('Could not delete collection', error);
+      setLoading(false);
+    }
+  };
 
   const defaultFormText = loading ? 'Loading events from API...' : 'Select an Event';
 
@@ -231,9 +252,9 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
             <Button onClick={resetForm} disabled={loading} destructive>
               Discard changes
             </Button>
-            {/* <Button onClick={deletePickupEvent} disabled={loading} destructive>
+            <Button onClick={deletePickupEvent} disabled={loading} destructive>
               Delete pickup event
-            </Button> */}
+            </Button>
           </>
         ) : (
           <>

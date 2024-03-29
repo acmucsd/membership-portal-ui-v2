@@ -120,7 +120,7 @@ export const createPickupEvent = async (
 ): Promise<UUID | null> => {
   try {
     const { uuid } = await EventAPI.createPickupEvent(token, pickupEvent);
-    return uuid ?? null;
+    return uuid;
   } catch (error) {
     reportError('Could not create pickup event', error);
     return null;
@@ -162,7 +162,7 @@ export const deletePickupEvent = async (
   const { onSuccessCallback, onFailCallback, token, event } = data;
 
   try {
-    await EventAPI.deleteEvent(token, event);
+    await EventAPI.deletePickupEvent(token, event);
 
     onSuccessCallback?.();
   } catch (e) {

@@ -169,7 +169,7 @@ export interface CreatePickupEventResponse extends ApiResponse {
 }
 
 export interface PatchPickupEventResponse extends ApiResponse {
-  event: PublicOrderPickupEvent;
+  pickupEvent: PublicOrderPickupEvent;
 }
 
 // LEADERBOARD
