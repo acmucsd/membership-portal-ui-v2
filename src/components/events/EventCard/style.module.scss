@@ -20,8 +20,49 @@
   }
 
   &:not([disabled]):hover {
-    box-shadow: 0 3px 10px var(--theme-shadow);
-    transform: scale(1.025);
+    animation: 3s color-change infinite alternate;
+
+    @keyframes color-change {
+      0% {
+        border: 1px solid #e981a0;
+      }
+
+      25% {
+        border: 1px solid #f9a857;
+      }
+
+      50% {
+        border: 1px solid #51c0c0;
+      }
+
+      75% {
+        border: 1px solid #62b0ff;
+      }
+
+      100% {
+        border: 1px solid #816dff;
+      }
+    }
+
+    &:nth-child(5n) {
+      animation-delay: 0s;
+    }
+
+    &:nth-child(5n + 1) {
+      animation-delay: -0.6s;
+    }
+
+    &:nth-child(5n + 2) {
+      animation-delay: -1.2s;
+    }
+
+    &:nth-child(5n + 3) {
+      animation-delay: -1.8s;
+    }
+
+    &:nth-child(5n + 4) {
+      animation-delay: -2.4s;
+    }
   }
 
   &:disabled {

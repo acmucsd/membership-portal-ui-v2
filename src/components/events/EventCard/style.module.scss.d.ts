@@ -10,6 +10,7 @@ export type Styles = {
   badgePoints: string;
   badges: string;
   bordered: string;
+  colorChange: string;
   container: string;
   image: string;
   info: string;
