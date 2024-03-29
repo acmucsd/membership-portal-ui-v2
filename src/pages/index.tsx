@@ -8,10 +8,11 @@ import { attendEvent } from '@/lib/managers/EventManager';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PrivateProfile, PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import RaccoonGraphic from '@/public/assets/graphics/portal/raccoon-hero.svg';
+import WavesGraphic from '@/public/assets/graphics/portal/waves.svg';
 import CheckMark from '@/public/assets/icons/check-mark.svg';
 import styles from '@/styles/pages/Home.module.scss';
 import { GetServerSideProps } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -95,20 +96,11 @@ const PortalHomePage = ({
       />
 
       <div className={styles.hero}>
-        <Image
-          className={`${styles.image} ${styles.desktopOnly}`}
-          src="/assets/graphics/portal/raccoon-hero.svg"
-          alt="Landing page graphic"
-          priority
-          fill
+        <RaccoonGraphic
+          className={`${styles.image} ${styles.raccoon}`}
+          alt="Raccoon lounging on a chair at a beach"
         />
-        <Image
-          className={styles.image}
-          src="/assets/graphics/portal/waves.svg"
-          alt="Landing page graphic"
-          priority
-          fill
-        />
+        <WavesGraphic className={styles.image} alt="Ocean waves roll ashore" />
       </div>
 
       <div className={styles.content}>

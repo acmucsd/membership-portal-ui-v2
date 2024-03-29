@@ -3,11 +3,11 @@ export type Styles = {
   checkinButtons: string;
   checkinInput: string;
   content: string;
-  desktopOnly: string;
   heading: string;
   hero: string;
   image: string;
   page: string;
+  raccoon: string;
   recentlyAttended: string;
   subheading: string;
   submit: string;
