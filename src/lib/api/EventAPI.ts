@@ -5,6 +5,7 @@ import {
   AttendEventResponse,
   CreateEventResponse,
   CreatePickupEventResponse,
+  EditOrderPickupEventResponse,
   GetAllEventsResponse,
   GetFutureEventsResponse,
   GetOneEventResponse,
@@ -154,11 +155,11 @@ export const editPickupEvent = async (
   pickupEvent: Partial<OrderPickupEvent>
 ): Promise<PublicOrderPickupEvent> => {
   // PublicOrderPickupEvent part of apiResponses
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.update}/${uuid}`;
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${uuid}`;
 
   const requestBody = { pickupEvent };
 
-  const response = await axios.post<CreatePickupEventResponse>(requestUrl, requestBody, {
+  const response = await axios.patch<EditOrderPickupEventResponse>(requestUrl, requestBody, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

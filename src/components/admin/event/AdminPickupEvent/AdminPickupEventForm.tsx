@@ -24,10 +24,11 @@ interface IProps {
 
 const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }: IProps) => {
   const router = useRouter();
+
   const initialValues: FormValues = {
     title: defaultData.title ?? '',
-    start: defaultData?.start || '',
-    end: defaultData?.end || '',
+    start: DateTime.fromISO(defaultData?.start ?? '').toFormat("yyyy-MM-dd'T'HH:mm"),
+    end: DateTime.fromISO(defaultData?.end ?? '').toFormat("yyyy-MM-dd'T'HH:mm"),
     description: defaultData.description ?? '',
     orderLimit: 0,
     linkedEventUuid: defaultData.linkedEvent?.uuid ?? '',
@@ -117,18 +118,18 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     }
   };
 
-  const deletePickupEvent = async () => {
-    setLoading(true);
+  // const deletePickupEvent = async () => {
+  //   setLoading(true);
 
-    try {
-      await AdminEventManager.deletePickupEvent(token, defaultData.uuid ?? '');
-      showToast('Pickup event deleted successfully');
-      router.replace(config.store.homeRoute);
-    } catch (error) {
-      reportError('Could not delete collection', error);
-      setLoading(false);
-    }
-  };
+  //   try {
+  //     await AdminEventManager.deletePickupEvent(token, defaultData.uuid ?? '');
+  //     showToast('Pickup event deleted successfully');
+  //     router.replace(config.store.homeRoute);
+  //   } catch (error) {
+  //     reportError('Could not delete collection', error);
+  //     setLoading(false);
+  //   }
+  // };
 
   const defaultFormText = loading ? 'Loading events from API...' : 'Select an Event';
 
@@ -230,9 +231,9 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
             <Button onClick={resetForm} disabled={loading} destructive>
               Discard changes
             </Button>
-            <Button onClick={deletePickupEvent} disabled={loading} destructive>
+            {/* <Button onClick={deletePickupEvent} disabled={loading} destructive>
               Delete pickup event
-            </Button>
+            </Button> */}
           </>
         ) : (
           <>
