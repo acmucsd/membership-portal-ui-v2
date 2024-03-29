@@ -1,4 +1,4 @@
-import { GifSafeImage, Typography } from '@/components/common';
+import { EditButton, GifSafeImage, Typography } from '@/components/common';
 import { EventCarousel } from '@/components/events';
 import SocialMediaIcon from '@/components/profile/SocialMediaIcon';
 import { UserProgress } from '@/components/profile/UserProgress';
@@ -6,11 +6,9 @@ import { config, showToast } from '@/lib';
 import { PublicAttendance, type PublicProfile } from '@/lib/types/apiResponses';
 import { SocialMediaType } from '@/lib/types/enums';
 import { copy, fixUrl, getProfilePicture } from '@/lib/utils';
-import EditIcon from '@/public/assets/icons/edit.svg';
 import GradCapIcon from '@/public/assets/icons/grad-cap-icon.svg';
 import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
 import MajorIcon from '@/public/assets/icons/major-icon.svg';
-import Link from 'next/link';
 import styles from './style.module.scss';
 
 export interface UserProfilePageProps {
@@ -68,11 +66,7 @@ export const UserProfilePage = ({
           </div>
           {isSignedInUser ? (
             <div className={styles.editWrapper}>
-              <Link href={config.profile.editRoute}>
-                <div>
-                  <EditIcon />
-                </div>
-              </Link>
+              <EditButton href={config.profile.editRoute} label="Edit Profile" />
             </div>
           ) : null}
         </div>

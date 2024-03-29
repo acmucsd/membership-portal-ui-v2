@@ -169,27 +169,6 @@
     position: absolute;
     right: 1rem;
     top: 1rem;
-
-    div {
-      align-items: center;
-      background-color: var(--theme-background);
-      border: 1px solid var(--theme-elevated-stroke);
-      border-radius: 0.625rem;
-      display: flex;
-      height: 2.375rem;
-      justify-content: center;
-      transition: all 0.3s;
-      width: 2.75rem;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-
-      svg {
-        height: 1.625rem;
-        width: 1.625rem;
-      }
-    }
   }
 }
 
