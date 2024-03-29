@@ -1,5 +1,6 @@
 import { Typography } from '@/components/common';
 import EventModal from '@/components/events/EventModal';
+import PickupEventPreviewModal from '@/components/store/PickupEventPreviewModal';
 import { communityNames } from '@/lib/constants/communities';
 import {
   PublicEvent,
@@ -45,13 +46,20 @@ const EventCard = ({
   const ongoing = now > new Date(event.start) && now < new Date(event.end);
 
   const [expanded, setExpanded] = useState(false);
-  const hasModal = !isOrderPickupEvent(event) || event.linkedEvent;
+  const isPickupEvent = isOrderPickupEvent(event);
 
   const displayCover = getDefaultEventCover(cover);
 
   return (
     <>
-      {hasModal ? (
+      {isPickupEvent ? (
+        <PickupEventPreviewModal
+          pickupEvent={event as PublicOrderPickupEvent}
+          open={expanded}
+          onClose={() => setExpanded(false)}
+          futurePickupEvents={[]}
+        />
+      ) : (
         <EventModal
           open={expanded}
           attended={attended}
@@ -62,13 +70,12 @@ const EventCard = ({
           }
           onClose={() => setExpanded(false)}
         />
-      ) : null}
+      )}
 
       <button
         type="button"
         className={`${styles.container} ${borderless ? '' : styles.bordered} ${className || ''}`}
         onClick={() => setExpanded(true)}
-        disabled={!hasModal}
       >
         <div className={styles.image}>
           <Image

@@ -1,0 +1,43 @@
+@use 'src/styles/vars.scss' as vars;
+
+.pickupEvent {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+
+  @media screen and (width <= vars.$breakpoint-md) {
+    flex-direction: column;
+  }
+
+  .image {
+    aspect-ratio: 1920 / 1080;
+    border-radius: 1rem;
+    flex-shrink: 1;
+    overflow: hidden;
+    position: relative;
+    width: 20rem;
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      width: 100%;
+    }
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 2;
+    gap: 0.5rem;
+
+    .eventInfo {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+@media screen and (width <= vars.$breakpoint-md) {
+  .title {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+  }
+}
