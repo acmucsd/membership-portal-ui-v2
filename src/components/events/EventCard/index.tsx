@@ -74,7 +74,9 @@ const EventCard = ({
 
       <button
         type="button"
-        className={`${styles.container} ${borderless ? '' : styles.bordered} ${className || ''}`}
+        className={`${styles.container} ${styles[`outline${community}`]} ${
+          borderless ? '' : styles.bordered
+        } ${className || ''}`}
         onClick={() => setExpanded(true)}
       >
         <div className={styles.image}>

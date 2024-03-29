@@ -20,55 +20,27 @@
   }
 
   &:not([disabled]):hover {
-    animation: 3s color-change infinite alternate;
     outline: 4px solid var(--theme-elevated-stroke);
     transform: scale(0.975);
 
-    @keyframes color-change {
-      0% {
-        border-color: #e981a0;
-        outline-color: #e981a0;
-      }
-
-      25% {
-        border-color: #f9a857;
-        outline-color: #f9a857;
-      }
-
-      50% {
-        border-color: #51c0c0;
-        outline-color: #51c0c0;
-      }
-
-      75% {
-        border-color: #62b0ff;
-        outline-color: #62b0ff;
-      }
-
-      100% {
-        border-color: #816dff;
-        outline-color: #816dff;
-      }
+    &.outlineGeneral {
+      outline-color: vars.$blue-4;
     }
 
-    &:nth-child(5n) {
-      animation-delay: 0s;
+    &.outlineAi {
+      outline-color: vars.$scarlet-4;
     }
 
-    &:nth-child(5n + 1) {
-      animation-delay: -0.6s;
+    &.outlineHack {
+      outline-color: vars.$orange-4;
     }
 
-    &:nth-child(5n + 2) {
-      animation-delay: -1.2s;
+    &.outlineCyber {
+      outline-color: vars.$cyan-4;
     }
 
-    &:nth-child(5n + 3) {
-      animation-delay: -1.8s;
-    }
-
-    &:nth-child(5n + 4) {
-      animation-delay: -2.4s;
+    &.outlineDesign {
+      outline-color: vars.$pink-4;
     }
   }
 

@@ -10,11 +10,15 @@ export type Styles = {
   badgePoints: string;
   badges: string;
   bordered: string;
-  colorChange: string;
   container: string;
   image: string;
   info: string;
   infoText: string;
+  outlineAi: string;
+  outlineCyber: string;
+  outlineDesign: string;
+  outlineGeneral: string;
+  outlineHack: string;
 };
 
 export type ClassNames = keyof Styles;
