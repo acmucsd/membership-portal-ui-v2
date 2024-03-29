@@ -1,0 +1,66 @@
+@use 'src/styles/vars.scss' as vars;
+
+.progressSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .progressInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .progressText {
+      align-items: flex-end;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: space-between;
+
+      .levelText {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      @media screen and (max-width: vars.$breakpoint-md) {
+        .levelText,
+        .levelProgress {
+          font-size: 1rem !important;
+          line-height: 1.5rem !important;
+        }
+
+        .levelProgress {
+          justify-self: flex-end;
+        }
+      }
+    }
+
+    @media screen and (max-width: vars.$breakpoint-md) {
+      .levelDescription {
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+      }
+    }
+  }
+
+  .progressBar {
+    background-color: var(--theme-accent-line-2);
+    border-radius: 0.5rem;
+    height: 1.25rem;
+    width: 100%;
+
+    .inner {
+      background-color: var(--theme-primary-2);
+      border-radius: 0.5rem;
+      height: 100%;
+      transition: width 1s ease;
+    }
+  }
+}
+
+.sectionHeader {
+  @media screen and (max-width: vars.$breakpoint-md) {
+    font-size: 1.5rem !important;
+    line-height: 2.25rem !important;
+  }
+}

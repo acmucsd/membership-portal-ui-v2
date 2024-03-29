@@ -42,6 +42,9 @@ const EventCard = ({
     : event;
   const community = toCommunity(committee);
 
+  const now = new Date();
+  const ongoing = now > new Date(event.start) && now < new Date(event.end);
+
   const [expanded, setExpanded] = useState(false);
   const isPickupEvent = isOrderPickupEvent(event);
 
@@ -111,6 +114,9 @@ const EventCard = ({
               </Typography>
             </div>
             <div className={styles.badges}>
+              {!isOrderPickupEvent(event) && ongoing ? (
+                <div className={`${styles.badge} ${styles.badgeLive}`}>• Live</div>
+              ) : null}
               {committee ? (
                 <div className={`${styles.badge} ${styles[`badge${community}`]}`}>
                   {communityNames[community]}
