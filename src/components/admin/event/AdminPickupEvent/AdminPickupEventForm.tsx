@@ -160,7 +160,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
         <h1>{mode === 'edit' ? 'Modify' : 'Create'} Pickup Event</h1>
 
         {defaultData.uuid ? (
-          <Link className={style.viewPage} href={`${config.eventsRoute}${defaultData.uuid}`}>
+          <Link className={style.viewPage} href={`${config.eventsRoute}/${defaultData.uuid}`}>
             View event page
             <BsArrowRight aria-hidden />
           </Link>
