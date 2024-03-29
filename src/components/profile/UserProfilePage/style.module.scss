@@ -128,51 +128,6 @@
     }
   }
 
-  .progressSection {
-    display: flex;
-    flex-direction: column;
-    gap: 0.9375rem;
-
-    .progressInfo {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-
-      .progressText {
-        align-items: flex-end;
-        display: flex;
-        gap: 0.5rem;
-        justify-content: space-between;
-
-        @media screen and (max-width: vars.$breakpoint-md) {
-          .levelText,
-          .levelProgress {
-            font-size: 1rem !important;
-            line-height: 1.5rem !important;
-          }
-
-          .levelProgress {
-            justify-self: flex-end;
-          }
-        }
-      }
-    }
-
-    .progressBar {
-      background-color: var(--theme-accent-line-2);
-      border-radius: 0.5rem;
-      height: 1.25rem;
-      width: 100%;
-
-      .inner {
-        background-color: var(--theme-primary-2);
-        border-radius: 0.5rem;
-        height: 100%;
-        transition: width 1s ease;
-      }
-    }
-  }
-
   .aboutSection {
     display: grid;
     grid-template-columns: 20rem 1fr;
@@ -219,7 +174,10 @@
 
   .card {
     flex: none;
-    width: 20rem;
+    height: auto;
+    // (2 rem (content) + 1.5rem (carousel)) * 2 (on both sides) + 2 rem (gap) = 9 rem
+    // We then add 1 more rem so we can see the start of the next card.
+    width: min(100vw - 10rem, 20rem);
   }
 
   .editWrapper {

@@ -6,6 +6,7 @@ export type Styles = {
   badgeDesign: string;
   badgeGeneral: string;
   badgeHack: string;
+  badgeLive: string;
   badgePoints: string;
   badges: string;
   bordered: string;

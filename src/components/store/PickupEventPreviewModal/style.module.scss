@@ -28,46 +28,12 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    max-width: 80rem;
     padding: 2rem;
     width: 80vw;
 
     @media screen and (width <= vars.$breakpoint-md) {
       width: 100vw;
-    }
-
-    .pickupEvent {
-      display: flex;
-      flex-direction: row;
-      gap: 2rem;
-
-      @media screen and (width <= vars.$breakpoint-md) {
-        flex-direction: column;
-      }
-
-      .image {
-        aspect-ratio: 1920 / 1080;
-        border-radius: 1rem;
-        flex-shrink: 1;
-        overflow: hidden;
-        position: relative;
-        width: 20rem;
-
-        @media screen and (width <= vars.$breakpoint-md) {
-          width: 100%;
-        }
-      }
-
-      .details {
-        display: flex;
-        flex-direction: column;
-        flex-shrink: 2;
-        gap: 0.5rem;
-
-        .eventInfo {
-          display: flex;
-          flex-direction: column;
-        }
-      }
     }
 
     .reschedule {

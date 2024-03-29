@@ -12,6 +12,7 @@ export { default as HiddenIcon } from './HiddenIcon';
 export { default as ItemCard } from './ItemCard';
 export { default as OrderCard } from './OrderCard';
 export { default as OrdersDisplay } from './OrdersDisplay';
+export { default as PickupEventDetail } from './PickupEventDetail';
 export { default as PickupEventPicker } from './PickupEventPicker';
 export { default as StoreConfirmModal } from './StoreConfirmModal';
 export { default as Navbar } from './StoreNavbar';
