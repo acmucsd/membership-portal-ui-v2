@@ -1,4 +1,5 @@
 export type Styles = {
+  badges: string;
   close: string;
   closeIcon: string;
   contents: string;

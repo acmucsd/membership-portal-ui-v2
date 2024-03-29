@@ -1,15 +1,17 @@
 @use 'src/styles/vars.scss' as vars;
 
 .options {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-shrink: 1;
   gap: 0.5rem;
 }
 
 .calendarLink {
   align-items: center;
-  border: 1px solid var(--theme-primary-2);
+  background-color: var(--theme-elevated-background);
+  border: 1px solid var(--theme-elevated-stroke);
   border-radius: 10px;
   display: flex;
   gap: 12px;
@@ -19,7 +21,7 @@
   width: 14.5rem;
 
   &:hover {
-    background: var(--theme-primary-2);
+    background: var(--theme-surface-2);
   }
 }
 

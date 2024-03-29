@@ -42,6 +42,7 @@
   .header {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 1rem;
     justify-content: space-between;
 
@@ -52,10 +53,25 @@
     }
 
     .eventDetails {
-      align-items: center;
+      align-items: flex-start;
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       gap: 1rem;
+
+      .badges {
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+
+        > div {
+          font-size: 1rem !important;
+          padding: 0.25rem 0.5rem;
+
+          @media screen and (width <= vars.$breakpoint-md) {
+            font-size: 0.75rem !important;
+          }
+        }
+      }
     }
   }
 
@@ -69,18 +85,25 @@
 }
 
 @media screen and (width <= vars.$breakpoint-md) {
-  .eventDetails {
-    flex-wrap: wrap;
+  .contents {
+    padding: 1.5rem;
+    width: 100vw;
 
-    /* !important's are necessary here to override Typography's styling */
-    .eventTitle {
-      font-size: 1.5rem !important;
-      line-height: 2rem !important;
-    }
+    .eventDetails {
+      img {
+        height: 110px;
+        width: 110px;
+      }
+      /* !important's are necessary here to override Typography's styling */
+      .eventTitle {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+      }
 
-    .eventInfo {
-      font-size: 1rem !important;
-      line-height: 1.5rem !important;
+      .eventInfo {
+        font-size: 1rem !important;
+        line-height: 1.5rem !important;
+      }
     }
   }
 
