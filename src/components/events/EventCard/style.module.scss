@@ -23,23 +23,23 @@
     outline: 4px solid var(--theme-elevated-stroke);
     transform: scale(0.975);
 
-    &.outlineGeneral {
+    &[data-community='General'] {
       outline-color: vars.$blue-4;
     }
 
-    &.outlineAi {
+    &[data-community='Ai'] {
       outline-color: vars.$scarlet-4;
     }
 
-    &.outlineHack {
+    &[data-community='Hack'] {
       outline-color: vars.$orange-4;
     }
 
-    &.outlineCyber {
+    &[data-community='Cyber'] {
       outline-color: vars.$cyan-4;
     }
 
-    &.outlineDesign {
+    &[data-community='Design'] {
       outline-color: vars.$pink-4;
     }
   }
