@@ -42,6 +42,7 @@
 
   .card {
     flex: none;
+    height: auto;
     // (2 rem (content) + 1.5rem (carousel)) * 2 (on both sides) + 2 rem (gap) = 9 rem
     // We then add 1 more rem so we can see the start of the next card.
     width: min(100vw - 10rem, 20rem);
