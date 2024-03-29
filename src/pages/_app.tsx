@@ -22,7 +22,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         }
       `}</style>
       <SEO />
-      <ThemeProvider>
+      <ThemeProvider disableTransitionOnChange>
         <ToastContainer />
         <PageLayout accessType={pageProps?.user?.accessType}>
           <Component {...pageProps} />
