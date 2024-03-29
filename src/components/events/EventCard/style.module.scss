@@ -21,26 +21,33 @@
 
   &:not([disabled]):hover {
     animation: 3s color-change infinite alternate;
+    outline: 4px solid var(--theme-elevated-stroke);
+    transform: scale(0.975);
 
     @keyframes color-change {
       0% {
-        border: 1px solid #e981a0;
+        border-color: #e981a0;
+        outline-color: #e981a0;
       }
 
       25% {
-        border: 1px solid #f9a857;
+        border-color: #f9a857;
+        outline-color: #f9a857;
       }
 
       50% {
-        border: 1px solid #51c0c0;
+        border-color: #51c0c0;
+        outline-color: #51c0c0;
       }
 
       75% {
-        border: 1px solid #62b0ff;
+        border-color: #62b0ff;
+        outline-color: #62b0ff;
       }
 
       100% {
-        border: 1px solid #816dff;
+        border-color: #816dff;
+        outline-color: #816dff;
       }
     }
 
