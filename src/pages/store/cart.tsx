@@ -215,7 +215,7 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
                 - <Diamonds count={orderTotal} />
               </div>
             </div>
-            <hr />
+            <hr className={styles.divider} />
             <div>
               <Typography variant="h5/bold" component="p">
                 Remaining Balance
