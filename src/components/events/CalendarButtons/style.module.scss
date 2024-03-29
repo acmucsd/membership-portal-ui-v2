@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: row;
   flex-shrink: 1;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
@@ -18,10 +19,15 @@
   justify-content: flex-start;
   padding: 0.75rem;
   transition: all 0.2s;
-  width: 14.5rem;
 
   &:hover {
     background: var(--theme-surface-2);
+  }
+}
+
+@media screen and (width <= vars.$breakpoint-sm) {
+  .calendarText {
+    display: none;
   }
 }
 

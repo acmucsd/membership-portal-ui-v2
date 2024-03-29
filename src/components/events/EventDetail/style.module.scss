@@ -1,12 +1,44 @@
 @use 'src/styles/vars.scss' as vars;
 
-.image {
-  aspect-ratio: 1920 / 1080;
-  border-radius: 10px 10px 0 0;
-  flex-shrink: 0;
-  overflow: hidden;
+.container {
+  display: grid;
+  gap: 2.5rem;
+  grid-template-areas:
+    'image header'
+    'description description';
+  padding: 2.5rem;
   position: relative;
-  width: 100%;
+  width: 80vw;
+
+  @media screen and (width <= vars.$breakpoint-lg) {
+    grid-row-gap: 2.5rem;
+    grid-template-areas:
+      'image'
+      'header'
+      'description';
+    grid-template-columns: 1fr;
+    max-width: unset;
+    padding: 0;
+    padding-bottom: 2.5rem;
+
+    .header,
+    .description {
+      padding: 0 2.5rem;
+      width: 100%;
+    }
+  }
+
+  @media screen and (width <= vars.$breakpoint-md) {
+    grid-row-gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    width: 100vw;
+
+    .header,
+    .description {
+      padding: 0 1.5rem;
+      width: 100%;
+    }
+  }
 
   .close {
     align-items: center;
@@ -14,12 +46,17 @@
     background-color: vars.$dark-accent-line-2-transparent;
     border-radius: 50%;
     display: flex;
-    left: 2.5%;
     padding: 0.25rem;
     position: absolute;
-    top: 5%;
+    right: 1.5rem;
+    top: 1.5rem;
     transition: background-color 0.2s;
     z-index: 100;
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      right: 0.75rem;
+      top: 0.75rem;
+    }
 
     .closeIcon {
       fill: vars.$light-background;
@@ -29,27 +66,51 @@
       background-color: var(--theme-accent-line-1-transparent);
     }
   }
-}
 
-.contents {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-  max-width: 70rem;
-  padding: 2.5rem;
-  width: 70vw;
+  .image {
+    aspect-ratio: 1920 / 1080;
+    border-radius: 10px;
+    flex-shrink: 0;
+    grid-area: image;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .header,
+  .description {
+    gap: 2.5rem;
+  }
 
   .header {
+    align-self: center;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 1rem;
-    justify-content: space-between;
+    grid-area: header;
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
 
     .eventTitle,
     .eventDetails {
       white-space: pre-wrap;
       word-break: break-word;
+    }
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      .eventTitle {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+      }
+
+      .eventInfo {
+        font-size: 1rem !important;
+        line-height: 1.5rem !important;
+      }
     }
 
     .eventDetails {
@@ -75,46 +136,7 @@
     }
   }
 
-  .link {
-    color: var(--theme-primary-2);
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    text-decoration: underline;
-  }
-}
-
-@media screen and (width <= vars.$breakpoint-md) {
-  .contents {
-    padding: 1.5rem;
-    width: 100vw;
-
-    .eventDetails {
-      img {
-        height: 110px;
-        width: 110px;
-      }
-      /* !important's are necessary here to override Typography's styling */
-      .eventTitle {
-        font-size: 1.5rem !important;
-        line-height: 2rem !important;
-      }
-
-      .eventInfo {
-        font-size: 1rem !important;
-        line-height: 1.5rem !important;
-      }
-    }
-  }
-
-  .header {
-    flex-wrap: wrap;
-    gap: 2.5rem;
-  }
-}
-
-@media screen and (width <= vars.$breakpoint-sm) {
-  .contents {
-    width: 100vw;
+  .description {
+    grid-area: description;
   }
 }
