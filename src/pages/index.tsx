@@ -93,6 +93,7 @@ const PortalHomePage = ({
         event={checkinEvent}
         onClose={() => setCheckinModalVisible(false)}
       />
+
       <div className={styles.hero}>
         <Image
           className={`${styles.image} ${styles.desktopOnly}`}
@@ -109,6 +110,7 @@ const PortalHomePage = ({
           fill
         />
       </div>
+
       <div className={styles.content}>
         <div className={styles.header}>
           <Typography variant="h5/regular">{today}</Typography>
@@ -149,15 +151,18 @@ const PortalHomePage = ({
           </button>
         </div>
       </form>
+
       <div className={styles.userProgress}>
         <UserProgress user={user} points={points} isSignedInUser />
       </div>
+
       <EventCarousel
         title="Upcoming Events"
         titleClassName={styles.subheading}
         events={upcomingEvents}
         attendances={attendance}
         placeholder="Check back soon for upcoming events!"
+        className={styles.upcomingEvents}
       />
 
       <EventCarousel
@@ -166,6 +171,7 @@ const PortalHomePage = ({
         events={attendedEvents}
         attendances={attendance}
         placeholder="Attend your first event and earn membership points!"
+        className={styles.recentlyAttended}
       />
     </div>
   );

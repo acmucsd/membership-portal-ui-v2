@@ -9,8 +9,10 @@ export type Styles = {
   hero: string;
   image: string;
   page: string;
+  recentlyAttended: string;
   subheading: string;
   submit: string;
+  upcomingEvents: string;
   userProgress: string;
 };
 
