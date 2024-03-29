@@ -3,7 +3,6 @@ export type Styles = {
   aboutSection: string;
   banner: string;
   bioSection: string;
-  card: string;
   cardName: string;
   cardWrapper: string;
   editWrapper: string;

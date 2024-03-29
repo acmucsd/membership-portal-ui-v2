@@ -1,8 +1,8 @@
 import { Carousel } from '@/components/common';
 import CreateButton from '@/components/store/CreateButton';
-import EditButton from '@/components/store/EditButton';
 import HiddenIcon from '@/components/store/HiddenIcon';
 import ItemCard from '@/components/store/ItemCard';
+import StoreEditButton from '@/components/store/StoreEditButton';
 import { config } from '@/lib';
 import { PublicMerchItem } from '@/lib/types/apiResponses';
 import { getDefaultMerchItemPhoto } from '@/lib/utils';
@@ -30,7 +30,7 @@ const CollectionSlider = ({
     <div className={styles.wrapper}>
       <h3 className={styles.title}>
         <Link href={`${config.store.collectionRoute}${uuid}`}>{title}</Link>
-        {storeAdminVisible ? <EditButton type="collection" uuid={uuid} /> : null}
+        {storeAdminVisible ? <StoreEditButton type="collection" uuid={uuid} /> : null}
         {isHidden ? <HiddenIcon type="collection" /> : null}
       </h3>
       <p className={styles.description}>{description}</p>
@@ -49,7 +49,7 @@ const CollectionSlider = ({
               key={item.uuid}
             >
               {storeAdminVisible && item.hidden ? <HiddenIcon type="item" /> : null}
-              {storeAdminVisible ? <EditButton type="item" uuid={item.uuid} /> : null}
+              {storeAdminVisible ? <StoreEditButton type="item" uuid={item.uuid} /> : null}
             </ItemCard>
           ))}
         {storeAdminVisible ? (
