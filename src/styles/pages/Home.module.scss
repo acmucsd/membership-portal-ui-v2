@@ -127,7 +127,7 @@
     }
 
     .date {
-      animation: fade-in 0.5s 1s backwards;
+      animation: fade-in 1s 1.5s backwards;
 
       @keyframes fade-in {
         from {
@@ -146,23 +146,23 @@
       background-image: linear-gradient(
         -90deg,
         transparent 0%,
-        #e981a0 20%,
-        #f9a857 30%,
-        #80ce1c 40%,
-        #51c0c0 50%,
-        #62b0ff 60%,
-        #816dff 70%,
-        var(--theme-text-on-background-1) 80%,
+        #e981a0 10%,
+        #f9a857 20%,
+        #80ce1c 30%,
+        #51c0c0 40%,
+        #62b0ff 50%,
+        #816dff 60%,
+        var(--theme-text-on-background-1) 70%,
         var(--theme-text-on-background-1) 100%
       );
       background-position: left;
       background-repeat: no-repeat;
-      background-size: 500%;
+      background-size: 334%;
       color: transparent;
 
       @keyframes gradient-in {
         from {
-          background-position: 125%;
+          background-position: 143%;
         }
 
         to {
