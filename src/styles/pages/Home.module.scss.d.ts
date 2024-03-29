@@ -1,4 +1,5 @@
 export type Styles = {
+  appear: string;
   checkin: string;
   checkinButtons: string;
   checkinInput: string;
@@ -13,6 +14,7 @@ export type Styles = {
   submit: string;
   upcomingEvents: string;
   userProgress: string;
+  wave: string;
 };
 
 export type ClassNames = keyof Styles;

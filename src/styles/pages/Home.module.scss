@@ -46,6 +46,7 @@
     }
 
     .image {
+      animation: appear 3s;
       height: 100%;
       inset: 0;
       position: absolute;
@@ -61,6 +62,35 @@
       @media screen and (width <= vars.$breakpoint-md) {
         &.raccoon {
           display: none;
+        }
+      }
+
+      @keyframes appear {
+        from {
+          transform: translateY(100%);
+        }
+
+        to {
+          transform: none;
+        }
+      }
+
+      [data-wave] {
+        animation: wave 5s backwards;
+      }
+      @for $i from 1 through 7 {
+        [data-wave='#{$i}'] {
+          animation-delay: calc(pow($i - 1, 1.05) * 0.7s);
+          animation-timing-function: cubic-bezier(0.28, calc((7 - $i) * 0.1 + 1), 0.64, 1);
+        }
+      }
+      @keyframes wave {
+        from {
+          transform: translateY(50%);
+        }
+
+        to {
+          transform: none;
         }
       }
     }
