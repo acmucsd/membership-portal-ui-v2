@@ -453,8 +453,12 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                           return isResumeVisible;
                         })
                       )
-                        .then(() => {
-                          setIsResumeVisible(visible => !visible);
+                        .then((resumeVisibility: boolean[]) => {
+                          if (resumeVisibility.length === 0) {
+                            setIsResumeVisible(visible => !visible);
+                          } else {
+                            setIsResumeVisible(resumeVisibility.every(v => v));
+                          }
                           showToast('Resume visibility preference saved!');
                         })
                         .catch(error => reportError('Failed to update resume visibility', error));
