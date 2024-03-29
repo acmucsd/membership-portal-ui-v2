@@ -1,6 +1,7 @@
 @use 'src/styles/vars.scss' as vars;
 
 .slider {
+  align-items: stretch;
   display: flex;
   gap: 2rem;
   overflow-x: auto;

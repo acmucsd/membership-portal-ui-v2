@@ -30,6 +30,10 @@
       font: inherit;
       padding: 0;
 
+      @media screen and (width <= vars.$breakpoint-md) {
+        display: none;
+      }
+
       &:hover {
         text-decoration: underline;
       }
@@ -38,6 +42,25 @@
 
   .card {
     flex: none;
-    width: 20rem;
+    height: auto;
+    // (2 rem (content) + 1.5rem (carousel)) * 2 (on both sides) + 2 rem (gap) = 9 rem
+    // We then add 1 more rem so we can see the start of the next card.
+    width: min(100vw - 10rem, 20rem);
+  }
+
+  .noEvents {
+    align-items: center;
+    background-color: var(--theme-background);
+    border: 1px solid var(--theme-elevated-stroke);
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1rem 0;
+    overflow: hidden;
+    padding: 2rem 1rem;
+    text-align: center;
   }
 }
