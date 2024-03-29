@@ -1,5 +1,6 @@
 export type Styles = {
   appear: string;
+  cardAppear: string;
   checkin: string;
   checkinButtons: string;
   checkinInput: string;

@@ -27,7 +27,22 @@
     }
   }
 
+  @keyframes card-appear {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  $card-appear-duration: 0.5s;
+  $card-appear-stagger: 0.1s;
+
   .hero {
+    animation: card-appear $card-appear-duration;
     background-color: var(--theme-elevated-background);
     border: 1px solid var(--theme-elevated-stroke);
     border-radius: 0.75rem;
@@ -97,6 +112,7 @@
   }
 
   .content {
+    animation: card-appear $card-appear-duration;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -131,6 +147,7 @@
   }
 
   .checkin {
+    animation: card-appear $card-appear-duration $card-appear-stagger backwards;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -183,6 +200,7 @@
   }
 
   .userProgress {
+    animation: card-appear $card-appear-duration calc($card-appear-stagger * 2) backwards;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -194,10 +212,12 @@
   }
 
   .upcomingEvents {
+    animation: card-appear $card-appear-duration calc($card-appear-stagger * 3) backwards;
     grid-area: upcoming;
   }
 
   .recentlyAttended {
+    animation: card-appear $card-appear-duration calc($card-appear-stagger * 4) backwards;
     grid-area: attended;
   }
 }
