@@ -17,9 +17,11 @@
       justify-content: space-between;
 
       .levelText {
+        flex: auto;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        width: 0;
       }
 
       @media screen and (max-width: vars.$breakpoint-md) {
