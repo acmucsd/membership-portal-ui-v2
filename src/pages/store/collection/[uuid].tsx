@@ -1,5 +1,5 @@
 import { Typography } from '@/components/common';
-import { CreateButton, EditButton, HiddenIcon, ItemCard, Navbar } from '@/components/store';
+import { CreateButton, HiddenIcon, ItemCard, Navbar, StoreEditButton } from '@/components/store';
 import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
@@ -39,7 +39,7 @@ const CollectionsPage = ({
       <div className={styles.header}>
         <Typography variant="h1/bold" component="h1">
           {title}
-          {storeAdminVisible ? <EditButton type="collection" uuid={uuid} /> : null}
+          {storeAdminVisible ? <StoreEditButton type="collection" uuid={uuid} /> : null}
           {storeAdminVisible && archived ? <HiddenIcon type="collection" /> : null}
         </Typography>
         <Typography variant="h4/regular" component="p">
@@ -74,7 +74,7 @@ const CollectionsPage = ({
               key={item.uuid}
             >
               {storeAdminVisible && item.hidden ? <HiddenIcon type="item" /> : null}
-              {storeAdminVisible ? <EditButton type="item" uuid={item.uuid} /> : null}
+              {storeAdminVisible ? <StoreEditButton type="item" uuid={item.uuid} /> : null}
             </ItemCard>
           ))}
         {storeAdminVisible ? (

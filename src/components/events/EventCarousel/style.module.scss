@@ -8,7 +8,7 @@
   flex: 1;
   flex-direction: column;
   overflow: hidden;
-  padding: 1.5rem;
+  padding: 2rem;
 
   .header {
     align-items: center;
@@ -29,10 +29,6 @@
       flex: none;
       font: inherit;
       padding: 0;
-
-      @media screen and (width <= vars.$breakpoint-md) {
-        display: none;
-      }
 
       &:hover {
         text-decoration: underline;

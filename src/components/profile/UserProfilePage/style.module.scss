@@ -41,7 +41,7 @@
       border-top: 0;
       display: flex;
       gap: 1rem;
-      padding: 1rem 2rem;
+      padding: 2rem;
       position: relative;
 
       @media (max-width: vars.$breakpoint-md) {
@@ -118,14 +118,7 @@
     background-color: var(--theme-elevated-background);
     border: 1px solid var(--theme-elevated-stroke);
     border-radius: 0.75rem;
-    padding: 1rem 1.5rem;
-
-    .sectionHeader {
-      @media screen and (max-width: vars.$breakpoint-md) {
-        font-size: 1.5rem !important;
-        line-height: 2.25rem !important;
-      }
-    }
+    padding: 2rem;
   }
 
   .aboutSection {
@@ -172,38 +165,16 @@
     }
   }
 
-  .card {
-    flex: none;
-    height: auto;
-    // (2 rem (content) + 1.5rem (carousel)) * 2 (on both sides) + 2 rem (gap) = 9 rem
-    // We then add 1 more rem so we can see the start of the next card.
-    width: min(100vw - 10rem, 20rem);
-  }
-
   .editWrapper {
     position: absolute;
     right: 1rem;
     top: 1rem;
+  }
+}
 
-    div {
-      align-items: center;
-      background-color: var(--theme-background);
-      border: 1px solid var(--theme-elevated-stroke);
-      border-radius: 0.625rem;
-      display: flex;
-      height: 2.375rem;
-      justify-content: center;
-      transition: all 0.3s;
-      width: 2.75rem;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-
-      svg {
-        height: 1.625rem;
-        width: 1.625rem;
-      }
-    }
+.sectionHeader {
+  @media screen and (max-width: vars.$breakpoint-md) {
+    font-size: 1.5rem !important;
+    line-height: 2.25rem !important;
   }
 }

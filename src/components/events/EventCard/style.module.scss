@@ -20,8 +20,28 @@
   }
 
   &:not([disabled]):hover {
-    box-shadow: 0 3px 10px var(--theme-shadow);
-    transform: scale(1.025);
+    outline: 4px solid var(--theme-elevated-stroke);
+    transform: scale(0.975);
+
+    &[data-community='General'] {
+      outline-color: vars.$blue-4;
+    }
+
+    &[data-community='Ai'] {
+      outline-color: vars.$scarlet-4;
+    }
+
+    &[data-community='Hack'] {
+      outline-color: vars.$orange-4;
+    }
+
+    &[data-community='Cyber'] {
+      outline-color: vars.$cyan-4;
+    }
+
+    &[data-community='Design'] {
+      outline-color: vars.$pink-4;
+    }
   }
 
   &:disabled {
@@ -48,62 +68,6 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
-    }
-
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.25rem;
-
-      .badge {
-        border: 1px solid transparent;
-        border-radius: 0.25rem;
-        color: #000;
-        font-size: 10px;
-        font-weight: 500;
-        padding: 2px 5px;
-
-        &.badgeLive {
-          background-color: vars.$danger-1;
-          border-color: vars.$danger-1;
-          color: #fff;
-        }
-
-        &.badgeGeneral {
-          background-color: vars.$blue-3;
-          border-color: vars.$blue-5;
-        }
-
-        &.badgeAi {
-          background-color: vars.$scarlet-2;
-          border-color: vars.$scarlet-4;
-        }
-
-        &.badgeHack {
-          background-color: vars.$orange-3;
-          border-color: vars.$orange-5;
-        }
-
-        &.badgeCyber {
-          background-color: vars.$cyan-2;
-          border-color: vars.$cyan-5;
-        }
-
-        &.badgeDesign {
-          background-color: vars.$pink-2;
-          border-color: vars.$pink-4;
-        }
-
-        &.badgePoints {
-          background-color: #e4e4e4;
-          border-color: vars.$gray-4;
-        }
-
-        &.badgeAttended {
-          background-color: #b6e0ba;
-          border-color: vars.$success-1;
-        }
-      }
     }
   }
 }
