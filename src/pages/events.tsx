@@ -1,10 +1,12 @@
 import { Dropdown, PaginationControls, Typography } from '@/components/common';
 import { DIVIDER } from '@/components/common/Dropdown';
 import { EventDisplay } from '@/components/events';
+import { config } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
+import { FilterEventOptions } from '@/lib/types/client';
 import { CookieType } from '@/lib/types/enums';
 import { formatSearch, getDateRange, getYears } from '@/lib/utils';
 import styles from '@/styles/pages/events.module.scss';
@@ -15,11 +17,7 @@ import { useEffect, useMemo, useState } from 'react';
 interface EventsPageProps {
   events: PublicEvent[];
   attendances: PublicAttendance[];
-  initialFilters: {
-    community: string;
-    date: string;
-    attended: string;
-  };
+  initialFilters: FilterEventOptions;
 }
 
 interface FilterOptions {
@@ -28,6 +26,12 @@ interface FilterOptions {
   dateFilter: string | number;
   attendedFilter: string;
 }
+
+const DEFAULT_FILTER_STATE = {
+  community: 'all',
+  date: 'all',
+  attended: 'any',
+};
 
 const filterEvent = (
   event: PublicEvent,
@@ -39,7 +43,10 @@ const filterEvent = (
     return false;
   }
   // Filter by community
-  if (communityFilter !== 'all' && event.committee.toLowerCase() !== communityFilter) {
+  if (
+    communityFilter !== DEFAULT_FILTER_STATE.community &&
+    event.committee.toLowerCase() !== communityFilter
+  ) {
     return false;
   }
   // Filter by date
@@ -51,7 +58,7 @@ const filterEvent = (
     return false;
   }
   // Filter by attendance
-  if (attendedFilter === 'all') {
+  if (attendedFilter === DEFAULT_FILTER_STATE.attended) {
     return true;
   }
   const attended = attendances.some(a => a.event.uuid === event.uuid);
@@ -67,21 +74,65 @@ const filterEvent = (
 const ROWS_PER_PAGE = 25;
 const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) => {
   const [page, setPage] = useState(0);
-  const [communityFilter, setCommunityFilter] = useState(initialFilters.community);
-  const [dateFilter, setDateFilter] = useState(initialFilters.date);
-  const [attendedFilter, setAttendedFilter] = useState(initialFilters.attended);
+  const [communityFilter, setCommunityFilter] = useState<string>(initialFilters.community);
+  const [dateFilter, setDateFilter] = useState<string>(initialFilters.date);
+  const [attendedFilter, setAttendedFilter] = useState<string>(initialFilters.attended);
   const [query, setQuery] = useState('');
 
   const router = useRouter();
 
   useEffect(() => {
-    const validState =
-      initialFilters.community === communityFilter &&
-      initialFilters.date === dateFilter &&
-      initialFilters.attended === attendedFilter;
-    if (!validState) router.reload();
+    const urlSynced =
+      router.query.attended === attendedFilter &&
+      router.query.date === dateFilter &&
+      router.query.community === communityFilter;
+
+    if (!urlSynced) {
+      if (Object.keys(router.query).length === 0) {
+        // If url is /events, we can set to default instead of looking for query parameters
+        setCommunityFilter(DEFAULT_FILTER_STATE.community);
+        setDateFilter(DEFAULT_FILTER_STATE.date);
+        setAttendedFilter(DEFAULT_FILTER_STATE.attended);
+        return;
+      }
+
+      // If the URL state has directly changed, we should update the client filter state to match
+      setAttendedFilter(router.query.attended as string);
+      setDateFilter(router.query.date as string);
+      setCommunityFilter(router.query.community as string);
+    }
+
+    // If we add the filter state as a depeandency here, changing the URL params will enter an infinite callback loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, initialFilters]);
+  }, [router]);
+
+  useEffect(() => {
+    const urlSynced =
+      router.query.attended === attendedFilter &&
+      router.query.date === dateFilter &&
+      router.query.community === communityFilter;
+
+    if (!urlSynced) {
+      if (
+        attendedFilter === DEFAULT_FILTER_STATE.attended &&
+        dateFilter === DEFAULT_FILTER_STATE.date &&
+        communityFilter === DEFAULT_FILTER_STATE.community
+      )
+        // We can leave the URL alone in the default state of /events
+        return;
+
+      // If the client state of the filters has changed, we should update the URL to match
+      router.replace(
+        `${config.eventsRoute}?${new URLSearchParams({
+          attended: attendedFilter,
+          community: communityFilter,
+          date: dateFilter,
+        })}`
+      );
+    }
+    // If we add the router as a depeandency here, changing the URL params will enter an infinite callback loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dateFilter, attendedFilter, communityFilter]);
 
   const years = useMemo(getYears, []);
 
@@ -141,10 +192,10 @@ const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) =>
             ariaLabel="Filter events by time"
             options={[
               { value: 'upcoming', label: 'Upcoming' },
-              { value: 'past-week', label: 'Past week' },
-              { value: 'past-month', label: 'Past month' },
-              { value: 'past-year', label: 'Past year' },
-              { value: 'all-time', label: 'All time' },
+              { value: 'past-week', label: 'Past Week' },
+              { value: 'past-month', label: 'Past Month' },
+              { value: 'past-year', label: 'Past Year' },
+              { value: 'all-time', label: 'All Time' },
               DIVIDER,
               ...years,
             ]}
@@ -161,9 +212,9 @@ const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) =>
             name="timeOptions"
             ariaLabel="Filter events by attendance"
             options={[
-              { value: 'all', label: 'Any attendance' },
+              { value: 'any', label: 'Any Attendance' },
               { value: 'attended', label: 'Attended' },
-              { value: 'not-attended', label: 'Not attended' },
+              { value: 'not-attended', label: 'Not Attended' },
             ]}
             value={attendedFilter}
             onChange={v => {
@@ -196,7 +247,11 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
   const [events, attendances] = await Promise.all([getEventsPromise, getAttendancesPromise]);
 
-  const { community = 'all', date = 'all-time', attended = 'all' } = query;
+  const {
+    community = DEFAULT_FILTER_STATE.community,
+    date = DEFAULT_FILTER_STATE.date,
+    attended = DEFAULT_FILTER_STATE.attended,
+  } = query as FilterEventOptions;
 
   const initialFilters = { community, date, attended };
 

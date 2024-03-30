@@ -13,3 +13,9 @@ export interface ClientCartItem extends Omit<PublicMerchItemWithPurchaseLimits, 
   option: PublicMerchItemOption;
   quantity: number;
 }
+
+export type FilterEventOptions = {
+  community: 'all' | 'general' | 'ai' | 'cyber' | 'design' | 'hack';
+  date: 'all-time' | 'past-year' | 'past-month' | 'past-week' | 'upcoming';
+  attended: 'any' | 'attended' | 'not-attended';
+};

@@ -1,17 +1,13 @@
 import { Carousel, Typography } from '@/components/common';
 import { config } from '@/lib';
 import { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
+import { type FilterEventOptions } from '@/lib/types/client';
 import DiamondFriends from '@/public/assets/graphics/portal/diamond-friends.svg';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import EventCard from '../EventCard';
 import styles from './style.module.scss';
 
-export type FilterEventOptions = {
-  community?: 'all' | 'general' | 'ai' | 'cyber' | 'design' | 'hack';
-  date?: 'all-time' | 'past-year' | 'past-month' | 'past-week' | 'upcoming';
-  attended?: 'all' | 'attended' | 'not-attended';
-};
 interface EventCarouselProps {
   title: string | ReactNode;
   titleClassName?: string;
@@ -29,10 +25,8 @@ const EventCarousel = ({
   attendances,
   placeholder,
   className = '',
-  initialEventFilters = {},
+  initialEventFilters,
 }: EventCarouselProps) => {
-  const eventQueryParams = new URLSearchParams(initialEventFilters).toString();
-
   return (
     <div className={`${styles.wrapper} ${className}`}>
       <div className={styles.header}>
@@ -43,7 +37,9 @@ const EventCarousel = ({
         </div>
         <Link
           className={styles.viewToggle}
-          href={`${config.eventsRoute}${eventQueryParams ? `?${eventQueryParams}` : ''}`}
+          href={`${config.eventsRoute}${
+            initialEventFilters ? `?${new URLSearchParams(initialEventFilters).toString()}` : ''
+          }`}
         >
           See all events &gt;
         </Link>
