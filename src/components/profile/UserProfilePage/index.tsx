@@ -1,5 +1,6 @@
 import { EditButton, GifSafeImage, Typography } from '@/components/common';
 import { EventCarousel } from '@/components/events';
+import Banner from '@/components/profile/Banner';
 import SocialMediaIcon from '@/components/profile/SocialMediaIcon';
 import { UserProgress } from '@/components/profile/UserProgress';
 import { config, showToast } from '@/lib';
@@ -29,7 +30,9 @@ export const UserProfilePage = ({
   return (
     <div className={styles.profilePage}>
       <div className={styles.cardWrapper}>
-        <div className={styles.banner} />
+        <div className={styles.banner}>
+          <Banner recentAttendances={recentAttendances} />
+        </div>
         <div className={styles.profileCard}>
           <div className={styles.profilePic}>
             <GifSafeImage

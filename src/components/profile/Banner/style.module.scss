@@ -1,0 +1,12 @@
+@use 'src/styles/vars.scss' as vars;
+
+.banner {
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 100%;
+
+  rect {
+    fill: #f00;
+  }
+}

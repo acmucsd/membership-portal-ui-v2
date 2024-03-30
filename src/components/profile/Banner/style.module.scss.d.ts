@@ -1,8 +1,5 @@
 export type Styles = {
-  defaultThemeColorHex: string;
-  form: string;
-  header: string;
-  submitButtons: string;
+  banner: string;
 };
 
 export type ClassNames = keyof Styles;
