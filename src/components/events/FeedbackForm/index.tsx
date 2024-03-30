@@ -6,7 +6,7 @@ import { isEnum, reportError } from '@/lib/utils';
 import { useState } from 'react';
 import styles from './style.module.scss';
 
-const feedbackTypeNames: Record<FeedbackType, string> = {
+export const feedbackTypeNames: Record<FeedbackType, string> = {
   GENERAL: 'ACM',
   MERCH_STORE: 'Store',
   BIT_BYTE: 'Bit-Byte Program',
@@ -35,12 +35,7 @@ const FeedbackForm = ({ authToken }: FeedbackFormProps) => {
           return;
         }
         try {
-          await FeedbackAPI.addFeedback(
-            authToken,
-            title,
-            description.padEnd(100, ' '),
-            FeedbackType.GENERAL
-          );
+          await FeedbackAPI.addFeedback(authToken, title, description.padEnd(100, ' '), type);
           showToast(
             'Feedback received!',
             'Thank you for taking the time to help us make our events better for you.'

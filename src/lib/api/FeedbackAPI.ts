@@ -72,7 +72,7 @@ export const respondToFeedback = async (
 
   const requestBody: UpdateFeedbackStatusRequest = { status };
 
-  const response = await axios.post<UpdateFeedbackStatusResponse>(requestUrl, requestBody, {
+  const response = await axios.patch<UpdateFeedbackStatusResponse>(requestUrl, requestBody, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

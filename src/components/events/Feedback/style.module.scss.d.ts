@@ -1,8 +1,12 @@
 export type Styles = {
+  adminView: string;
+  body: string;
   date: string;
   feedback: string;
-  top: string;
+  status: string;
+  statuses: string;
   user: string;
+  userView: string;
   wrapper: string;
 };
 

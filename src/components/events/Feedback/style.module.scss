@@ -1,26 +1,29 @@
+@use 'src/styles/vars.scss' as vars;
+
 .wrapper {
   border: 1px solid var(--theme-elevated-stroke);
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
 
-  .top {
+  .user {
+    align-items: center;
     background-color: var(--theme-elevated-background);
     border-bottom: 1px solid var(--theme-elevated-stroke);
     border-radius: 0.5rem 0.5rem 0 0;
     display: flex;
+    display: flex;
+    flex: auto;
+    gap: 0.5rem;
+    padding: 0.5rem;
     position: relative;
 
-    .user {
-      align-items: center;
-      display: flex;
-      flex: auto;
-      gap: 0.5rem;
-      padding: 0.5rem;
+    img {
+      border-radius: 50%;
+    }
 
-      img {
-        border-radius: 50%;
-      }
+    &:hover span {
+      text-decoration: underline;
     }
 
     &::after {
@@ -38,16 +41,53 @@
     }
   }
 
-  .feedback {
+  .body {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     padding: 1rem;
-    white-space: pre-wrap;
-    word-break: break-word;
 
-    .date {
-      color: var(--theme-text-on-background-2);
+    .feedback {
+      display: flex;
+      flex: auto;
+      flex-direction: column;
+      gap: 0.5rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+
+      .date {
+        color: var(--theme-text-on-background-2);
+      }
+    }
+
+    .statuses {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      input,
+      &.userView input:not(:checked) + .status {
+        @include vars.accessibly-hidden;
+      }
+
+      .status {
+        border: 1px solid currentColor;
+        border-radius: 1rem;
+        display: flex;
+        gap: 0.25rem;
+        padding: 0.25rem;
+      }
+
+      &.adminView {
+        .status {
+          cursor: pointer;
+        }
+
+        input:checked + .status {
+          background-color: var(--theme-text-on-background-1);
+          border-color: transparent;
+          color: var(--theme-background);
+        }
+      }
     }
   }
 }
