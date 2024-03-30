@@ -31,7 +31,12 @@ export const UserProfilePage = ({
     <div className={styles.profilePage}>
       <div className={styles.cardWrapper}>
         <div className={styles.banner}>
-          <Banner uuid={handleUser.uuid} recentAttendances={recentAttendances} />
+          {/* Restart the animation when the UUID changes (e.g. navigating from user profile -> my profile) */}
+          <Banner
+            uuid={handleUser.uuid}
+            recentAttendances={recentAttendances}
+            key={handleUser.uuid}
+          />
         </div>
         <div className={styles.profileCard}>
           <div className={styles.profilePic}>

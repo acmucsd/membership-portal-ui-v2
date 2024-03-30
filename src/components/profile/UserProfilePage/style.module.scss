@@ -7,47 +7,45 @@
   margin: auto;
   max-width: vars.$breakpoint-md;
   width: 100%;
+  @media screen and (max-width: vars.$breakpoint-md) {
+    position: relative;
+    z-index: 0;
+  }
 
   .cardWrapper {
-    padding-top: 6.5rem;
-    position: relative;
+    background-color: var(--theme-elevated-background);
+    border: 1px solid var(--theme-elevated-stroke);
+    border-radius: 0.75rem;
+    overflow: hidden;
 
     @media screen and (max-width: vars.$breakpoint-md) {
-      padding-top: 1.5rem;
+      margin-top: 2rem;
+      overflow: unset;
+      position: relative;
     }
 
     .banner {
-      border: 1px solid var(--theme-elevated-stroke);
-      border-bottom: 0;
-      border-radius: 0.75rem;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      width: 100%;
+      height: 6rem;
+      position: relative;
 
       @media screen and (max-width: vars.$breakpoint-md) {
-        border: 0;
-        border-radius: 0;
-        margin: -2rem;
-        width: 100vw;
+        height: auto;
+        inset: 2rem -2rem;
+        position: absolute;
+        top: -4rem;
+        z-index: -1;
       }
     }
 
     .profileCard {
-      background-color: var(--theme-elevated-background);
-      border: 1px solid var(--theme-elevated-stroke);
-      border-radius: 0 0 0.75rem 0.75rem;
       border-top: 0;
       display: flex;
       gap: 1rem;
       padding: 2rem;
       position: relative;
-      visibility: hidden;
 
       @media (max-width: vars.$breakpoint-md) {
         align-items: center;
-        border-radius: 0.75rem;
-        border-top: 1px solid var(--theme-elevated-stroke);
         flex-direction: column;
       }
 
