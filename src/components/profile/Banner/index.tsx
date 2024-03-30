@@ -1,15 +1,15 @@
 import { UUID } from '@/lib/types';
 import { PublicAttendance } from '@/lib/types/apiResponses';
 import { Community } from '@/lib/types/enums';
-import { seededRandom, shuffle, toCommunity } from '@/lib/utils';
+import { seededRandom, toCommunity } from '@/lib/utils';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './style.module.scss';
 
 const communityColors: [Community, string][] = [
+  [Community.DESIGN, styles.design],
+  [Community.CYBER, styles.cyber],
   [Community.HACK, styles.hack],
   [Community.AI, styles.ai],
-  [Community.CYBER, styles.cyber],
-  [Community.DESIGN, styles.design],
   [Community.GENERAL, styles.general],
 ];
 
@@ -55,7 +55,7 @@ function computePie(
   let angle = random() * Math.PI * 2;
 
   return (
-    shuffle([...communityColors], random)
+    communityColors
       .map(([community, className]) => {
         const portion = communities[community] / total;
         if (portion === 0) {
@@ -81,7 +81,7 @@ function computePie(
           `M ${width / 2} ${height / 2}`,
           `L ${width / 2 + Math.cos(angle) * radius} ${height / 2 + Math.sin(angle) * radius}`,
           // A rx ry x-axis-rotation large-arc-flag sweep-flag x y
-          `A ${radius} ${radius} 0 ${endAngle - angle > Math.PI ? 1 : 0} 1 ${
+          `A ${radius} ${radius} 0 ${portion > 0.5 ? 1 : 0} 1 ${
             width / 2 + Math.cos(endAngle) * radius
           } ${height / 2 + Math.sin(endAngle) * radius}`,
           'z',

@@ -19,20 +19,20 @@
     overflow: hidden;
 
     @media screen and (max-width: vars.$breakpoint-md) {
-      margin-top: 2rem;
+      margin-top: 8rem;
       overflow: unset;
       position: relative;
     }
 
     .banner {
-      height: 6rem;
+      height: 10rem;
       position: relative;
 
       @media screen and (max-width: vars.$breakpoint-md) {
         height: auto;
         inset: 2rem -2rem;
         position: absolute;
-        top: -4rem;
+        top: -10rem;
         z-index: -1;
       }
     }
