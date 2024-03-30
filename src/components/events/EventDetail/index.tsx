@@ -12,9 +12,10 @@ import styles from './style.module.scss';
 interface EventDetailProps {
   event: PublicEvent | PublicOrderPickupEvent;
   attended: boolean;
+  showCloseBtn?: boolean;
 }
 
-const EventDetail = ({ event, attended }: EventDetailProps) => {
+const EventDetail = ({ event, attended, showCloseBtn = false }: EventDetailProps) => {
   const { cover, title, start, end, location, committee, pointValue, eventLink, description } =
     isOrderPickupEvent(event)
       ? {
@@ -32,9 +33,11 @@ const EventDetail = ({ event, attended }: EventDetailProps) => {
   return (
     <>
       <div className={styles.image}>
-        <button type="submit" aria-label="Close" className={styles.close}>
-          <CloseIcon aria-hidden className={styles.closeIcon} />
-        </button>
+        {showCloseBtn ? (
+          <button type="submit" aria-label="Close" className={styles.close}>
+            <CloseIcon aria-hidden className={styles.closeIcon} />
+          </button>
+        ) : null}
         {pointValue && <PointsDisplay points={pointValue} attended={attended} />}
         <Image src={displayCover} alt="Event Cover Image" style={{ objectFit: 'cover' }} fill />
       </div>

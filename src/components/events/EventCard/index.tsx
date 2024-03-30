@@ -1,6 +1,7 @@
 import { Typography } from '@/components/common';
 import EventModal from '@/components/events/EventModal';
 import PickupEventPreviewModal from '@/components/store/PickupEventPreviewModal';
+import { config } from '@/lib';
 import { communityNames } from '@/lib/constants/communities';
 import {
   PublicEvent,
@@ -14,6 +15,7 @@ import {
   toCommunity,
 } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import styles from './style.module.scss';
 
@@ -34,7 +36,7 @@ const EventCard = ({
   borderless,
   hideInfo,
 }: EventCardProps) => {
-  const { cover, title, start, end, location, committee } = isOrderPickupEvent(event)
+  const { uuid, cover, title, start, end, location, committee } = isOrderPickupEvent(event)
     ? {
         ...(event.linkedEvent ?? {}),
         ...event,
@@ -72,11 +74,14 @@ const EventCard = ({
         />
       )}
 
-      <button
-        type="button"
+      <Link
+        href={`${config.eventsRoute}/${uuid}`}
         data-community={community}
         className={`${styles.container} ${borderless ? '' : styles.bordered} ${className || ''}`}
-        onClick={() => setExpanded(true)}
+        onClick={e => {
+          e.preventDefault();
+          setExpanded(true);
+        }}
       >
         <div className={styles.image}>
           <Image
@@ -134,7 +139,7 @@ const EventCard = ({
             </div>
           </div>
         ) : null}
-      </button>
+      </Link>
     </>
   );
 };
