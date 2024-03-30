@@ -145,8 +145,7 @@ const EventDetailsForm = (props: IProps) => {
         showToast('Event Details Saved!', '', [
           {
             text: 'View Event',
-            onClick: () =>
-              router.push(`https://acmucsd.com/${config.admin.store.pickup}/${event.uuid}`),
+            onClick: () => router.push(`https://acmucsd.com/events/${event.uuid}`),
           },
         ]);
         router.push(config.admin.events.homeRoute);
