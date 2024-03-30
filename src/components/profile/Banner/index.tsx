@@ -1,16 +1,16 @@
 import { UUID } from '@/lib/types';
 import { PublicAttendance } from '@/lib/types/apiResponses';
 import { Community } from '@/lib/types/enums';
-import { seededRandom, toCommunity } from '@/lib/utils';
+import { seededRandom, shuffle, toCommunity } from '@/lib/utils';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './style.module.scss';
 
 const communityColors: [Community, string][] = [
-  [Community.HACK, 'r'],
-  [Community.AI, 'g'],
-  [Community.CYBER, 'b'],
-  [Community.DESIGN, 'a'],
-  [Community.GENERAL, 'f'],
+  [Community.HACK, styles.hack],
+  [Community.AI, styles.ai],
+  [Community.CYBER, styles.cyber],
+  [Community.DESIGN, styles.design],
+  [Community.GENERAL, styles.general],
 ];
 
 type PieSlice = {
@@ -54,7 +54,7 @@ function computePie(
   const radius = Math.hypot(width / 2, height / 2);
   let angle = random() * Math.PI * 2;
 
-  return communityColors.map(([community, className]) => {
+  return shuffle([...communityColors], random).map(([community, className]) => {
     const portion = communities[community] / total;
     if (portion === 0) {
       return { path: '', className };
@@ -108,11 +108,16 @@ const Banner = ({ uuid, recentAttendances }: BannerProps) => {
     () => computePie(uuid, recentAttendances, width, height),
     [uuid, recentAttendances, width, height]
   );
+  const blurRadius = useMemo(() => Math.hypot(width / 2, height / 2) / 4, [width, height]);
 
   return (
     <svg ref={ref} className={styles.banner}>
+      <filter id="blur">
+        <feGaussianBlur in="SourceGraphic" stdDeviation={blurRadius} />
+      </filter>
+
       {slices.map(({ path, className }) =>
-        path ? <path d={path} className={className} key={className} /> : null
+        path ? <path d={path} className={className} filter="url(#blur)" key={className} /> : null
       )}
     </svg>
   );

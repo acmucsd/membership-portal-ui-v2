@@ -6,7 +6,21 @@
   position: absolute;
   width: 100%;
 
-  rect {
-    fill: #f00;
+  .hack {
+    fill: vars.$orange-5;
+  }
+
+  .ai {
+    fill: vars.$scarlet-4;
+  }
+  .cyber {
+    fill: vars.$cyan-5;
+  }
+
+  .design {
+    fill: vars.$pink-4;
+  }
+  .general {
+    fill: vars.$blue-5;
   }
 }
