@@ -59,34 +59,41 @@
       }
     }
 
-    .statuses {
+    .response {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      justify-content: space-between;
 
-      input,
-      &.userView input:not(:checked) + .status {
-        @include vars.accessibly-hidden;
-      }
+      .button {
+        border-radius: 2rem;
+        color: var(--theme-background);
+        font-size: 1rem;
+        font-weight: bold;
+        height: 2rem;
+        padding: 0 1rem;
 
-      .status {
-        border: 1px solid currentColor;
-        border-radius: 1rem;
-        display: flex;
-        gap: 0.25rem;
-        padding: 0.25rem;
-      }
-
-      &.adminView {
-        .status {
-          cursor: pointer;
+        &.acknowledge {
+          background-color: var(--theme-primary-2);
         }
 
-        input:checked + .status {
-          background-color: var(--theme-text-on-background-1);
-          border-color: transparent;
-          color: var(--theme-background);
+        &.ignore {
+          background-color: var(--theme-text-on-background-2);
         }
+      }
+    }
+
+    .status {
+      display: flex;
+      gap: 0.25rem;
+      margin-top: auto;
+
+      &.acknowledged {
+        color: var(--theme-blue-text-button);
+      }
+
+      &.ignored {
+        color: var(--theme-text-on-background-2);
       }
     }
   }

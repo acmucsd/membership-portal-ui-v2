@@ -1,12 +1,15 @@
 export type Styles = {
-  adminView: string;
+  acknowledge: string;
+  acknowledged: string;
   body: string;
+  button: string;
   date: string;
   feedback: string;
+  ignore: string;
+  ignored: string;
+  response: string;
   status: string;
-  statuses: string;
   user: string;
-  userView: string;
   wrapper: string;
 };
 
