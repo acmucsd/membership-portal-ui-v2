@@ -54,27 +54,45 @@ function computePie(
   const radius = Math.hypot(width / 2, height / 2);
   let angle = random() * Math.PI * 2;
 
-  return shuffle([...communityColors], random).map(([community, className]) => {
-    const portion = communities[community] / total;
-    if (portion === 0) {
-      return { path: '', className };
-    }
+  return (
+    shuffle([...communityColors], random)
+      .map(([community, className]) => {
+        const portion = communities[community] / total;
+        if (portion === 0) {
+          return { path: '', className, portion };
+        }
+        if (portion === 1) {
+          // Draw a circle
+          return {
+            path: [
+              `M ${width / 2 - radius} ${height / 2}`,
+              `A ${radius} ${radius} 0 0 0 ${width / 2 + radius} ${height / 2}`,
+              `A ${radius} ${radius} 0 0 0 ${width / 2 - radius} ${height / 2}`,
+              'z',
+            ].join(''),
+            className,
+            portion,
+          };
+        }
 
-    const endAngle = angle + portion * Math.PI * 2;
+        const endAngle = angle + portion * Math.PI * 2;
 
-    const path = [
-      `M ${width / 2} ${height / 2}`,
-      `L ${width / 2 + Math.cos(angle) * radius} ${height / 2 + Math.sin(angle) * radius}`,
-      // A rx ry x-axis-rotation large-arc-flag sweep-flag x y
-      `A ${radius} ${radius} 0 0 1 ${width / 2 + Math.cos(endAngle) * radius} ${
-        height / 2 + Math.sin(endAngle) * radius
-      }`,
-      'z',
-    ].join('');
+        const path = [
+          `M ${width / 2} ${height / 2}`,
+          `L ${width / 2 + Math.cos(angle) * radius} ${height / 2 + Math.sin(angle) * radius}`,
+          // A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+          `A ${radius} ${radius} 0 ${endAngle - angle > Math.PI ? 1 : 0} 1 ${
+            width / 2 + Math.cos(endAngle) * radius
+          } ${height / 2 + Math.sin(endAngle) * radius}`,
+          'z',
+        ].join('');
 
-    angle = endAngle;
-    return { path, className };
-  });
+        angle = endAngle;
+        return { path, className, portion };
+      })
+      // Make the biggest blobs fade in first
+      .sort((a, b) => b.portion - a.portion)
+  );
 }
 
 interface BannerProps {
@@ -116,8 +134,16 @@ const Banner = ({ uuid, recentAttendances }: BannerProps) => {
         <feGaussianBlur in="SourceGraphic" stdDeviation={blurRadius} />
       </filter>
 
-      {slices.map(({ path, className }) =>
-        path ? <path d={path} className={className} filter="url(#blur)" key={className} /> : null
+      {slices.map(({ path, className }, i) =>
+        path ? (
+          <path
+            d={path}
+            className={`${styles.path} ${className}`}
+            filter="url(#blur)"
+            style={{ animationDelay: `${i * 0.7}s` }}
+            key={className}
+          />
+        ) : null
       )}
     </svg>
   );

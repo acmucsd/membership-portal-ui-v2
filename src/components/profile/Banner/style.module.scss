@@ -6,21 +6,37 @@
   position: absolute;
   width: 100%;
 
-  .hack {
-    fill: vars.$orange-5;
-  }
+  .path {
+    animation: fade-in 2s backwards;
 
-  .ai {
-    fill: vars.$scarlet-4;
-  }
-  .cyber {
-    fill: vars.$cyan-5;
-  }
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
 
-  .design {
-    fill: vars.$pink-4;
-  }
-  .general {
-    fill: vars.$blue-5;
+      to {
+        opacity: 1;
+      }
+    }
+
+    &.hack {
+      fill: vars.$orange-5;
+    }
+
+    &.ai {
+      fill: vars.$scarlet-4;
+    }
+
+    &.cyber {
+      fill: vars.$cyan-5;
+    }
+
+    &.design {
+      fill: vars.$pink-4;
+    }
+
+    &.general {
+      fill: vars.$blue-5;
+    }
   }
 }

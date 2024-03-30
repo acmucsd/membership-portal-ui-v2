@@ -17,7 +17,6 @@
     }
 
     .banner {
-      background-color: vars.$pink-2;
       border: 1px solid var(--theme-elevated-stroke);
       border-bottom: 0;
       border-radius: 0.75rem;
@@ -43,6 +42,7 @@
       gap: 1rem;
       padding: 2rem;
       position: relative;
+      visibility: hidden;
 
       @media (max-width: vars.$breakpoint-md) {
         align-items: center;
