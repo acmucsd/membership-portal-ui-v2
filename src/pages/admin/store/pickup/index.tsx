@@ -22,7 +22,7 @@ const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents }: AdminPickupPa
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <Typography variant="h1/bold">Manage Pickup Events</Typography>
+        <Typography variant="h1/bold" style={{ marginRight: 'auto' }}>Manage Pickup Events</Typography>
 
         <button
           type="button"
