@@ -1,16 +1,17 @@
 import { Dropdown, PaginationControls, Typography } from '@/components/common';
 import { DIVIDER } from '@/components/common/Dropdown';
 import { EventDisplay } from '@/components/events';
+import { config } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
+import useQueryState from '@/lib/hooks/useQueryState';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { formatSearch, getDateRange, getYears } from '@/lib/utils';
 import styles from '@/styles/pages/events.module.scss';
 import type { GetServerSideProps } from 'next';
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 interface EventsPageProps {
   events: PublicEvent[];
@@ -18,19 +19,19 @@ interface EventsPageProps {
 }
 
 interface FilterOptions {
-  query: string;
+  search: string;
   communityFilter: string;
   timeFilter: string | number;
-  attendedFilter: string;
+  attendanceFilter: string;
 }
 
 const filterEvent = (
   event: PublicEvent,
   attendances: PublicAttendance[],
-  { query, communityFilter, timeFilter, attendedFilter }: FilterOptions
+  { search, communityFilter, timeFilter, attendanceFilter }: FilterOptions
 ): boolean => {
   // Filter search query
-  if (query !== '' && !formatSearch(event.title).includes(formatSearch(query))) {
+  if (search !== '' && !formatSearch(event.title).includes(formatSearch(search))) {
     return false;
   }
   // Filter by community
@@ -46,14 +47,14 @@ const filterEvent = (
     return false;
   }
   // Filter by attendance
-  if (attendedFilter === 'all') {
+  if (attendanceFilter === 'all') {
     return true;
   }
   const attended = attendances.some(a => a.event.uuid === event.uuid);
-  if (attendedFilter === 'attended' && !attended) {
+  if (attendanceFilter === 'attended' && !attended) {
     return false;
   }
-  if (attendedFilter === 'not-attended' && attended) {
+  if (attendanceFilter === 'not-attended' && attended) {
     return false;
   }
   return true;
@@ -85,42 +86,56 @@ const AttendanceOptions = [
 const ROWS_PER_PAGE = 25;
 const EventsPage = ({ events, attendances }: EventsPageProps) => {
   const [page, setPage] = useState(0);
-  const [communityFilter, setCommunityFilter] = useState('all');
-  const [timeFilter, setTimeFilter] = useState('all-time');
-  const [attendedFilter, setAttendedFilter] = useState('all');
-  const [query, setQuery] = useState('');
-
   const years = useMemo(getYears, []);
 
-  const searchParams = useSearchParams();
+  const validCommunity = (value: string | null): boolean => {
+    return value !== null && CommunityOptions.some(o => o.value === value);
+  };
 
-  useEffect(() => {
-    const community = searchParams.get('community');
-    if (CommunityOptions.some(({ value }) => value === community)) {
-      setCommunityFilter(community as string);
-    }
+  const validTime = (value: string | null): boolean => {
+    return (
+      value !== null &&
+      (TimeOptions.some(o => o.value === value) || years.some(o => o.value === value))
+    );
+  };
 
-    const time = searchParams.get('time');
-    if (
-      TimeOptions.some(({ value }) => value === time) ||
-      years.some(({ value }) => value === time)
-    ) {
-      setTimeFilter(time as string);
-    }
+  const validAttendance = (value: string | null): boolean => {
+    return value !== null && AttendanceOptions.some(o => o.value === value);
+  };
 
-    const attendance = searchParams.get('attendance');
-    if (AttendanceOptions.some(({ value }) => value === attendance)) {
-      setAttendedFilter(attendance as string);
-    }
+  const validSearch = (value: string | null): boolean => {
+    return value !== null;
+  };
 
-    const query = searchParams.get('query');
-    if (query !== null) {
-      setQuery(query);
-    }
-  }, [searchParams, years]);
+  const [states, setStates] = useQueryState({
+    pathName: config.eventsRoute,
+    queryStates: {
+      community: {
+        defaultValue: 'all',
+        valid: validCommunity,
+      },
+      time: {
+        defaultValue: 'all-time',
+        valid: validTime,
+      },
+      attendance: {
+        defaultValue: 'all',
+        valid: validAttendance,
+      },
+      search: {
+        defaultValue: '',
+        valid: validSearch,
+      },
+    },
+  });
+
+  const communityFilter = states.community?.value || 'all';
+  const timeFilter = states.time?.value || 'all-time';
+  const attendanceFilter = states.attendance?.value || 'all';
+  const search = states.search?.value || '';
 
   const filteredEvents = events.filter(e =>
-    filterEvent(e, attendances, { query, communityFilter, timeFilter, attendedFilter })
+    filterEvent(e, attendances, { search, communityFilter, timeFilter, attendanceFilter })
   );
 
   filteredEvents.sort((a, b) => {
@@ -143,9 +158,9 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
           type="search"
           placeholder="Search Events"
           aria-label="Search Events"
-          value={query}
+          value={search}
           onChange={e => {
-            setQuery(e.currentTarget.value);
+            setStates('search', e.currentTarget.value);
             setPage(0);
           }}
         />
@@ -156,7 +171,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
             options={CommunityOptions}
             value={communityFilter}
             onChange={v => {
-              setCommunityFilter(v);
+              setStates('community', v);
               setPage(0);
             }}
           />
@@ -169,7 +184,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
             options={[...TimeOptions, DIVIDER, ...years]}
             value={timeFilter}
             onChange={v => {
-              setTimeFilter(v);
+              setStates('time', v);
               setPage(0);
             }}
           />
@@ -180,9 +195,9 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
             name="timeOptions"
             ariaLabel="Filter events by attendance"
             options={AttendanceOptions}
-            value={attendedFilter}
+            value={attendanceFilter}
             onChange={v => {
-              setAttendedFilter(v);
+              setStates('attendance', v);
               setPage(0);
             }}
           />
