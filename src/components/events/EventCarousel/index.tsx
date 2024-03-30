@@ -7,6 +7,11 @@ import type { ReactNode } from 'react';
 import EventCard from '../EventCard';
 import styles from './style.module.scss';
 
+export type FilterEventOptions = {
+  community?: 'all' | 'general' | 'ai' | 'cyber' | 'design' | 'hack';
+  date?: 'all-time' | 'past-year' | 'past-month' | 'past-week' | 'upcoming';
+  attended?: 'all' | 'attended' | 'not-attended';
+};
 interface EventCarouselProps {
   title: string | ReactNode;
   titleClassName?: string;
@@ -14,6 +19,7 @@ interface EventCarouselProps {
   attendances: PublicAttendance[];
   placeholder: string;
   className?: string;
+  linkFilters?: FilterEventOptions;
 }
 
 const EventCarousel = ({
@@ -23,6 +29,7 @@ const EventCarousel = ({
   attendances,
   placeholder,
   className = '',
+  linkFilters = {},
 }: EventCarouselProps) => {
   return (
     <div className={`${styles.wrapper} ${className}`}>
@@ -32,7 +39,10 @@ const EventCarousel = ({
             {title}
           </Typography>
         </div>
-        <Link className={styles.viewToggle} href={config.eventsRoute}>
+        <Link
+          className={styles.viewToggle}
+          href={`${config.eventsRoute}?${new URLSearchParams(linkFilters).toString()}`}
+        >
           See all events &gt;
         </Link>
       </div>

@@ -9,11 +9,17 @@ import { CookieType } from '@/lib/types/enums';
 import { formatSearch, getDateRange, getYears } from '@/lib/utils';
 import styles from '@/styles/pages/events.module.scss';
 import type { GetServerSideProps } from 'next';
-import { useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
 
 interface EventsPageProps {
   events: PublicEvent[];
   attendances: PublicAttendance[];
+  initialFilters: {
+    community: string;
+    date: string;
+    attended: string;
+  };
 }
 
 interface FilterOptions {
@@ -59,12 +65,23 @@ const filterEvent = (
 };
 
 const ROWS_PER_PAGE = 25;
-const EventsPage = ({ events, attendances }: EventsPageProps) => {
+const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) => {
   const [page, setPage] = useState(0);
-  const [communityFilter, setCommunityFilter] = useState('all');
-  const [dateFilter, setDateFilter] = useState('upcoming');
-  const [attendedFilter, setAttendedFilter] = useState('all');
+  const [communityFilter, setCommunityFilter] = useState(initialFilters.community);
+  const [dateFilter, setDateFilter] = useState(initialFilters.date);
+  const [attendedFilter, setAttendedFilter] = useState(initialFilters.attended);
   const [query, setQuery] = useState('');
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const validState =
+      initialFilters.community === communityFilter &&
+      initialFilters.date === dateFilter &&
+      initialFilters.attended === attendedFilter;
+    if (!validState) router.reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router, initialFilters]);
 
   const years = useMemo(getYears, []);
 
@@ -171,7 +188,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
 
 export default EventsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
   const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   const getEventsPromise = EventAPI.getAllEvents();
@@ -179,7 +196,11 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   const [events, attendances] = await Promise.all([getEventsPromise, getAttendancesPromise]);
 
-  return { props: { events, attendances } };
+  const { community = 'all', date = 'all-time', attended = 'all' } = query;
+
+  const initialFilters = { community, date, attended };
+
+  return { props: { events, attendances, initialFilters } };
 };
 
 export const getServerSideProps = withAccessType(
