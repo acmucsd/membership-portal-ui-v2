@@ -9,7 +9,8 @@ import { CookieType } from '@/lib/types/enums';
 import { formatSearch, getDateRange, getYears } from '@/lib/utils';
 import styles from '@/styles/pages/events.module.scss';
 import type { GetServerSideProps } from 'next';
-import { useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 
 interface EventsPageProps {
   events: PublicEvent[];
@@ -19,14 +20,14 @@ interface EventsPageProps {
 interface FilterOptions {
   query: string;
   communityFilter: string;
-  dateFilter: string | number;
+  timeFilter: string | number;
   attendedFilter: string;
 }
 
 const filterEvent = (
   event: PublicEvent,
   attendances: PublicAttendance[],
-  { query, communityFilter, dateFilter, attendedFilter }: FilterOptions
+  { query, communityFilter, timeFilter, attendedFilter }: FilterOptions
 ): boolean => {
   // Filter search query
   if (query !== '' && !formatSearch(event.title).includes(formatSearch(query))) {
@@ -37,7 +38,7 @@ const filterEvent = (
     return false;
   }
   // Filter by date
-  const { from, to } = getDateRange(dateFilter);
+  const { from, to } = getDateRange(timeFilter);
   if (from !== undefined && new Date(event.start) < new Date(from * 1000)) {
     return false;
   }
@@ -58,22 +59,72 @@ const filterEvent = (
   return true;
 };
 
+const CommunityOptions = [
+  { value: 'all', label: 'All communities' },
+  { value: 'general', label: 'General' },
+  { value: 'ai', label: 'AI' },
+  { value: 'cyber', label: 'Cyber' },
+  { value: 'design', label: 'Design' },
+  { value: 'hack', label: 'Hack' },
+];
+
+const TimeOptions = [
+  { value: 'upcoming', label: 'Upcoming' },
+  { value: 'past-week', label: 'Past week' },
+  { value: 'past-month', label: 'Past month' },
+  { value: 'past-year', label: 'Past year' },
+  { value: 'all-time', label: 'All time' },
+];
+
+const AttendanceOptions = [
+  { value: 'all', label: 'Any attendance' },
+  { value: 'attended', label: 'Attended' },
+  { value: 'not-attended', label: 'Not attended' },
+];
+
 const ROWS_PER_PAGE = 25;
 const EventsPage = ({ events, attendances }: EventsPageProps) => {
   const [page, setPage] = useState(0);
   const [communityFilter, setCommunityFilter] = useState('all');
-  const [dateFilter, setDateFilter] = useState('upcoming');
+  const [timeFilter, setTimeFilter] = useState('all-time');
   const [attendedFilter, setAttendedFilter] = useState('all');
   const [query, setQuery] = useState('');
 
   const years = useMemo(getYears, []);
 
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const community = searchParams.get('community');
+    if (CommunityOptions.some(({ value }) => value === community)) {
+      setCommunityFilter(community as string);
+    }
+
+    const time = searchParams.get('time');
+    if (
+      TimeOptions.some(({ value }) => value === time) ||
+      years.some(({ value }) => value === time)
+    ) {
+      setTimeFilter(time as string);
+    }
+
+    const attendance = searchParams.get('attendance');
+    if (AttendanceOptions.some(({ value }) => value === attendance)) {
+      setAttendedFilter(attendance as string);
+    }
+
+    const query = searchParams.get('query');
+    if (query !== null) {
+      setQuery(query);
+    }
+  }, [searchParams, years]);
+
   const filteredEvents = events.filter(e =>
-    filterEvent(e, attendances, { query, communityFilter, dateFilter, attendedFilter })
+    filterEvent(e, attendances, { query, communityFilter, timeFilter, attendedFilter })
   );
 
   filteredEvents.sort((a, b) => {
-    if (dateFilter === 'upcoming') {
+    if (timeFilter === 'upcoming') {
       // For upcoming events, sort from soonest to latest
       return new Date(a.start).getTime() - new Date(b.start).getTime();
     }
@@ -102,14 +153,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
           <Dropdown
             name="communityOptions"
             ariaLabel="Filter events by community"
-            options={[
-              { value: 'all', label: 'All communities' },
-              { value: 'general', label: 'General' },
-              { value: 'ai', label: 'AI' },
-              { value: 'cyber', label: 'Cyber' },
-              { value: 'design', label: 'Design' },
-              { value: 'hack', label: 'Hack' },
-            ]}
+            options={CommunityOptions}
             value={communityFilter}
             onChange={v => {
               setCommunityFilter(v);
@@ -122,18 +166,10 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
           <Dropdown
             name="timeOptions"
             ariaLabel="Filter events by time"
-            options={[
-              { value: 'upcoming', label: 'Upcoming' },
-              { value: 'past-week', label: 'Past week' },
-              { value: 'past-month', label: 'Past month' },
-              { value: 'past-year', label: 'Past year' },
-              { value: 'all-time', label: 'All time' },
-              DIVIDER,
-              ...years,
-            ]}
-            value={dateFilter}
+            options={[...TimeOptions, DIVIDER, ...years]}
+            value={timeFilter}
             onChange={v => {
-              setDateFilter(v);
+              setTimeFilter(v);
               setPage(0);
             }}
           />
@@ -143,11 +179,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
           <Dropdown
             name="timeOptions"
             ariaLabel="Filter events by attendance"
-            options={[
-              { value: 'all', label: 'Any attendance' },
-              { value: 'attended', label: 'Attended' },
-              { value: 'not-attended', label: 'Not attended' },
-            ]}
+            options={AttendanceOptions}
             value={attendedFilter}
             onChange={v => {
               setAttendedFilter(v);

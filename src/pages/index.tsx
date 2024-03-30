@@ -95,6 +95,7 @@ const PortalHomePage = ({
           events={upcomingEvents}
           attendances={attendance}
           placeholder="Check back soon for upcoming events!"
+          seeAllEventsQuery="?time=upcoming"
         />
       </div>
 
@@ -104,6 +105,7 @@ const PortalHomePage = ({
         events={attendedEvents}
         attendances={attendance}
         placeholder="Attend your first event and earn membership points!"
+        seeAllEventsQuery="?attendance=attended"
       />
     </div>
   );

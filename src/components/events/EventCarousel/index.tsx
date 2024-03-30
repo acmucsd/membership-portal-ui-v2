@@ -13,6 +13,7 @@ interface EventCarouselProps {
   events: PublicEvent[];
   attendances: PublicAttendance[];
   placeholder: string;
+  seeAllEventsQuery?: string;
 }
 
 const EventCarousel = ({
@@ -21,6 +22,7 @@ const EventCarousel = ({
   events,
   attendances,
   placeholder,
+  seeAllEventsQuery,
 }: EventCarouselProps) => {
   return (
     <div className={styles.wrapper}>
@@ -30,7 +32,10 @@ const EventCarousel = ({
             {title}
           </Typography>
         </div>
-        <Link className={styles.viewToggle} href={config.eventsRoute}>
+        <Link
+          className={styles.viewToggle}
+          href={`${config.eventsRoute}${seeAllEventsQuery || ''}`}
+        >
           See all events &gt;
         </Link>
       </div>
