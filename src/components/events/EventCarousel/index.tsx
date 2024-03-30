@@ -14,6 +14,7 @@ interface EventCarouselProps {
   attendances: PublicAttendance[];
   placeholder: string;
   seeAllEventsQuery?: string;
+  className?: string;
 }
 
 const EventCarousel = ({
@@ -23,9 +24,10 @@ const EventCarousel = ({
   attendances,
   placeholder,
   seeAllEventsQuery,
+  className = '',
 }: EventCarouselProps) => {
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${className}`}>
       <div className={styles.header}>
         <div className={styles.headerText}>
           <Typography variant="h2/bold" className={titleClassName}>

@@ -77,7 +77,9 @@ export const GoogleCalendarButton = ({ event }: CalendarButtonProps) => {
   return (
     <a className={styles.calendarLink} href={gCalURL} target="blank">
       <GoogleCalendarLogo alt="google calendar" />
-      <Typography variant="h6/bold">Add to Google Calendar</Typography>
+      <Typography variant="h6/bold" className={styles.calendarText}>
+        Add to Google Calendar
+      </Typography>
     </a>
   );
 };
@@ -90,7 +92,9 @@ export const AppleCalendarButton = ({ event }: CalendarButtonProps) => {
     return (
       <a className={styles.calendarLink} href={appleCalUrl} download={appleCalInfo.download}>
         <AppleCalendarLogo className={styles.appleCalLogo} alt="apple calendar" />
-        <Typography variant="h6/bold">Add to Apple Calendar</Typography>
+        <Typography variant="h6/bold" className={styles.calendarText}>
+          Add to Apple Calendar
+        </Typography>
       </a>
     );
   }
