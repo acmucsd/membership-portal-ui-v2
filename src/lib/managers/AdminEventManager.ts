@@ -131,18 +131,9 @@ export const editPickupEvent = async (
   data: EditPickupEventRequest & AuthAPIHandlerProps<PublicOrderPickupEvent>
 ) => {
   const { onSuccessCallback, onFailCallback, pickupEvent, uuid, token } = data;
-  if (data.cover && data.cover.size > config.file.MAX_EVENT_COVER_SIZE_KB * 1024) {
-    onFailCallback?.(new Error('Cover size too large'));
-    return;
-  }
 
   try {
     const modifiedEvent = await EventAPI.editPickupEvent(token, uuid, pickupEvent);
-    if (data.cover) {
-      // There's some weird behavior that happens when we editEvent after uploading a new
-      // event image, so I've kept the API calls in the same order as createNewEvent
-      await EventAPI.uploadEventImage(token, uuid, data.cover);
-    }
 
     onSuccessCallback?.(modifiedEvent);
   } catch (e) {
