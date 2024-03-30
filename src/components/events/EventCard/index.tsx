@@ -74,6 +74,7 @@ const EventCard = ({
 
       <button
         type="button"
+        data-community={community}
         className={`${styles.container} ${borderless ? '' : styles.bordered} ${className || ''}`}
         onClick={() => setExpanded(true)}
       >

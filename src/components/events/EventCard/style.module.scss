@@ -20,8 +20,28 @@
   }
 
   &:not([disabled]):hover {
-    box-shadow: 0 3px 10px var(--theme-shadow);
-    transform: scale(1.025);
+    outline: 4px solid var(--theme-elevated-stroke);
+    transform: scale(0.975);
+
+    &[data-community='General'] {
+      outline-color: vars.$blue-4;
+    }
+
+    &[data-community='Ai'] {
+      outline-color: vars.$scarlet-4;
+    }
+
+    &[data-community='Hack'] {
+      outline-color: vars.$orange-4;
+    }
+
+    &[data-community='Cyber'] {
+      outline-color: vars.$cyan-4;
+    }
+
+    &[data-community='Design'] {
+      outline-color: vars.$pink-4;
+    }
   }
 
   &:disabled {
