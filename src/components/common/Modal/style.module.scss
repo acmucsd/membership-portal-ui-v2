@@ -80,6 +80,7 @@
     @media screen and (width <= vars.$breakpoint-md) {
       &.bottomSheet {
         border-radius: 10px 10px 0 0;
+        margin: auto 0 0;
       }
     }
   }

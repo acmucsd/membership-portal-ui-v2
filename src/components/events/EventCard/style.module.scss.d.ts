@@ -1,14 +1,4 @@
 export type Styles = {
-  badge: string;
-  badgeAi: string;
-  badgeAttended: string;
-  badgeCyber: string;
-  badgeDesign: string;
-  badgeGeneral: string;
-  badgeHack: string;
-  badgeLive: string;
-  badgePoints: string;
-  badges: string;
   bordered: string;
   container: string;
   image: string;
