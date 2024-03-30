@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 interface QueryParamValue {
   defaultValue: string;
   value: string;
-  valid: (value: string | null) => boolean;
+  valid: (value: string) => boolean;
 }
 
 type QueryState = { [queryParam: string]: QueryParamValue };
@@ -13,7 +13,7 @@ type QueryState = { [queryParam: string]: QueryParamValue };
 // Props passed into the hook.
 interface QueryStateProp {
   defaultValue: string;
-  valid: (value: string | null) => boolean;
+  valid: (value: string) => boolean;
 }
 
 type QueryStateProps = { [queryParam: string]: QueryStateProp };
@@ -36,11 +36,9 @@ function getDefaultValues(
 ): QueryState {
   return Object.fromEntries(
     Object.entries(queryStates).map(([k, v]) => {
-      const searchParamValue = searchParams.get(k);
-      return [
-        k,
-        { ...v, value: v.valid(searchParamValue) ? (searchParamValue as string) : v.defaultValue },
-      ];
+      const searchParamsValue = searchParams.get(k);
+      const validValue = searchParamsValue !== null && v.valid(searchParamsValue);
+      return [k, { ...v, value: validValue ? searchParamsValue : v.defaultValue }];
     })
   );
 }
@@ -52,7 +50,7 @@ function getDefaultValues(
 export default function useQueryState({
   pathName,
   queryStates,
-}: useQueryStateProps): [QueryState, (param: string, value: string | null) => void] {
+}: useQueryStateProps): [QueryState, (param: string, value: string) => void] {
   const searchParams = useSearchParams();
   const defaultValues = useMemo(
     () => getDefaultValues(searchParams, queryStates),
@@ -73,11 +71,11 @@ export default function useQueryState({
     window.history.replaceState(undefined, '', newUrl);
   }, [pathName, states]);
 
-  const changeState = (param: string, value: string | null) => {
+  const changeState = (param: string, value: string) => {
     // Update the specific parameter of the state if the value is valid.
     const newStates = { ...states };
     if (Object.prototype.hasOwnProperty.call(newStates, param) && newStates[param]!.valid(value)) {
-      newStates[param]!.value = value as string;
+      newStates[param]!.value = value;
     }
     setStates(newStates);
   };

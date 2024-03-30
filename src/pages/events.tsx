@@ -88,23 +88,21 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
   const [page, setPage] = useState(0);
   const years = useMemo(getYears, []);
 
-  const validCommunity = (value: string | null): boolean => {
-    return value !== null && CommunityOptions.some(o => o.value === value);
+  const validCommunity = (value: string): boolean => {
+    return CommunityOptions.some(o => o.value === value);
   };
 
-  const validTime = (value: string | null): boolean => {
-    return (
-      value !== null &&
-      (TimeOptions.some(o => o.value === value) || years.some(o => o.value === value))
-    );
+  const validTime = (value: string): boolean => {
+    return TimeOptions.some(o => o.value === value) || years.some(o => o.value === value);
   };
 
-  const validAttendance = (value: string | null): boolean => {
-    return value !== null && AttendanceOptions.some(o => o.value === value);
+  const validAttendance = (value: string): boolean => {
+    return AttendanceOptions.some(o => o.value === value);
   };
 
-  const validSearch = (value: string | null): boolean => {
-    return value !== null;
+  const validSearch = (): boolean => {
+    // Any string is a valid search, so just return true.
+    return true;
   };
 
   const [states, setStates] = useQueryState({
