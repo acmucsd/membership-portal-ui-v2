@@ -46,6 +46,10 @@
     gap: 1rem;
     padding: 1rem;
 
+    @media (max-width: vars.$breakpoint-sm) {
+      flex-direction: column;
+    }
+
     .feedback {
       display: flex;
       flex: auto;
