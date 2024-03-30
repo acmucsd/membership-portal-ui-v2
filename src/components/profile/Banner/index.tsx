@@ -130,7 +130,8 @@ const Banner = ({ uuid, recentAttendances }: BannerProps) => {
 
   return (
     <svg ref={ref} className={styles.banner}>
-      <filter id="blur">
+      {/* Avoid clipping off the blur: https://stackoverflow.com/a/6556655 */}
+      <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
         <feGaussianBlur in="SourceGraphic" stdDeviation={blurRadius} />
       </filter>
 
@@ -140,7 +141,7 @@ const Banner = ({ uuid, recentAttendances }: BannerProps) => {
             d={path}
             className={`${styles.path} ${className}`}
             filter="url(#blur)"
-            style={{ animationDelay: `${i * 0.7}s` }}
+            style={{ animationDelay: `${i * 0.7 + 0.5}s` }}
             key={className}
           />
         ) : null
