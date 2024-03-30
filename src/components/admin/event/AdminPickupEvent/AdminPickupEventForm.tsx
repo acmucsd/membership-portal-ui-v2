@@ -31,7 +31,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     end: DateTime.fromISO(defaultData?.end ?? '').toFormat("yyyy-MM-dd'T'HH:mm"),
     description: defaultData.description ?? '',
     orderLimit: defaultData.orderLimit ?? 0,
-    linkedEventUuid: defaultData.linkedEvent?.uuid ?? '',
+    linkedEventUuid: defaultData.linkedEvent?.uuid ?? null,
   };
 
   const {
@@ -230,9 +230,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
             id=""
             placeholder={defaultFormText}
             defaultValue={defaultFormText}
-            {...register('linkedEventUuid', {
-              required: 'Required',
-            })}
+            {...register('linkedEventUuid', {})}
           >
             <option disabled>{defaultFormText}</option>
 

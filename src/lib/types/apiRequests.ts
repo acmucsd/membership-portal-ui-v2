@@ -350,7 +350,7 @@ export interface OrderPickupEvent {
   end: string;
   description: string;
   orderLimit: number;
-  linkedEventUuid?: UUID;
+  linkedEventUuid?: UUID | null;
 }
 
 export interface DeletePickupEventRequest {
