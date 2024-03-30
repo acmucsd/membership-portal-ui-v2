@@ -50,7 +50,9 @@ const FeedbackForm = ({ authToken }: FeedbackFormProps) => {
         }
       }}
     >
-      <Typography variant="h2/bold">Feedback</Typography>
+      <Typography variant="h2/bold" component="h2">
+        Feedback
+      </Typography>
       <p>
         Feel free to give event suggestions, friendly words, constructive crisitism, or just say
         what’s on your mind!

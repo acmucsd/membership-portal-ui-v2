@@ -375,7 +375,7 @@ export interface PublicFeedback {
   user: PublicProfile;
   title: string;
   description: string;
-  timestamp: Date;
+  timestamp: string;
   status: FeedbackStatus;
   type: FeedbackType;
 }
