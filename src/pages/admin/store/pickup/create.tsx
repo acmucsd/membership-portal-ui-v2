@@ -33,7 +33,7 @@ export default CreatePickupEventPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  const [futureEvents] = await Promise.all([EventAPI.getAllFutureEvents()]);
+  const futureEvents = await EventAPI.getAllFutureEvents();
   return { props: { token, futureEvents } };
 };
 
