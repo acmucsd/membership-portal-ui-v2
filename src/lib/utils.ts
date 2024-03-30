@@ -404,13 +404,24 @@ export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderIte
   return Array.from(itemMap.values());
 };
 
-/** Normalizes string as a capitalized community name. Defaults to General. */
+export function isEnum<T extends Record<string, string>>(
+  Enum: T,
+  value: string
+): value is T[keyof T] {
+  return Object.values(Enum).includes(value);
+}
+
+export function stringToEnum<T extends Record<string, string>>(
+  Enum: T,
+  value: string
+): T[keyof T] | null {
+  if (isEnum(Enum, value)) return value;
+
+  return null;
+}
+
 export const toCommunity = (community = ''): Community => {
-  const formattedName = capitalize(community) as Community;
-
-  if (Object.values(Community).includes(formattedName)) return formattedName;
-
-  return Community.GENERAL;
+  return stringToEnum(Community, capitalize(community)) ?? Community.GENERAL;
 };
 
 /**
