@@ -3,6 +3,7 @@ import ranks from '@/lib/constants/ranks';
 import showToast from '@/lib/showToast';
 import type { URL } from '@/lib/types';
 import type {
+  ApiResponse,
   CustomErrorBody,
   PublicEvent,
   PublicMerchCollection,
@@ -55,7 +56,8 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
 
 export function getErrorMessage(error: unknown): string {
   if (error instanceof AxiosError && error.response?.data?.error) {
-    return getMessagesFromError(error.response.data.error).join('\n\n');
+    const response: ApiResponse = error.response.data;
+    return getMessagesFromError(response.error).join('\n\n') || error.message;
   }
   if (error instanceof Error) {
     return error.message;

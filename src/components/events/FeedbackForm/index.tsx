@@ -1,7 +1,8 @@
 import { Dropdown, Typography } from '@/components/common';
+import { showToast } from '@/lib';
 import { FeedbackAPI } from '@/lib/api';
 import { FeedbackType } from '@/lib/types/enums';
-import { isEnum } from '@/lib/utils';
+import { isEnum, reportError } from '@/lib/utils';
 import { useState } from 'react';
 import styles from './style.module.scss';
 
@@ -28,9 +29,25 @@ const FeedbackForm = ({ authToken }: FeedbackFormProps) => {
   return (
     <form
       className={styles.form}
-      onSubmit={e => {
+      onSubmit={async e => {
         e.preventDefault();
-        FeedbackAPI.addFeedback(authToken, title, description, FeedbackType.GENERAL);
+        if (title.length === 0) {
+          return;
+        }
+        try {
+          await FeedbackAPI.addFeedback(
+            authToken,
+            title,
+            description.padEnd(100, ' '),
+            FeedbackType.GENERAL
+          );
+          showToast(
+            'Feedback received!',
+            'Thank you for taking the time to help us make our events better for you.'
+          );
+        } catch (error) {
+          reportError('Failed to submit feedback', error);
+        }
       }}
     >
       <Typography variant="h2/bold">Feedback</Typography>
@@ -64,7 +81,11 @@ const FeedbackForm = ({ authToken }: FeedbackFormProps) => {
         }}
         className={styles.field}
       />
-      <button type="submit">Submit</button>
+      {title.length > 0 ? (
+        <button type="submit" className={styles.submit}>
+          Submit
+        </button>
+      ) : null}
     </form>
   );
 };

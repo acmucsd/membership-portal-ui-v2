@@ -1,6 +1,6 @@
 import EventDetail from '@/components/events/EventDetail';
 import FeedbackForm from '@/components/events/FeedbackForm';
-import { EventAPI } from '@/lib/api';
+import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PublicEvent } from '@/lib/types/apiResponses';
@@ -32,9 +32,16 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   try {
-    const event = await EventAPI.getEvent(uuid, token);
+    const [event, attendances] = await Promise.all([
+      EventAPI.getEvent(uuid, token),
+      UserAPI.getAttendancesForCurrentUser(token),
+    ]);
     return {
-      props: { token, event },
+      props: {
+        token,
+        event,
+        attended: attendances.some(attendance => attendance.event.uuid === uuid),
+      },
     };
   } catch {
     return { notFound: true };

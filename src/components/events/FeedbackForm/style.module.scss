@@ -9,12 +9,24 @@
     border: 2px solid currentColor;
     border-radius: 0.75rem;
     font-size: 1rem;
-    padding: 0.5rem 1rem;
+    min-height: 3rem;
+    padding: 0 1rem;
 
     &:is(textarea) {
       min-height: 10rem;
       padding: 1rem;
       resize: vertical;
     }
+  }
+
+  .submit {
+    align-self: center;
+    background-color: var(--theme-text-on-background-1);
+    border-radius: 2rem;
+    color: var(--theme-background);
+    font-size: 1rem;
+    font-weight: bold;
+    min-height: 3rem;
+    padding: 0 2rem;
   }
 }

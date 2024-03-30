@@ -83,6 +83,7 @@ const config = {
   leaderboardRoute: '/leaderboard',
   profileRoute: '/profile',
   aboutRoute: '/about',
+  feedbackRoute: '/feedback',
   userProfileRoute: '/u/',
   store: {
     homeRoute: '/store',
