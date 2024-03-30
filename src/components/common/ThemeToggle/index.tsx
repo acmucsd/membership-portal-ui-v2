@@ -21,42 +21,6 @@ const ThemeToggle = () => {
     dark: styles.switchThree,
   };
 
-  // const el = document.querySelector('.switch');
-
-  // el?.addEventListener('transitionstart', () => {
-  //   const css = document.createElement('style');
-  //   setId(css.id);
-  //   css.appendChild(
-  //     document.createTextNode(
-  //       `* {
-  //                 webkit-transition: 0.3s ease-in-out !important;
-  //                 -moz-transition: 0.3s ease-in-out !important;
-  //                 -o-transition: 0.3s ease-in-out !important;
-  //                 -ms-transition: 0.3s ease-in-out !important;
-  //                 transition: 0.3s ease-in-out !important;
-  //               }`
-  //     )
-  //   );
-  //   document.head.appendChild(css);
-  // });
-
-  // el?.addEventListener('transitioncancel', () => {
-  //   const css = document.getElementById(id);
-  //   // Calling getComputedStyle forces the browser to redraw
-  //   // eslint-disable-next-line no-unused-vars
-  //   const _ = window.getComputedStyle(css).opacity;
-
-  //   document.head.removeChild(css);
-  // });
-
-  // el?.addEventListener('transitionend', () => {
-  //   // Calling getComputedStyle forces the browser to redraw
-  //   // eslint-disable-next-line no-unused-vars
-  //   const _ = window.getComputedStyle(css).opacity;
-
-  //   document.head.removeChild(css);
-  // });
-
   const switchPos = themeToSwitch[theme];
   const currAltText = `Icon representing ${theme} theme is on.`;
 
@@ -92,30 +56,7 @@ const ThemeToggle = () => {
           name="state-d"
           type="radio"
           defaultChecked={theme === 'light'}
-          onClick={() => {
-            // const css = document.createElement('style');
-            // css.type = 'text/css';
-            // css.appendChild(
-            //   document.createTextNode(
-            //     `* {
-            //       -webkit-transition: all 0s, color 0.3s !important;
-            //       -moz-transition: all 0s, color 0.3s !important;
-            //       -o-transition: all 0s, color 0.3s !important;
-            //       -ms-transition: all 0s, color 0.3s !important;
-            //       transition: all 0s, color 0.3s !important;
-            //     }`
-            //   )
-            // );
-            // document.head.appendChild(css);
-            // // Toggle the theme here...
-
-            // // Calling getComputedStyle forces the browser to redraw
-            // // eslint-disable-next-line no-unused-vars
-            // const _ = window.getComputedStyle(css).opacity;
-            // document.head.removeChild(css);
-
-            setTheme('light');
-          }}
+          onClick={() => setTheme('light')}
         />
       </label>
 
@@ -130,30 +71,7 @@ const ThemeToggle = () => {
           name="state-d"
           type="radio"
           defaultChecked={theme === 'system'}
-          onClick={() => {
-            // const css = document.createElement('style');
-            // css.type = 'text/css';
-            // css.appendChild(
-            //   document.createTextNode(
-            //     `* {
-            //       -webkit-transition: all 0s, color 0.3s !important;
-            //       -moz-transition: all 0s, color 0.3s !important;
-            //       -o-transition: all 0s, color 0.3s !important;
-            //       -ms-transition: all 0s, color 0.3s !important;
-            //       transition: all 0s, color 0.3s !important;
-            //     }`
-            //   )
-            // );
-            // document.head.appendChild(css);
-            // // Toggle the theme here...
-
-            // // Calling getComputedStyle forces the browser to redraw
-            // // eslint-disable-next-line no-unused-vars
-            // const _ = window.getComputedStyle(css).opacity;
-            // document.head.removeChild(css);
-
-            setTheme('system');
-          }}
+          onClick={() => setTheme('system')}
         />
       </label>
 
@@ -168,30 +86,7 @@ const ThemeToggle = () => {
           name="state-d"
           type="radio"
           defaultChecked={theme === 'dark'}
-          onClick={() => {
-            // const css = document.createElement('style');
-            // css.type = 'text/css';
-            // css.appendChild(
-            //   document.createTextNode(
-            //     `* {
-            //       -webkit-transition: all 0s, color 0.3s !important;
-            //       -moz-transition: all 0s, color 0.3s !important;
-            //       -o-transition: all 0s, color 0.3s !important;
-            //       -ms-transition: all 0s, color 0.3s !important;
-            //       transition: all 0s, color 0.3s !important;
-            //     }`
-            //   )
-            // );
-            // document.head.appendChild(css);
-            // // Toggle the theme here...
-
-            // // Calling getComputedStyle forces the browser to redraw
-            // // eslint-disable-next-line no-unused-vars
-            // const _ = window.getComputedStyle(css).opacity;
-            // document.head.removeChild(css);
-
-            setTheme('dark');
-          }}
+          onClick={() => setTheme('dark')}
         />
       </label>
       <div className={`${switchPos} ${styles.switchindicator}`} />
