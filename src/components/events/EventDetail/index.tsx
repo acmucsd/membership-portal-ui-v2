@@ -26,9 +26,11 @@ const EventDetail = ({ event, attended, showCloseBtn = false }: EventDetailProps
 
   return (
     <div className={styles.container}>
-      <button type="submit" aria-label="Close" className={styles.close}>
-        <CloseIcon aria-hidden className={styles.closeIcon} />
-      </button>
+      {showCloseBtn ? (
+        <button type="submit" aria-label="Close" className={styles.close}>
+          <CloseIcon aria-hidden className={styles.closeIcon} />
+        </button>
+      ) : null}
       <div className={styles.image}>
         <Image src={displayCover} alt="Event Cover Image" style={{ objectFit: 'cover' }} fill />
       </div>

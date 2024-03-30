@@ -4,4 +4,9 @@
   gap: 2rem;
   margin: 0 auto;
   max-width: 70rem;
+
+  div:first-child {
+    padding: 0;
+    width: auto;
+  }
 }
