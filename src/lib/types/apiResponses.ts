@@ -164,6 +164,14 @@ export interface CreateEventResponse extends ApiResponse {
   event: PublicEvent;
 }
 
+export interface CreatePickupEventResponse extends ApiResponse {
+  pickupEvent: PublicOrderPickupEvent;
+}
+
+export interface PatchPickupEventResponse extends ApiResponse {
+  pickupEvent: PublicOrderPickupEvent;
+}
+
 // LEADERBOARD
 
 export interface GetLeaderboardResponse extends ApiResponse {
@@ -444,8 +452,8 @@ export interface DeleteSocialMediaResponse extends ApiResponse {}
 export interface PublicOrderPickupEvent {
   uuid: UUID;
   title: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   description: string;
   orders?: PublicOrderWithItems[];
   orderLimit?: number;

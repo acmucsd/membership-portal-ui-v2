@@ -346,11 +346,15 @@ export interface MerchItemOptionAndQuantity {
 
 export interface OrderPickupEvent {
   title: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   description: string;
   orderLimit: number;
-  linkedEventUuid?: UUID;
+  linkedEventUuid?: UUID | null;
+}
+
+export interface DeletePickupEventRequest {
+  event: UUID;
 }
 
 export interface OrderPickupEventEdit extends Partial<OrderPickupEvent> {}
