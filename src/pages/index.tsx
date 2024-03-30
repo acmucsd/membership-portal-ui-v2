@@ -1,15 +1,19 @@
+import { Typography } from '@/components/common';
 import { CheckInModal, EventCarousel } from '@/components/events';
-import Hero from '@/components/home/Hero';
-import HomeActions from '@/components/home/HomeActions';
-import { showToast } from '@/lib';
+import { UserProgress } from '@/components/profile/UserProgress';
+import { config, showToast } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { attendEvent } from '@/lib/managers/EventManager';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PrivateProfile, PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import RaccoonGraphic from '@/public/assets/graphics/portal/raccoon-hero.svg';
+import WavesGraphic from '@/public/assets/graphics/portal/waves.svg';
+import CheckMark from '@/public/assets/icons/check-mark.svg';
 import styles from '@/styles/pages/Home.module.scss';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 interface HomePageProps {
@@ -41,6 +45,7 @@ const PortalHomePage = ({
   const [points, setPoints] = useState<number>(user.points);
   const [checkinEvent, setCheckinEvent] = useState<PublicEvent | undefined>(undefined);
   const [checkinModalVisible, setCheckinModalVisible] = useState<boolean>(false);
+  const [checkinCode, setCheckinCode] = useState('');
   const [attendance, setAttendance] = useState<PublicAttendance[]>(attendances);
 
   const checkin = async (attendanceCode: string): Promise<void> => {
@@ -76,6 +81,12 @@ const PortalHomePage = ({
     }
   }, [checkInResponse, user]);
 
+  const today = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <div className={styles.page}>
       <CheckInModal
@@ -83,20 +94,68 @@ const PortalHomePage = ({
         event={checkinEvent}
         onClose={() => setCheckinModalVisible(false)}
       />
-      <Hero user={user} points={points} checkin={code => checkin(code)} />
 
-      <div className={styles.row}>
-        <div className={styles.desktop}>
-          <HomeActions user={user} points={points} checkin={checkin} />
-        </div>
-        <EventCarousel
-          title="Upcoming Events"
-          titleClassName={styles.subheading}
-          events={upcomingEvents}
-          attendances={attendance}
-          placeholder="Check back soon for upcoming events!"
+      <div className={styles.hero}>
+        <RaccoonGraphic
+          className={`${styles.image} ${styles.raccoon}`}
+          alt="Raccoon lounging on a chair at a beach"
         />
+        <WavesGraphic className={styles.image} alt="Ocean waves roll ashore" />
       </div>
+
+      <div className={styles.content}>
+        <Typography variant="h5/regular" className={styles.date}>
+          {today}
+        </Typography>
+        <Typography variant="display/light/small" className={styles.heading} component="span">
+          {'Welcome to ACM, '}
+          <strong>
+            <Link href={config.profileRoute}>{user.firstName}</Link>
+          </strong>
+          !
+        </Typography>
+      </div>
+
+      <form
+        className={styles.checkin}
+        onSubmit={e => {
+          e.preventDefault();
+          if (checkinCode !== '') {
+            checkin(checkinCode);
+            setCheckinCode('');
+          }
+        }}
+        action=""
+      >
+        <Typography variant="h2/bold" className={styles.subheading}>
+          Event Check-in
+        </Typography>
+        <div className={styles.checkinButtons}>
+          <input
+            type="text"
+            placeholder="Enter event check-in code"
+            className={styles.checkinInput}
+            value={checkinCode}
+            onChange={e => setCheckinCode(e.target.value)}
+          />
+          <button type="submit" className={styles.submit}>
+            <CheckMark />
+          </button>
+        </div>
+      </form>
+
+      <div className={styles.userProgress}>
+        <UserProgress user={user} points={points} isSignedInUser />
+      </div>
+
+      <EventCarousel
+        title="Upcoming Events"
+        titleClassName={styles.subheading}
+        events={upcomingEvents}
+        attendances={attendance}
+        placeholder="Check back soon for upcoming events!"
+        className={styles.upcomingEvents}
+      />
 
       <EventCarousel
         title="Recently Attended Events"
@@ -104,6 +163,7 @@ const PortalHomePage = ({
         events={attendedEvents}
         attendances={attendance}
         placeholder="Attend your first event and earn membership points!"
+        className={styles.recentlyAttended}
       />
     </div>
   );
