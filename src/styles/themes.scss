@@ -108,7 +108,4 @@
 html,
 body {
   background-color: var(--theme-background);
-  transition-duration: 0.3s;
-  transition-property: background-color, color, border-color, border, filter;
-  transition-timing-function: ease;
 }

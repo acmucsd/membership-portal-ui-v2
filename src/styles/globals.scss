@@ -67,12 +67,14 @@ label {
   font-size: 100%;
   margin: 0;
   padding: 0;
-  transition: background 0.3s ease;
+  transition: background-color 0.3s ease;
   vertical-align: baseline;
 }
 
 div,
+input,
 span,
+form,
 object,
 iframe,
 img,
@@ -96,12 +98,13 @@ header,
 section,
 summary,
 mark,
+main,
 audio,
 video {
   border: 0;
   margin: 0;
   padding: 0;
-  transition: background 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 a,

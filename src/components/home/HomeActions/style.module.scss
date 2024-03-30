@@ -91,6 +91,6 @@
     flex-direction: column;
     gap: 0.75rem;
     padding: 1.5rem;
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s, color 0.3s, background-color 0.3s;
   }
 }

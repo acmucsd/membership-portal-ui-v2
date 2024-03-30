@@ -18,11 +18,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <>
       <style jsx global>{`
         * {
+          transition: all ease;
           font-family: ${dmSans.style.fontFamily}, sans-serif;
         }
       `}</style>
       <SEO />
-      <ThemeProvider disableTransitionOnChange>
+      <ThemeProvider>
         <ToastContainer />
         <PageLayout accessType={pageProps?.user?.accessType}>
           <Component {...pageProps} />
