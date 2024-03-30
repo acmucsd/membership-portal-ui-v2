@@ -1,8 +1,6 @@
 import { Typography, type Variant } from '@/components/common';
-import { config } from '@/lib';
 import { type PublicProfile } from '@/lib/types/apiResponses';
 import { getLevel, getUserRank } from '@/lib/utils';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import styles from './style.module.scss';
 
@@ -33,7 +31,7 @@ export const UserProgress = ({
     currentRank === nextLevelRank ? `Level ${getLevel(points + 100)}` : nextLevelRank;
 
   return (
-    <Link href={config.leaderboardRoute} className={styles.progressSection}>
+    <div className={styles.progressSection}>
       <Typography variant="h2/bold" className={styles.sectionHeader}>
         {isSignedInUser ? 'Your' : `${firstName}'s`} Progress
       </Typography>
@@ -58,6 +56,6 @@ export const UserProgress = ({
           {100 - (points % 100)} more points to level up to <strong>{nextLevelText}</strong>
         </Typography>
       </div>
-    </Link>
+    </div>
   );
 };
