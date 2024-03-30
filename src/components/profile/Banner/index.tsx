@@ -1,12 +1,88 @@
+import { UUID } from '@/lib/types';
 import { PublicAttendance } from '@/lib/types/apiResponses';
-import { useEffect, useRef, useState } from 'react';
+import { Community } from '@/lib/types/enums';
+import { seededRandom, toCommunity } from '@/lib/utils';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './style.module.scss';
 
+const communityColors: [Community, string][] = [
+  [Community.HACK, 'r'],
+  [Community.AI, 'g'],
+  [Community.CYBER, 'b'],
+  [Community.DESIGN, 'a'],
+  [Community.GENERAL, 'f'],
+];
+
+type PieSlice = {
+  path: string;
+  className: string;
+};
+
+function computePie(
+  uuid: UUID,
+  recentAttendances: PublicAttendance[],
+  width: number,
+  height: number
+): PieSlice[] {
+  if (width === 0 && height === 0) {
+    return [];
+  }
+
+  const hex = uuid.replaceAll('-', '');
+  const random = seededRandom(
+    parseInt(hex.slice(0, 8), 16),
+    parseInt(hex.slice(8, 16), 16),
+    parseInt(hex.slice(16, 24), 16),
+    parseInt(hex.slice(24, 32), 16)
+  );
+
+  const communities: Record<Community, number> = {
+    [Community.HACK]: 0,
+    [Community.AI]: 0,
+    [Community.CYBER]: 0,
+    [Community.DESIGN]: 0,
+    [Community.GENERAL]: 0,
+  };
+  let total = 0;
+
+  recentAttendances.forEach(({ event: { committee } }) => {
+    const community = toCommunity(committee);
+    communities[community] += 1;
+    total += 1;
+  });
+
+  const radius = Math.hypot(width / 2, height / 2);
+  let angle = random() * Math.PI * 2;
+
+  return communityColors.map(([community, className]) => {
+    const portion = communities[community] / total;
+    if (portion === 0) {
+      return { path: '', className };
+    }
+
+    const endAngle = angle + portion * Math.PI * 2;
+
+    const path = [
+      `M ${width / 2} ${height / 2}`,
+      `L ${width / 2 + Math.cos(angle) * radius} ${height / 2 + Math.sin(angle) * radius}`,
+      // A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+      `A ${radius} ${radius} 0 0 1 ${width / 2 + Math.cos(endAngle) * radius} ${
+        height / 2 + Math.sin(endAngle) * radius
+      }`,
+      'z',
+    ].join('');
+
+    angle = endAngle;
+    return { path, className };
+  });
+}
+
 interface BannerProps {
+  uuid: UUID;
   recentAttendances: PublicAttendance[];
 }
 
-const Banner = ({ recentAttendances }: BannerProps) => {
+const Banner = ({ uuid, recentAttendances }: BannerProps) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 
@@ -28,10 +104,16 @@ const Banner = ({ recentAttendances }: BannerProps) => {
     };
   });
 
+  const slices = useMemo(
+    () => computePie(uuid, recentAttendances, width, height),
+    [uuid, recentAttendances, width, height]
+  );
+
   return (
     <svg ref={ref} className={styles.banner}>
-      <rect x={0} y={0} width={width} height={height} />
-      {recentAttendances.length}
+      {slices.map(({ path, className }) =>
+        path ? <path d={path} className={className} key={className} /> : null
+      )}
     </svg>
   );
 };

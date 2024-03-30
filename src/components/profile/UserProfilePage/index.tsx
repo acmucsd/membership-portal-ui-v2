@@ -31,7 +31,7 @@ export const UserProfilePage = ({
     <div className={styles.profilePage}>
       <div className={styles.cardWrapper}>
         <div className={styles.banner}>
-          <Banner recentAttendances={recentAttendances} />
+          <Banner uuid={handleUser.uuid} recentAttendances={recentAttendances} />
         </div>
         <div className={styles.profileCard}>
           <div className={styles.profilePic}>
