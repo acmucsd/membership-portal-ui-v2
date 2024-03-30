@@ -6,9 +6,20 @@
   grid-template-areas:
     'image header'
     'description description';
+  grid-template-columns: 1fr minmax(30rem, 1fr);
   padding: 2.5rem;
   position: relative;
   width: 80vw;
+
+  .image {
+    aspect-ratio: 1920 / 1080;
+    border-radius: 10px;
+    flex-shrink: 0;
+    grid-area: image;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
 
   @media screen and (width <= vars.$breakpoint-lg) {
     grid-row-gap: 2.5rem;
@@ -25,6 +36,10 @@
     .description {
       padding: 0 2.5rem;
       width: 100%;
+    }
+
+    .image {
+      border-radius: 10px 10px 0 0;
     }
   }
 
@@ -65,16 +80,6 @@
     &:hover {
       background-color: var(--theme-accent-line-1-transparent);
     }
-  }
-
-  .image {
-    aspect-ratio: 1920 / 1080;
-    border-radius: 10px;
-    flex-shrink: 0;
-    grid-area: image;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
   }
 
   .header,
@@ -138,5 +143,6 @@
 
   .description {
     grid-area: description;
+    white-space: pre-wrap;
   }
 }
