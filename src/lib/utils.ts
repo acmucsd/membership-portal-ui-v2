@@ -450,25 +450,3 @@ export function seededRandom(a: number, b: number, c: number, d: number): () => 
     /* eslint-enable no-bitwise, no-param-reassign */
   };
 }
-
-/**
- * Shuffles an array in place using a Fisher–Yates shuffle.
- * @param arr Array to shuffle
- * @param random A producer of random numbers in the range [0, 1)
- * @returns The same array object
- */
-export function shuffle<T extends {}>(array: T[], random = Math.random): T[] {
-  const arr = array;
-  for (let i = arr.length; i > 0; i -= 1) {
-    const index = Math.floor(random() * i);
-    if (index !== i - 1) {
-      const a = arr[i - 1];
-      const b = arr[index];
-      if (a !== undefined && b !== undefined) {
-        arr[i - 1] = b;
-        arr[index] = a;
-      }
-    }
-  }
-  return arr;
-}
