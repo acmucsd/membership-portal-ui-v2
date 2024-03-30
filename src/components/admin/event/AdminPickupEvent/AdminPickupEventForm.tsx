@@ -145,7 +145,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
         },
       });
     } catch (error) {
-      reportError('Could not delete collection', error);
+      reportError('Could not delete pickup event', error);
       setLoading(false);
     }
   };
