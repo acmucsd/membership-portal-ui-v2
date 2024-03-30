@@ -150,7 +150,7 @@ const PortalHomePage = ({
 
       <EventCarousel
         title="Upcoming Events"
-        linkFilters={{ date: 'upcoming' }}
+        initialEventFilters={{ date: 'upcoming' }}
         titleClassName={styles.subheading}
         events={upcomingEvents}
         attendances={attendance}
@@ -159,7 +159,7 @@ const PortalHomePage = ({
       />
 
       <EventCarousel
-        linkFilters={{ attended: 'attended', date: 'all-time' }}
+        initialEventFilters={{ attended: 'attended', date: 'all-time' }}
         title="Recently Attended Events"
         titleClassName={styles.subheading}
         events={attendedEvents}

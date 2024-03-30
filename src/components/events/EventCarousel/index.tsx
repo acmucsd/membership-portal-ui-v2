@@ -19,7 +19,7 @@ interface EventCarouselProps {
   attendances: PublicAttendance[];
   placeholder: string;
   className?: string;
-  linkFilters?: FilterEventOptions;
+  initialEventFilters?: FilterEventOptions;
 }
 
 const EventCarousel = ({
@@ -29,8 +29,10 @@ const EventCarousel = ({
   attendances,
   placeholder,
   className = '',
-  linkFilters = {},
+  initialEventFilters = {},
 }: EventCarouselProps) => {
+  const eventQueryParams = new URLSearchParams(initialEventFilters).toString();
+
   return (
     <div className={`${styles.wrapper} ${className}`}>
       <div className={styles.header}>
@@ -41,7 +43,7 @@ const EventCarousel = ({
         </div>
         <Link
           className={styles.viewToggle}
-          href={`${config.eventsRoute}?${new URLSearchParams(linkFilters).toString()}`}
+          href={`${config.eventsRoute}${eventQueryParams ? `?${eventQueryParams}` : ''}`}
         >
           See all events &gt;
         </Link>
