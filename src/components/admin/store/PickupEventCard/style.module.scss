@@ -33,12 +33,15 @@
 }
 
 .displayButton {
+  background-color: var(--theme-surface-1);
   border-radius: 1rem;
   box-shadow: 0 0 4px var(--theme-accent-line-1-transparent);
+  color: var(--theme-text-on-background-1);
   display: flex;
   flex-direction: row;
   overflow: hidden;
   padding: 0.5rem 1rem;
+
   transition: 0.3s background-color;
 
   &.active {

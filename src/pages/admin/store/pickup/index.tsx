@@ -14,9 +14,10 @@ import { useState } from 'react';
 interface AdminPickupPageProps {
   futurePickupEvents: PublicOrderPickupEvent[];
   pastPickupEvents: PublicOrderPickupEvent[];
+  token: string;
 }
 
-const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents }: AdminPickupPageProps) => {
+const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents, token }: AdminPickupPageProps) => {
   const [display, setDisplay] = useState<'past' | 'future'>('future');
   const displayPickupEvents = display === 'past' ? pastPickupEvents : futurePickupEvents;
   return (
@@ -53,7 +54,7 @@ const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents }: AdminPickupPa
       </div>
       <div className={styles.cardContainer}>
         {displayPickupEvents.map(pickupEvent => (
-          <PickupEventCard pickupEvent={pickupEvent} key={pickupEvent.uuid} />
+          <PickupEventCard pickupEvent={pickupEvent} key={pickupEvent.uuid} token={token} />
         ))}
       </div>
     </div>
@@ -70,7 +71,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
     futurePickupEventsPromise,
     pastPickupEventsPromise,
   ]);
-  return { props: { futurePickupEvents, pastPickupEvents } };
+  return { props: { futurePickupEvents, pastPickupEvents, token } };
 };
 
 export const getServerSideProps = withAccessType(
