@@ -1,6 +1,7 @@
 import { Carousel, Typography } from '@/components/common';
 import { config } from '@/lib';
 import { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
+import { FilterEventOptions } from '@/lib/types/client';
 import DiamondFriends from '@/public/assets/graphics/portal/diamond-friends.svg';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
@@ -13,7 +14,7 @@ interface EventCarouselProps {
   events: PublicEvent[];
   attendances: PublicAttendance[];
   placeholder: string;
-  seeAllEventsQuery?: string;
+  initialEventsFilter?: FilterEventOptions;
   className?: string;
 }
 
@@ -23,7 +24,7 @@ const EventCarousel = ({
   events,
   attendances,
   placeholder,
-  seeAllEventsQuery,
+  initialEventsFilter,
   className = '',
 }: EventCarouselProps) => {
   return (
@@ -36,7 +37,9 @@ const EventCarousel = ({
         </div>
         <Link
           className={styles.viewToggle}
-          href={`${config.eventsRoute}${seeAllEventsQuery || ''}`}
+          href={`${config.eventsRoute}${
+            initialEventsFilter ? `?${new URLSearchParams(initialEventsFilter).toString()}` : ''
+          }`}
         >
           See all events &gt;
         </Link>
