@@ -179,7 +179,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   const [events, attendances] = await Promise.all([getEventsPromise, getAttendancesPromise]);
 
-  return { props: { events, attendances } };
+  return { props: { title: 'Events', events, attendances } };
 };
 
 export const getServerSideProps = withAccessType(

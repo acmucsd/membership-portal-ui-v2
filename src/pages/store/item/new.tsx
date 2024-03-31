@@ -39,7 +39,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
       : query.collection ?? null,
     StoreAPI.getAllCollections(token),
   ]);
-  return { props: { token, item, collections } };
+  return { props: { title: 'Create Store Item', token, item, collections } };
 };
 
 export const getServerSideProps = withAccessType(

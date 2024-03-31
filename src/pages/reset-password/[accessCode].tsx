@@ -97,8 +97,6 @@ export default ResetPasswordPage;
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const code = params?.accessCode as string;
   return {
-    props: {
-      code,
-    },
+    props: { title: 'Reset Password', code },
   };
 };

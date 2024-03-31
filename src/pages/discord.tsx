@@ -9,7 +9,7 @@ const DiscordPage = () => {
 export default DiscordPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: {},
+  props: { title: 'Discord' },
 });
 
 export const getServerSideProps = withAccessType(
