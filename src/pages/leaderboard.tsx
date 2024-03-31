@@ -116,6 +116,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             setPage(0);
             setScrollIntoView(0);
           }}
+          className={styles.timeDropdown}
         />
       </div>
       {topThreeUsers.length > 0 ? (
