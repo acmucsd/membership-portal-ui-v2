@@ -80,7 +80,7 @@ const Feedback = ({ feedback, showUser = false, responseToken = null }: Feedback
       <div className={styles.body}>
         <div className={styles.feedback}>
           <Typography variant="h4/bold" component="h2">
-            {feedback.title}
+            {feedback.source}
           </Typography>
           <Typography variant="body/medium" component="p">
             {feedback.description}

@@ -20,7 +20,7 @@ const EventPage = ({ token, event, attended }: EventPageProps) => {
   return (
     <div className={styles.page}>
       <EventDetail event={event} attended={attended} />
-      {started ? <FeedbackForm authToken={token} /> : null}
+      {started ? <FeedbackForm event={event} authToken={token} /> : null}
     </div>
   );
 };

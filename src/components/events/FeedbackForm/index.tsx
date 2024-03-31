@@ -1,6 +1,7 @@
 import { Dropdown, Typography } from '@/components/common';
 import { showToast } from '@/lib';
 import { FeedbackAPI } from '@/lib/api';
+import { PublicEvent } from '@/lib/types/apiResponses';
 import { FeedbackType } from '@/lib/types/enums';
 import { isEnum, reportError } from '@/lib/utils';
 import { useState } from 'react';
@@ -19,9 +20,10 @@ export const feedbackTypeNames: Record<FeedbackType, string> = {
 
 interface FeedbackFormProps {
   authToken: string;
+  event: PublicEvent;
 }
 
-const FeedbackForm = ({ authToken }: FeedbackFormProps) => {
+const FeedbackForm = ({ authToken, event }: FeedbackFormProps) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState(FeedbackType.GENERAL);
@@ -31,11 +33,13 @@ const FeedbackForm = ({ authToken }: FeedbackFormProps) => {
       className={styles.form}
       onSubmit={async e => {
         e.preventDefault();
-        if (title.length === 0) {
-          return;
-        }
         try {
-          await FeedbackAPI.addFeedback(authToken, title, description.padEnd(100, ' '), type);
+          await FeedbackAPI.addFeedback(authToken, {
+            event: event.uuid,
+            source: title,
+            description: description.padEnd(20, ' '),
+            type,
+          });
           showToast(
             'Feedback received!',
             'Thank you for taking the time to help us make our events better for you.'
@@ -78,11 +82,9 @@ const FeedbackForm = ({ authToken }: FeedbackFormProps) => {
         }}
         className={styles.field}
       />
-      {title.length > 0 ? (
-        <button type="submit" className={styles.submit}>
-          Submit
-        </button>
-      ) : null}
+      <button type="submit" className={styles.submit}>
+        Submit
+      </button>
     </form>
   );
 };

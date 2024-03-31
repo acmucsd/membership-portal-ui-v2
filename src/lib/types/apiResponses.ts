@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
-import { URL, UUID } from '.';
+import { Date, UUID } from '.';
 import {
   ActivityScope,
   ActivityType,
@@ -126,8 +126,8 @@ export interface PublicEvent {
   description: string;
   location: string;
   eventLink: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   attendanceCode?: string;
   pointValue: number;
   requiresStaff: boolean;
@@ -339,6 +339,10 @@ export interface VerifyMerchOrderResponse extends ApiResponse {}
 
 export interface EditMerchOrderResponse extends ApiResponse {}
 
+export interface CancelMerchOrderResponse extends ApiResponse {
+  order: PublicOrderWithItems;
+}
+
 export interface GetCartResponse extends ApiResponse {
   cart: PublicOrderMerchItemOption[];
 }
@@ -381,9 +385,10 @@ export interface PrivateProfile extends PublicProfile {
 export interface PublicFeedback {
   uuid: UUID;
   user: PublicProfile;
-  title: string;
+  event: PublicEvent;
+  source: string;
   description: string;
-  timestamp: string;
+  timestamp: Date;
   status: FeedbackStatus;
   type: FeedbackType;
 }
@@ -452,8 +457,8 @@ export interface DeleteSocialMediaResponse extends ApiResponse {}
 export interface PublicOrderPickupEvent {
   uuid: UUID;
   title: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   description: string;
   orders?: PublicOrderWithItems[];
   orderLimit?: number;

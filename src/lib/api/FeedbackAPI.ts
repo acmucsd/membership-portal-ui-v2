@@ -1,12 +1,16 @@
 import config from '@/lib/config';
-import { SubmitFeedbackRequest, UpdateFeedbackStatusRequest } from '@/lib/types/apiRequests';
+import {
+  Feedback,
+  SubmitFeedbackRequest,
+  UpdateFeedbackStatusRequest,
+} from '@/lib/types/apiRequests';
 import {
   GetFeedbackResponse,
   PublicFeedback,
   SubmitFeedbackResponse,
   UpdateFeedbackStatusResponse,
 } from '@/lib/types/apiResponses';
-import { FeedbackStatus, FeedbackType } from '@/lib/types/enums';
+import { FeedbackStatus } from '@/lib/types/enums';
 import axios from 'axios';
 
 /**
@@ -19,15 +23,10 @@ import axios from 'axios';
  * @param type Type of ACM offering that the feedback is addressed to.
  * @returns The submitted feedback
  */
-export const addFeedback = async (
-  token: string,
-  title: string,
-  description: string,
-  type: FeedbackType
-): Promise<PublicFeedback> => {
+export const addFeedback = async (token: string, feedback: Feedback): Promise<PublicFeedback> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.feedback}`;
 
-  const requestBody: SubmitFeedbackRequest = { feedback: { title, description, type } };
+  const requestBody: SubmitFeedbackRequest = { feedback };
 
   const response = await axios.post<SubmitFeedbackResponse>(requestUrl, requestBody, {
     headers: {
