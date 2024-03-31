@@ -81,7 +81,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   orders.sort((a, b) => new Date(b.orderedAt).getTime() - new Date(a.orderedAt).getTime());
 
-  return { props: { orders, futurePickupEvents } };
+  return { props: { title: 'My Orders', orders, futurePickupEvents } };
 };
 
 export const getServerSideProps = withAccessType(

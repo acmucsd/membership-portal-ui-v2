@@ -262,6 +262,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   return {
     props: {
+      title: 'Cart',
       user,
       savedCart,
       pickupEvents,

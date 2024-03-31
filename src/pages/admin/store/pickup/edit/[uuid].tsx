@@ -45,7 +45,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
     EventAPI.getAllFutureEvents(),
     StoreAPI.getPickupEvent(token, uuid),
   ]);
-  return { props: { token, futureEvents, pickupEvent } };
+  return { props: { title: `Edit ${pickupEvent.title}`, token, futureEvents, pickupEvent } };
 };
 
 export const getServerSideProps = withAccessType(

@@ -21,11 +21,11 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
   if (typeof query.duplicate === 'string') {
     const defaultData = await EventAPI.getEvent(query.duplicate, token);
     return {
-      props: { defaultData },
+      props: { title: 'Create Event', defaultData },
     };
   }
   return {
-    props: { defaultData: {} },
+    props: { title: 'Create Event', defaultData: {} },
   };
 };
 

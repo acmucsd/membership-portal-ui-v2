@@ -178,7 +178,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
   const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN, getLeaderboardRange(sort));
 
   return {
-    props: { sort, leaderboard },
+    props: { title: 'Leaderboard', sort, leaderboard },
   };
 };
 

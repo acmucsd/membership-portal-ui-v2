@@ -139,6 +139,8 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
     const item = await StoreAPI.getItem(token, uuid);
     return {
       props: {
+        title: item.itemName,
+        description: item.description,
         uuid,
         item,
         previewPublic: preview === 'member',
