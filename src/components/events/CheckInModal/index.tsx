@@ -1,6 +1,8 @@
 import { Modal, Typography } from '@/components/common';
+import { config } from '@/lib';
 import { PublicEvent } from '@/lib/types/apiResponses';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import Confetti from 'react-confetti';
 import style from './style.module.scss';
@@ -105,9 +107,14 @@ const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
             <Typography variant="h4/regular" className={style.subheaderText} />
           </div>
         </div>
-        <button type="submit" className={style.done}>
-          <Typography variant="h4/bold">Done</Typography>
-        </button>
+        <div className={style.buttonRow}>
+          <button type="submit" className={`${style.button} ${style.done}`}>
+            <Typography variant="h4/bold">Close</Typography>
+          </button>
+          <Link href={`${config.eventsRoute}/${event.uuid}`} className={style.button}>
+            <Typography variant="h4/bold">Add Feedback</Typography>
+          </Link>
+        </div>
       </div>
     </Modal>
   );

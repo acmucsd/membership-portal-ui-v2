@@ -1,5 +1,7 @@
 export type Styles = {
   ai: string;
+  button: string;
+  buttonRow: string;
   container: string;
   cyber: string;
   design: string;
