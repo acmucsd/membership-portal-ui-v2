@@ -1,0 +1,7 @@
+@use 'src/styles/vars.scss' as vars;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

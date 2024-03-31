@@ -30,7 +30,9 @@ const EventPage = ({ token, event, attended, feedback: initFeedback }: EventPage
       </div>
     );
   } else if (started) {
-    feedbackForm = <FeedbackForm event={event} authToken={token} onSubmit={setFeedback} />;
+    feedbackForm = (
+      <FeedbackForm event={event} attended={attended} authToken={token} onSubmit={setFeedback} />
+    );
   }
 
   return (

@@ -1,4 +1,5 @@
 import { Typography } from '@/components/common';
+import FeedbackChoice from '@/components/feedback/FeedbackChoice';
 import { showToast } from '@/lib';
 import { FeedbackAPI } from '@/lib/api';
 import { PublicEvent, PublicFeedback } from '@/lib/types/apiResponses';
@@ -18,10 +19,11 @@ export const communityToFeedbackType: Record<Community, FeedbackType> = {
 interface FeedbackFormProps {
   authToken: string;
   event: PublicEvent;
+  attended: boolean;
   onSubmit?: (feedback: PublicFeedback) => void;
 }
 
-const FeedbackForm = ({ authToken, event, onSubmit }: FeedbackFormProps) => {
+const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProps) => {
   const [source, setSource] = useState('');
   const [description, setDescription] = useState('');
 
@@ -54,20 +56,54 @@ const FeedbackForm = ({ authToken, event, onSubmit }: FeedbackFormProps) => {
         Feel free to give event suggestions, friendly words, constructive crisitism, or just say
         what’s on your mind!
       </p>
-      <input
-        aria-label="Feedback source"
-        placeholder="Where did you hear about this event?"
-        value={source}
-        onChange={e => setSource(e.currentTarget.value)}
-        className={styles.field}
-      />
       <textarea
         aria-label="Feedback description"
-        placeholder="The Hack School event had informational slides that taught more niche than usual so I learned a lot. It was difficult to find the room though. Maybe put up a sign next time."
+        placeholder="The Hack School event had informational slides that taught more niche than usual so I learned a lot."
         value={description}
         onChange={e => setDescription(e.currentTarget.value)}
         className={styles.field}
       />
+      <p>
+        Answer as few of the following optional questions as you want. You can elaborate on your
+        responses above.
+      </p>
+      <FeedbackChoice
+        question="How did you hear about this event?"
+        choices={[
+          'Instagram',
+          'Discord',
+          'ACM website',
+          'Flyer or tabling',
+          'A friend/word of mouth',
+          'Just passing by',
+        ]}
+        onExport={setSource}
+      />
+      {attended ? (
+        <FeedbackChoice
+          question="How easy was it to find the event?"
+          choices={[
+            'I was already familiar with the event location.',
+            "I didn't know where it was, but it was easy to figure out myself.",
+            'It was a bit difficult to find the event location.',
+          ]}
+          singleChoice
+          onExport={console.log}
+        />
+      ) : (
+        <FeedbackChoice
+          question="Why weren't you able to make it to the event?"
+          choices={[
+            'Forgot to check in',
+            'Busy with classes',
+            'Conflict with another class or event',
+            'Forgot that the event was happening',
+            'Already made plans for something else today',
+            "Couldn't find the room",
+          ]}
+          onExport={console.log}
+        />
+      )}
       <button type="submit" className={styles.submit}>
         Submit
       </button>
