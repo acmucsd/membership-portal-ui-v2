@@ -74,7 +74,7 @@ const DEFAULT_FILTER_STATE = {
   search: '',
 };
 
-const ROWS_PER_PAGE = 25;
+const ROWS_PER_PAGE = 4;
 
 const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) => {
   const [page, setPage] = useState(0);

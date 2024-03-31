@@ -1,6 +1,6 @@
-import LeftArrowIcon from '@/public/assets/icons/page-left-icon.svg';
-import RightArrowIcon from '@/public/assets/icons/page-right-icon.svg';
-import { useEffect, useState } from 'react';
+import Typography from '@/components/common/Typography';
+import LeftArrowIcon from '@/public/assets/icons/arrow-left.svg';
+import RightArrowIcon from '@/public/assets/icons/arrow-right.svg';
 import style from './style.module.scss';
 
 interface PaginationControlsProps {
@@ -9,12 +9,18 @@ interface PaginationControlsProps {
   pages: number;
 }
 
-const PaginationControls = ({ page, onPage, pages }: PaginationControlsProps) => {
-  const [value, setValue] = useState(String(page + 1));
+function calculatePagesToDisplay(page: number, totalPages: number, maxWidth: number): number[] {
+  const radius = (maxWidth - 1) / 2;
+  if (page + radius >= totalPages) {
+    return Array.from({ length: maxWidth }, (_, key) => totalPages - maxWidth + 1 + key);
+  }
+  const displayPage = page + 1;
+  const start = Math.max(1, displayPage - radius);
+  return Array.from({ length: Math.min(maxWidth, totalPages) }, (_, key) => start + key);
+}
 
-  useEffect(() => {
-    setValue(String(page + 1));
-  }, [page]);
+const PaginationControls = ({ page, onPage, pages }: PaginationControlsProps) => {
+  const pagesToDisplay = calculatePagesToDisplay(page, pages, 5);
 
   return (
     <div className={style.paginationBtns}>
@@ -27,35 +33,21 @@ const PaginationControls = ({ page, onPage, pages }: PaginationControlsProps) =>
         <LeftArrowIcon />
       </button>
       <div className={style.paginationText}>
-        <input
-          className={style.pageNumber}
-          type="text"
-          inputMode="numeric"
-          pattern="[0-9]*"
-          value={value}
-          onChange={e => {
-            setValue(e.currentTarget.value);
-            const page = +e.currentTarget.value - 1;
-            if (Number.isInteger(page) && page >= 0 && page < pages) {
-              onPage(page);
-            }
-          }}
-          onBlur={e => {
-            // Clamp page number between 1 and pages
-            const inputPage = Math.min(
-              Math.max(Math.trunc(+e.currentTarget.value - 1), 0),
-              pages - 1
-            );
-            if (Number.isNaN(inputPage)) {
-              setValue(String(page + 1));
-            } else {
-              onPage(inputPage);
-              setValue(String(inputPage + 1));
-            }
-          }}
-        />
-        <span>of</span>
-        <span className={style.pageNumber}>{pages}</span>
+        {pagesToDisplay.map(displayPage => (
+          <button
+            type="button"
+            onClick={() => onPage(displayPage - 1)}
+            key={displayPage}
+            className={style.pageButton}
+          >
+            <Typography
+              variant="h5/regular"
+              className={displayPage === page + 1 ? style.active : style.pageText}
+            >
+              {displayPage}
+            </Typography>
+          </button>
+        ))}
       </div>
       <button
         type="button"

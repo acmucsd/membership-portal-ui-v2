@@ -1,5 +1,7 @@
 export type Styles = {
-  pageNumber: string;
+  active: string;
+  pageButton: string;
+  pageText: string;
   paginationBtn: string;
   paginationBtns: string;
   paginationText: string;

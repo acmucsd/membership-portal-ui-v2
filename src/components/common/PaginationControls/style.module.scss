@@ -1,11 +1,14 @@
+@use 'src/styles/vars.scss' as vars;
+
 .paginationBtns {
   align-items: center;
   display: flex;
-  gap: 20px;
+  gap: 1.5rem;
   justify-content: center;
 
   .paginationBtn {
-    background: none;
+    background-color: var(--theme-surface-1);
+    border-radius: 50%;
     font-size: 0;
     padding: 0;
 
@@ -15,22 +18,38 @@
     }
   }
 
+  @media screen and (width <= vars.$breakpoint-md) {
+    gap: 1rem;
+  }
+
   .paginationText {
     align-items: center;
+    background-color: var(--theme-surface-1);
+    border-radius: 1.5rem;
     display: flex;
     font-weight: bold;
-    gap: 1em;
+    gap: 1.5rem;
+    padding: 0.25rem 1.5rem;
 
-    .pageNumber {
-      width: 24px;
+    .pageButton {
+      background: none;
+      display: flex;
+      justify-content: center;
+      width: 1rem;
 
-      &:is(input) {
-        border: 1px solid var(--theme-text-on-background-1);
-        border-radius: 2px;
-        color: inherit;
-        font: inherit;
-        height: 24px;
-        text-align: center;
+      .active {
+        color: var(--theme-primary-2);
+        font-weight: 700 !important;
+      }
+
+      @media screen and (width <= vars.$breakpoint-md) {
+        width: 0.75rem;
+
+        .active,
+        .pageText {
+          font-size: 1rem !important;
+          line-height: 1.5rem !important;
+        }
       }
     }
   }
