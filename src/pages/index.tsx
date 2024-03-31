@@ -154,6 +154,7 @@ const PortalHomePage = ({
         events={upcomingEvents}
         attendances={attendance}
         placeholder="Check back soon for upcoming events!"
+        initialEventsFilter={{ date: 'upcoming' }}
         className={styles.upcomingEvents}
       />
 
@@ -163,6 +164,7 @@ const PortalHomePage = ({
         events={attendedEvents}
         attendances={attendance}
         placeholder="Attend your first event and earn membership points!"
+        initialEventsFilter={{ attendance: 'attended' }}
         className={styles.recentlyAttended}
       />
     </div>
