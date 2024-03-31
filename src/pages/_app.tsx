@@ -22,7 +22,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           font-family: ${dmSans.style.fontFamily}, sans-serif;
         }
       `}</style>
-      <SEO />
+      <SEO title={pageProps.title} description={pageProps.description} />
       <ThemeProvider>
         <ToastContainer />
         <PageLayout accessType={pageProps?.user?.accessType}>

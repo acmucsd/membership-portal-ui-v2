@@ -1,17 +1,24 @@
 import Logo from '@/public/assets/acm-logos/general/light-mode.png';
 import Head from 'next/head';
 
-const SEO = () => {
-  const TITLE = 'ACM UCSD Membership Portal';
-  const DESC =
-    'Meet new friends, discover exciting events, and earn points for free ACM swag! Create an account today to find your community!';
+const TITLE = 'ACM UCSD Membership Portal';
+const DESC =
+  'Meet new friends, discover exciting events, and earn points for free ACM swag! Create an account today to find your community!';
+
+interface SEOProps {
+  title?: string;
+  description?: string;
+}
+
+const SEO = ({ title, description = DESC }: SEOProps) => {
+  const fullTitle = title ? `${title} · ${TITLE}` : TITLE;
 
   return (
     <Head>
       {/* google indexing data */}
 
-      <title>{TITLE}</title>
-      <meta name="description" content={DESC} />
+      <title>{fullTitle}</title>
+      <meta name="description" content={description} />
       <link rel="shortcut icon" href="/favicon.ico" />
 
       {/* link sharing data */}
@@ -23,11 +30,11 @@ const SEO = () => {
       {/* actual website title */}
       <meta property="og:site_name" content="ACM at UCSD" />
       {/* title to display for the specific link being shared */}
-      <meta property="og:title" content={TITLE} />
+      <meta property="og:title" content={fullTitle} />
       {/* preview image */}
       <meta property="og:image" content={Logo.src} />
       {/* preview description text */}
-      <meta property="og:description" content={DESC} />
+      <meta property="og:description" content={description} />
     </Head>
   );
 };
