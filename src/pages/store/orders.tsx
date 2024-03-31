@@ -33,7 +33,7 @@ const orderInFilter = (order: PublicOrder, filter: string): boolean => {
 };
 
 const StoreOrderPage = ({ user: { credits }, orders, futurePickupEvents }: OrderPageProps) => {
-  const [filter, setFilter] = useState('past-6-months');
+  const [filter, setFilter] = useState('all-time');
 
   const filteredOrders = orders.filter(o => orderInFilter(o, filter));
 

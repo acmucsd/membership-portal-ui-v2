@@ -131,7 +131,7 @@ const Navbar = ({ accessType }: NavbarProps) => {
             Admin Settings
           </Link>
         ) : null}
-        <div>
+        <div className={styles.mobileSwitch}>
           <ThemeToggle />
         </div>
         <hr className={styles.wainbow} />
