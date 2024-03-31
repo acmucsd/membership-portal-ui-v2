@@ -71,7 +71,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
     futurePickupEventsPromise,
     pastPickupEventsPromise,
   ]);
-  return { props: { futurePickupEvents, pastPickupEvents, token } };
+  return { props: { title: 'Manage Pickup Events', futurePickupEvents, pastPickupEvents, token } };
 };
 
 export const getServerSideProps = withAccessType(

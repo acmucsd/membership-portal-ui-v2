@@ -1,10 +1,18 @@
 import { Dropdown, PaginationControls, Typography } from '@/components/common';
 import { DIVIDER } from '@/components/common/Dropdown';
 import { EventDisplay } from '@/components/events';
+import { config } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
+import useQueryState from '@/lib/hooks/useQueryState';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
+import {
+  FilterEventOptions,
+  isValidAttendanceFilter,
+  isValidCommunityFilter,
+  isValidDateFilter,
+} from '@/lib/types/client';
 import { CookieType } from '@/lib/types/enums';
 import { formatSearch, getDateRange, getYears } from '@/lib/utils';
 import styles from '@/styles/pages/events.module.scss';
@@ -14,22 +22,23 @@ import { useMemo, useState } from 'react';
 interface EventsPageProps {
   events: PublicEvent[];
   attendances: PublicAttendance[];
+  initialFilters: FilterEventOptions;
 }
 
 interface FilterOptions {
-  query: string;
+  search: string;
   communityFilter: string;
   dateFilter: string | number;
-  attendedFilter: string;
+  attendanceFilter: string;
 }
 
 const filterEvent = (
   event: PublicEvent,
   attendances: PublicAttendance[],
-  { query, communityFilter, dateFilter, attendedFilter }: FilterOptions
+  { search, communityFilter, dateFilter, attendanceFilter }: FilterOptions
 ): boolean => {
   // Filter search query
-  if (query !== '' && !formatSearch(event.title).includes(formatSearch(query))) {
+  if (search !== '' && !formatSearch(event.title).includes(formatSearch(search))) {
     return false;
   }
   // Filter by community
@@ -45,31 +54,67 @@ const filterEvent = (
     return false;
   }
   // Filter by attendance
-  if (attendedFilter === 'all') {
+  if (attendanceFilter === 'any') {
     return true;
   }
   const attended = attendances.some(a => a.event.uuid === event.uuid);
-  if (attendedFilter === 'attended' && !attended) {
+  if (attendanceFilter === 'attended' && !attended) {
     return false;
   }
-  if (attendedFilter === 'not-attended' && attended) {
+  if (attendanceFilter === 'not-attended' && attended) {
     return false;
   }
   return true;
 };
 
-const ROWS_PER_PAGE = 25;
-const EventsPage = ({ events, attendances }: EventsPageProps) => {
-  const [page, setPage] = useState(0);
-  const [communityFilter, setCommunityFilter] = useState('all');
-  const [dateFilter, setDateFilter] = useState('upcoming');
-  const [attendedFilter, setAttendedFilter] = useState('all');
-  const [query, setQuery] = useState('');
+const DEFAULT_FILTER_STATE = {
+  community: 'all',
+  date: 'all-time',
+  attendance: 'any',
+  search: '',
+};
 
+const ROWS_PER_PAGE = 25;
+
+const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) => {
+  const [page, setPage] = useState(0);
   const years = useMemo(getYears, []);
 
+  const validDate = (value: string): boolean => {
+    return isValidDateFilter(value) || years.some(o => o.value === value);
+  };
+
+  const [states, setStates] = useQueryState({
+    pathName: config.eventsRoute,
+    initialFilters,
+    queryStates: {
+      community: {
+        defaultValue: DEFAULT_FILTER_STATE.community,
+        valid: isValidCommunityFilter,
+      },
+      date: {
+        defaultValue: DEFAULT_FILTER_STATE.date,
+        valid: validDate,
+      },
+      attendance: {
+        defaultValue: DEFAULT_FILTER_STATE.attendance,
+        valid: isValidAttendanceFilter,
+      },
+      search: {
+        defaultValue: DEFAULT_FILTER_STATE.search,
+        // Any string is a valid search, so just return true.
+        valid: () => true,
+      },
+    },
+  });
+
+  const communityFilter = states.community?.value || DEFAULT_FILTER_STATE.community;
+  const dateFilter = states.date?.value || DEFAULT_FILTER_STATE.date;
+  const attendanceFilter = states.attendance?.value || DEFAULT_FILTER_STATE.attendance;
+  const search = states.search?.value || DEFAULT_FILTER_STATE.search;
+
   const filteredEvents = events.filter(e =>
-    filterEvent(e, attendances, { query, communityFilter, dateFilter, attendedFilter })
+    filterEvent(e, attendances, { search, communityFilter, dateFilter, attendanceFilter })
   );
 
   filteredEvents.sort((a, b) => {
@@ -92,9 +137,9 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
           type="search"
           placeholder="Search Events"
           aria-label="Search Events"
-          value={query}
+          value={search}
           onChange={e => {
-            setQuery(e.currentTarget.value);
+            setStates('search', e.currentTarget.value);
             setPage(0);
           }}
         />
@@ -103,7 +148,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
             name="communityOptions"
             ariaLabel="Filter events by community"
             options={[
-              { value: 'all', label: 'All communities' },
+              { value: 'all', label: 'All Communities' },
               { value: 'general', label: 'General' },
               { value: 'ai', label: 'AI' },
               { value: 'cyber', label: 'Cyber' },
@@ -112,7 +157,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
             ]}
             value={communityFilter}
             onChange={v => {
-              setCommunityFilter(v);
+              setStates('community', v);
               setPage(0);
             }}
           />
@@ -120,20 +165,20 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
 
         <div className={styles.filterOption}>
           <Dropdown
-            name="timeOptions"
-            ariaLabel="Filter events by time"
+            name="dateOptions"
+            ariaLabel="Filter events by date"
             options={[
               { value: 'upcoming', label: 'Upcoming' },
-              { value: 'past-week', label: 'Past week' },
-              { value: 'past-month', label: 'Past month' },
-              { value: 'past-year', label: 'Past year' },
-              { value: 'all-time', label: 'All time' },
+              { value: 'past-week', label: 'Past Week' },
+              { value: 'past-month', label: 'Past Month' },
+              { value: 'past-year', label: 'Past Year' },
+              { value: 'all-time', label: 'All Time' },
               DIVIDER,
               ...years,
             ]}
             value={dateFilter}
             onChange={v => {
-              setDateFilter(v);
+              setStates('date', v);
               setPage(0);
             }}
           />
@@ -141,16 +186,16 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
 
         <div className={styles.filterOption}>
           <Dropdown
-            name="timeOptions"
+            name="attendanceOptions"
             ariaLabel="Filter events by attendance"
             options={[
-              { value: 'all', label: 'Any attendance' },
+              { value: 'any', label: 'Any Attendance' },
               { value: 'attended', label: 'Attended' },
-              { value: 'not-attended', label: 'Not attended' },
+              { value: 'not-attended', label: 'Not Attended' },
             ]}
-            value={attendedFilter}
+            value={attendanceFilter}
             onChange={v => {
-              setAttendedFilter(v);
+              setStates('attendance', v);
               setPage(0);
             }}
           />
@@ -171,7 +216,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
 
 export default EventsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
   const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   const getEventsPromise = EventAPI.getAllEvents();
@@ -179,7 +224,16 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   const [events, attendances] = await Promise.all([getEventsPromise, getAttendancesPromise]);
 
-  return { props: { events, attendances } };
+  const {
+    community = DEFAULT_FILTER_STATE.community,
+    date = DEFAULT_FILTER_STATE.date,
+    attendance = DEFAULT_FILTER_STATE.attendance,
+    search = DEFAULT_FILTER_STATE.search,
+  } = query as FilterEventOptions;
+
+  const initialFilters = { community, date, attendance, search };
+
+  return { props: { title: 'Events', events, attendances, initialFilters } };
 };
 
 export const getServerSideProps = withAccessType(

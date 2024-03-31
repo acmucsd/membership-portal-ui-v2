@@ -29,7 +29,11 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
           margin: '1rem 0',
         }}
       >
-        <LinkButton href={config.admin.events.homeRoute}>Manage Events</LinkButton>
+        {PermissionService.canManageEvents.includes(accessType) ? (
+          <LinkButton href={config.admin.events.homeRoute}>Manage Events</LinkButton>
+        ) : (
+          'Restricted Access'
+        )}
       </div>
       <br />
       <Typography variant="h2/bold">Store</Typography>
@@ -103,7 +107,7 @@ export default AdminPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const preview =
     CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res }) ?? '';
-  return { props: { preview } };
+  return { props: { title: 'Admin Actions', preview } };
 };
 
 export const getServerSideProps = withAccessType(

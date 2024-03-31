@@ -150,6 +150,9 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
   return {
     props: {
+      title: 'The ACM Store',
+      description:
+        'Shop the ACM Store for exclusive ACM merchandise including shirts, hoodies, pop sockets & more!',
       view: query.view === 'all' ? 'all-items' : 'collections',
       collections,
       previewPublic: preview === 'member',
