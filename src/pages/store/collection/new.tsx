@@ -31,7 +31,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
     typeof query.duplicate === 'string'
       ? await StoreAPI.getCollection(token, query.duplicate)
       : null;
-  return { props: { token, item } };
+  return { props: { title: 'Create Collection', token, item } };
 };
 
 export const getServerSideProps = withAccessType(

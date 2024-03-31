@@ -436,3 +436,30 @@ export const getDefaultEventCover = (src: unknown): string => {
     return '/assets/graphics/store/hero-photo.jpg';
   return src;
 };
+
+/**
+ * xoshiro128** PRNG algorithm, which apparently powers `Math.random`. Takes a
+ * 128-bit seed.
+ * @param a 32-bit seed 1
+ * @param b 32-bit seed 2
+ * @param c 32-bit seed 3
+ * @param d 32-bit seed 4
+ * @returns A non-pure function that produces random numbers in the range [0,
+ * 1).
+ */
+export function seededRandom(a: number, b: number, c: number, d: number): () => number {
+  return () => {
+    /* eslint-disable no-bitwise, no-param-reassign */
+    const t = b << 9;
+    let r = b * 5;
+    r = ((r << 7) | (r >>> 25)) * 9;
+    c ^= a;
+    d ^= b;
+    b ^= c;
+    a ^= d;
+    c ^= t;
+    d = (d << 11) | (d >>> 21);
+    return (r >>> 0) / 4294967296;
+    /* eslint-enable no-bitwise, no-param-reassign */
+  };
+}

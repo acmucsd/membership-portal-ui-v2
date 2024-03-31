@@ -8,6 +8,7 @@ import type { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/StorePickupEventPage.module.scss';
 import { GetServerSideProps } from 'next';
+import router from 'next/router';
 import { useState } from 'react';
 
 interface AdminPickupPageProps {
@@ -21,7 +22,17 @@ const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents }: AdminPickupPa
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <Typography variant="h1/bold">Manage Pickup Events</Typography>
+        <Typography variant="h1/bold" style={{ marginRight: 'auto' }}>
+          Manage Pickup Events
+        </Typography>
+
+        <button
+          type="button"
+          className={`${styles.displayButton} ${display === 'future' && styles.active}`}
+          onClick={() => router.push(`${config.admin.store.pickupCreate}`)}
+        >
+          <Typography variant="h5/bold">Create New Pickup Event</Typography>
+        </button>
 
         <div className={styles.displayButtons}>
           <button
@@ -59,7 +70,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
     futurePickupEventsPromise,
     pastPickupEventsPromise,
   ]);
-  return { props: { futurePickupEvents, pastPickupEvents } };
+  return { props: { title: 'Manage Pickup Events', futurePickupEvents, pastPickupEvents } };
 };
 
 export const getServerSideProps = withAccessType(
