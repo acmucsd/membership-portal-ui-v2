@@ -21,7 +21,7 @@ interface FeedbackFormProps {
 }
 
 const FeedbackForm = ({ authToken, event }: FeedbackFormProps) => {
-  const [title, setTitle] = useState('');
+  const [source, setSource] = useState('');
   const [description, setDescription] = useState('');
 
   return (
@@ -32,7 +32,7 @@ const FeedbackForm = ({ authToken, event }: FeedbackFormProps) => {
         try {
           await FeedbackAPI.addFeedback(authToken, {
             event: event.uuid,
-            source: title,
+            source: source,
             description: description.padEnd(20, ' '),
             type: communityToFeedbackType[toCommunity(event.committee)],
           });
@@ -53,10 +53,10 @@ const FeedbackForm = ({ authToken, event }: FeedbackFormProps) => {
         what’s on your mind!
       </p>
       <input
-        aria-label="Feedback title"
-        placeholder="Title"
-        value={title}
-        onChange={e => setTitle(e.currentTarget.value)}
+        aria-label="Feedback source"
+        placeholder="Source"
+        value={source}
+        onChange={e => setSource(e.currentTarget.value)}
         className={styles.field}
       />
       <textarea

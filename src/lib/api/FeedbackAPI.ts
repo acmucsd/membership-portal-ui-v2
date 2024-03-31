@@ -1,4 +1,5 @@
 import config from '@/lib/config';
+import { UUID } from '@/lib/types';
 import {
   Feedback,
   SubmitFeedbackRequest,
@@ -10,17 +11,13 @@ import {
   SubmitFeedbackResponse,
   UpdateFeedbackStatusResponse,
 } from '@/lib/types/apiResponses';
-import { FeedbackStatus } from '@/lib/types/enums';
+import { FeedbackStatus, FeedbackType } from '@/lib/types/enums';
 import axios from 'axios';
 
 /**
  * Submit feedback
- * @param token Bearer token. Authenticated user must strictly be in the
- * `ACTIVE` state (not `PASSWORD_RESET`)
- * @param title Title of feedback
- * @param description Description of feedback. Must be at least 100 characters
- * long.
- * @param type Type of ACM offering that the feedback is addressed to.
+ * @param token Bearer token
+ * @param feedback Feedback object
  * @returns The submitted feedback
  */
 export const addFeedback = async (token: string, feedback: Feedback): Promise<PublicFeedback> => {
@@ -37,14 +34,28 @@ export const addFeedback = async (token: string, feedback: Feedback): Promise<Pu
   return response.data.feedback;
 };
 
+export interface FeedbackSearchOptions {
+  event?: UUID;
+  type?: FeedbackType;
+  status?: FeedbackStatus;
+  user?: UUID;
+}
+
 /**
- * Get all feedback submitted by user, or by all users if current user is an
- * admin.
+ * Get all feedback submitted by user, or by all users if current user can see
+ * all feedback
  * @param token Bearer token
+ * @param options Filter feedback by properties. Ignored if user can't see all
+ * feedback
  * @returns List of submitted feedback
  */
-export const getFeedback = async (token: string): Promise<PublicFeedback[]> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.feedback}`;
+export const getFeedback = async (
+  token: string,
+  options: FeedbackSearchOptions = {}
+): Promise<PublicFeedback[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.feedback}?${new URLSearchParams(
+    Object.entries(options)
+  )}`;
 
   const response = await axios.get<GetFeedbackResponse>(requestUrl, {
     headers: {
