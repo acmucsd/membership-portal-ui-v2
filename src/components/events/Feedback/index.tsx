@@ -86,7 +86,8 @@ const Feedback = ({ feedback, showUser = false, responseToken = null }: Feedback
             {feedback.description}
           </Typography>
           <Typography variant="body/small" component="p" className={styles.date}>
-            {formatDate(feedback.timestamp, true)} &middot; {feedbackTypeNames[feedback.type]}
+            <time dateTime={feedback.timestamp}>{formatDate(feedback.timestamp, true)}</time>
+            &nbsp;&middot; {feedbackTypeNames[feedback.type]}
           </Typography>
         </div>
         {responseToken !== null && status === FeedbackStatus.SUBMITTED ? (
