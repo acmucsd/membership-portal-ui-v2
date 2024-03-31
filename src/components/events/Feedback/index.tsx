@@ -1,14 +1,24 @@
 import { GifSafeImage, Typography } from '@/components/common';
-import { feedbackTypeNames } from '@/components/events/FeedbackForm';
 import { config } from '@/lib';
 import { FeedbackAPI } from '@/lib/api';
 import { PublicFeedback } from '@/lib/types/apiResponses';
-import { FeedbackStatus } from '@/lib/types/enums';
+import { FeedbackStatus, FeedbackType } from '@/lib/types/enums';
 import { formatDate, getProfilePicture, reportError } from '@/lib/utils';
 import Link from 'next/link';
 import { useState } from 'react';
 import { BsCheck, BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import styles from './style.module.scss';
+
+const feedbackTypeNames: Record<FeedbackType, string> = {
+  GENERAL: 'ACM',
+  MERCH_STORE: 'Store',
+  BIT_BYTE: 'Bit-Byte Program',
+  AI: 'ACM AI',
+  CYBER: 'ACM Cyber',
+  DESIGN: 'ACM Design',
+  HACK: 'ACM Hack',
+  INNOVATE: 'ACM Innovate',
+};
 
 interface FeedbackProps {
   feedback: PublicFeedback;
@@ -79,11 +89,11 @@ const Feedback = ({ feedback, showUser = false, responseToken = null }: Feedback
       ) : null}
       <div className={styles.body}>
         <div className={styles.feedback}>
-          <Typography variant="h4/bold" component="h2">
-            {feedback.source}
-          </Typography>
           <Typography variant="body/medium" component="p">
             {feedback.description}
+          </Typography>
+          <Typography variant="body/medium" component="p">
+            <strong>Where did you hear about this event?</strong> {feedback.source}
           </Typography>
           <Typography variant="body/small" component="p" className={styles.date}>
             <time dateTime={feedback.timestamp}>{formatDate(feedback.timestamp, true)}</time>
