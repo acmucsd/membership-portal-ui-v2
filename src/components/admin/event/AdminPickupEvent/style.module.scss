@@ -1,0 +1,29 @@
+@use 'src/styles/vars.scss' as vars;
+
+.header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+.form {
+  column-gap: 8px;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  row-gap: 1rem;
+}
+
+.submitButtons {
+  display: flex;
+  gap: 1rem;
+}
+
+:export {
+  #{defaultThemeColorHex}: vars.$light-primary-2;
+}
