@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { BsCheck, BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import styles from './style.module.scss';
 
-const feedbackTypeNames: Record<FeedbackType, string> = {
+export const feedbackTypeNames: Record<FeedbackType, string> = {
   GENERAL: 'ACM',
   MERCH_STORE: 'Store',
   BIT_BYTE: 'Bit-Byte Program',

@@ -4,4 +4,28 @@
   gap: 1rem;
   margin: 0 auto;
   max-width: 70rem;
+
+  .controls {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .filterOption {
+      background-color: var(--theme-elevated-background);
+      border: 1px solid var(--theme-elevated-stroke);
+      border-radius: 2rem;
+
+      > div {
+        padding: 0.5rem 1rem;
+
+        > select {
+          font-size: 1rem;
+          font-weight: normal;
+          line-height: 1.25rem;
+        }
+      }
+    }
+  }
 }
