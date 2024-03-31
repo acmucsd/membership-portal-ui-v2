@@ -6,6 +6,7 @@ export type Styles = {
   date: string;
   event: string;
   feedback: string;
+  hasUser: string;
   header: string;
   ignore: string;
   ignored: string;

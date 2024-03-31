@@ -42,7 +42,7 @@
       margin: auto 0;
     }
 
-    &::after {
+    &.hasUser::after {
       background-color: var(--theme-background);
       border-right: 1px solid var(--theme-elevated-stroke);
       border-top: 1px solid var(--theme-elevated-stroke);

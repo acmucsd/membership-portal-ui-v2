@@ -35,7 +35,7 @@ const EventDetail = ({ event, attended, inModal = false }: EventDetailProps) => 
       buttons = (
         <Link href={`${config.eventsRoute}/${event.uuid}`} className={styles.feedbackBtn}>
           <VscFeedback aria-hidden />
-          Give feedback
+          Add Feedback
         </Link>
       );
     }

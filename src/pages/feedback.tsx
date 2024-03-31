@@ -146,6 +146,7 @@ const FeedbackPage = ({ user, feedback, token, initialFilters }: FeedbackPagePro
           key={feedback.uuid}
           feedback={feedback}
           showUser={isAdmin}
+          showEvent
           responseToken={isAdmin ? token : null}
         />
       ))}

@@ -24,6 +24,7 @@ export const feedbackTypeNames: Record<FeedbackType, string> = {
 interface FeedbackProps {
   feedback: PublicFeedback;
   showUser?: boolean;
+  showEvent?: boolean;
   /**
    * Auth token. Provide it only if the user has permission to respond to
    * feedback (i.e. they're an admin)
@@ -31,7 +32,12 @@ interface FeedbackProps {
   responseToken?: string | null;
 }
 
-const Feedback = ({ feedback, showUser = false, responseToken = null }: FeedbackProps) => {
+const Feedback = ({
+  feedback,
+  showUser = false,
+  showEvent,
+  responseToken = null,
+}: FeedbackProps) => {
   const [status, setStatus] = useState(feedback.status);
 
   const handleStatus = async (newStatus: FeedbackStatus) => {
@@ -74,31 +80,38 @@ const Feedback = ({ feedback, showUser = false, responseToken = null }: Feedback
 
   return (
     <div className={styles.wrapper}>
-      {showUser ? (
-        <div className={styles.header}>
-          <Link href={`${config.userProfileRoute}${feedback.user.handle}`} className={styles.user}>
-            <GifSafeImage
-              src={getProfilePicture(feedback.user)}
-              width={24}
-              height={24}
-              quality={10}
-              alt={`Profile picture for ${feedback.user.firstName} ${feedback.user.lastName}`}
-            />
-            <span>
-              {feedback.user.firstName} {feedback.user.lastName}
-            </span>
-          </Link>
-          <span>for</span>
-          <Link href={`${config.eventsRoute}/${feedback.event.uuid}`} className={styles.event}>
-            <Image
-              src={getDefaultEventCover(feedback.event.cover)}
-              alt={`${feedback.event.title} cover image`}
-              width={24 * (16 / 9)}
-              height={24}
-              quality={10}
-            />
-            <span>{feedback.event.title}</span>
-          </Link>
+      {showUser || showEvent ? (
+        <div className={`${styles.header} ${showUser ? styles.hasUser : ''}`}>
+          {showUser ? (
+            <Link
+              href={`${config.userProfileRoute}${feedback.user.handle}`}
+              className={styles.user}
+            >
+              <GifSafeImage
+                src={getProfilePicture(feedback.user)}
+                width={24}
+                height={24}
+                quality={10}
+                alt={`Profile picture for ${feedback.user.firstName} ${feedback.user.lastName}`}
+              />
+              <span>
+                {feedback.user.firstName} {feedback.user.lastName}
+              </span>
+            </Link>
+          ) : null}
+          {showUser && showEvent ? <span>for</span> : null}
+          {showEvent ? (
+            <Link href={`${config.eventsRoute}/${feedback.event.uuid}`} className={styles.event}>
+              <Image
+                src={getDefaultEventCover(feedback.event.cover)}
+                alt={`${feedback.event.title} cover image`}
+                width={24 * (16 / 9)}
+                height={24}
+                quality={10}
+              />
+              <span>{feedback.event.title}</span>
+            </Link>
+          ) : null}
         </div>
       ) : null}
       <div className={styles.body}>
@@ -106,9 +119,11 @@ const Feedback = ({ feedback, showUser = false, responseToken = null }: Feedback
           <Typography variant="body/medium" component="p">
             {feedback.description}
           </Typography>
-          <Typography variant="body/medium" component="p">
-            <strong>Where did you hear about this event?</strong> {feedback.source}
-          </Typography>
+          {feedback.source ? (
+            <Typography variant="body/medium" component="p">
+              <strong>Where did you hear about this event?</strong> {feedback.source}
+            </Typography>
+          ) : null}
           <Typography variant="body/small" component="p" className={styles.date}>
             <time dateTime={feedback.timestamp}>{formatDate(feedback.timestamp, true)}</time>
             &nbsp;&middot; {feedbackTypeNames[feedback.type]}
