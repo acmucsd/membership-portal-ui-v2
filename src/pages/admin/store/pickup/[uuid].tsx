@@ -110,9 +110,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
         return aName.localeCompare(bName);
       });
     return {
-      props: {
-        pickupEvent,
-      },
+      props: { title: pickupEvent.title, pickupEvent },
     };
   } catch (e) {
     return { notFound: true };

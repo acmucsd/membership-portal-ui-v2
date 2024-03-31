@@ -49,8 +49,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
   return {
-    props: {
-      email,
-    },
+    props: { title: 'Verify your email address', email },
   };
 };
