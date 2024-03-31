@@ -233,7 +233,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
   const initialFilters = { community, date, attendance, search };
 
-  return { props: { events, attendances, initialFilters } };
+  return { props: { title: 'Events', events, attendances, initialFilters } };
 };
 
 export const getServerSideProps = withAccessType(

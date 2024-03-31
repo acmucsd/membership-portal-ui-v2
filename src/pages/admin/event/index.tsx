@@ -87,7 +87,7 @@ const getServerSidePropsFunc: GetServerSideProps = async () => {
   ]);
 
   return {
-    props: { allEvents, pastEvents, futureEvents },
+    props: { title: 'Manage Events', allEvents, pastEvents, futureEvents },
   };
 };
 

@@ -35,7 +35,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
       StoreAPI.getItem(token, uuid),
       StoreAPI.getAllCollections(token),
     ]);
-    return { props: { token, item, collections } };
+    return { props: { title: `Edit ${item.itemName}`, token, item, collections } };
   } catch {
     return { notFound: true };
   }

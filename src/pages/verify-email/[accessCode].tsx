@@ -65,12 +65,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     return {
       props: {
+        title: 'Email Verification',
         status: true,
       },
     };
   } catch (err: any) {
     return {
       props: {
+        title: 'Email Verification',
         status: false,
       },
     };
