@@ -52,6 +52,10 @@ export interface Feedback {
   type: FeedbackType;
 }
 
+export interface SendPasswordResetEmailRequest {
+  email: string;
+}
+
 export interface SocialMedia {
   type: SocialMediaType;
   url: URL;

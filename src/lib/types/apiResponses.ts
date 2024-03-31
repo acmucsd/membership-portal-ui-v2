@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 import { MerchItemOptionMetadata } from '@/lib/types/apiRequests';
-import { Date, UUID } from '.';
+import { Date, URL, UUID } from '.';
 import {
   ActivityScope,
   ActivityType,
