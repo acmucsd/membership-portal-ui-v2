@@ -7,7 +7,8 @@
 
   .field {
     background: none;
-    border: 2px solid currentColor;
+    background-color: var(--theme-elevated-background);
+    border: 2px solid var(--theme-elevated-stroke);
     border-radius: 0.75rem;
     font-size: 1rem;
     min-height: 3rem;

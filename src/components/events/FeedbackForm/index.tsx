@@ -1,21 +1,18 @@
-import { Dropdown, Typography } from '@/components/common';
+import { Typography } from '@/components/common';
 import { showToast } from '@/lib';
 import { FeedbackAPI } from '@/lib/api';
 import { PublicEvent } from '@/lib/types/apiResponses';
-import { FeedbackType } from '@/lib/types/enums';
-import { isEnum, reportError } from '@/lib/utils';
+import { Community, FeedbackType } from '@/lib/types/enums';
+import { reportError, toCommunity } from '@/lib/utils';
 import { useState } from 'react';
 import styles from './style.module.scss';
 
-export const feedbackTypeNames: Record<FeedbackType, string> = {
-  GENERAL: 'ACM',
-  MERCH_STORE: 'Store',
-  BIT_BYTE: 'Bit-Byte Program',
-  AI: 'ACM AI',
-  CYBER: 'ACM Cyber',
-  DESIGN: 'ACM Design',
-  HACK: 'ACM Hack',
-  INNOVATE: 'ACM Innovate',
+export const communityToFeedbackType: Record<Community, FeedbackType> = {
+  [Community.HACK]: FeedbackType.HACK,
+  [Community.AI]: FeedbackType.AI,
+  [Community.CYBER]: FeedbackType.CYBER,
+  [Community.DESIGN]: FeedbackType.DESIGN,
+  [Community.GENERAL]: FeedbackType.GENERAL,
 };
 
 interface FeedbackFormProps {
@@ -26,7 +23,6 @@ interface FeedbackFormProps {
 const FeedbackForm = ({ authToken, event }: FeedbackFormProps) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [type, setType] = useState(FeedbackType.GENERAL);
 
   return (
     <form
@@ -38,7 +34,7 @@ const FeedbackForm = ({ authToken, event }: FeedbackFormProps) => {
             event: event.uuid,
             source: title,
             description: description.padEnd(20, ' '),
-            type,
+            type: communityToFeedbackType[toCommunity(event.committee)],
           });
           showToast(
             'Feedback received!',
@@ -68,18 +64,6 @@ const FeedbackForm = ({ authToken, event }: FeedbackFormProps) => {
         placeholder="The Hack School event had informational slides that taught more niche than usual so I learned a lot. It was difficult to find the room though. Maybe put up a sign next time."
         value={description}
         onChange={e => setDescription(e.currentTarget.value)}
-        className={styles.field}
-      />
-      <Dropdown
-        name="feedback-type"
-        ariaLabel="Feedback target"
-        options={Object.entries(feedbackTypeNames).map(([value, label]) => ({ value, label }))}
-        value={type}
-        onChange={type => {
-          if (isEnum(FeedbackType, type)) {
-            setType(type);
-          }
-        }}
         className={styles.field}
       />
       <button type="submit" className={styles.submit}>

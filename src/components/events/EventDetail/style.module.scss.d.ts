@@ -7,6 +7,7 @@ export type Styles = {
   eventDetails: string;
   eventInfo: string;
   eventTitle: string;
+  feedbackBtn: string;
   header: string;
   image: string;
 };

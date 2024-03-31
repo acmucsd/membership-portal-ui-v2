@@ -1,19 +1,22 @@
 import { Typography } from '@/components/common';
 import CalendarButtons from '@/components/events/CalendarButtons';
 import EventBadges from '@/components/events/EventBadges';
+import { config } from '@/lib';
 import { PublicEvent, PublicOrderPickupEvent } from '@/lib/types/apiResponses';
 import { formatEventDate, getDefaultEventCover, isOrderPickupEvent } from '@/lib/utils';
 import CloseIcon from '@/public/assets/icons/close-icon.svg';
 import Image from 'next/image';
+import Link from 'next/link';
+import { VscFeedback } from 'react-icons/vsc';
 import styles from './style.module.scss';
 
 interface EventDetailProps {
   event: PublicEvent | PublicOrderPickupEvent;
   attended: boolean;
-  showCloseBtn?: boolean;
+  inModal?: boolean;
 }
 
-const EventDetail = ({ event, attended, showCloseBtn = false }: EventDetailProps) => {
+const EventDetail = ({ event, attended, inModal = false }: EventDetailProps) => {
   const { cover, title, start, end, location, description } = isOrderPickupEvent(event)
     ? {
         ...(event.linkedEvent ?? {}),
@@ -24,9 +27,23 @@ const EventDetail = ({ event, attended, showCloseBtn = false }: EventDetailProps
   const displayCover = getDefaultEventCover(cover);
   const isUpcomingEvent = new Date(start) > new Date();
 
+  let buttons = null;
+  if (!isOrderPickupEvent(event)) {
+    if (isUpcomingEvent) {
+      buttons = <CalendarButtons event={event} />;
+    } else if (inModal) {
+      buttons = (
+        <Link href={`${config.eventsRoute}/${event.uuid}`} className={styles.feedbackBtn}>
+          <VscFeedback aria-hidden />
+          Give feedback
+        </Link>
+      );
+    }
+  }
+
   return (
     <div className={styles.container}>
-      {showCloseBtn ? (
+      {inModal ? (
         <button type="submit" aria-label="Close" className={styles.close}>
           <CloseIcon aria-hidden className={styles.closeIcon} />
         </button>
@@ -54,7 +71,7 @@ const EventDetail = ({ event, attended, showCloseBtn = false }: EventDetailProps
           </div>
         </div>
 
-        {isUpcomingEvent && !isOrderPickupEvent(event) ? <CalendarButtons event={event} /> : null}
+        {buttons}
       </div>
 
       <Typography
