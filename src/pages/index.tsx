@@ -144,9 +144,9 @@ const PortalHomePage = ({
         </div>
       </form>
 
-      <div className={styles.userProgress}>
+      <Link href={config.leaderboardRoute} className={styles.userProgress}>
         <UserProgress user={user} points={points} isSignedInUser />
-      </div>
+      </Link>
 
       <EventCarousel
         title="Upcoming Events"

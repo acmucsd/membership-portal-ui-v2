@@ -10,6 +10,7 @@ import { copy, fixUrl, getProfilePicture } from '@/lib/utils';
 import GradCapIcon from '@/public/assets/icons/grad-cap-icon.svg';
 import LeaderboardIcon from '@/public/assets/icons/leaderboard-icon.svg';
 import MajorIcon from '@/public/assets/icons/major-icon.svg';
+import Link from 'next/link';
 import styles from './style.module.scss';
 
 export interface UserProfilePageProps {
@@ -83,7 +84,7 @@ export const UserProfilePage = ({
           ) : null}
         </div>
       </div>
-      <div className={styles.section}>
+      <Link href={config.leaderboardRoute} className={styles.section}>
         <UserProgress
           user={handleUser}
           points={handleUser.points}
@@ -91,7 +92,7 @@ export const UserProfilePage = ({
           levelTextVariant="h4/regular"
           levelDescriptionVariant="h5/regular"
         />
-      </div>
+      </Link>
 
       <div className={`${styles.section} ${styles.aboutSection}`}>
         <div>
