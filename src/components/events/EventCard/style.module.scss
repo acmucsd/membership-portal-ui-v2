@@ -24,22 +24,27 @@
     transform: scale(0.975);
 
     &[data-community='General'] {
+      border-color: vars.$blue-4;
       outline-color: vars.$blue-4;
     }
 
     &[data-community='Ai'] {
+      border-color: vars.$scarlet-4;
       outline-color: vars.$scarlet-4;
     }
 
     &[data-community='Hack'] {
+      border-color: vars.$orange-4;
       outline-color: vars.$orange-4;
     }
 
     &[data-community='Cyber'] {
+      border-color: vars.$cyan-4;
       outline-color: vars.$cyan-4;
     }
 
     &[data-community='Design'] {
+      border-color: vars.$pink-4;
       outline-color: vars.$pink-4;
     }
   }
