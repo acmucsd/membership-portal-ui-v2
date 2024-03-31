@@ -45,6 +45,13 @@ const PickupEventCard = ({ pickupEvent }: PickupEventCardProps) => {
       <Typography variant="h5/regular" suppressHydrationWarning>
         {formatEventDate(start, end, true)}
       </Typography>
+      {/* <button
+        type="button"
+        className={`${styles.displayButton}`}
+        onClick={() => cancelPickupEvent(uuid, token)}
+      >
+        <Typography variant="h5/bold">Complete Pickup Event</Typography>
+      </button> */}
     </Link>
   );
 };

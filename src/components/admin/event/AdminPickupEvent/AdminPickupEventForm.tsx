@@ -2,12 +2,14 @@ import DetailsFormItem from '@/components/admin/DetailsFormItem';
 import { Button } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { AdminEventManager } from '@/lib/managers';
+import { UUID } from '@/lib/types';
 import { OrderPickupEvent } from '@/lib/types/apiRequests';
 import { PublicEvent, PublicOrderPickupEvent } from '@/lib/types/apiResponses';
 import { reportError } from '@/lib/utils';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import router from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { BsArrowRight } from 'react-icons/bs';
@@ -22,6 +24,34 @@ interface IProps {
   upcomingEvents: PublicEvent[];
 }
 
+export const completePickupEvent = async (uuid: UUID, token: string) => {
+  try {
+    await AdminEventManager.completePickupEvent({
+      pickupEvent: uuid,
+      token: token,
+    });
+
+    showToast('Pickup Event Completed Successfully!', '');
+    router.push(config.admin.store.pickup);
+  } catch (error) {
+    reportError('Could not complete pickup event', error);
+  }
+};
+
+export const cancelPickupEvent = async (uuid: UUID, token: string) => {
+  try {
+    await AdminEventManager.cancelPickupEvent({
+      pickupEvent: uuid,
+      token: token,
+    });
+
+    showToast('Pickup Event Cancelled Successfully!', '');
+    router.push(config.admin.store.pickup);
+  } catch (error) {
+    reportError('Could not cancel pickup event', error);
+  }
+};
+
 const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }: IProps) => {
   const router = useRouter();
 
@@ -33,6 +63,8 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     orderLimit: defaultData.orderLimit ?? 0,
     linkedEventUuid: defaultData.linkedEvent?.uuid ?? null,
   };
+
+  const { uuid } = defaultData;
 
   const {
     register,
@@ -131,7 +163,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
 
     try {
       await AdminEventManager.deletePickupEvent({
-        event: defaultData.uuid ?? '',
+        pickupEvent: defaultData.uuid ?? '',
         token: token,
 
         onSuccessCallback: () => {
@@ -245,13 +277,38 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       <div className={style.submitButtons}>
         {mode === 'edit' ? (
           <>
-            <Button submit disabled={loading}>
+            <Button submit disabled={loading} className={style.expandButton}>
               Save changes
             </Button>
-            <Button onClick={resetForm} disabled={loading} destructive>
+            <Button
+              onClick={() => completePickupEvent(uuid ?? '', token)}
+              disabled={loading}
+              className={style.expandButton}
+            >
+              Complete pickup event
+            </Button>
+            <Button
+              onClick={resetForm}
+              disabled={loading}
+              destructive
+              className={style.expandButton}
+            >
               Discard changes
             </Button>
-            <Button onClick={deletePickupEvent} disabled={loading} destructive>
+            <Button
+              onClick={() => cancelPickupEvent(uuid ?? '', token)}
+              disabled={loading}
+              destructive
+              className={style.expandButton}
+            >
+              Cancel pickup event
+            </Button>
+            <Button
+              onClick={deletePickupEvent}
+              disabled={loading}
+              destructive
+              className={style.expandButton}
+            >
               Delete pickup event
             </Button>
           </>

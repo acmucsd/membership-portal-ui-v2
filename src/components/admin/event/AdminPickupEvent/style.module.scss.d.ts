@@ -1,9 +1,8 @@
 export type Styles = {
-  addImage: string;
   defaultThemeColorHex: string;
+  expandButton: string;
   form: string;
   header: string;
-  photos: string;
   submitButtons: string;
   viewPage: string;
 };

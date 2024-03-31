@@ -354,7 +354,15 @@ export interface OrderPickupEvent {
 }
 
 export interface DeletePickupEventRequest {
-  event: UUID;
+  pickupEvent: UUID;
+}
+
+export interface CompletePickupEventRequest {
+  pickupEvent: UUID;
+}
+
+export interface CancelPickupEventRequest {
+  pickupEvent: UUID;
 }
 
 export interface OrderPickupEventEdit extends Partial<OrderPickupEvent> {}
