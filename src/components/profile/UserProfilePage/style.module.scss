@@ -18,17 +18,21 @@
     border-radius: 0.75rem;
     overflow: hidden;
 
-    @media screen and (max-width: vars.$breakpoint-md) {
-      margin-top: 8rem;
-      overflow: unset;
-      position: relative;
+    &.hasBanner {
+      @media screen and (max-width: vars.$breakpoint-md) {
+        margin-top: 8rem;
+        overflow: unset;
+        position: relative;
+      }
     }
 
     .banner {
+      background-color: var(--theme-background);
       height: 10rem;
       position: relative;
 
       @media screen and (max-width: vars.$breakpoint-md) {
+        background-color: var(--theme-elevated-background);
         height: auto;
         inset: 2rem -2rem;
         position: absolute;
@@ -135,7 +139,7 @@
       display: grid;
       gap: 0.56rem;
       grid-template-columns: auto 1fr;
-      margin: 0.81rem 0;
+      margin-top: 0.81rem;
 
       .icon {
         height: 1.313rem;
@@ -147,6 +151,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.25rem;
+      margin-top: 0.81rem;
 
       svg {
         height: 2rem;
