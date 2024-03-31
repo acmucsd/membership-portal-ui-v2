@@ -7,37 +7,41 @@
   margin: auto;
   max-width: vars.$breakpoint-md;
   width: 100%;
+  @media screen and (max-width: vars.$breakpoint-md) {
+    position: relative;
+    z-index: 0;
+  }
 
   .cardWrapper {
-    padding-top: 6.5rem;
-    position: relative;
+    background-color: var(--theme-elevated-background);
+    border: 1px solid var(--theme-elevated-stroke);
+    border-radius: 0.75rem;
+    overflow: hidden;
 
-    @media screen and (max-width: vars.$breakpoint-md) {
-      padding-top: 1.5rem;
+    &.hasBanner {
+      @media screen and (max-width: vars.$breakpoint-md) {
+        margin-top: 8rem;
+        overflow: unset;
+        position: relative;
+      }
     }
 
     .banner {
-      background-color: vars.$pink-2;
-      border: 1px solid var(--theme-elevated-stroke);
-      border-bottom: 0;
-      border-radius: 0.75rem;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      width: 100%;
+      background-color: var(--theme-background);
+      height: 10rem;
+      position: relative;
 
       @media screen and (max-width: vars.$breakpoint-md) {
-        border: 0;
-        border-radius: 0;
-        margin: -2rem;
-        width: 100vw;
+        background-color: var(--theme-elevated-background);
+        height: auto;
+        inset: 2rem -2rem;
+        position: absolute;
+        top: -10rem;
+        z-index: -1;
       }
     }
 
     .profileCard {
-      background-color: var(--theme-elevated-background);
-      border: 1px solid var(--theme-elevated-stroke);
-      border-radius: 0 0 0.75rem 0.75rem;
       border-top: 0;
       display: flex;
       gap: 1rem;
@@ -46,8 +50,6 @@
 
       @media (max-width: vars.$breakpoint-md) {
         align-items: center;
-        border-radius: 0.75rem;
-        border-top: 1px solid var(--theme-elevated-stroke);
         flex-direction: column;
       }
 
@@ -137,7 +139,7 @@
       display: grid;
       gap: 0.56rem;
       grid-template-columns: auto 1fr;
-      margin: 0.81rem 0;
+      margin-top: 0.81rem;
 
       .icon {
         height: 1.313rem;
@@ -149,6 +151,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.25rem;
+      margin-top: 0.81rem;
 
       svg {
         height: 2rem;

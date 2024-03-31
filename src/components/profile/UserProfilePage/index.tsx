@@ -1,5 +1,6 @@
 import { EditButton, GifSafeImage, Typography } from '@/components/common';
 import { EventCarousel } from '@/components/events';
+import Banner from '@/components/profile/Banner';
 import SocialMediaIcon from '@/components/profile/SocialMediaIcon';
 import { UserProgress } from '@/components/profile/UserProgress';
 import { config, showToast } from '@/lib';
@@ -28,8 +29,19 @@ export const UserProfilePage = ({
 
   return (
     <div className={styles.profilePage}>
-      <div className={styles.cardWrapper}>
-        <div className={styles.banner} />
+      <div
+        className={`${styles.cardWrapper} ${recentAttendances.length > 0 ? styles.hasBanner : ''}`}
+      >
+        {recentAttendances.length > 0 ? (
+          <div className={styles.banner}>
+            {/* Restart the animation when the UUID changes (e.g. navigating from user profile -> my profile) */}
+            <Banner
+              uuid={handleUser.uuid}
+              recentAttendances={recentAttendances}
+              key={handleUser.uuid}
+            />
+          </div>
+        ) : null}
         <div className={styles.profileCard}>
           <div className={styles.profilePic}>
             <GifSafeImage
@@ -92,20 +104,22 @@ export const UserProfilePage = ({
             <MajorIcon className={styles.icon} />
             <Typography variant="h5/regular">{handleUser.major}</Typography>
           </div>
-          <div className={styles.socialIcons}>
-            {handleUser.userSocialMedia?.map(social => (
-              <a
-                href={
-                  social.type === SocialMediaType.EMAIL
-                    ? `mailto:${social.url}`
-                    : fixUrl(social.url)
-                }
-                key={social.type}
-              >
-                <SocialMediaIcon type={social.type} />
-              </a>
-            ))}
-          </div>
+          {handleUser.userSocialMedia && handleUser.userSocialMedia.length > 0 ? (
+            <div className={styles.socialIcons}>
+              {handleUser.userSocialMedia.map(social => (
+                <a
+                  href={
+                    social.type === SocialMediaType.EMAIL
+                      ? `mailto:${social.url}`
+                      : fixUrl(social.url)
+                  }
+                  key={social.type}
+                >
+                  <SocialMediaIcon type={social.type} />
+                </a>
+              ))}
+            </div>
+          ) : null}
         </div>
         <div className={styles.bioSection}>
           <Typography variant="h2/bold" className={styles.sectionHeader}>
