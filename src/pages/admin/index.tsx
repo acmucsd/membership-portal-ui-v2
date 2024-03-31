@@ -30,11 +30,13 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
         }}
       >
         {PermissionService.canManageEvents.includes(accessType) ? (
-          <LinkButton href={config.admin.events.homeRoute}>Manage Events</LinkButton>
+          <>
+            <LinkButton href={config.admin.events.homeRoute}>Manage Events</LinkButton>
+            <LinkButton href={config.feedbackRoute}>View Feedback</LinkButton>
+          </>
         ) : (
           'Restricted Access'
         )}
-        <LinkButton href={config.feedbackRoute}>View Feedback</LinkButton>
       </div>
       <br />
       <Typography variant="h2/bold">Store</Typography>

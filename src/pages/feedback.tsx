@@ -39,7 +39,7 @@ export default FeedbackPage;
 const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   const feedback = await FeedbackAPI.getFeedback(token);
-  return { props: { feedback, token } };
+  return { props: { title: 'Feedback Submissions', feedback, token } };
 };
 
 export const getServerSideProps = withAccessType(

@@ -38,6 +38,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
     ]);
     return {
       props: {
+        title: event.title,
         token,
         event,
         attended: attendances.some(attendance => attendance.event.uuid === uuid),
