@@ -3,7 +3,8 @@ import { config } from '@/lib';
 import { FeedbackAPI } from '@/lib/api';
 import { PublicFeedback } from '@/lib/types/apiResponses';
 import { FeedbackStatus, FeedbackType } from '@/lib/types/enums';
-import { formatDate, getProfilePicture, reportError } from '@/lib/utils';
+import { formatDate, getDefaultEventCover, getProfilePicture, reportError } from '@/lib/utils';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { BsCheck, BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
@@ -74,18 +75,31 @@ const Feedback = ({ feedback, showUser = false, responseToken = null }: Feedback
   return (
     <div className={styles.wrapper}>
       {showUser ? (
-        <Link href={`${config.userProfileRoute}${feedback.user.handle}`} className={styles.user}>
-          <GifSafeImage
-            src={getProfilePicture(feedback.user)}
-            width={24}
-            height={24}
-            quality={10}
-            alt={`Profile picture for ${feedback.user.firstName} ${feedback.user.lastName}`}
-          />
-          <span>
-            {feedback.user.firstName} {feedback.user.lastName}
-          </span>
-        </Link>
+        <div className={styles.header}>
+          <Link href={`${config.userProfileRoute}${feedback.user.handle}`} className={styles.user}>
+            <GifSafeImage
+              src={getProfilePicture(feedback.user)}
+              width={24}
+              height={24}
+              quality={10}
+              alt={`Profile picture for ${feedback.user.firstName} ${feedback.user.lastName}`}
+            />
+            <span>
+              {feedback.user.firstName} {feedback.user.lastName}
+            </span>
+          </Link>
+          <span>for</span>
+          <Link href={`${config.eventsRoute}/${feedback.event.uuid}`} className={styles.event}>
+            <Image
+              src={getDefaultEventCover(feedback.event.cover)}
+              alt={`${feedback.event.title} cover image`}
+              width={24 * (16 / 9)}
+              height={24}
+              quality={10}
+            />
+            <span>{feedback.event.title}</span>
+          </Link>
+        </div>
       ) : null}
       <div className={styles.body}>
         <div className={styles.feedback}>

@@ -6,38 +6,51 @@
   display: flex;
   flex-direction: column;
 
-  .user {
-    align-items: center;
+  .header {
     background-color: var(--theme-elevated-background);
     border-bottom: 1px solid var(--theme-elevated-stroke);
     border-radius: 0.5rem 0.5rem 0 0;
     display: flex;
-    display: flex;
-    flex: auto;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    position: relative;
 
-    img {
-      border-radius: 50%;
+    .user,
+    .event {
+      align-items: center;
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      position: relative;
+
+      &:hover span {
+        text-decoration: underline;
+      }
     }
 
-    &:hover span {
-      text-decoration: underline;
+    .user {
+      img {
+        border-radius: 50%;
+      }
+
+      &::after {
+        background-color: var(--theme-background);
+        border-right: 1px solid var(--theme-elevated-stroke);
+        border-top: 1px solid var(--theme-elevated-stroke);
+        content: '';
+        height: 0.5rem;
+        left: 1.25rem;
+        margin: -0.25rem;
+        position: absolute;
+        top: 100%;
+        transform: rotate(-45deg);
+        width: 0.5rem;
+      }
     }
 
-    &::after {
-      background-color: var(--theme-background);
-      border-right: 1px solid var(--theme-elevated-stroke);
-      border-top: 1px solid var(--theme-elevated-stroke);
-      content: '';
-      height: 0.5rem;
-      left: 1.25rem;
-      margin: -0.25rem;
-      position: absolute;
-      top: 100%;
-      transform: rotate(-45deg);
-      width: 0.5rem;
+    .event img {
+      border-radius: 2px;
+    }
+
+    > span {
+      margin: auto 0;
     }
   }
 

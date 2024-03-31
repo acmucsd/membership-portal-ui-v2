@@ -83,7 +83,7 @@ const EventCard = ({
         <div className={styles.image}>
           <Image
             src={displayCover}
-            alt="Event Cover Image"
+            alt={`${event.title} cover image`}
             style={{ objectFit: 'cover' }}
             sizes="20rem"
             fill

@@ -4,7 +4,9 @@ export type Styles = {
   body: string;
   button: string;
   date: string;
+  event: string;
   feedback: string;
+  header: string;
   ignore: string;
   ignored: string;
   response: string;
