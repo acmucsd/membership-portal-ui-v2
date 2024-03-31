@@ -10,7 +10,7 @@ import { CookieType, FeedbackStatus, FeedbackType, UserAccessType } from '@/lib/
 import { isEnum } from '@/lib/utils';
 import styles from '@/styles/pages/feedback.module.scss';
 import type { GetServerSideProps } from 'next';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 type FilterOptions = {
   type: 'any' | FeedbackType;
@@ -31,6 +31,8 @@ interface FeedbackPageProps {
   initialFilters: FilterOptions;
 }
 const FeedbackPage = ({ user, feedback, token, initialFilters }: FeedbackPageProps) => {
+  /** Whether the user can respond to feedback */
+  const isAdmin = user.accessType === UserAccessType.ADMIN;
   const [page, setPage] = useState(0);
 
   const [states, setStates] = useQueryState({
@@ -51,8 +53,27 @@ const FeedbackPage = ({ user, feedback, token, initialFilters }: FeedbackPagePro
   const typeFilter = states.type?.value || DEFAULT_FILTER_STATE.type;
   const statusFilter = states.status?.value || DEFAULT_FILTER_STATE.status;
 
-  /** Whether the user can respond to feedback */
-  const isAdmin = user.accessType === UserAccessType.ADMIN;
+  const filteredFeedback = useMemo(
+    () =>
+      feedback
+        .filter(
+          feedback =>
+            (typeFilter === 'any' || feedback.type === typeFilter) &&
+            (statusFilter === 'any' || feedback.status === statusFilter)
+        )
+        .sort((a, b) => {
+          // If admin, put SUBMITTED feedback on top
+          if (isAdmin && a.status !== b.status) {
+            return (
+              (a.status === FeedbackStatus.SUBMITTED ? 0 : 1) -
+              (b.status === FeedbackStatus.SUBMITTED ? 0 : 1)
+            );
+          }
+          // Otherwise, just put most recent first
+          return +new Date(b.timestamp) - +new Date(a.timestamp);
+        }),
+    [feedback, isAdmin, typeFilter, statusFilter]
+  );
 
   return (
     <div className={styles.page}>
@@ -94,33 +115,23 @@ const FeedbackPage = ({ user, feedback, token, initialFilters }: FeedbackPagePro
           />
         </div>
       </div>
-      {feedback
-        .sort((a, b) => {
-          // If admin, put SUBMITTED feedback on top
-          if (isAdmin && a.status !== b.status) {
-            return (
-              (a.status === FeedbackStatus.SUBMITTED ? 0 : 1) -
-              (b.status === FeedbackStatus.SUBMITTED ? 0 : 1)
-            );
-          }
-          // Otherwise, just put most recent first
-          return +new Date(b.timestamp) - +new Date(a.timestamp);
-        })
-        .map(feedback => (
-          <Feedback
-            key={feedback.uuid}
-            feedback={feedback}
-            showUser={isAdmin}
-            responseToken={isAdmin ? token : null}
-          />
-        ))}
-      {feedback.length > 0 ? (
+      {filteredFeedback.slice(page * ROWS_PER_PAGE, (page + 1) * ROWS_PER_PAGE).map(feedback => (
+        <Feedback
+          key={feedback.uuid}
+          feedback={feedback}
+          showUser={isAdmin}
+          responseToken={isAdmin ? token : null}
+        />
+      ))}
+      {filteredFeedback.length > 0 ? (
         <PaginationControls
           page={page}
           onPage={page => setPage(page)}
-          pages={Math.ceil(feedback.length / ROWS_PER_PAGE)}
+          pages={Math.ceil(filteredFeedback.length / ROWS_PER_PAGE)}
         />
-      ) : null}
+      ) : (
+        <Typography variant="body/medium">No feedback matches these criteria.</Typography>
+      )}
     </div>
   );
 };
