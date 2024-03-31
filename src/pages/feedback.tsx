@@ -1,5 +1,5 @@
 import { Dropdown, PaginationControls, Typography } from '@/components/common';
-import Feedback, { feedbackTypeNames } from '@/components/events/Feedback';
+import { Feedback, feedbackTypeNames } from '@/components/feedback';
 import { config } from '@/lib';
 import { FeedbackAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';

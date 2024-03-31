@@ -1,7 +1,6 @@
 import { Typography } from '@/components/common';
 import EventDetail from '@/components/events/EventDetail';
-import Feedback from '@/components/events/Feedback';
-import FeedbackForm from '@/components/events/FeedbackForm';
+import { Feedback, FeedbackForm } from '@/components/feedback';
 import { EventAPI, FeedbackAPI, UserAPI } from '@/lib/api';
 import withAccessType, { GetServerSidePropsWithUser } from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
