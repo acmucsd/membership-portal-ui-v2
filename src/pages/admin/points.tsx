@@ -76,7 +76,7 @@ const AwardPointsPage: NextPage = () => {
 export default AwardPointsPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: { title: 'Award Bonus Points', description: 'Grant Bonus Points to a Specific User' },
+  props: { title: 'Award Bonus Points', description: 'Grant bonus points to a specific user' },
 });
 
 export const getServerSideProps = withAccessType(
