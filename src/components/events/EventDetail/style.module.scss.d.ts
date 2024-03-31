@@ -10,6 +10,7 @@ export type Styles = {
   feedbackBtn: string;
   header: string;
   image: string;
+  standalone: string;
 };
 
 export type ClassNames = keyof Styles;

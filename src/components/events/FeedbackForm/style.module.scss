@@ -22,7 +22,7 @@
   }
 
   .submit {
-    align-self: center;
+    align-self: flex-start;
     background-color: var(--theme-text-on-background-1);
     border-radius: 2rem;
     color: var(--theme-background);
@@ -30,5 +30,8 @@
     font-weight: bold;
     min-height: 3rem;
     padding: 0 2rem;
+    @media (max-width: vars.$breakpoint-sm) {
+      align-self: center;
+    }
   }
 }

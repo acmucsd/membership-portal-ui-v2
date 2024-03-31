@@ -1,7 +1,7 @@
 import { Typography } from '@/components/common';
 import { showToast } from '@/lib';
 import { FeedbackAPI } from '@/lib/api';
-import { PublicEvent } from '@/lib/types/apiResponses';
+import { PublicEvent, PublicFeedback } from '@/lib/types/apiResponses';
 import { Community, FeedbackType } from '@/lib/types/enums';
 import { reportError, toCommunity } from '@/lib/utils';
 import { useState } from 'react';
@@ -18,9 +18,10 @@ export const communityToFeedbackType: Record<Community, FeedbackType> = {
 interface FeedbackFormProps {
   authToken: string;
   event: PublicEvent;
+  onSubmit?: (feedback: PublicFeedback) => void;
 }
 
-const FeedbackForm = ({ authToken, event }: FeedbackFormProps) => {
+const FeedbackForm = ({ authToken, event, onSubmit }: FeedbackFormProps) => {
   const [source, setSource] = useState('');
   const [description, setDescription] = useState('');
 
@@ -30,16 +31,17 @@ const FeedbackForm = ({ authToken, event }: FeedbackFormProps) => {
       onSubmit={async e => {
         e.preventDefault();
         try {
-          await FeedbackAPI.addFeedback(authToken, {
+          const feedback = await FeedbackAPI.addFeedback(authToken, {
             event: event.uuid,
             source: source,
-            description: description.padEnd(20, ' '),
+            description,
             type: communityToFeedbackType[toCommunity(event.committee)],
           });
           showToast(
             'Feedback received!',
             'Thank you for taking the time to help us make our events better for you.'
           );
+          onSubmit?.(feedback);
         } catch (error) {
           reportError('Failed to submit feedback', error);
         }

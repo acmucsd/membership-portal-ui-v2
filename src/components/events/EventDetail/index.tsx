@@ -42,16 +42,16 @@ const EventDetail = ({ event, attended, inModal = false }: EventDetailProps) => 
   }
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${inModal ? '' : styles.standalone}`}>
       {inModal ? (
         <button type="submit" aria-label="Close" className={styles.close}>
           <CloseIcon aria-hidden className={styles.closeIcon} />
         </button>
       ) : null}
-      <div className={styles.image}>
+      <div className={`${styles.image} ${inModal ? '' : styles.standalone}`}>
         <Image src={displayCover} alt="Event Cover Image" style={{ objectFit: 'cover' }} fill />
       </div>
-      <div className={styles.header}>
+      <div className={`${styles.header} ${inModal ? '' : styles.standalone}`}>
         <div className={styles.eventDetails}>
           <div>
             <Typography
@@ -77,7 +77,7 @@ const EventDetail = ({ event, attended, inModal = false }: EventDetailProps) => 
       <Typography
         variant="h5/regular"
         style={{ wordBreak: 'break-word' }}
-        className={styles.description}
+        className={`${styles.description} ${inModal ? '' : styles.standalone}`}
       >
         {description}
       </Typography>
