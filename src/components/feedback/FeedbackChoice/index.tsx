@@ -71,6 +71,7 @@ const FeedbackChoice = ({
           Other:&nbsp;
           <input
             type="text"
+            placeholder="Something else"
             value={other}
             onChange={e => handleSelection(selected, e.currentTarget.value)}
             className={styles.otherField}

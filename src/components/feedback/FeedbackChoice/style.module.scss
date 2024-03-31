@@ -9,7 +9,7 @@
     background: none;
     color: var(--theme-blue-text-button);
     display: inline;
-    font: inherit;
+    font-size: 1rem;
     padding: 0;
 
     &:hover {
@@ -84,6 +84,7 @@
       background-color: var(--theme-elevated-background);
       border: 1px solid var(--theme-elevated-stroke);
       border-radius: 1rem;
+      font-size: 1rem;
       height: 2rem;
       padding: 0.5rem 1rem;
       width: 15rem;

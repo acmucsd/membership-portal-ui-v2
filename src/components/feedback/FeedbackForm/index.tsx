@@ -64,7 +64,7 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
       </p>
       <textarea
         aria-label="Feedback description"
-        placeholder="The Hack School event had informational slides that taught more niche than usual so I learned a lot."
+        placeholder="The Hack School event had informational slides that taught more niche topics than usual, so I learned a lot."
         value={response}
         onChange={e => setResponse(e.currentTarget.value)}
         className={styles.field}
