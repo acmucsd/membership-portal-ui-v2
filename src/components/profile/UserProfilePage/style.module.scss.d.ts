@@ -7,6 +7,7 @@ export type Styles = {
   cardWrapper: string;
   editWrapper: string;
   handle: string;
+  hasBanner: string;
   icon: string;
   points: string;
   profileCard: string;
