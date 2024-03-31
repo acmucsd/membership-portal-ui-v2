@@ -64,6 +64,10 @@
         color: var(--theme-text-on-background-3);
       }
     }
+
+    .timeDropdown select {
+      text-align: right;
+    }
   }
 
   .topThreeContainer {
