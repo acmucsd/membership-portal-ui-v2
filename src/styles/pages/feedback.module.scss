@@ -28,4 +28,12 @@
       }
     }
   }
+
+  .link {
+    color: var(--theme-blue-text-button);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

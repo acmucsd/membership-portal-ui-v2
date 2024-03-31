@@ -10,6 +10,7 @@ import { CookieType, FeedbackStatus, FeedbackType, UserAccessType } from '@/lib/
 import { isEnum } from '@/lib/utils';
 import styles from '@/styles/pages/feedback.module.scss';
 import type { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
 type FilterOptions = {
@@ -130,7 +131,18 @@ const FeedbackPage = ({ user, feedback, token, initialFilters }: FeedbackPagePro
           pages={Math.ceil(filteredFeedback.length / ROWS_PER_PAGE)}
         />
       ) : (
-        <Typography variant="body/medium">No feedback matches these criteria.</Typography>
+        <Typography variant="body/medium">
+          {typeFilter !== 'any' || statusFilter !== 'any' ? (
+            'No feedback matches these criteria.'
+          ) : (
+            <>
+              You haven&lsquo;t submitted any feedback yet!{' '}
+              <Link href={`${config.eventsRoute}?attendance=attended`} className={styles.link}>
+                Review your recent events.
+              </Link>
+            </>
+          )}
+        </Typography>
       )}
     </div>
   );

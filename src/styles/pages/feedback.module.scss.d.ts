@@ -1,6 +1,7 @@
 export type Styles = {
   controls: string;
   filterOption: string;
+  link: string;
   page: string;
 };
 
