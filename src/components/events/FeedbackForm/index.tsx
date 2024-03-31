@@ -56,7 +56,7 @@ const FeedbackForm = ({ authToken, event, onSubmit }: FeedbackFormProps) => {
       </p>
       <input
         aria-label="Feedback source"
-        placeholder="Source"
+        placeholder="Where did you hear about this event?"
         value={source}
         onChange={e => setSource(e.currentTarget.value)}
         className={styles.field}
