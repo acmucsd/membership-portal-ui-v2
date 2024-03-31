@@ -79,6 +79,7 @@
 
     .response {
       display: flex;
+      flex: none;
       flex-direction: column;
       gap: 0.5rem;
       justify-content: space-between;
@@ -111,6 +112,7 @@
 
     .status {
       display: flex;
+      flex: none;
       gap: 0.25rem;
       margin-top: auto;
 

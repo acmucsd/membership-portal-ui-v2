@@ -25,7 +25,8 @@ interface FeedbackFormProps {
 
 const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProps) => {
   const [source, setSource] = useState('');
-  const [description, setDescription] = useState('');
+  const [response, setResponse] = useState('');
+  const [questions, setQuestions] = useState<Record<string, string>>({});
 
   return (
     <form
@@ -33,10 +34,15 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
       onSubmit={async e => {
         e.preventDefault();
         try {
+          const allQuestions = Object.entries(questions)
+            .map(([question, response]) => (response ? `${question}: ${response}` : ''))
+            .join('');
+          const description =
+            (allQuestions ? `${allQuestions}\nAdditional comments:\n` : '') + response;
           const feedback = await FeedbackAPI.addFeedback(authToken, {
             event: event.uuid,
             source: source,
-            description,
+            description: description.padEnd(20, ' '),
             type: communityToFeedbackType[toCommunity(event.committee)],
           });
           showToast(
@@ -59,14 +65,11 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
       <textarea
         aria-label="Feedback description"
         placeholder="The Hack School event had informational slides that taught more niche than usual so I learned a lot."
-        value={description}
-        onChange={e => setDescription(e.currentTarget.value)}
+        value={response}
+        onChange={e => setResponse(e.currentTarget.value)}
         className={styles.field}
       />
-      <p>
-        Answer as few of the following optional questions as you want. You can elaborate on your
-        responses above.
-      </p>
+      <p>The following questions are optional. You can elaborate on your responses above.</p>
       <FeedbackChoice
         question="How did you hear about this event?"
         choices={[
@@ -77,7 +80,7 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
           'A friend/word of mouth',
           'Just passing by',
         ]}
-        onExport={setSource}
+        onExport={(_, response) => setSource(response)}
       />
       {attended ? (
         <FeedbackChoice
@@ -88,7 +91,7 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
             'It was a bit difficult to find the event location.',
           ]}
           singleChoice
-          onExport={console.log}
+          onExport={(question, response) => setQuestions({ ...questions, [question]: response })}
         />
       ) : (
         <FeedbackChoice
@@ -101,7 +104,7 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
             'Already made plans for something else today',
             "Couldn't find the room",
           ]}
-          onExport={console.log}
+          onExport={(question, response) => setQuestions({ ...questions, [question]: response })}
         />
       )}
       <button type="submit" className={styles.submit}>
