@@ -568,7 +568,7 @@ const getServerSidePropsFunc: GetServerSideProps<EditProfileProps> = async ({ re
   // Ensure `user` is up-to-date
   const user = await UserAPI.getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
 
-  return { props: { authToken: AUTH_TOKEN, user } };
+  return { props: { title: 'Edit Profile', authToken: AUTH_TOKEN, user } };
 };
 
 export const getServerSideProps = withAccessType(

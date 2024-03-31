@@ -11,7 +11,7 @@ interface SEOProps {
 }
 
 const SEO = ({ title, description = DESC }: SEOProps) => {
-  const fullTitle = title ? `${title} · ${TITLE}` : TITLE;
+  const fullTitle = title ? `${title} | ${TITLE}` : TITLE;
 
   return (
     <Head>

@@ -64,7 +64,10 @@ const AwardPointsPage: NextPage = () => {
 export default AwardPointsPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: {},
+  props: {
+    title: 'Create Milestone',
+    description: "Award points to all active users (e.g. for ACM's 8 year anniversary)",
+  },
 });
 
 export const getServerSideProps = withAccessType(

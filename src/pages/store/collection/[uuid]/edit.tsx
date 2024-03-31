@@ -12,13 +12,13 @@ import { GetServerSideProps } from 'next';
 interface CollectionEditPageProps {
   user: PrivateProfile;
   token: string;
-  item: PublicMerchCollection;
+  collection: PublicMerchCollection;
 }
-const CollectionEditPage = ({ user: { credits }, token, item }: CollectionEditPageProps) => {
+const CollectionEditPage = ({ user: { credits }, token, collection }: CollectionEditPageProps) => {
   return (
     <div className={styles.container}>
       <Navbar balance={credits} showBack />
-      <CollectionDetailsForm mode="edit" defaultData={item} token={token} />
+      <CollectionDetailsForm mode="edit" defaultData={collection} token={token} />
     </div>
   );
 };
@@ -30,8 +30,8 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   try {
-    const item = await StoreAPI.getCollection(token, uuid);
-    return { props: { token, item } };
+    const collection = await StoreAPI.getCollection(token, uuid);
+    return { props: { title: `Edit ${collection.title}`, token, collection } };
   } catch {
     return { notFound: true };
   }
