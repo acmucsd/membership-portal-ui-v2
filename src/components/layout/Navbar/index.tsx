@@ -81,7 +81,9 @@ const Navbar = ({ accessType }: NavbarProps) => {
           <p aria-hidden>·</p>
           <Link href={config.eventsRoute}>Events</Link>
           <p aria-hidden>·</p>
-          <Link href="/leaderboard">Leaderboard</Link>
+          <Link href={config.leaderboardRoute}>Leaderboard</Link>
+          <p aria-hidden>·</p>
+          <Link href={config.store.homeRoute}>Store</Link>
         </nav>
         <nav className={styles.iconLinks}>
           <ThemeToggle />
@@ -90,9 +92,6 @@ const Navbar = ({ accessType }: NavbarProps) => {
               <SettingsIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
             </Link>
           ) : null}
-          <Link href="/store" className={styles.iconLink}>
-            <ShopIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
-          </Link>
           <Link href={config.profile.route} className={styles.iconLink}>
             <ProfileIcon color="var(--theme-text-on-background-1)" />
           </Link>
@@ -132,7 +131,7 @@ const Navbar = ({ accessType }: NavbarProps) => {
             Admin Settings
           </Link>
         ) : null}
-        <div>
+        <div className={styles.mobileSwitch}>
           <ThemeToggle />
         </div>
         <hr className={styles.wainbow} />
