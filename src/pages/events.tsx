@@ -7,6 +7,12 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import useQueryState from '@/lib/hooks/useQueryState';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
+import {
+  FilterEventOptions,
+  isValidAttendanceFilter,
+  isValidCommunityFilter,
+  isValidDateFilter,
+} from '@/lib/types/client';
 import { CookieType } from '@/lib/types/enums';
 import { formatSearch, getDateRange, getYears } from '@/lib/utils';
 import styles from '@/styles/pages/events.module.scss';
@@ -16,19 +22,20 @@ import { useMemo, useState } from 'react';
 interface EventsPageProps {
   events: PublicEvent[];
   attendances: PublicAttendance[];
+  initialFilters: FilterEventOptions;
 }
 
 interface FilterOptions {
   search: string;
   communityFilter: string;
-  timeFilter: string | number;
+  dateFilter: string | number;
   attendanceFilter: string;
 }
 
 const filterEvent = (
   event: PublicEvent,
   attendances: PublicAttendance[],
-  { search, communityFilter, timeFilter, attendanceFilter }: FilterOptions
+  { search, communityFilter, dateFilter, attendanceFilter }: FilterOptions
 ): boolean => {
   // Filter search query
   if (search !== '' && !formatSearch(event.title).includes(formatSearch(search))) {
@@ -39,7 +46,7 @@ const filterEvent = (
     return false;
   }
   // Filter by date
-  const { from, to } = getDateRange(timeFilter);
+  const { from, to } = getDateRange(dateFilter);
   if (from !== undefined && new Date(event.start) < new Date(from * 1000)) {
     return false;
   }
@@ -47,7 +54,7 @@ const filterEvent = (
     return false;
   }
   // Filter by attendance
-  if (attendanceFilter === 'all') {
+  if (attendanceFilter === 'any') {
     return true;
   }
   const attended = attendances.some(a => a.event.uuid === event.uuid);
@@ -60,84 +67,58 @@ const filterEvent = (
   return true;
 };
 
-const CommunityOptions = [
-  { value: 'all', label: 'All communities' },
-  { value: 'general', label: 'General' },
-  { value: 'ai', label: 'AI' },
-  { value: 'cyber', label: 'Cyber' },
-  { value: 'design', label: 'Design' },
-  { value: 'hack', label: 'Hack' },
-];
-
-const TimeOptions = [
-  { value: 'upcoming', label: 'Upcoming' },
-  { value: 'past-week', label: 'Past week' },
-  { value: 'past-month', label: 'Past month' },
-  { value: 'past-year', label: 'Past year' },
-  { value: 'all-time', label: 'All time' },
-];
-
-const AttendanceOptions = [
-  { value: 'all', label: 'Any attendance' },
-  { value: 'attended', label: 'Attended' },
-  { value: 'not-attended', label: 'Not attended' },
-];
+const DEFAULT_FILTER_STATE = {
+  community: 'all',
+  date: 'all-time',
+  attendance: 'any',
+  search: '',
+};
 
 const ROWS_PER_PAGE = 25;
-const EventsPage = ({ events, attendances }: EventsPageProps) => {
+
+const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) => {
   const [page, setPage] = useState(0);
   const years = useMemo(getYears, []);
 
-  const validCommunity = (value: string): boolean => {
-    return CommunityOptions.some(o => o.value === value);
-  };
-
-  const validTime = (value: string): boolean => {
-    return TimeOptions.some(o => o.value === value) || years.some(o => o.value === value);
-  };
-
-  const validAttendance = (value: string): boolean => {
-    return AttendanceOptions.some(o => o.value === value);
-  };
-
-  const validSearch = (): boolean => {
-    // Any string is a valid search, so just return true.
-    return true;
+  const validDate = (value: string): boolean => {
+    return isValidDateFilter(value) || years.some(o => o.value === value);
   };
 
   const [states, setStates] = useQueryState({
     pathName: config.eventsRoute,
+    initialFilters,
     queryStates: {
       community: {
-        defaultValue: 'all',
-        valid: validCommunity,
+        defaultValue: DEFAULT_FILTER_STATE.community,
+        valid: isValidCommunityFilter,
       },
-      time: {
-        defaultValue: 'all-time',
-        valid: validTime,
+      date: {
+        defaultValue: DEFAULT_FILTER_STATE.date,
+        valid: validDate,
       },
       attendance: {
-        defaultValue: 'all',
-        valid: validAttendance,
+        defaultValue: DEFAULT_FILTER_STATE.attendance,
+        valid: isValidAttendanceFilter,
       },
       search: {
-        defaultValue: '',
-        valid: validSearch,
+        defaultValue: DEFAULT_FILTER_STATE.search,
+        // Any string is a valid search, so just return true.
+        valid: () => true,
       },
     },
   });
 
-  const communityFilter = states.community?.value || 'all';
-  const timeFilter = states.time?.value || 'all-time';
-  const attendanceFilter = states.attendance?.value || 'all';
-  const search = states.search?.value || '';
+  const communityFilter = states.community?.value || DEFAULT_FILTER_STATE.community;
+  const dateFilter = states.date?.value || DEFAULT_FILTER_STATE.date;
+  const attendanceFilter = states.attendance?.value || DEFAULT_FILTER_STATE.attendance;
+  const search = states.search?.value || DEFAULT_FILTER_STATE.search;
 
   const filteredEvents = events.filter(e =>
-    filterEvent(e, attendances, { search, communityFilter, timeFilter, attendanceFilter })
+    filterEvent(e, attendances, { search, communityFilter, dateFilter, attendanceFilter })
   );
 
   filteredEvents.sort((a, b) => {
-    if (timeFilter === 'upcoming') {
+    if (dateFilter === 'upcoming') {
       // For upcoming events, sort from soonest to latest
       return new Date(a.start).getTime() - new Date(b.start).getTime();
     }
@@ -166,7 +147,14 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
           <Dropdown
             name="communityOptions"
             ariaLabel="Filter events by community"
-            options={CommunityOptions}
+            options={[
+              { value: 'all', label: 'All Communities' },
+              { value: 'general', label: 'General' },
+              { value: 'ai', label: 'AI' },
+              { value: 'cyber', label: 'Cyber' },
+              { value: 'design', label: 'Design' },
+              { value: 'hack', label: 'Hack' },
+            ]}
             value={communityFilter}
             onChange={v => {
               setStates('community', v);
@@ -177,12 +165,20 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
 
         <div className={styles.filterOption}>
           <Dropdown
-            name="timeOptions"
-            ariaLabel="Filter events by time"
-            options={[...TimeOptions, DIVIDER, ...years]}
-            value={timeFilter}
+            name="dateOptions"
+            ariaLabel="Filter events by date"
+            options={[
+              { value: 'upcoming', label: 'Upcoming' },
+              { value: 'past-week', label: 'Past Week' },
+              { value: 'past-month', label: 'Past Month' },
+              { value: 'past-year', label: 'Past Year' },
+              { value: 'all-time', label: 'All Time' },
+              DIVIDER,
+              ...years,
+            ]}
+            value={dateFilter}
             onChange={v => {
-              setStates('time', v);
+              setStates('date', v);
               setPage(0);
             }}
           />
@@ -190,9 +186,13 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
 
         <div className={styles.filterOption}>
           <Dropdown
-            name="timeOptions"
+            name="attendanceOptions"
             ariaLabel="Filter events by attendance"
-            options={AttendanceOptions}
+            options={[
+              { value: 'any', label: 'Any Attendance' },
+              { value: 'attended', label: 'Attended' },
+              { value: 'not-attended', label: 'Not Attended' },
+            ]}
             value={attendanceFilter}
             onChange={v => {
               setStates('attendance', v);
@@ -216,7 +216,7 @@ const EventsPage = ({ events, attendances }: EventsPageProps) => {
 
 export default EventsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
+const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
   const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   const getEventsPromise = EventAPI.getAllEvents();
@@ -224,7 +224,16 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   const [events, attendances] = await Promise.all([getEventsPromise, getAttendancesPromise]);
 
-  return { props: { events, attendances } };
+  const {
+    community = DEFAULT_FILTER_STATE.community,
+    date = DEFAULT_FILTER_STATE.date,
+    attendance = DEFAULT_FILTER_STATE.attendance,
+    search = DEFAULT_FILTER_STATE.search,
+  } = query as FilterEventOptions;
+
+  const initialFilters = { community, date, attendance, search };
+
+  return { props: { events, attendances, initialFilters } };
 };
 
 export const getServerSideProps = withAccessType(
