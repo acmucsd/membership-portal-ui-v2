@@ -66,7 +66,7 @@ const AboutPage = () => {
 export default AboutPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: { title: 'About ACM@UCSD' },
+  props: { title: 'About ACM @ UCSD' },
 });
 
 export const getServerSideProps = withAccessType(
