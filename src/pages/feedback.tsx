@@ -16,11 +16,13 @@ import { useMemo, useState } from 'react';
 type FilterOptions = {
   type: 'any' | FeedbackType;
   status: 'any' | FeedbackStatus;
+  sort: 'chronological' | 'submitted-first';
 };
 
 const DEFAULT_FILTER_STATE: FilterOptions = {
   type: 'any',
   status: 'any',
+  sort: 'chronological',
 };
 
 const ROWS_PER_PAGE = 25;
@@ -48,11 +50,16 @@ const FeedbackPage = ({ user, feedback, token, initialFilters }: FeedbackPagePro
         defaultValue: DEFAULT_FILTER_STATE.status,
         valid: status => status === 'any' || isEnum(FeedbackStatus, status),
       },
+      sort: {
+        defaultValue: DEFAULT_FILTER_STATE.sort,
+        valid: sort => sort === 'chronological' || sort === 'submitted-first',
+      },
     },
   });
 
   const typeFilter = states.type?.value || DEFAULT_FILTER_STATE.type;
   const statusFilter = states.status?.value || DEFAULT_FILTER_STATE.status;
+  const sortFilter = states.sort?.value || DEFAULT_FILTER_STATE.sort;
 
   const filteredFeedback = useMemo(
     () =>
@@ -63,8 +70,8 @@ const FeedbackPage = ({ user, feedback, token, initialFilters }: FeedbackPagePro
             (statusFilter === 'any' || feedback.status === statusFilter)
         )
         .sort((a, b) => {
-          // If admin, put SUBMITTED feedback on top
-          if (isAdmin && a.status !== b.status) {
+          // Put SUBMITTED feedback on top
+          if (sortFilter === 'submitted-first' && a.status !== b.status) {
             return (
               (a.status === FeedbackStatus.SUBMITTED ? 0 : 1) -
               (b.status === FeedbackStatus.SUBMITTED ? 0 : 1)
@@ -73,7 +80,7 @@ const FeedbackPage = ({ user, feedback, token, initialFilters }: FeedbackPagePro
           // Otherwise, just put most recent first
           return +new Date(b.timestamp) - +new Date(a.timestamp);
         }),
-    [feedback, isAdmin, typeFilter, statusFilter]
+    [feedback, typeFilter, statusFilter, sortFilter]
   );
 
   return (
@@ -115,6 +122,24 @@ const FeedbackPage = ({ user, feedback, token, initialFilters }: FeedbackPagePro
             }}
           />
         </div>
+
+        {isAdmin ? (
+          <div className={styles.filterOption}>
+            <Dropdown
+              name="sortOptions"
+              ariaLabel="Sort feedback"
+              options={[
+                { value: 'chronological', label: 'Most recent first' },
+                { value: 'submitted-first', label: 'Pending response first' },
+              ]}
+              value={sortFilter}
+              onChange={v => {
+                setStates('sort', v);
+                setPage(0);
+              }}
+            />
+          </div>
+        ) : null}
       </div>
       {filteredFeedback.slice(page * ROWS_PER_PAGE, (page + 1) * ROWS_PER_PAGE).map(feedback => (
         <Feedback
@@ -154,7 +179,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   const feedback = await FeedbackAPI.getFeedback(token);
 
-  const { type, status = DEFAULT_FILTER_STATE.status } = query;
+  const { type, status, sort } = query;
 
   const initialFilters: FilterOptions = {
     type:
@@ -165,6 +190,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
       status === 'any' || (typeof status === 'string' && isEnum(FeedbackStatus, status))
         ? status
         : DEFAULT_FILTER_STATE.status,
+    sort: sort === 'chronological' || sort === 'submitted-first' ? sort : DEFAULT_FILTER_STATE.sort,
   };
 
   return { props: { title: 'Feedback Submissions', feedback, token, initialFilters } };

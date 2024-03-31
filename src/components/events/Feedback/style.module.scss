@@ -5,6 +5,8 @@
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
+  white-space: pre-wrap;
+  word-break: break-word;
 
   .header {
     align-items: center;
@@ -69,8 +71,6 @@
       flex: auto;
       flex-direction: column;
       gap: 0.5rem;
-      white-space: pre-wrap;
-      word-break: break-word;
 
       .date {
         color: var(--theme-text-on-background-2);
