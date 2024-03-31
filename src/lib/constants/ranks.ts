@@ -20,6 +20,7 @@ const ranks = [
   'Quantum Quiche',
   'Firewall Flan',
   'Turing Tart',
+  'Lovelace Layer Cake',
   'Syntax Soufflé',
   'Debugging Danish',
   'Neural Network Nougat',
