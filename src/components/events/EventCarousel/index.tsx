@@ -14,7 +14,7 @@ interface EventCarouselProps {
   events: PublicEvent[];
   attendances: PublicAttendance[];
   placeholder: string;
-  initialEventsFilter?: FilterEventOptions;
+  initialEventsFilter?: Partial<FilterEventOptions>;
   className?: string;
 }
 
