@@ -3,6 +3,7 @@ import { FillInLater, UUID } from '@/lib/types';
 import { AttendEventRequest, Event, OrderPickupEvent } from '@/lib/types/apiRequests';
 import {
   AttendEventResponse,
+  CompleteOrderPickupEventResponse,
   CreateEventResponse,
   CreatePickupEventResponse,
   EditOrderPickupEventResponse,
@@ -175,6 +176,41 @@ export const deletePickupEvent = async (token: string, pickupEvent: UUID): Promi
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+export const completePickupEvent = async (
+  token: string,
+  uuid: UUID
+): Promise<CompleteOrderPickupEventResponse> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${uuid}/complete`;
+
+  const response = await axios.post(
+    requestUrl,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data.orders;
+};
+
+export const cancelPickupEvent = async (token: string, uuid: UUID): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${uuid}/cancel`;
+
+  const response = await axios.post(
+    requestUrl,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
 };
 
 export const uploadEventImage = async (
