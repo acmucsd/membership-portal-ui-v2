@@ -58,7 +58,7 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
       <Typography variant="h2/bold" component="h2">
         Feedback
       </Typography>
-      <Typography variant="h5/regular">
+      <Typography variant="h6/regular">
         Feel free to give event suggestions, friendly words, constructive criticism, or just say
         what’s on your mind!
       </Typography>
@@ -69,9 +69,8 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
         onChange={e => setResponse(e.currentTarget.value)}
         className={styles.field}
       />
-      <Typography variant="h5/regular">
-        Feel free to give event suggestions, friendly words, constructive criticism, or just say
-        what’s on your mind!
+      <Typography variant="h6/regular">
+        The following questions are optional. You can elaborate on your responses above.
       </Typography>
       <FeedbackChoice
         question="How did you hear about this event?"
