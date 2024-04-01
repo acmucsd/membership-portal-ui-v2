@@ -82,18 +82,7 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
         ]}
         onExport={(_, response) => setSource(response)}
       />
-      {attended ? (
-        <FeedbackChoice
-          question="How easy was it to find the event?"
-          choices={[
-            'I was already familiar with the event location.',
-            "I didn't know where it was, but it was easy to figure out myself.",
-            'It was a bit difficult to find the event location.',
-          ]}
-          singleChoice
-          onExport={(question, response) => setQuestions({ ...questions, [question]: response })}
-        />
-      ) : (
+      {attended ? null : (
         <FeedbackChoice
           question="Why weren't you able to make it to the event?"
           choices={[
