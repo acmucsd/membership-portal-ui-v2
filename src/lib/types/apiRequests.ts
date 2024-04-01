@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import { URL, UUID } from '.';
+import { Date, URL, UUID } from '.';
 import { FeedbackStatus, FeedbackType, SocialMediaType, UserAccessType } from './enums';
 
 // REQUEST TYPES
@@ -46,7 +46,8 @@ export interface RegistrationRequest {
 // USER
 
 export interface Feedback {
-  title: string;
+  event: UUID;
+  source: string;
   description: string;
   type: FeedbackType;
 }
@@ -85,6 +86,13 @@ export interface SubmitFeedbackRequest {
 
 export interface UpdateFeedbackStatusRequest {
   status: FeedbackStatus;
+}
+
+export interface FeedbackSearchOptions {
+  event?: string;
+  type?: string;
+  status?: string;
+  user?: string;
 }
 
 export interface InsertUserSocialMediaRequest {
@@ -158,8 +166,8 @@ export interface Event extends OptionalEventProperties {
   title: string;
   description: string;
   location: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   attendanceCode: string;
   pointValue: number;
 }
@@ -346,8 +354,8 @@ export interface MerchItemOptionAndQuantity {
 
 export interface OrderPickupEvent {
   title: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   description: string;
   orderLimit: number;
   linkedEventUuid?: UUID | null;

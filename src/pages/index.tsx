@@ -59,7 +59,7 @@ const PortalHomePage = ({
       const newAttendance: PublicAttendance = {
         user: user,
         event,
-        timestamp: new Date(),
+        timestamp: new Date().toString(),
         asStaff: false,
         feedback: [],
       };
