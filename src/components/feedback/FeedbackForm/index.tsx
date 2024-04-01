@@ -59,7 +59,7 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
         Feedback
       </Typography>
       <p>
-        Feel free to give event suggestions, friendly words, constructive crisitism, or just say
+        Feel free to give event suggestions, friendly words, constructive criticism, or just say
         what’s on your mind!
       </p>
       <textarea
