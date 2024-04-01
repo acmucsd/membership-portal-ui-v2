@@ -79,7 +79,7 @@ const Feedback = ({
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${showUser || showEvent ? '' : styles.noHeader}`}>
       {showUser || showEvent ? (
         <div className={`${styles.header} ${showUser ? styles.hasUser : ''}`}>
           {showUser ? (

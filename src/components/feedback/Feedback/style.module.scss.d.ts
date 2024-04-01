@@ -10,6 +10,7 @@ export type Styles = {
   header: string;
   ignore: string;
   ignored: string;
+  noHeader: string;
   response: string;
   status: string;
   user: string;

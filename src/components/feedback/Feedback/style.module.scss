@@ -8,6 +8,10 @@
   white-space: pre-wrap;
   word-break: break-word;
 
+  &.noHeader {
+    background-color: var(--theme-elevated-background);
+  }
+
   .header {
     align-items: center;
     background-color: var(--theme-elevated-background);
