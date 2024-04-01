@@ -50,10 +50,10 @@ const getServerSidePropsFunc: GetServerSidePropsWithUser = async ({ params, req,
   const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   try {
-    const [event, attendances, [feedback = null]] = await Promise.all([
+    const [event, attendances, feedback] = await Promise.all([
       EventAPI.getEvent(uuid, token),
       UserAPI.getAttendancesForCurrentUser(token),
-      FeedbackAPI.getFeedback(token, { user: user.uuid, event: uuid }),
+      FeedbackAPI.getFeedback(token),
     ]);
     return {
       props: {
@@ -61,7 +61,10 @@ const getServerSidePropsFunc: GetServerSidePropsWithUser = async ({ params, req,
         token,
         event,
         attended: attendances.some(attendance => attendance.event.uuid === uuid),
-        feedback,
+        feedback:
+          feedback.find(
+            feedback => feedback.event.uuid === uuid && feedback.user.uuid === user.uuid
+          ) ?? null,
       },
     };
   } catch {
