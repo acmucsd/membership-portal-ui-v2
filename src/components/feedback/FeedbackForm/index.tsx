@@ -58,10 +58,10 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
       <Typography variant="h2/bold" component="h2">
         Feedback
       </Typography>
-      <p>
+      <Typography variant="h5/regular">
         Feel free to give event suggestions, friendly words, constructive criticism, or just say
         what’s on your mind!
-      </p>
+      </Typography>
       <textarea
         aria-label="Feedback description"
         placeholder="The Hack School event had informational slides that taught more niche topics than usual, so I learned a lot."
@@ -69,7 +69,10 @@ const FeedbackForm = ({ authToken, event, attended, onSubmit }: FeedbackFormProp
         onChange={e => setResponse(e.currentTarget.value)}
         className={styles.field}
       />
-      <p>The following questions are optional. You can elaborate on your responses above.</p>
+      <Typography variant="h5/regular">
+        Feel free to give event suggestions, friendly words, constructive criticism, or just say
+        what’s on your mind!
+      </Typography>
       <FeedbackChoice
         question="How did you hear about this event?"
         choices={[
