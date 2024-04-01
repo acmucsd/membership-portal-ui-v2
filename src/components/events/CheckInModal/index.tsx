@@ -108,12 +108,15 @@ const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
           </div>
         </div>
         <div className={style.buttonRow}>
-          <button type="submit" className={`${style.button} ${style.done}`}>
-            <Typography variant="h4/bold">Close</Typography>
-          </button>
-          <Link href={`${config.eventsRoute}/${event.uuid}`} className={style.button}>
+          <Link
+            href={`${config.eventsRoute}/${event.uuid}`}
+            className={`${style.button} ${style.addFeedback}`}
+          >
             <Typography variant="h4/bold">Add Feedback</Typography>
           </Link>
+          <button type="submit" className={style.button}>
+            <Typography variant="h4/bold">Close</Typography>
+          </button>
         </div>
       </div>
     </Modal>

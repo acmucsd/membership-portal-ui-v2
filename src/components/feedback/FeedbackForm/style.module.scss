@@ -6,24 +6,18 @@
   gap: 1rem;
 
   .field {
-    background: none;
     background-color: var(--theme-elevated-background);
-    border: 2px solid var(--theme-elevated-stroke);
+    border: 1px solid var(--theme-elevated-stroke);
     border-radius: 0.75rem;
     font-size: 1rem;
-    min-height: 3rem;
-    padding: 0 1rem;
-
-    &:is(textarea) {
-      min-height: 5rem;
-      padding: 1rem;
-      resize: vertical;
-    }
+    min-height: 5rem;
+    padding: 1rem;
+    resize: vertical;
   }
 
   .submit {
     align-self: flex-start;
-    background-color: var(--theme-text-on-background-1);
+    background-color: var(--theme-primary-2);
     border-radius: 2rem;
     color: var(--theme-background);
     font-size: 1rem;

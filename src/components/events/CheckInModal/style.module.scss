@@ -51,11 +51,11 @@
     gap: 1rem;
 
     .button {
-      background-color: var(--theme-surface-1);
+      background-color: var(--theme-surface-2);
       border-radius: 2rem;
       padding: 1rem 1.5rem;
 
-      &.done {
+      &.addFeedback {
         background-color: var(--theme-primary-2);
         color: var(--theme-background);
       }
