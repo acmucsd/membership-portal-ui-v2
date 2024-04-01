@@ -17,12 +17,10 @@
   width: fit-content;
 
   &[data-size='default'] {
-    height: auto;
     min-height: 2.5rem;
   }
 
   &[data-size='small'] {
-    height: auto;
     min-height: 2rem;
   }
 
