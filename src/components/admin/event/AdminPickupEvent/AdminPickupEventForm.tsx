@@ -5,6 +5,7 @@ import { AdminEventManager } from '@/lib/managers';
 import { UUID } from '@/lib/types';
 import { OrderPickupEvent } from '@/lib/types/apiRequests';
 import { PublicEvent, PublicOrderPickupEvent } from '@/lib/types/apiResponses';
+import { OrderPickupEventStatus } from '@/lib/types/enums';
 import { reportError } from '@/lib/utils';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
@@ -64,7 +65,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     linkedEventUuid: defaultData.linkedEvent?.uuid ?? null,
   };
 
-  const { uuid } = defaultData;
+  const { uuid, status } = defaultData;
 
   const {
     register,
@@ -277,38 +278,28 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       <div className={style.submitButtons}>
         {mode === 'edit' ? (
           <>
-            <Button submit disabled={loading} className={style.expandButton}>
+            <Button submit disabled={loading}>
               Save changes
             </Button>
-            <Button
-              onClick={() => completePickupEvent(uuid ?? '', token)}
-              disabled={loading}
-              className={style.expandButton}
-            >
-              Complete pickup event
-            </Button>
-            <Button
-              onClick={resetForm}
-              disabled={loading}
-              destructive
-              className={style.expandButton}
-            >
+
+            <Button onClick={resetForm} disabled={loading} destructive>
               Discard changes
             </Button>
-            <Button
-              onClick={() => cancelPickupEvent(uuid ?? '', token)}
-              disabled={loading}
-              destructive
-              className={style.expandButton}
-            >
-              Cancel pickup event
-            </Button>
-            <Button
-              onClick={deletePickupEvent}
-              disabled={loading}
-              destructive
-              className={style.expandButton}
-            >
+            {status === OrderPickupEventStatus.ACTIVE ? (
+              <Button onClick={() => completePickupEvent(uuid ?? '', token)} disabled={loading}>
+                Complete pickup event
+              </Button>
+            ) : null}
+            {status === OrderPickupEventStatus.ACTIVE ? (
+              <Button
+                onClick={() => cancelPickupEvent(uuid ?? '', token)}
+                disabled={loading}
+                destructive
+              >
+                Cancel pickup event
+              </Button>
+            ) : null}
+            <Button onClick={deletePickupEvent} disabled={loading} destructive>
               Delete pickup event
             </Button>
           </>

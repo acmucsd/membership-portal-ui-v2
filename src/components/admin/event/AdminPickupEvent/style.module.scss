@@ -31,13 +31,9 @@
 
 .submitButtons {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   height: auto;
-
-  .expandButton {
-    height: auto;
-    min-height: 2.5rem;
-  }
 }
 
 :export {

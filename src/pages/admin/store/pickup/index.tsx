@@ -14,10 +14,9 @@ import { useState } from 'react';
 interface AdminPickupPageProps {
   futurePickupEvents: PublicOrderPickupEvent[];
   pastPickupEvents: PublicOrderPickupEvent[];
-  token: string;
 }
 
-const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents, token }: AdminPickupPageProps) => {
+const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents }: AdminPickupPageProps) => {
   const [display, setDisplay] = useState<'past' | 'future'>('future');
   const displayPickupEvents = display === 'past' ? pastPickupEvents : futurePickupEvents;
   return (
@@ -54,7 +53,7 @@ const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents, token }: AdminP
       </div>
       <div className={styles.cardContainer}>
         {displayPickupEvents.map(pickupEvent => (
-          <PickupEventCard pickupEvent={pickupEvent} key={pickupEvent.uuid} token={token} />
+          <PickupEventCard pickupEvent={pickupEvent} key={pickupEvent.uuid} />
         ))}
       </div>
     </div>

@@ -1,13 +1,8 @@
-import {
-  cancelPickupEvent,
-  completePickupEvent,
-} from '@/components/admin/event/AdminPickupEvent/AdminPickupEventForm';
 import { Typography, type Variant } from '@/components/common';
 import { config } from '@/lib';
 import { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
 import { OrderPickupEventStatus } from '@/lib/types/enums';
 import { formatEventDate } from '@/lib/utils';
-import { Button } from '@mui/material';
 import Link from 'next/link';
 import styles from './style.module.scss';
 
@@ -33,10 +28,9 @@ export const PickupEventStatus = ({ status, variant }: PickupEventStatusProps) =
 
 interface PickupEventCardProps {
   pickupEvent: PublicOrderPickupEvent;
-  token: string;
 }
 
-const PickupEventCard = ({ pickupEvent, token }: PickupEventCardProps) => {
+const PickupEventCard = ({ pickupEvent }: PickupEventCardProps) => {
   const { title, start, end, orders, status, uuid } = pickupEvent;
 
   return (
@@ -51,22 +45,6 @@ const PickupEventCard = ({ pickupEvent, token }: PickupEventCardProps) => {
       <Typography variant="h5/regular" suppressHydrationWarning>
         {formatEventDate(start, end, true)}
       </Typography>
-      <Button
-        type="button"
-        className={`${styles.displayButton}`}
-        onClick={() => completePickupEvent(uuid, token)}
-      >
-        <Typography variant="h5/bold">Complete Pickup Event</Typography>
-      </Button>
-      <Button
-        type="button"
-        className={`${styles.displayButton}`}
-        onClick={() => {
-          cancelPickupEvent(uuid, token);
-        }}
-      >
-        <Typography variant="h5/bold">Cancel Pickup Event</Typography>
-      </Button>
     </Link>
   );
 };

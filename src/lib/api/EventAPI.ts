@@ -3,7 +3,6 @@ import { FillInLater, UUID } from '@/lib/types';
 import { AttendEventRequest, Event, OrderPickupEvent } from '@/lib/types/apiRequests';
 import {
   AttendEventResponse,
-  CancelOrderPickupEventResponse,
   CompleteOrderPickupEventResponse,
   CreateEventResponse,
   CreatePickupEventResponse,
@@ -198,10 +197,7 @@ export const completePickupEvent = async (
   return response.data.orders;
 };
 
-export const cancelPickupEvent = async (
-  token: string,
-  uuid: UUID
-): Promise<CancelOrderPickupEventResponse> => {
+export const cancelPickupEvent = async (token: string, uuid: UUID): Promise<void> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${uuid}/cancel`;
 
   const response = await axios.post(

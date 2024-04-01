@@ -1,6 +1,5 @@
 export type Styles = {
   defaultThemeColorHex: string;
-  expandButton: string;
   form: string;
   header: string;
   submitButtons: string;
