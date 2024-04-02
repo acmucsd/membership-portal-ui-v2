@@ -61,6 +61,22 @@ export const getCurrentUserAndRefreshCookie = async (
   return user;
 };
 
+export const getFreshCurrentUserAndRefreshCookie = async (
+  token: string,
+  options: OptionsType
+): Promise<PrivateProfile> => {
+  const user: PrivateProfile = await getCurrentUser(token);
+
+  const { req, res } = options;
+  CookieService.setServerCookie(CookieType.USER, JSON.stringify(user), {
+    req,
+    res,
+    maxAge: 5 * 60,
+  });
+
+  return user;
+};
+
 /**
  * Get specified user's public profile
  * @param token Authorization bearer token

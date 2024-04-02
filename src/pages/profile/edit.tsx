@@ -192,6 +192,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
       ...user,
       userSocialMedia: Array.from(savedSocialMedia.values()),
     }));
+
     if (changed) {
       showToast('Changes saved!');
       CookieService.setClientCookie(CookieType.USER, JSON.stringify(user), {
@@ -589,7 +590,7 @@ export default EditProfilePage;
 const getServerSidePropsFunc: GetServerSideProps<EditProfileProps> = async ({ req, res }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   // Ensure `user` is up-to-date
-  const user = await UserAPI.getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
+  const user = await UserAPI.getFreshCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
 
   return { props: { title: 'Edit Profile', authToken: AUTH_TOKEN, user } };
 };
