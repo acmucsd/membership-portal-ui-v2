@@ -72,15 +72,28 @@ const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Confetti
-        key={`${refreshConfetti}`}
-        numberOfPieces={1000}
-        initialVelocityY={-10}
-        tweenDuration={15000}
-        recycle={false}
-        drawShape={drawDiamond}
-        colors={colors}
-      />
+      <div className={style.desktop}>
+        <Confetti
+          key={`${refreshConfetti}`}
+          numberOfPieces={1000}
+          initialVelocityY={-10}
+          tweenDuration={15000}
+          recycle={false}
+          drawShape={drawDiamond}
+          colors={colors}
+        />
+      </div>
+      <div className={style.mobile}>
+        <Confetti
+          key={`${refreshConfetti}`}
+          numberOfPieces={500}
+          initialVelocityY={-10}
+          tweenDuration={15000}
+          recycle={false}
+          drawShape={drawDiamond}
+          colors={colors}
+        />
+      </div>
       <div className={style.container}>
         <div className={style.graphic}>
           <Image

@@ -6,12 +6,14 @@ export type Styles = {
   container: string;
   cyber: string;
   design: string;
+  desktop: string;
   general: string;
   graphic: string;
   hack: string;
   header: string;
   headerText: string;
   innovate: string;
+  mobile: string;
   subheader: string;
   subheaderText: string;
 };

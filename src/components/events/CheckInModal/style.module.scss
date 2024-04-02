@@ -1,5 +1,19 @@
 @use 'src/styles/vars.scss' as vars;
 
+.mobile {
+  display: none;
+}
+
+@media screen and (width <= vars.$breakpoint-md) {
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: auto;
+  }
+}
+
 .container {
   align-items: center;
   display: flex;
