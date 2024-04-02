@@ -134,8 +134,8 @@ export const updateCurrentUserProfile = async (
  */
 export const insertSocialMedia = async (
   token: string,
-  socialMedia: SocialMedia
-): Promise<PublicUserSocialMedia> => {
+  socialMedia: SocialMedia[]
+): Promise<PublicUserSocialMedia[]> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}`;
 
   const requestBody: InsertUserSocialMediaRequest = { socialMedia };
@@ -158,10 +158,9 @@ export const insertSocialMedia = async (
  */
 export const updateSocialMedia = async (
   token: string,
-  uuid: UUID,
-  socialMedia: SocialMediaPatches
-): Promise<PublicUserSocialMedia> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}/${uuid}`;
+  socialMedia: SocialMediaPatches[]
+): Promise<PublicUserSocialMedia[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}`;
 
   const requestBody: UpdateUserSocialMediaRequest = { socialMedia };
 
