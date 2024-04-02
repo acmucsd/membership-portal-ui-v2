@@ -194,6 +194,9 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
     }));
     if (changed) {
       showToast('Changes saved!');
+      CookieService.setClientCookie(CookieType.USER, JSON.stringify(user), {
+        maxAge: 5 * 60,
+      });
     }
   };
 
