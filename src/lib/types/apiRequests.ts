@@ -61,6 +61,10 @@ export interface SocialMedia {
   url: URL;
 }
 
+export interface ExistingSocialMedia extends SocialMedia {
+  uuid: UUID;
+}
+
 export interface PasswordUpdate extends PasswordChange {
   password: string;
 }
@@ -96,15 +100,16 @@ export interface FeedbackSearchOptions {
 }
 
 export interface InsertUserSocialMediaRequest {
-  socialMedia: SocialMedia;
+  socialMedia: SocialMedia[];
 }
 
 export interface SocialMediaPatches {
-  url?: string;
+  url: string;
+  uuid: UUID;
 }
 
 export interface UpdateUserSocialMediaRequest {
-  socialMedia: SocialMediaPatches;
+  socialMedia: SocialMediaPatches[];
 }
 
 // LEADERBOARD
