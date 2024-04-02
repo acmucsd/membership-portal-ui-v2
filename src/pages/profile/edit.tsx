@@ -61,6 +61,8 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const [loading, setLoading] = useState(false);
+
   const [socialMedia, setSocialMedia] = useState(
     () => new Map(initUser.userSocialMedia?.map(social => [social.type, social.url]) ?? [])
   );
@@ -93,7 +95,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     let changed = false;
     if (profileChanged) {
       try {
@@ -199,6 +201,8 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
         maxAge: 5 * 60,
       });
     }
+    setLoading(false);
+    console.log('hey im done');
   };
 
   // Warn if there are unsaved changes
@@ -552,7 +556,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
               <button
                 type="submit"
                 className={`${styles.button} ${styles.primaryBtn}`}
-                disabled={!hasChange}
+                disabled={!hasChange || loading}
               >
                 Save
               </button>
