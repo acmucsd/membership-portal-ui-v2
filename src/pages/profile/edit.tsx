@@ -202,7 +202,6 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
       });
     }
     setLoading(false);
-    console.log('hey im done');
   };
 
   // Warn if there are unsaved changes
