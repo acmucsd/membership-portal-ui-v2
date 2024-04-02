@@ -61,6 +61,22 @@ export const getCurrentUserAndRefreshCookie = async (
   return user;
 };
 
+export const getFreshCurrentUserAndRefreshCookie = async (
+  token: string,
+  options: OptionsType
+): Promise<PrivateProfile> => {
+  const user: PrivateProfile = await getCurrentUser(token);
+
+  const { req, res } = options;
+  CookieService.setServerCookie(CookieType.USER, JSON.stringify(user), {
+    req,
+    res,
+    maxAge: 5 * 60,
+  });
+
+  return user;
+};
+
 /**
  * Get specified user's public profile
  * @param token Authorization bearer token
@@ -134,8 +150,8 @@ export const updateCurrentUserProfile = async (
  */
 export const insertSocialMedia = async (
   token: string,
-  socialMedia: SocialMedia
-): Promise<PublicUserSocialMedia> => {
+  socialMedia: SocialMedia[]
+): Promise<PublicUserSocialMedia[]> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}`;
 
   const requestBody: InsertUserSocialMediaRequest = { socialMedia };
@@ -158,10 +174,9 @@ export const insertSocialMedia = async (
  */
 export const updateSocialMedia = async (
   token: string,
-  uuid: UUID,
-  socialMedia: SocialMediaPatches
-): Promise<PublicUserSocialMedia> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}/${uuid}`;
+  socialMedia: SocialMediaPatches[]
+): Promise<PublicUserSocialMedia[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}`;
 
   const requestBody: UpdateUserSocialMediaRequest = { socialMedia };
 
