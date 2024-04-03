@@ -55,6 +55,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
     // render UserProfilePage
     return {
       props: {
+        title: `${handleUser.firstName} ${handleUser.lastName}`,
         handleUser,
         isSignedInUser,
         signedInAttendances,

@@ -4,7 +4,21 @@ import { CookieService } from '@/lib/services';
 import type { URL } from '@/lib/types';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, UserAccessType } from '@/lib/types/enums';
-import type { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import type {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  PreviewData,
+} from 'next';
+import { ParsedUrlQuery } from 'querystring';
+
+export type GetServerSidePropsWithUser<
+  Props extends { [key: string]: any } = { [key: string]: any },
+  Params extends ParsedUrlQuery = ParsedUrlQuery,
+  Preview extends PreviewData = PreviewData
+> = (
+  context: GetServerSidePropsContext<Params, Preview> & { user: PrivateProfile }
+) => Promise<GetServerSidePropsResult<Props>>;
 
 interface AccessTypeOptions {
   /**
@@ -21,7 +35,7 @@ interface AccessTypeOptions {
  * @returns
  */
 export default function withAccessType(
-  gssp: GetServerSideProps,
+  gssp: GetServerSidePropsWithUser,
   validAccessTypes: UserAccessType[],
   { redirectTo = config.loginRoute }: AccessTypeOptions = {}
 ): GetServerSideProps {
@@ -84,7 +98,7 @@ export default function withAccessType(
     if (!validAccessTypes.includes(userAccessLevel)) return missingAccessRedirect;
 
     // If we haven't short-circuited, user has valid access. Show the page and add the user prop.
-    const originalReturnValue = await gssp(context);
+    const originalReturnValue = await gssp({ ...context, user });
     // Insert the user object to the original return value if it doesn't exist already
     if ('props' in originalReturnValue) {
       const existingProps = await Promise.resolve(originalReturnValue.props);

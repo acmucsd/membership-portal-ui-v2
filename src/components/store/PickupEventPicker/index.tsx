@@ -13,6 +13,8 @@ interface EventPickerProps {
 }
 
 const PickupEventPicker = ({ events, eventIndex, setEventIndex, active }: EventPickerProps) => {
+  const displayIndex = events.length === 0 ? 0 : eventIndex + 1;
+
   return (
     <div className={styles.eventPicker}>
       <div className={styles.window}>
@@ -50,9 +52,10 @@ const PickupEventPicker = ({ events, eventIndex, setEventIndex, active }: EventP
           >
             <ArrowLeft />
           </button>
-          <Typography variant="h5/regular" component="p">{`${eventIndex + 1}/${
-            events.length
-          }`}</Typography>
+          <Typography
+            variant="h5/regular"
+            component="p"
+          >{`${displayIndex}/${events.length}`}</Typography>
           <button
             type="button"
             onClick={() => setEventIndex((i: number) => Math.min(i + 1, events.length - 1))}

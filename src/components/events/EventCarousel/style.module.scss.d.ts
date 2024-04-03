@@ -2,6 +2,7 @@ export type Styles = {
   card: string;
   header: string;
   headerText: string;
+  noEvents: string;
   viewToggle: string;
   wrapper: string;
 };

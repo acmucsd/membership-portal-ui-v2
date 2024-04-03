@@ -1,28 +1,35 @@
 import {
+  cancelPickupEvent,
+  completePickupEvent,
+} from '@/components/admin/event/AdminPickupEvent/AdminPickupEventForm';
+import {
   PickupEventStatus,
   PickupOrdersFulfillDisplay,
   PickupOrdersPrepareDisplay,
 } from '@/components/admin/store';
-import { Typography } from '@/components/common';
+import { Button, Typography } from '@/components/common';
 import { EventCard } from '@/components/events';
-import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
+import config from '@/lib/config';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
+import { CookieType, OrderPickupEventStatus } from '@/lib/types/enums';
 import { formatEventDate } from '@/lib/utils';
 import styles from '@/styles/pages/StorePickupEventDetailsPage.module.scss';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
+import router from 'next/router';
 import { useState } from 'react';
 
 interface PickupEventDetailsPageProps {
   pickupEvent: PublicOrderPickupEvent;
+  token: string;
 }
 
-const PickupEventDetailsPage = ({ pickupEvent }: PickupEventDetailsPageProps) => {
-  const { status, title, start, end, orderLimit, description, linkedEvent, orders } = pickupEvent;
+const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPageProps) => {
+  const { uuid, status, title, start, end, orderLimit, description, linkedEvent, orders } =
+    pickupEvent;
   const [ordersView, setOrdersView] = useState<'fulfill' | 'prepare'>('fulfill');
 
   let ordersComponent;
@@ -51,6 +58,31 @@ const PickupEventDetailsPage = ({ pickupEvent }: PickupEventDetailsPageProps) =>
           <div>
             <PickupEventStatus status={status} variant="h3/bold" />
             <Typography variant="h1/bold">{title}</Typography>
+            <Button
+              className={`${styles.displayButton}`}
+              onClick={() => router.push(`${config.admin.store.pickupEdit}/${uuid}`)}
+            >
+              <Typography variant="h5/bold">Edit Pickup Event</Typography>
+            </Button>
+            {status === OrderPickupEventStatus.ACTIVE ? (
+              <Button
+                className={`${styles.displayButton}`}
+                onClick={() => completePickupEvent(uuid, token)}
+              >
+                <Typography variant="h5/bold">Complete Pickup Event</Typography>
+              </Button>
+            ) : null}
+            {status === OrderPickupEventStatus.ACTIVE ? (
+              <Button
+                className={`${styles.displayButton}`}
+                onClick={() => {
+                  cancelPickupEvent(uuid, token);
+                }}
+                destructive
+              >
+                <Typography variant="h5/bold">Cancel Pickup Event</Typography>
+              </Button>
+            ) : null}
             <Typography variant="h4/regular" suppressHydrationWarning>
               {formatEventDate(start, end, true)}
             </Typography>
@@ -101,9 +133,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
         return aName.localeCompare(bName);
       });
     return {
-      props: {
-        pickupEvent,
-      },
+      props: { title: pickupEvent.title, pickupEvent, token },
     };
   } catch (e) {
     return { notFound: true };

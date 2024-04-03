@@ -6,7 +6,7 @@ import { ValidationService } from '@/lib/services';
 import type { UserRegistration } from '@/lib/types/apiRequests';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { getNextNYears, reportError } from '@/lib/utils';
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineMail } from 'react-icons/ai';
@@ -174,3 +174,7 @@ const RegisterPage: NextPage = () => {
 };
 
 export default RegisterPage;
+
+export const getServerSideProps: GetServerSideProps = async () => ({
+  props: { title: 'Become a Member' },
+});

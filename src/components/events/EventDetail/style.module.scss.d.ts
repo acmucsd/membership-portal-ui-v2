@@ -1,13 +1,16 @@
 export type Styles = {
+  badges: string;
   close: string;
   closeIcon: string;
-  contents: string;
+  container: string;
+  description: string;
   eventDetails: string;
   eventInfo: string;
   eventTitle: string;
+  feedbackBtn: string;
   header: string;
   image: string;
-  link: string;
+  standalone: string;
 };
 
 export type ClassNames = keyof Styles;

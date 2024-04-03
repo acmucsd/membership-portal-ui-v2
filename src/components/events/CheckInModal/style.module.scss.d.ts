@@ -1,9 +1,11 @@
 export type Styles = {
+  addFeedback: string;
   ai: string;
+  button: string;
+  buttonRow: string;
   container: string;
   cyber: string;
   design: string;
-  done: string;
   general: string;
   graphic: string;
   hack: string;

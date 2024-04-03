@@ -55,7 +55,7 @@ const getServerSidePropsFunc: GetServerSideProps = async () => {
       notFound: true,
     };
 
-  return { props: {} };
+  return { props: { title: 'Debug' } };
 };
 
 export const getServerSideProps = withAccessType(

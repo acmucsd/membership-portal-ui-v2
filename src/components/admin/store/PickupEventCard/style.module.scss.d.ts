@@ -3,6 +3,7 @@ export type Styles = {
   cancelled: string;
   card: string;
   completed: string;
+  displayButton: string;
   header: string;
   title: string;
 };

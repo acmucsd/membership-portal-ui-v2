@@ -10,6 +10,7 @@ export type Styles = {
   loggedOut: string;
   mobileNav: string;
   mobileNavItem: string;
+  mobileSwitch: string;
   navLeft: string;
   portalLinks: string;
   toggleIcon: string;

@@ -12,7 +12,7 @@ interface EventModalProps {
 const EventModal = ({ open, attended, event, onClose }: EventModalProps) => {
   return (
     <Modal open={open} onClose={onClose} bottomSheet>
-      <EventDetail event={event} attended={attended} />
+      <EventDetail event={event} attended={attended} inModal />
     </Modal>
   );
 };

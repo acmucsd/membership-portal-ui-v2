@@ -1,12 +1,12 @@
 import {
   CollectionSlider,
   CreateButton,
-  EditButton,
   HelpModal,
   Hero,
   HiddenIcon,
   ItemCard,
   Navbar,
+  StoreEditButton,
 } from '@/components/store';
 import { config, showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
@@ -106,7 +106,9 @@ const StoreHomePage = ({
                 key={collection.uuid}
               >
                 {storeAdminVisible && collection.archived ? <HiddenIcon type="collection" /> : null}
-                {storeAdminVisible ? <EditButton type="collection" uuid={collection.uuid} /> : null}
+                {storeAdminVisible ? (
+                  <StoreEditButton type="collection" uuid={collection.uuid} />
+                ) : null}
               </ItemCard>
             ))}
             {storeAdminVisible ? (
@@ -148,6 +150,9 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
   return {
     props: {
+      title: 'The ACM Store',
+      description:
+        'Shop the ACM Store for exclusive ACM merchandise including shirts, hoodies, pop sockets & more!',
       view: query.view === 'all' ? 'all-items' : 'collections',
       collections,
       previewPublic: preview === 'member',

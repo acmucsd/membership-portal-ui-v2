@@ -3,6 +3,7 @@ import ranks from '@/lib/constants/ranks';
 import showToast from '@/lib/showToast';
 import type { URL } from '@/lib/types';
 import type {
+  ApiResponse,
   CustomErrorBody,
   PublicEvent,
   PublicMerchCollection,
@@ -15,6 +16,7 @@ import type {
   PublicProfile,
   ValidatorError,
 } from '@/lib/types/apiResponses';
+import { Community } from '@/lib/types/enums';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import { AxiosError } from 'axios';
 import {
@@ -54,7 +56,8 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
 
 export function getErrorMessage(error: unknown): string {
   if (error instanceof AxiosError && error.response?.data?.error) {
-    return getMessagesFromError(error.response.data.error).join('\n\n');
+    const response: ApiResponse = error.response.data;
+    return getMessagesFromError(response.error).join('\n\n') || error.message;
   }
   if (error instanceof Error) {
     return error.message;
@@ -314,6 +317,13 @@ export const getDefaultMerchItemPhoto = (
   return NoImage.src;
 };
 
+export const getDefaultOrderItemPhoto = (item: PublicOrderItem): string => {
+  if (item.option.item.uploadedPhoto) {
+    return item.option.item.uploadedPhoto;
+  }
+  return NoImage.src;
+};
+
 /**
  * Returns the default (first) photo for a merchandise collection.
  * If there are no photos for this collection, returns the first photo of the first item.
@@ -396,6 +406,26 @@ export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderIte
   return Array.from(itemMap.values());
 };
 
+export function isEnum<T extends Record<string, string>>(
+  Enum: T,
+  value: string
+): value is T[keyof T] {
+  return Object.values(Enum).includes(value);
+}
+
+export function stringToEnum<T extends Record<string, string>>(
+  Enum: T,
+  value: string
+): T[keyof T] | null {
+  if (isEnum(Enum, value)) return value;
+
+  return null;
+}
+
+export const toCommunity = (community = ''): Community => {
+  return stringToEnum(Community, capitalize(community)) ?? Community.GENERAL;
+};
+
 /**
  * Validates src for event cover image, returning a default if invalid
  * @param src src for cover image
@@ -406,3 +436,30 @@ export const getDefaultEventCover = (src: unknown): string => {
     return '/assets/graphics/store/hero-photo.jpg';
   return src;
 };
+
+/**
+ * xoshiro128** PRNG algorithm, which apparently powers `Math.random`. Takes a
+ * 128-bit seed.
+ * @param a 32-bit seed 1
+ * @param b 32-bit seed 2
+ * @param c 32-bit seed 3
+ * @param d 32-bit seed 4
+ * @returns A non-pure function that produces random numbers in the range [0,
+ * 1).
+ */
+export function seededRandom(a: number, b: number, c: number, d: number): () => number {
+  return () => {
+    /* eslint-disable no-bitwise, no-param-reassign */
+    const t = b << 9;
+    let r = b * 5;
+    r = ((r << 7) | (r >>> 25)) * 9;
+    c ^= a;
+    d ^= b;
+    b ^= c;
+    a ^= d;
+    c ^= t;
+    d = (d << 11) | (d >>> 21);
+    return (r >>> 0) / 4294967296;
+    /* eslint-enable no-bitwise, no-param-reassign */
+  };
+}

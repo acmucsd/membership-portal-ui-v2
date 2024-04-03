@@ -13,9 +13,9 @@
     gap: 1rem;
 
     .search {
-      background: none;
-      border: 1px solid var(--theme-text-on-background-1);
-      border-radius: 1rem;
+      background: var(--theme-elevated-background);
+      border: 1px solid var(--theme-elevated-stroke);
+      border-radius: 2rem;
       color: inherit;
       font-size: 1rem;
       line-height: 1.25rem;
@@ -29,14 +29,18 @@
     }
 
     .filterOption {
-      border: 1px solid var(--theme-text-on-background-1);
-      border-radius: 1rem;
-      padding: 0.5rem 1rem;
+      background-color: var(--theme-elevated-background);
+      border: 1px solid var(--theme-elevated-stroke);
+      border-radius: 2rem;
 
-      div > select {
-        font-size: 1rem;
-        font-weight: normal;
-        line-height: 1.25rem;
+      > div {
+        padding: 0.5rem 1rem;
+
+        > select {
+          font-size: 1rem;
+          font-weight: normal;
+          line-height: 1.25rem;
+        }
       }
     }
   }

@@ -7,29 +7,45 @@
   margin: auto;
   max-width: vars.$breakpoint-md;
   width: 100%;
+  @media screen and (max-width: vars.$breakpoint-md) {
+    position: relative;
+    z-index: 0;
+  }
 
   .cardWrapper {
-    padding-top: 3rem;
-    position: relative;
+    background-color: var(--theme-elevated-background);
+    border: 1px solid var(--theme-elevated-stroke);
+    border-radius: 0.75rem;
+    overflow: hidden;
+
+    &.hasBanner {
+      @media screen and (max-width: vars.$breakpoint-md) {
+        margin-top: 8rem;
+        overflow: unset;
+        position: relative;
+      }
+    }
 
     .banner {
-      background-color: vars.$pink-2;
-      border-radius: 0.5rem;
-      height: 90%;
-      position: absolute;
-      top: 0;
-      width: 100%;
+      background-color: var(--theme-background);
+      height: 10rem;
+      position: relative;
+
+      @media screen and (max-width: vars.$breakpoint-md) {
+        background-color: var(--theme-elevated-background);
+        height: auto;
+        inset: 2rem -2rem;
+        position: absolute;
+        top: -10rem;
+        z-index: -1;
+      }
     }
 
     .profileCard {
-      background-color: var(--theme-background);
-      border: 1px solid var(--theme-accent-line-2-transparent);
-      border-radius: 0.75rem;
-      box-shadow: 0 2px 4px var(--theme-shadow);
+      border-top: 0;
       display: flex;
       gap: 1rem;
-      margin: 0 2rem;
-      padding: 1rem 2rem;
+      padding: 2rem;
       position: relative;
 
       @media (max-width: vars.$breakpoint-md) {
@@ -47,49 +63,36 @@
         width: 7rem;
       }
 
-      .cardName {
+      .userInfo {
         align-items: flex-start;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
+        padding: 0.5rem 0;
 
         @media (max-width: vars.$breakpoint-md) {
           align-items: center;
-          flex-direction: column;
-
-          h1,
-          div {
-            text-align: center;
-          }
+          padding: 0;
         }
 
-        .handle {
-          cursor: pointer;
-        }
-      }
-
-      .cardRank {
-        align-items: flex-end;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        gap: 0.5rem;
-        justify-content: flex-end;
-
-        @media (max-width: vars.$breakpoint-md) {
-          align-items: center;
-          color: var(--theme-text-on-background-2);
-          flex-direction: column;
-        }
-
-        .rank {
-          color: var(--theme-text-on-background-1);
+        .cardName {
+          align-items: flex-start;
           display: flex;
-          margin-top: calc(2.375rem + 0.5rem); // give space for edit button
+          flex-direction: column;
+          justify-content: center;
 
           @media (max-width: vars.$breakpoint-md) {
-            margin-top: 0;
-            text-align: center;
+            align-items: center;
+            flex-direction: column;
+
+            h1,
+            div {
+              text-align: center;
+            }
+          }
+
+          .handle {
+            cursor: pointer;
           }
         }
 
@@ -114,43 +117,10 @@
   }
 
   .section {
-    background-color: var(--theme-background);
-    border: 1px solid var(--theme-accent-line-2-transparent);
+    background-color: var(--theme-elevated-background);
+    border: 1px solid var(--theme-elevated-stroke);
     border-radius: 0.75rem;
-    box-shadow: 0 2px 4px var(--theme-shadow);
-    padding: 1rem 1.5rem;
-  }
-
-  .progressSection {
-    display: flex;
-    flex-direction: column;
-    gap: 0.9375rem;
-
-    .progressInfo {
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: space-between;
-    }
-
-    .progressBar {
-      background-color: var(--theme-accent-line-2);
-      border-radius: 0.5rem;
-      height: 1.25rem;
-      width: 100%;
-
-      .inner {
-        background-color: var(--theme-primary-2);
-        border-radius: 0.5rem;
-        height: 100%;
-        transition: width 1s ease;
-      }
-    }
-
-    p {
-      @media (max-width: vars.$breakpoint-md) {
-        text-align: center;
-      }
-    }
+    padding: 2rem;
   }
 
   .aboutSection {
@@ -169,7 +139,7 @@
       display: grid;
       gap: 0.56rem;
       grid-template-columns: auto 1fr;
-      margin: 0.81rem 0;
+      margin-top: 0.81rem;
 
       .icon {
         height: 1.313rem;
@@ -179,7 +149,9 @@
 
     .socialIcons {
       display: flex;
+      flex-wrap: wrap;
       gap: 0.25rem;
+      margin-top: 0.81rem;
 
       svg {
         height: 2rem;
@@ -196,36 +168,16 @@
     }
   }
 
-  .card {
-    flex: none;
-    width: 20rem;
-  }
-
   .editWrapper {
     position: absolute;
     right: 1rem;
     top: 1rem;
+  }
+}
 
-    div {
-      align-items: center;
-      background: var(--theme-background);
-      border: 1px solid var(--theme-accent-1-transparent);
-      border-radius: 0.625rem;
-      box-shadow: 0 0.0625rem 0.25rem 0 var(--theme-shadow);
-      display: flex;
-      height: 2.375rem;
-      justify-content: center;
-      transition: all 0.3s;
-      width: 2.75rem;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-
-      svg {
-        height: 1.625rem;
-        width: 1.625rem;
-      }
-    }
+.sectionHeader {
+  @media screen and (max-width: vars.$breakpoint-md) {
+    font-size: 1.5rem !important;
+    line-height: 2.25rem !important;
   }
 }

@@ -2,14 +2,23 @@ import { EventAPI, KlefkiAPI } from '@/lib/api';
 import config from '@/lib/config';
 import type { APIHandlerProps, AuthAPIHandlerProps, URL, UUID } from '@/lib/types';
 import {
+  CancelPickupEventRequest,
+  CompletePickupEventRequest,
   CreateDiscordEventRequest,
   CreateEventRequest,
   DeleteEventRequest,
+  DeletePickupEventRequest,
   Event,
   GenerateACMURLRequest,
+  OrderPickupEvent,
   UploadEventImageRequest,
 } from '@/lib/types/apiRequests';
-import type { NotionEventDetails, PublicEvent } from '@/lib/types/apiResponses';
+import type {
+  NotionEventDetails,
+  PublicEvent,
+  PublicOrder,
+  PublicOrderPickupEvent,
+} from '@/lib/types/apiResponses';
 
 interface GetEventFromNotion {
   pageUrl: URL;
@@ -46,8 +55,8 @@ export const createDiscordEvent = async (
   try {
     await KlefkiAPI.createDiscordEvent(event);
     onSuccessCallback?.();
-  } catch (e) {
-    onFailCallback?.(e);
+  } catch (e: any) {
+    onFailCallback?.(e.response.data.error);
   }
 };
 
@@ -106,6 +115,66 @@ export const editEvent = async (data: EditEventRequest & AuthAPIHandlerProps<Pub
     onFailCallback?.(e);
   }
 };
+
+export const createPickupEvent = async (
+  token: string,
+  pickupEvent: OrderPickupEvent
+): Promise<UUID | null> => {
+  const { uuid } = await EventAPI.createPickupEvent(token, pickupEvent);
+  return uuid;
+};
+
+interface EditPickupEventRequest {
+  pickupEvent: Partial<OrderPickupEvent>;
+  uuid: UUID;
+}
+
+export const editPickupEvent = async (
+  data: EditPickupEventRequest & AuthAPIHandlerProps<PublicOrderPickupEvent>
+) => {
+  const { onSuccessCallback, onFailCallback, pickupEvent, uuid, token } = data;
+
+  try {
+    const modifiedEvent = await EventAPI.editPickupEvent(token, uuid, pickupEvent);
+
+    onSuccessCallback?.(modifiedEvent);
+  } catch (e) {
+    onFailCallback?.(e);
+  }
+};
+
+export const deletePickupEvent = async (
+  data: DeletePickupEventRequest & AuthAPIHandlerProps<void>
+) => {
+  const { onSuccessCallback, onFailCallback, token, pickupEvent } = data;
+
+  try {
+    await EventAPI.deletePickupEvent(token, pickupEvent);
+
+    onSuccessCallback?.();
+  } catch (e) {
+    onFailCallback?.(e);
+  }
+};
+
+export const completePickupEvent = async (
+  data: CompletePickupEventRequest & AuthAPIHandlerProps<void>
+): Promise<PublicOrder[] | null> => {
+  const { token, pickupEvent } = data;
+
+  const modifiedEvent = await EventAPI.completePickupEvent(token, pickupEvent);
+
+  return modifiedEvent.orders;
+};
+
+export const cancelPickupEvent = async (
+  data: CancelPickupEventRequest & AuthAPIHandlerProps<void>
+) => {
+  const { token, pickupEvent } = data;
+
+  await EventAPI.cancelPickupEvent(token, pickupEvent);
+};
+
 interface PatchEventRequest {
   uuid: UUID;
   cover: File;

@@ -1,0 +1,42 @@
+@use 'src/styles/vars.scss' as vars;
+
+.banner {
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 100%;
+
+  .path {
+    animation: fade-in 2s backwards;
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    &.hack {
+      fill: vars.$orange-5;
+    }
+
+    &.ai {
+      fill: vars.$scarlet-4;
+    }
+
+    &.cyber {
+      fill: vars.$cyan-5;
+    }
+
+    &.design {
+      fill: vars.$pink-4;
+    }
+
+    &.general {
+      fill: vars.$blue-5;
+    }
+  }
+}

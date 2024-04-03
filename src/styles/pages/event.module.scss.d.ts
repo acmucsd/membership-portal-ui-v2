@@ -1,8 +1,6 @@
 export type Styles = {
-  circle: string;
-  green: string;
-  inner: string;
-  points: string;
+  page: string;
+  submittedFeedback: string;
 };
 
 export type ClassNames = keyof Styles;

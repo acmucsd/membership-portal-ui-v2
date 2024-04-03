@@ -1,21 +1,25 @@
+import { Typography } from '@/components/common';
 import { CheckInModal, EventCarousel } from '@/components/events';
-import Hero from '@/components/home/Hero';
-import { showToast } from '@/lib';
+import { UserProgress } from '@/components/profile/UserProgress';
+import { config, showToast } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { attendEvent } from '@/lib/managers/EventManager';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PrivateProfile, PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import RaccoonGraphic from '@/public/assets/graphics/portal/raccoon-hero.svg';
+import WavesGraphic from '@/public/assets/graphics/portal/waves.svg';
+import CheckMark from '@/public/assets/icons/check-mark.svg';
 import styles from '@/styles/pages/Home.module.scss';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 interface HomePageProps {
   user: PrivateProfile;
-  pastEvents: PublicEvent[];
+  attendedEvents: PublicEvent[];
   upcomingEvents: PublicEvent[];
-  liveEvents: PublicEvent[];
   attendances: PublicAttendance[];
   checkInResponse: PublicEvent | { error: string } | null;
 }
@@ -33,15 +37,15 @@ const processCheckInResponse = (
 
 const PortalHomePage = ({
   user,
-  pastEvents,
+  attendedEvents,
   upcomingEvents,
-  liveEvents,
   attendances,
   checkInResponse,
 }: HomePageProps) => {
   const [points, setPoints] = useState<number>(user.points);
   const [checkinEvent, setCheckinEvent] = useState<PublicEvent | undefined>(undefined);
   const [checkinModalVisible, setCheckinModalVisible] = useState<boolean>(false);
+  const [checkinCode, setCheckinCode] = useState('');
   const [attendance, setAttendance] = useState<PublicAttendance[]>(attendances);
 
   const checkin = async (attendanceCode: string): Promise<void> => {
@@ -55,7 +59,7 @@ const PortalHomePage = ({
       const newAttendance: PublicAttendance = {
         user: user,
         event,
-        timestamp: new Date(),
+        timestamp: new Date().toString(),
         asStaff: false,
         feedback: [],
       };
@@ -77,6 +81,12 @@ const PortalHomePage = ({
     }
   }, [checkInResponse, user]);
 
+  const today = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <div className={styles.page}>
       <CheckInModal
@@ -84,34 +94,79 @@ const PortalHomePage = ({
         event={checkinEvent}
         onClose={() => setCheckinModalVisible(false)}
       />
-      <Hero firstName={user.firstName} points={points} checkin={code => checkin(code)} />
 
-      {liveEvents.length > 0 ? (
-        <EventCarousel
-          title="Live Events"
-          description="Blink and you'll miss it! These events are happening RIGHT NOW!"
-          events={liveEvents}
-          attendances={attendance}
+      <div className={styles.hero}>
+        <RaccoonGraphic
+          className={`${styles.image} ${styles.raccoon}`}
+          alt="Raccoon lounging on a chair at a beach"
         />
-      ) : null}
+        <WavesGraphic className={styles.image} alt="Ocean waves roll ashore" />
+      </div>
 
-      {upcomingEvents.length > 0 ? (
-        <EventCarousel
-          title="Upcoming Events"
-          description="Mark your calendars! These events are just around the corner!"
-          events={upcomingEvents} // Slicing past events so the carousel doesn't balloon.
-          attendances={attendance}
-        />
-      ) : null}
+      <div className={styles.content}>
+        <Typography variant="h5/regular" className={styles.date}>
+          {today}
+        </Typography>
+        <Typography variant="display/light/small" className={styles.heading} component="span">
+          {'Welcome to ACM, '}
+          <strong>
+            <Link href={config.profileRoute}>{user.firstName}</Link>
+          </strong>
+          !
+        </Typography>
+      </div>
 
-      {pastEvents.length > 0 ? (
-        <EventCarousel
-          title="Past Events"
-          description="Take a look at some of ACM's past events!"
-          events={pastEvents} // Slicing past events so the carousel doesn't balloon.
-          attendances={attendance}
-        />
-      ) : null}
+      <form
+        className={styles.checkin}
+        onSubmit={e => {
+          e.preventDefault();
+          if (checkinCode !== '') {
+            checkin(checkinCode);
+            setCheckinCode('');
+          }
+        }}
+        action=""
+      >
+        <Typography variant="h2/bold" className={styles.subheading}>
+          Event Check-in
+        </Typography>
+        <div className={styles.checkinButtons}>
+          <input
+            type="text"
+            placeholder="Enter event check-in code"
+            className={styles.checkinInput}
+            value={checkinCode}
+            onChange={e => setCheckinCode(e.target.value)}
+          />
+          <button type="submit" className={styles.submit}>
+            <CheckMark />
+          </button>
+        </div>
+      </form>
+
+      <Link href={config.leaderboardRoute} className={styles.userProgress}>
+        <UserProgress user={user} points={points} isSignedInUser />
+      </Link>
+
+      <EventCarousel
+        title="Upcoming Events"
+        titleClassName={styles.subheading}
+        events={upcomingEvents}
+        attendances={attendance}
+        placeholder="Check back soon for upcoming events!"
+        initialEventsFilter={{ date: 'upcoming' }}
+        className={styles.upcomingEvents}
+      />
+
+      <EventCarousel
+        title="Recently Attended Events"
+        titleClassName={styles.subheading}
+        events={attendedEvents}
+        attendances={attendance}
+        placeholder="Attend your first event and earn membership points!"
+        initialEventsFilter={{ attendance: 'attended' }}
+        className={styles.recentlyAttended}
+      />
     </div>
   );
 };
@@ -140,28 +195,24 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
   // Filter out events by time.
   const now = new Date();
-  const pastEvents: PublicEvent[] = [];
+  const attendedEvents: PublicEvent[] = [];
   const upcomingEvents: PublicEvent[] = [];
-  const liveEvents: PublicEvent[] = [];
 
   events.forEach(e => {
-    const start = new Date(e.start);
     const end = new Date(e.end);
-    if (end < now) {
-      pastEvents.push(e);
-    } else if (start > now) {
+    if (attendances.some(a => a.event.uuid === e.uuid)) {
+      attendedEvents.push(e);
+    }
+    if (end >= now) {
       upcomingEvents.push(e);
-    } else {
-      liveEvents.push(e);
     }
   });
 
   return {
     props: {
       user,
-      pastEvents: pastEvents.slice(-10).reverse(),
+      attendedEvents: attendedEvents.slice(-10).reverse(),
       upcomingEvents: upcomingEvents.slice(0, 10),
-      liveEvents,
       attendances,
       checkInResponse: checkInResponse,
     },

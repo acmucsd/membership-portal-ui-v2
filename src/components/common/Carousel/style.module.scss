@@ -1,12 +1,13 @@
 @use 'src/styles/vars.scss' as vars;
 
 .slider {
+  align-items: stretch;
   display: flex;
   gap: 2rem;
-  margin: 0 -1rem;
   overflow-x: auto;
-  padding: 1rem;
+  padding: 1rem 0;
   scrollbar-color: var(--theme-primary-2) var(--theme-primary-1);
+
   // Prefer the custom scrollbar on Chrome 121+
   // https://stackoverflow.com/a/77931548
   @supports selector(::-webkit-scrollbar) {
@@ -14,15 +15,13 @@
   }
 
   &::-webkit-scrollbar {
-    background-color: var(--theme-primary-1);
-    border: 1rem solid var(--theme-background);
+    background-color: var(--theme-accent-line-2);
     border-radius: 3rem;
-    height: 2.75rem;
+    height: 0.5rem;
   }
 
   &::-webkit-scrollbar-thumb {
     background-color: var(--theme-primary-2);
-    border: 1rem solid var(--theme-background);
     border-radius: 3rem;
   }
 }

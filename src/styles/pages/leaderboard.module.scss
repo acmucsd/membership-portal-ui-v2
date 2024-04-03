@@ -50,7 +50,8 @@
 
     .search {
       background: none;
-      border: 1px solid var(--theme-text-on-background-1);
+      background-color: var(--theme-elevated-background);
+      border: 1px solid var(--theme-elevated-stroke);
       border-radius: 1rem;
       color: inherit;
       font-size: 14px;
@@ -63,6 +64,10 @@
       &::placeholder {
         color: var(--theme-text-on-background-3);
       }
+    }
+
+    .timeDropdown select {
+      text-align: right;
     }
   }
 

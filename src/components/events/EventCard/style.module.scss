@@ -1,8 +1,12 @@
+@use 'src/styles/vars.scss' as vars;
+
 .container {
-  background: transparent;
-  border: 1px solid var(--theme-primary-6);
+  background: var(--theme-background);
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
   height: fit-content;
+  outline: 0 solid var(--theme-elevated-stroke);
   -ms-overflow-style: none;
   overflow-x: hidden;
   padding: 0;
@@ -11,14 +15,39 @@
   transition: all 0.3s;
   width: 20rem;
 
-  &.bordered { 
-    border: 1px solid var(--theme-primary-6);
+  &.bordered {
+    border: 1px solid var(--theme-card-outline);
     border-radius: 10px;
   }
 
   &:not([disabled]):hover {
-    box-shadow: 0 0 8px var(--theme-primary-6);
-    transform: scale(1.025);
+    outline-width: 4px;
+    transform: scale(0.975);
+
+    &[data-community='General'] {
+      border-color: vars.$blue-4;
+      outline-color: vars.$blue-4;
+    }
+
+    &[data-community='Ai'] {
+      border-color: vars.$scarlet-4;
+      outline-color: vars.$scarlet-4;
+    }
+
+    &[data-community='Hack'] {
+      border-color: vars.$orange-4;
+      outline-color: vars.$orange-4;
+    }
+
+    &[data-community='Cyber'] {
+      border-color: vars.$cyan-4;
+      outline-color: vars.$cyan-4;
+    }
+
+    &[data-community='Design'] {
+      border-color: vars.$pink-4;
+      outline-color: vars.$pink-4;
+    }
   }
 
   &:disabled {
@@ -36,19 +65,15 @@
   .info {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
+    gap: 6px;
+    padding: 1rem 1.5rem;
+    white-space: nowrap;
+    width: 100%;
 
-    .header {
-      align-items: center;
+    .infoText {
       display: flex;
-      flex-direction: row;
-      gap: 0.5rem;
-
-      .eventDetails {
-        overflow: hidden;
-        white-space: nowrap;
-      }
+      flex-direction: column;
+      gap: 2px;
     }
   }
 }

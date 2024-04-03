@@ -2,6 +2,7 @@ export type Styles = {
   appleCalLogo: string;
   calendarButton: string;
   calendarLink: string;
+  calendarText: string;
   options: string;
 };
 

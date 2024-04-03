@@ -1,0 +1,41 @@
+@use 'src/styles/vars.scss' as vars;
+
+.header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .viewPage {
+    background-color: var(--theme-primary-2);
+    border-radius: 0.5rem;
+    color: var(--theme-background);
+    display: flex;
+    font-weight: bold;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+}
+
+.form {
+  column-gap: 8px;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  row-gap: 1rem;
+}
+
+.submitButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  height: auto;
+}
+
+:export {
+  #{defaultThemeColorHex}: vars.$light-primary-2;
+}

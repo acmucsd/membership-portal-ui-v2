@@ -46,17 +46,27 @@
     }
   }
 
-  .done {
-    border-radius: 2rem;
-    padding: 1rem;
-    width: 50%;
+  .buttonRow {
+    display: flex;
+    gap: 1rem;
 
-    @media screen and (width <= vars.$breakpoint-md) {
-      padding: 0.5rem;
+    .button {
+      background-color: var(--theme-surface-2);
+      border-radius: 2rem;
+      padding: 1rem 1.5rem;
 
-      div {
-        font-size: 1rem !important;
-        line-height: 1.5rem !important;
+      &.addFeedback {
+        background-color: var(--theme-primary-2);
+        color: var(--theme-background);
+      }
+
+      @media screen and (width <= vars.$breakpoint-md) {
+        padding: 0.5rem;
+
+        div {
+          font-size: 1rem !important;
+          line-height: 1.5rem !important;
+        }
       }
     }
   }

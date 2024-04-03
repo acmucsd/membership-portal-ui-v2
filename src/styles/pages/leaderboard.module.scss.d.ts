@@ -5,6 +5,7 @@ export type Styles = {
   leaderboard: string;
   myPosition: string;
   search: string;
+  timeDropdown: string;
   topThreeContainer: string;
 };
 
