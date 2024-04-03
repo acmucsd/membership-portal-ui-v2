@@ -36,7 +36,7 @@ const ManageUserAccessPage = () => {
       user,
       accessType,
       onSuccessCallback: updatedUsers => {
-        updatedUsers[0] && showToast(`User access type updated for user ${updatedUsers[0].email}!`);
+        showToast(`User access type updated for user ${updatedUsers[0]?.email}!`);
       },
       onFailCallback: error => {
         reportError('Failed to update user access type', error);
@@ -87,5 +87,5 @@ const getServerSidePropsFunc: GetServerSideProps = async () => ({
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.canViewAdminPage,
+  PermissionService.canViewAdminPage
 );

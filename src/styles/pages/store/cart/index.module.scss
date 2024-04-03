@@ -146,7 +146,7 @@
         flex-direction: column;
         gap: 0.5rem;
         justify-content: space-around;
-        padding: 1rem;
+        padding: 0.5rem 0.625rem;
 
         > div {
           align-items: baseline;
@@ -180,15 +180,5 @@
         color: var(--theme-danger-1);
       }
     }
-  }
-}
-
-.pickupEventDetail {
-  max-width: 80rem;
-  padding: 0 1rem;
-  width: 80vw;
-
-  @media screen and (width <= vars.$breakpoint-md) {
-    width: 100vw;
   }
 }

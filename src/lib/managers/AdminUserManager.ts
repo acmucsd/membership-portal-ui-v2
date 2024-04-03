@@ -13,7 +13,7 @@ const manageUserAccess = async (data: UserAccessUpdates & APIHandlerProps<Privat
     const updatedUsers = await AdminAPI.manageUserAccess(token, user, accessType);
     onSuccessCallback?.(updatedUsers);
   } catch (e: any) {
-    onFailCallback?.(e.response.data.error);
+    onFailCallback?.(e);
   }
 };
 
