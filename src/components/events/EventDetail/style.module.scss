@@ -11,6 +11,11 @@
   position: relative;
   width: 80vw;
 
+  &.standalone {
+    padding: 0;
+    width: auto;
+  }
+
   .image {
     aspect-ratio: 1920 / 1080;
     border-radius: 10px;
@@ -36,10 +41,18 @@
     .description {
       padding: 0 2.5rem;
       width: 100%;
+
+      &.standalone {
+        padding: 0;
+      }
     }
 
     .image {
       border-radius: 10px 10px 0 0;
+
+      &.standalone {
+        border-radius: 10px;
+      }
     }
   }
 
@@ -137,6 +150,23 @@
             font-size: 0.75rem !important;
           }
         }
+      }
+    }
+
+    .feedbackBtn {
+      align-items: center;
+      align-self: flex-start;
+      background-color: var(--theme-elevated-background);
+      border: 1px solid var(--theme-elevated-stroke);
+      border-radius: 10px;
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-start;
+      padding: 0.75rem;
+      transition: all 0.2s;
+
+      &:hover {
+        background: var(--theme-surface-2);
       }
     }
   }

@@ -3,6 +3,7 @@ import ranks from '@/lib/constants/ranks';
 import showToast from '@/lib/showToast';
 import type { URL } from '@/lib/types';
 import type {
+  ApiResponse,
   CustomErrorBody,
   PublicEvent,
   PublicMerchCollection,
@@ -55,7 +56,8 @@ export const getMessagesFromError = (errBody: CustomErrorBody): string[] => {
 
 export function getErrorMessage(error: unknown): string {
   if (error instanceof AxiosError && error.response?.data?.error) {
-    return getMessagesFromError(error.response.data.error).join('\n\n');
+    const response: ApiResponse = error.response.data;
+    return getMessagesFromError(response.error).join('\n\n') || error.message;
   }
   if (error instanceof Error) {
     return error.message;
@@ -404,13 +406,24 @@ export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderIte
   return Array.from(itemMap.values());
 };
 
-/** Normalizes string as a capitalized community name. Defaults to General. */
+export function isEnum<T extends Record<string, string>>(
+  Enum: T,
+  value: string
+): value is T[keyof T] {
+  return Object.values(Enum).includes(value);
+}
+
+export function stringToEnum<T extends Record<string, string>>(
+  Enum: T,
+  value: string
+): T[keyof T] | null {
+  if (isEnum(Enum, value)) return value;
+
+  return null;
+}
+
 export const toCommunity = (community = ''): Community => {
-  const formattedName = capitalize(community) as Community;
-
-  if (Object.values(Community).includes(formattedName)) return formattedName;
-
-  return Community.GENERAL;
+  return stringToEnum(Community, capitalize(community)) ?? Community.GENERAL;
 };
 
 /**

@@ -1,9 +1,9 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   margin: 0 auto;
-  max-width: 1920px;
+  max-width: 70rem;
 
   .controls {
     align-items: center;
@@ -11,22 +11,6 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
-
-    .search {
-      background: var(--theme-elevated-background);
-      border: 1px solid var(--theme-elevated-stroke);
-      border-radius: 2rem;
-      color: inherit;
-      font-size: 1rem;
-      line-height: 1.25rem;
-      max-width: 18rem;
-      padding: 0.5rem 1rem;
-      width: 100%;
-
-      &::placeholder {
-        color: var(--theme-text-on-background-3);
-      }
-    }
 
     .filterOption {
       background-color: var(--theme-elevated-background);
@@ -42,6 +26,14 @@
           line-height: 1.25rem;
         }
       }
+    }
+  }
+
+  .link {
+    color: var(--theme-blue-text-button);
+
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
