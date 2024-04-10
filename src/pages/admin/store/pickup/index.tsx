@@ -52,9 +52,14 @@ const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents }: AdminPickupPa
         </div>
       </div>
       <div className={styles.cardContainer}>
-        {displayPickupEvents.map(pickupEvent => (
-          <PickupEventCard pickupEvent={pickupEvent} key={pickupEvent.uuid} />
-        ))}
+        {displayPickupEvents
+          .sort((x, y) => {
+            console.log(`Date ${Date.parse(y.start)}`);
+            return Date.parse(x.start) - Date.parse(y.start);
+          })
+          .map(pickupEvent => (
+            <PickupEventCard pickupEvent={pickupEvent} key={pickupEvent.uuid} />
+          ))}
       </div>
     </div>
   );
