@@ -1,4 +1,5 @@
 import { Typography } from '@/components/common';
+import ScrollingText from '@/components/common/ScrollingText';
 import EventBadges from '@/components/events/EventBadges';
 import EventModal from '@/components/events/EventModal';
 import PickupEventPreviewModal from '@/components/store/PickupEventPreviewModal';
@@ -99,21 +100,16 @@ const EventCard = ({
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                 }}
-                suppressHydrationWarning
               >
-                {formatEventDate(start, end, showYear)}
+                <ScrollingText>
+                  <span suppressHydrationWarning>{formatEventDate(start, end, showYear)}</span>
+                </ScrollingText>
               </Typography>
-              <Typography
-                variant="body/medium"
-                style={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis' }}
-              >
-                {title}
+              <Typography variant="body/medium" style={{ fontWeight: 700 }}>
+                <ScrollingText>{title}</ScrollingText>
               </Typography>
-              <Typography
-                variant="body/small"
-                style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-              >
-                {location}
+              <Typography variant="body/small">
+                <ScrollingText>{location}</ScrollingText>
               </Typography>
             </div>
             <EventBadges event={event} attended={attended} />

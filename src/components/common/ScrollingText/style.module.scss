@@ -1,0 +1,37 @@
+.overflowing {
+  position: relative;
+
+  .window {
+    overflow: hidden;
+    margin-right: 2px; // shift cutoff by 2px for antialiased text bleeding through
+
+    .slider {
+      display: flex;
+      gap: 2rem;
+    
+      @keyframes marquee {
+        0%   { transform: translateX(0%); }
+        100% { transform: translateX(calc(-100% / 2 - 1rem)); }
+      }
+    
+      &:hover {
+        animation: marquee var(--anim-time, 3s) linear infinite;
+      }
+    }
+  }
+
+  &::after {
+    position: absolute;
+    height: 100%;
+    width: 2rem;
+    top: 0;
+    right: 0;
+    content: "";
+    background-image: linear-gradient(to left, var(--theme-background), rgba(0,0,0,0));
+    pointer-events: none;
+  }
+}
+
+.slider {
+  width: fit-content;
+}
