@@ -2,8 +2,8 @@
   position: relative;
 
   .window {
-    overflow: hidden;
     margin-right: 2px; // shift cutoff by 2px for antialiased text bleeding through
+    overflow: hidden;
 
     .slider {
       display: flex;
@@ -21,14 +21,14 @@
   }
 
   &::after {
-    position: absolute;
-    height: 100%;
-    width: 2rem;
-    top: 0;
-    right: 0;
-    content: "";
     background-image: linear-gradient(to left, var(--theme-background), rgba(0,0,0,0));
+    content: "";
+    height: 100%;
     pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 2rem;
   }
 }
 
