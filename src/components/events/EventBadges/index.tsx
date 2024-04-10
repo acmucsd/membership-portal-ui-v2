@@ -24,7 +24,9 @@ const EventBadges = ({ event, attended, className }: EventBadgesProps) => {
   return (
     <div className={`${styles.badges} ${className || ''}`}>
       {!isOrderPickupEvent(event) && ongoing ? (
-        <div className={`${styles.badge} ${styles.badgeLive}`}>• Live</div>
+        <div className={`${styles.badge} ${styles.badgeLive}`}>
+          <span>•</span> Live
+        </div>
       ) : null}
       {committee ? (
         <div className={`${styles.badge} ${styles[`badge${community}`]}`}>
