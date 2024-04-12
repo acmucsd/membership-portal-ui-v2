@@ -93,8 +93,6 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     const end = new Date(isoEnd).toISOString();
     const orderLimit = parseInt(`${rawOrderLimit}`, 10);
 
-    const newLinkedID = linkedEventUuid === '' ? null : linkedEventUuid;
-
     try {
       const uuid = await AdminEventManager.createPickupEvent(token, {
         title,
@@ -102,7 +100,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
         end,
         description,
         orderLimit,
-        linkedEventUuid: newLinkedID,
+        linkedEventUuid: linkedEventUuid || null,
       });
       showToast('Pickup Event created successfully!', '', [
         {
@@ -130,15 +128,20 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       orderLimit: rawOrderLimit,
     } = formData;
 
-    const newLinkedID = linkedEventUuid === '' ? null : linkedEventUuid;
-
     const start = new Date(isoStart).toISOString();
     const end = new Date(isoEnd).toISOString();
     const orderLimit = parseInt(`${rawOrderLimit}`, 10);
 
     try {
       await AdminEventManager.editPickupEvent({
-        pickupEvent: { title, start, end, description, orderLimit, linkedEventUuid: newLinkedID },
+        pickupEvent: {
+          title,
+          start,
+          end,
+          description,
+          orderLimit,
+          linkedEventUuid: linkedEventUuid || null,
+        },
         uuid: defaultData.uuid ?? '',
         token: token,
 
