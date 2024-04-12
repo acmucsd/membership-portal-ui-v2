@@ -89,11 +89,11 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       orderLimit: rawOrderLimit,
     } = formData;
 
-    const start = new Date(isoStart).toISOString();
-    const end = new Date(isoEnd).toISOString();
-    const orderLimit = parseInt(`${rawOrderLimit}`, 10);
-
     try {
+      const start = new Date(isoStart).toISOString();
+      const end = new Date(isoEnd).toISOString();
+      const orderLimit = parseInt(`${rawOrderLimit}`, 10);
+
       const uuid = await AdminEventManager.createPickupEvent(token, {
         title,
         start,
@@ -110,7 +110,11 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       ]);
       router.push(`${config.admin.store.pickup}/${uuid}`);
     } catch (error) {
-      reportError('Could not create pickup event', error);
+      if (error === RangeError) {
+        reportError('Invalid date, could not create pickup event', error);
+      } else {
+        reportError('Could not create pickup event', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -128,11 +132,11 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       orderLimit: rawOrderLimit,
     } = formData;
 
-    const start = new Date(isoStart).toISOString();
-    const end = new Date(isoEnd).toISOString();
-    const orderLimit = parseInt(`${rawOrderLimit}`, 10);
-
     try {
+      const start = new Date(isoStart).toISOString();
+      const end = new Date(isoEnd).toISOString();
+      const orderLimit = parseInt(`${rawOrderLimit}`, 10);
+
       await AdminEventManager.editPickupEvent({
         pickupEvent: {
           title,
@@ -160,7 +164,11 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
         },
       });
     } catch (error) {
-      reportError('Could not save changes', error);
+      if (error === RangeError) {
+        reportError("Invalid date, can't save changes", error);
+      } else {
+        reportError('Could not save changes', error);
+      }
     } finally {
       setLoading(false);
     }
