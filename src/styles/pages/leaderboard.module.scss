@@ -32,6 +32,7 @@
     .myPosition {
       align-items: center;
       background-color: var(--theme-primary-2);
+      border: 1px solid var(--theme-elevated-stroke);
       border-radius: 1rem;
       color: var(--theme-background);
       display: flex;
@@ -54,10 +55,10 @@
       border: 1px solid var(--theme-elevated-stroke);
       border-radius: 1rem;
       color: inherit;
-      font-size: 14px;
+      font-size: 1rem;
       height: 2rem;
       max-width: 18rem;
-      padding-left: 1.5rem;
+      padding-left: 1rem;
       padding-right: 0.5rem;
       width: 100%;
 
@@ -66,8 +67,17 @@
       }
     }
 
-    .timeDropdown select {
-      text-align: right;
+    .timeDropdown {
+      background-color: var(--theme-elevated-background);
+      border: 1px solid var(--theme-elevated-stroke);
+      border-radius: 2rem;
+      padding: 0.5rem 1rem;
+
+      > select {
+        font-size: 1rem;
+        font-weight: normal;
+        line-height: 1.25rem;
+      }
     }
   }
 
