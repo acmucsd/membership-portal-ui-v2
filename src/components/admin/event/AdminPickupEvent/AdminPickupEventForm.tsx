@@ -25,6 +25,13 @@ interface IProps {
   upcomingEvents: PublicEvent[];
 }
 
+const parseProps = (isoStart: string, isoEnd: string, rawOrderLimit: string) => {
+  const start = new Date(isoStart).toISOString();
+  const end = new Date(isoEnd).toISOString();
+  const orderLimit = parseInt(`${rawOrderLimit}`, 10);
+  return { start, end, orderLimit };
+};
+
 export const completePickupEvent = async (uuid: UUID, token: string) => {
   try {
     await AdminEventManager.completePickupEvent({
@@ -90,9 +97,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     } = formData;
 
     try {
-      const start = new Date(isoStart).toISOString();
-      const end = new Date(isoEnd).toISOString();
-      const orderLimit = parseInt(`${rawOrderLimit}`, 10);
+      const { start, end, orderLimit } = parseProps(isoStart, isoEnd, `${rawOrderLimit}`);
 
       const uuid = await AdminEventManager.createPickupEvent(token, {
         title,
@@ -133,9 +138,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     } = formData;
 
     try {
-      const start = new Date(isoStart).toISOString();
-      const end = new Date(isoEnd).toISOString();
-      const orderLimit = parseInt(`${rawOrderLimit}`, 10);
+      const { start, end, orderLimit } = parseProps(isoStart, isoEnd, `${rawOrderLimit}`);
 
       await AdminEventManager.editPickupEvent({
         pickupEvent: {
