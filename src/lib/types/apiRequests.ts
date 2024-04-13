@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import { URL, UUID } from '.';
+import { Date, URL, UUID } from '.';
 import { FeedbackStatus, FeedbackType, SocialMediaType, UserAccessType } from './enums';
 
 // REQUEST TYPES
@@ -46,7 +46,8 @@ export interface RegistrationRequest {
 // USER
 
 export interface Feedback {
-  title: string;
+  event: UUID;
+  source: string;
   description: string;
   type: FeedbackType;
 }
@@ -58,6 +59,10 @@ export interface SendPasswordResetEmailRequest {
 export interface SocialMedia {
   type: SocialMediaType;
   url: URL;
+}
+
+export interface ExistingSocialMedia extends SocialMedia {
+  uuid: UUID;
 }
 
 export interface PasswordUpdate extends PasswordChange {
@@ -87,16 +92,24 @@ export interface UpdateFeedbackStatusRequest {
   status: FeedbackStatus;
 }
 
+export interface FeedbackSearchOptions {
+  event?: string;
+  type?: string;
+  status?: string;
+  user?: string;
+}
+
 export interface InsertUserSocialMediaRequest {
-  socialMedia: SocialMedia;
+  socialMedia: SocialMedia[];
 }
 
 export interface SocialMediaPatches {
-  url?: string;
+  url: string;
+  uuid: UUID;
 }
 
 export interface UpdateUserSocialMediaRequest {
-  socialMedia: SocialMediaPatches;
+  socialMedia: SocialMediaPatches[];
 }
 
 // LEADERBOARD
@@ -158,8 +171,8 @@ export interface Event extends OptionalEventProperties {
   title: string;
   description: string;
   location: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   attendanceCode: string;
   pointValue: number;
 }
@@ -346,15 +359,23 @@ export interface MerchItemOptionAndQuantity {
 
 export interface OrderPickupEvent {
   title: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   description: string;
   orderLimit: number;
   linkedEventUuid?: UUID | null;
 }
 
 export interface DeletePickupEventRequest {
-  event: UUID;
+  pickupEvent: UUID;
+}
+
+export interface CompletePickupEventRequest {
+  pickupEvent: UUID;
+}
+
+export interface CancelPickupEventRequest {
+  pickupEvent: UUID;
 }
 
 export interface OrderPickupEventEdit extends Partial<OrderPickupEvent> {}

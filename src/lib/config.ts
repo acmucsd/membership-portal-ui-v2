@@ -37,6 +37,7 @@ const config = {
         attendance: '/attendance',
         forUserByUUID: '/attendance/user',
       },
+      feedback: '/feedback',
       leaderboard: '/leaderboard',
       store: {
         collection: '/merch/collection',
@@ -83,6 +84,7 @@ const config = {
   leaderboardRoute: '/leaderboard',
   profileRoute: '/profile',
   aboutRoute: '/about',
+  feedbackRoute: '/feedback',
   userProfileRoute: '/u/',
   store: {
     homeRoute: '/store',

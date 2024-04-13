@@ -31,7 +31,9 @@
 
 .submitButtons {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
+  height: auto;
 }
 
 :export {

@@ -1,0 +1,31 @@
+@use 'src/styles/vars.scss' as vars;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .field {
+    background-color: var(--theme-elevated-background);
+    border: 1px solid var(--theme-elevated-stroke);
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    min-height: 5rem;
+    padding: 1rem;
+    resize: vertical;
+  }
+
+  .submit {
+    align-self: flex-start;
+    background-color: var(--theme-primary-2);
+    border-radius: 2rem;
+    color: var(--theme-background);
+    font-size: 1rem;
+    font-weight: bold;
+    min-height: 3rem;
+    padding: 0 2rem;
+    @media (max-width: vars.$breakpoint-sm) {
+      align-self: center;
+    }
+  }
+}

@@ -8,6 +8,7 @@ interface IProps {
   disabled?: boolean;
   size?: 'default' | 'small';
   onClick?: () => void;
+  className?: string;
 }
 
 const Button = (props: PropsWithChildren<IProps>) => {
@@ -19,11 +20,12 @@ const Button = (props: PropsWithChildren<IProps>) => {
     size = 'default',
     onClick,
     children,
+    className,
   } = props;
 
   return (
     <button
-      className={style.button}
+      className={`${style.button} ${className}`}
       type={submit ? 'submit' : 'button'}
       disabled={disabled}
       onClick={onClick}

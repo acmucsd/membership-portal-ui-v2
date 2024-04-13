@@ -22,7 +22,7 @@ const ThemeToggle = () => {
   };
 
   const switchPos = themeToSwitch[theme];
-  const currAltText = `Icon representing ${theme} theme is on.`;
+  const currAltText = mounted ? `Icon representing ${theme} theme is on.` : '';
 
   useEffect(() => {
     // Adjusting the <meta name="theme-color"> tag.
@@ -39,10 +39,6 @@ const ThemeToggle = () => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
-
   return (
     <form className={styles.switch}>
       <label htmlFor={lightId}>
@@ -55,8 +51,8 @@ const ThemeToggle = () => {
           id={lightId}
           name="state-d"
           type="radio"
-          defaultChecked={theme === 'light'}
-          onClick={() => setTheme('light')}
+          checked={theme === 'light'}
+          onChange={() => setTheme('light')}
         />
       </label>
 
@@ -70,8 +66,8 @@ const ThemeToggle = () => {
           id={systemId}
           name="state-d"
           type="radio"
-          defaultChecked={theme === 'system'}
-          onClick={() => setTheme('system')}
+          checked={theme === 'system'}
+          onChange={() => setTheme('system')}
         />
       </label>
 
@@ -85,11 +81,11 @@ const ThemeToggle = () => {
           id={darkId}
           name="state-d"
           type="radio"
-          defaultChecked={theme === 'dark'}
-          onClick={() => setTheme('dark')}
+          checked={theme === 'dark'}
+          onChange={() => setTheme('dark')}
         />
       </label>
-      <div className={`${switchPos} ${styles.switchindicator}`} />
+      {mounted ? <div className={`${switchPos} ${styles.switchindicator}`} /> : null}
     </form>
   );
 };

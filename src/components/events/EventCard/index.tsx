@@ -2,6 +2,7 @@ import { Typography } from '@/components/common';
 import EventBadges from '@/components/events/EventBadges';
 import EventModal from '@/components/events/EventModal';
 import PickupEventPreviewModal from '@/components/store/PickupEventPreviewModal';
+import { config } from '@/lib';
 import {
   PublicEvent,
   PublicOrderPickupEvent,
@@ -14,6 +15,7 @@ import {
   toCommunity,
 } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import styles from './style.module.scss';
 
@@ -34,7 +36,7 @@ const EventCard = ({
   borderless,
   hideInfo,
 }: EventCardProps) => {
-  const { cover, title, start, end, location, committee } = isOrderPickupEvent(event)
+  const { uuid, cover, title, start, end, location, committee } = isOrderPickupEvent(event)
     ? {
         ...(event.linkedEvent ?? {}),
         ...event,
@@ -69,16 +71,19 @@ const EventCard = ({
         />
       )}
 
-      <button
-        type="button"
+      <Link
+        href={`${config.eventsRoute}/${uuid}`}
         data-community={community}
         className={`${styles.container} ${borderless ? '' : styles.bordered} ${className || ''}`}
-        onClick={() => setExpanded(true)}
+        onClick={e => {
+          e.preventDefault();
+          setExpanded(true);
+        }}
       >
         <div className={styles.image}>
           <Image
             src={displayCover}
-            alt="Event Cover Image"
+            alt={`${event.title} cover image`}
             style={{ objectFit: 'cover' }}
             sizes="20rem"
             fill
@@ -114,7 +119,7 @@ const EventCard = ({
             <EventBadges event={event} attended={attended} />
           </div>
         ) : null}
-      </button>
+      </Link>
     </>
   );
 };
