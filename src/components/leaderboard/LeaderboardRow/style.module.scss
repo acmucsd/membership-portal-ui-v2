@@ -23,18 +23,8 @@
   }
 
   &.flash {
-    animation: flash 2s;
-    @keyframes flash {
-      0%,
-      20%,
-      40%,
-      60% {
-        background-color: var(--theme-background);
-        color: var(--theme-text-on-background-1);
-      }
-
-      10%,
-      30%,
+    animation: blinker 2s;
+    @keyframes blinker {
       50% {
         background-color: var(--theme-primary-2);
         color: var(--theme-background);
@@ -78,7 +68,6 @@
     }
 
     .rank {
-      color: var(--theme-text-on-surface-1);
       opacity: 0.5;
       text-align: center;
 
