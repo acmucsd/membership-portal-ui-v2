@@ -110,7 +110,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       ]);
       router.push(`${config.admin.store.pickup}/${uuid}`);
     } catch (error) {
-      if (error === RangeError) {
+      if (error instanceof RangeError) {
         reportError('Invalid date, could not create pickup event', error);
       } else {
         reportError('Could not create pickup event', error);
@@ -164,7 +164,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
         },
       });
     } catch (error) {
-      if (error === RangeError) {
+      if (error instanceof RangeError) {
         reportError("Invalid date, can't save changes", error);
       } else {
         reportError('Could not save changes', error);
