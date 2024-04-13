@@ -8,9 +8,8 @@
   max-width: 60rem;
 
   .header {
-    align-items: center;
     display: flex;
-    gap: 0 2rem;
+    gap: 1rem 2rem;
 
     @media (max-width: vars.$breakpoint-lg) {
       display: grid;
@@ -22,6 +21,7 @@
     }
 
     .heading {
+      align-self: center;
       font-size: 1.5rem;
       justify-self: start;
       letter-spacing: 1%;
@@ -33,13 +33,12 @@
       align-items: center;
       background-color: var(--theme-primary-2);
       border: 1px solid var(--theme-elevated-stroke);
-      border-radius: 1rem;
+      border-radius: 2rem;
       color: var(--theme-background);
       display: flex;
       font-size: 1rem;
       font-weight: bold;
       gap: 0.5rem;
-      height: 2rem;
       justify-self: start;
       padding: 0 1rem;
 
@@ -53,13 +52,13 @@
       background: none;
       background-color: var(--theme-elevated-background);
       border: 1px solid var(--theme-elevated-stroke);
-      border-radius: 1rem;
+      border-radius: 2rem;
       color: inherit;
       font-size: 1rem;
-      height: 2rem;
       max-width: 18rem;
       padding-left: 1rem;
       padding-right: 0.5rem;
+
       width: 100%;
 
       &::placeholder {
