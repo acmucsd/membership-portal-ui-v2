@@ -1,5 +1,6 @@
 import Logo from '@/public/assets/acm-logos/general/light-mode.png';
 import Head from 'next/head';
+import style from './style.module.scss';
 
 const TITLE = 'ACM UCSD Membership Portal';
 const DESC =
@@ -42,6 +43,7 @@ const SEO = ({
       {bigPreviewImage ? <meta name="twitter:card" content="summary_large_image" /> : null}
       {/* preview description text */}
       <meta property="og:description" content={description} />
+      <meta name="theme-color" content={style.defaultThemeColorHex} />
     </Head>
   );
 };
