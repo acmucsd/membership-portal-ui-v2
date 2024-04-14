@@ -3,9 +3,9 @@ import { DIVIDER } from '@/components/common/Dropdown';
 import { EventDisplay } from '@/components/events';
 import { config } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
-import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { getCurrentUser } from '@/lib/hoc/withAccessType';
 import useQueryState from '@/lib/hooks/useQueryState';
-import { PermissionService } from '@/lib/services';
+import { CookieService } from '@/lib/services';
 import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import {
   FilterEventOptions,
@@ -13,8 +13,10 @@ import {
   isValidCommunityFilter,
   isValidDateFilter,
 } from '@/lib/types/client';
+import { CookieType } from '@/lib/types/enums';
 import { formatSearch, getDateRange, getYears } from '@/lib/utils';
 import styles from '@/styles/pages/events.module.scss';
+import { GetServerSideProps } from 'next';
 import { useMemo, useState } from 'react';
 
 interface EventsPageProps {
@@ -214,9 +216,13 @@ const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) =>
 
 export default EventsPage;
 
-const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ query, authToken }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
+  const authToken: string | null =
+    CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res }) ?? null;
+  const user = authToken !== null ? await getCurrentUser({ req, res }, authToken) : null;
+
   const getEventsPromise = EventAPI.getAllEvents();
-  const getAttendancesPromise = UserAPI.getAttendancesForCurrentUser(authToken);
+  const getAttendancesPromise = authToken ? UserAPI.getAttendancesForCurrentUser(authToken) : [];
 
   const [events, attendances] = await Promise.all([getEventsPromise, getAttendancesPromise]);
 
@@ -229,10 +235,14 @@ const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ query, authT
 
   const initialFilters = { community, date, attendance, search };
 
-  return { props: { title: 'Events', events, attendances, initialFilters } };
+  return {
+    props: {
+      title: 'Events',
+      events,
+      attendances,
+      initialFilters,
+      // For navbar
+      user,
+    },
+  };
 };
-
-export const getServerSideProps = withAccessType(
-  getServerSidePropsFunc,
-  PermissionService.loggedInUser
-);
