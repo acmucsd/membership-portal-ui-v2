@@ -18,13 +18,11 @@ const SEO = ({
   previewImage = Logo.src,
   bigPreviewImage = false,
 }: SEOProps) => {
-  const fullTitle = title ? `${title} | ${TITLE}` : TITLE;
-
   return (
     <Head>
       {/* google indexing data */}
 
-      <title>{fullTitle}</title>
+      <title>{title ? `${title} | ${TITLE}` : TITLE}</title>
       <meta name="description" content={description} />
       <link rel="shortcut icon" href="/favicon.ico" />
 
@@ -37,7 +35,7 @@ const SEO = ({
       {/* actual website title */}
       <meta property="og:site_name" content="ACM at UC San Diego" />
       {/* title to display for the specific link being shared */}
-      <meta property="og:title" content={fullTitle} />
+      <meta property="og:title" content={title ?? TITLE} />
       {/* preview image */}
       <meta property="og:image" content={previewImage} />
       {/* make preview image large on Discord and other sites */}
