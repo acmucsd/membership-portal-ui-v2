@@ -6,6 +6,7 @@ export { default as Dropdown } from './Dropdown';
 export { default as EditButton } from './EditButton';
 export { default as GifSafeImage } from './GifSafeImage';
 export { default as LinkButton } from './LinkButton';
+export { default as LoginAppeal } from './LoginAppeal';
 export { default as Modal } from './Modal';
 export { default as PaginationControls } from './PaginationControls';
 export { default as SEO } from './SEO';

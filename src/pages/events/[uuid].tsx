@@ -1,4 +1,4 @@
-import { Typography } from '@/components/common';
+import { LoginAppeal, Typography } from '@/components/common';
 import EventDetail from '@/components/events/EventDetail';
 import { Feedback, FeedbackForm } from '@/components/feedback';
 import { EventAPI, FeedbackAPI, UserAPI } from '@/lib/api';
@@ -22,7 +22,14 @@ const EventPage = ({ token, event, attended, feedback: initFeedback }: EventPage
   const [feedback, setFeedback] = useState(initFeedback);
 
   let feedbackForm = null;
-  if (feedback) {
+  if (!token) {
+    feedbackForm = (
+      <LoginAppeal>
+        Create an account to check into events, give feedback, earn points, and join a community of
+        thousands.
+      </LoginAppeal>
+    );
+  } else if (feedback) {
     feedbackForm = (
       <div className={styles.submittedFeedback}>
         <Typography variant="h2/bold" component="h2">

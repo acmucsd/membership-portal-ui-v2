@@ -1,4 +1,4 @@
-import { Dropdown, PaginationControls, Typography } from '@/components/common';
+import { Dropdown, LoginAppeal, PaginationControls, Typography } from '@/components/common';
 import { DIVIDER } from '@/components/common/Dropdown';
 import { EventDisplay } from '@/components/events';
 import { config } from '@/lib';
@@ -23,6 +23,7 @@ interface EventsPageProps {
   events: PublicEvent[];
   attendances: PublicAttendance[];
   initialFilters: FilterEventOptions;
+  loggedOut: boolean;
 }
 
 interface FilterOptions {
@@ -76,7 +77,7 @@ const DEFAULT_FILTER_STATE = {
 
 const ROWS_PER_PAGE = 25;
 
-const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) => {
+const EventsPage = ({ events, attendances, initialFilters, loggedOut }: EventsPageProps) => {
   const [page, setPage] = useState(0);
   const years = useMemo(getYears, []);
 
@@ -131,6 +132,12 @@ const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) =>
   return (
     <div className={styles.page}>
       <Typography variant="headline/heavy/small">Events</Typography>
+      {loggedOut ? (
+        <LoginAppeal>
+          Create an account to check into events, give feedback, earn points, and join a community
+          of thousands.
+        </LoginAppeal>
+      ) : null}
       <div className={styles.controls}>
         <input
           className={styles.search}
@@ -241,6 +248,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       events,
       attendances,
       initialFilters,
+      loggedOut: authToken === null,
       // For navbar
       user,
     },
