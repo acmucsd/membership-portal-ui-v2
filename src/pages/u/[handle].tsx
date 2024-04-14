@@ -6,11 +6,9 @@ import {
 } from '@/components/profile';
 import { config } from '@/lib';
 import { UserAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
-import { CookieType } from '@/lib/types/enums';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { PermissionService } from '@/lib/services';
 import { getProfilePicture } from '@/lib/utils';
-import type { GetServerSideProps } from 'next/types';
 
 type UserHandlePageProps = UserHandleNotFoundProps | UserProfilePageProps;
 
@@ -28,15 +26,19 @@ const UserHandlePage = (props: UserHandlePageProps) => {
 
 export default UserHandlePage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({
+  params,
+  req,
+  res,
+  authToken,
+}) => {
   const handle = params?.handle as string;
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   try {
     const [handleUser, user, signedInAttendances] = await Promise.all([
-      UserAPI.getUserByHandle(token, handle).catch(() => null),
-      UserAPI.getCurrentUserAndRefreshCookie(token, { req, res }),
-      UserAPI.getAttendancesForCurrentUser(token),
+      UserAPI.getUserByHandle(authToken, handle).catch(() => null),
+      UserAPI.getCurrentUserAndRefreshCookie(authToken, { req, res }),
+      UserAPI.getAttendancesForCurrentUser(authToken),
     ]);
 
     // render UserHandleNotFoundPage when user with handle is not retrieved
@@ -49,7 +51,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
     let recentAttendances = signedInAttendances.slice(-10).reverse();
     // Otherwise, fetch the viewed user's attendances.
     if (!isSignedInUser && handleUser.isAttendancePublic)
-      recentAttendances = (await UserAPI.getAttendancesForUserByUUID(token, handleUser.uuid))
+      recentAttendances = (await UserAPI.getAttendancesForUserByUUID(authToken, handleUser.uuid))
         .slice(-10)
         .reverse();
 

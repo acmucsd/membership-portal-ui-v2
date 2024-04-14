@@ -12,12 +12,12 @@ import type {
 } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 
-export type GetServerSidePropsWithUser<
+export type GetServerSidePropsWithAuth<
   Props extends { [key: string]: any } = { [key: string]: any },
   Params extends ParsedUrlQuery = ParsedUrlQuery,
   Preview extends PreviewData = PreviewData
 > = (
-  context: GetServerSidePropsContext<Params, Preview> & { user: PrivateProfile }
+  context: GetServerSidePropsContext<Params, Preview> & { user: PrivateProfile; authToken: string }
 ) => Promise<GetServerSidePropsResult<Props>>;
 
 interface AccessTypeOptions {
@@ -35,7 +35,7 @@ interface AccessTypeOptions {
  * @returns
  */
 export default function withAccessType(
-  gssp: GetServerSidePropsWithUser,
+  gssp: GetServerSidePropsWithAuth,
   validAccessTypes: UserAccessType[],
   { redirectTo = config.loginRoute }: AccessTypeOptions = {}
 ): GetServerSideProps {
@@ -98,7 +98,7 @@ export default function withAccessType(
     if (!validAccessTypes.includes(userAccessLevel)) return missingAccessRedirect;
 
     // If we haven't short-circuited, user has valid access. Show the page and add the user prop.
-    const originalReturnValue = await gssp({ ...context, user });
+    const originalReturnValue = await gssp({ ...context, user, authToken: authTokenCookie });
     // Insert the user object to the original return value if it doesn't exist already
     if ('props' in originalReturnValue) {
       const existingProps = await Promise.resolve(originalReturnValue.props);

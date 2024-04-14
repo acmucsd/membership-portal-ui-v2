@@ -2,10 +2,8 @@ import { Typography } from '@/components/common';
 import EventDetail from '@/components/events/EventDetail';
 import { Feedback, FeedbackForm } from '@/components/feedback';
 import { EventAPI, FeedbackAPI, UserAPI } from '@/lib/api';
-import { GetServerSidePropsWithUser } from '@/lib/hoc/withAccessType';
-import { CookieService } from '@/lib/services';
+import { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import type { PublicEvent, PublicFeedback } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
 import { formatEventDate } from '@/lib/utils';
 import styles from '@/styles/pages/event.module.scss';
 import { useMemo, useState } from 'react';
@@ -46,9 +44,12 @@ const EventPage = ({ token, event, attended, feedback: initFeedback }: EventPage
 
 export default EventPage;
 
-const getServerSidePropsFunc: GetServerSidePropsWithUser = async ({ params, req, res, user }) => {
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({
+  params,
+  user,
+  authToken: token,
+}) => {
   const uuid = params?.uuid as string;
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res }) ?? null;
 
   // try {
   const [event, attendances, [feedback = null]] = await Promise.all([

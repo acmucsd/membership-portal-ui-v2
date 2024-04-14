@@ -3,9 +3,9 @@ import { DIVIDER } from '@/components/common/Dropdown';
 import { EventDisplay } from '@/components/events';
 import { config } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import useQueryState from '@/lib/hooks/useQueryState';
-import { CookieService, PermissionService } from '@/lib/services';
+import { PermissionService } from '@/lib/services';
 import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import {
   FilterEventOptions,
@@ -13,10 +13,8 @@ import {
   isValidCommunityFilter,
   isValidDateFilter,
 } from '@/lib/types/client';
-import { CookieType } from '@/lib/types/enums';
 import { formatSearch, getDateRange, getYears } from '@/lib/utils';
 import styles from '@/styles/pages/events.module.scss';
-import type { GetServerSideProps } from 'next';
 import { useMemo, useState } from 'react';
 
 interface EventsPageProps {
@@ -216,9 +214,7 @@ const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) =>
 
 export default EventsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
-  const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ query, authToken }) => {
   const getEventsPromise = EventAPI.getAllEvents();
   const getAttendancesPromise = UserAPI.getAttendancesForCurrentUser(authToken);
 

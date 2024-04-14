@@ -2,12 +2,10 @@ import { ItemDetailsForm } from '@/components/admin/store';
 import { Navbar } from '@/components/store';
 import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection, PublicMerchItem } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/StoreItemEditPage.module.scss';
-import { GetServerSideProps } from 'next';
 
 interface CreateItemPageProps {
   user: PrivateProfile;
@@ -31,8 +29,7 @@ const CreateItemPage = ({ user: { credits }, token, item, collections }: CreateI
 
 export default CreateItemPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ query, authToken: token }) => {
   const [item, collections] = await Promise.all([
     typeof query.duplicate === 'string'
       ? StoreAPI.getItem(token, query.duplicate)

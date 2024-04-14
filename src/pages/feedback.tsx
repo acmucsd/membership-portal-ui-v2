@@ -2,14 +2,13 @@ import { Dropdown, PaginationControls, Typography } from '@/components/common';
 import { Feedback, feedbackTypeNames } from '@/components/feedback';
 import { config } from '@/lib';
 import { FeedbackAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import useQueryState from '@/lib/hooks/useQueryState';
-import { CookieService, PermissionService } from '@/lib/services';
+import { PermissionService } from '@/lib/services';
 import type { PrivateProfile, PublicFeedback } from '@/lib/types/apiResponses';
-import { CookieType, FeedbackStatus, FeedbackType, UserAccessType } from '@/lib/types/enums';
+import { FeedbackStatus, FeedbackType, UserAccessType } from '@/lib/types/enums';
 import { isEnum } from '@/lib/utils';
 import styles from '@/styles/pages/feedback.module.scss';
-import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
@@ -176,8 +175,7 @@ const FeedbackPage = ({ user, feedback, token, initialFilters }: FeedbackPagePro
 
 export default FeedbackPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ query, authToken: token }) => {
   const feedback = await FeedbackAPI.getFeedback(token);
 
   const { type, status, sort } = query;
