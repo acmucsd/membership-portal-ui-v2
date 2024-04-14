@@ -6,7 +6,7 @@ import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getDefaultMerchItemPhoto } from '@/lib/utils';
+import { getDefaultMerchCollectionPhoto, getDefaultMerchItemPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/StoreCollectionPage.module.scss';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
@@ -99,6 +99,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
       props: {
         title: collection.title,
         description: collection.description,
+        previewImage: getDefaultMerchCollectionPhoto(collection),
         uuid,
         collection,
         previewPublic: preview === 'member',

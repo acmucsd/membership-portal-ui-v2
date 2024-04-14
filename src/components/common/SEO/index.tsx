@@ -8,9 +8,16 @@ const DESC =
 interface SEOProps {
   title?: string;
   description?: string;
+  previewImage?: string;
+  bigPreviewImage?: boolean;
 }
 
-const SEO = ({ title, description = DESC }: SEOProps) => {
+const SEO = ({
+  title,
+  description = DESC,
+  previewImage = Logo.src,
+  bigPreviewImage = false,
+}: SEOProps) => {
   const fullTitle = title ? `${title} | ${TITLE}` : TITLE;
 
   return (
@@ -28,11 +35,13 @@ const SEO = ({ title, description = DESC }: SEOProps) => {
       {/* type of content */}
       <meta property="og:type" content="website" />
       {/* actual website title */}
-      <meta property="og:site_name" content="ACM at UCSD" />
+      <meta property="og:site_name" content="ACM at UC San Diego" />
       {/* title to display for the specific link being shared */}
       <meta property="og:title" content={fullTitle} />
       {/* preview image */}
-      <meta property="og:image" content={Logo.src} />
+      <meta property="og:image" content={previewImage} />
+      {/* make preview image large on Discord and other sites */}
+      {bigPreviewImage ? <meta name="twitter:card" content="summary_large_image" /> : null}
       {/* preview description text */}
       <meta property="og:description" content={description} />
     </Head>

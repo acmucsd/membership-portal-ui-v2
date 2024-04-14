@@ -58,6 +58,9 @@ const getServerSidePropsFunc: GetServerSidePropsWithUser = async ({ params, req,
     return {
       props: {
         title: event.title,
+        description: event.description,
+        previewImage: event.thumbnail,
+        bigPreviewImage: true,
         token,
         event,
         attended: attendances.some(attendance => attendance.event.uuid === uuid),

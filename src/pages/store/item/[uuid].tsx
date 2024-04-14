@@ -10,6 +10,7 @@ import {
   PublicMerchItemWithPurchaseLimits,
 } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import styles from '@/styles/pages/StoreItemPage.module.scss';
 import { GetServerSideProps } from 'next';
@@ -141,6 +142,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
       props: {
         title: item.itemName,
         description: item.description,
+        previewImage: getDefaultMerchItemPhoto(item),
         uuid,
         item,
         previewPublic: preview === 'member',

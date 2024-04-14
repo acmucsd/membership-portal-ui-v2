@@ -9,6 +9,7 @@ import { UserAPI } from '@/lib/api';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { CookieType } from '@/lib/types/enums';
+import { getProfilePicture } from '@/lib/utils';
 import type { GetServerSideProps } from 'next/types';
 
 type UserHandlePageProps = UserHandleNotFoundProps | UserProfilePageProps;
@@ -56,6 +57,8 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
     return {
       props: {
         title: `${handleUser.firstName} ${handleUser.lastName}`,
+        description: handleUser.bio,
+        previewImage: getProfilePicture(handleUser),
         handleUser,
         isSignedInUser,
         signedInAttendances,
