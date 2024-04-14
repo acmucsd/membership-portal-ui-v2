@@ -90,5 +90,5 @@
 }
 
 :export {
-  #{defaultThemeColorHex}: $blue-5;
+  #{defaultThemeColorHex}: vars.$blue-5;
 }
