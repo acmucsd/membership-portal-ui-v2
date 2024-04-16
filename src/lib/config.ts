@@ -35,6 +35,8 @@ const config = {
       },
       attendance: {
         attendance: '/attendance',
+        expressCheckIn: '/attendance/expressCheckin',
+      },
         forUserByUUID: '/attendance/user',
       },
       feedback: '/feedback',
@@ -79,6 +81,7 @@ const config = {
   },
   homeRoute: '/',
   eventsRoute: '/events',
+  expressCheckin: '/express',
   loginRoute: '/login',
   logoutRoute: '/logout',
   leaderboardRoute: '/leaderboard',

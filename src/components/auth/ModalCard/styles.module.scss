@@ -1,0 +1,38 @@
+.card {
+  background: transparent;
+  border: 1px solid var(--theme-primary-6);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  overflow-x: hidden;
+  padding: 0;
+  position: relative;
+  text-align: left;
+  transition: all 0.3s;
+  width: 400px;
+
+  &:hover {
+    box-shadow: 0 0 8px var(--theme-primary-6);
+    transform: scale(1.025);
+  }
+
+  .cardHeader {
+    padding: 0.5rem 1rem;
+    text-align: left;
+  }
+
+  .cardBody {
+    margin-bottom: auto;
+    padding: 0.5rem 1rem;
+    text-align: left;
+  }
+
+  .cardFooter {
+    align-items: center;
+    display: flex;
+    justify-content: end;
+    padding: 0.5rem 1rem;
+    width: 100%;
+  }
+}

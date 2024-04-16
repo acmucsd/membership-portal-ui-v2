@@ -5,8 +5,7 @@ import {
   AttendEventResponse,
   CompleteOrderPickupEventResponse,
   CreateEventResponse,
-  CreatePickupEventResponse,
-  EditOrderPickupEventResponse,
+  ExpressCheckInResponse,
   GetAllEventsResponse,
   GetFutureEventsResponse,
   GetOneEventResponse,
@@ -87,6 +86,19 @@ export const attendEvent = async (
       Authorization: `Bearer ${token}`,
     },
   });
+
+  return response.data;
+};
+
+export const expressCheckin = async (
+  email: string,
+  attendanceCode: string
+): Promise<ExpressCheckInResponse> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.expressCheckIn}`;
+
+  const requestBody = { email, attendanceCode } as AttendEventRequest;
+
+  const response = await axios.post<ExpressCheckInResponse>(requestUrl, requestBody);
 
   return response.data;
 };

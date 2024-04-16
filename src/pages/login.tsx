@@ -1,4 +1,5 @@
 import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
+import CheckInModal from '@/components/auth/CheckInModal';
 import { VerticalForm } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { resendEmailVerification } from '@/lib/api/AuthAPI';
@@ -64,47 +65,50 @@ const LoginPage: NextPage<LoginProps> = ({ destination }) => {
   };
 
   return (
-    <VerticalForm onEnterPress={handleSubmit(onSubmit)}>
-      <SignInTitle text="Welcome to ACM!" />
-      <SignInFormItem
-        icon={<AiOutlineMail />}
-        element="input"
-        name="email"
-        type="email"
-        placeholder="Email (user@ucsd.edu)"
-        formRegister={register('email', {
-          validate: email => {
-            const validation = ValidationService.isValidEmail(email);
-            return validation.valid || validation.error;
-          },
-        })}
-        error={errors.email}
-      />
-      <SignInFormItem
-        icon={<VscLock />}
-        name="password"
-        element="input"
-        type="password"
-        placeholder="Password"
-        formRegister={register('password', {
-          required: 'Required',
-        })}
-        error={errors.password}
-      />
-      <SignInButton
-        type="link"
-        display="link"
-        text="Forgot your password?"
-        href="/forgot-password"
-      />
-      <SignInButton
-        type="button"
-        display="button1"
-        text="Sign In"
-        onClick={handleSubmit(onSubmit)}
-      />
-      <SignInButton type="link" href="/register" text="Sign Up" display="button2" />
-    </VerticalForm>
+    <>
+      <VerticalForm onEnterPress={handleSubmit(onSubmit)}>
+        <SignInTitle text="Welcome to ACM!" />
+        <SignInFormItem
+          icon={<AiOutlineMail />}
+          element="input"
+          name="email"
+          type="email"
+          placeholder="Email (user@ucsd.edu)"
+          formRegister={register('email', {
+            validate: email => {
+              const validation = ValidationService.isValidEmail(email);
+              return validation.valid || validation.error;
+            },
+          })}
+          error={errors.email}
+        />
+        <SignInFormItem
+          icon={<VscLock />}
+          name="password"
+          element="input"
+          type="password"
+          placeholder="Password"
+          formRegister={register('password', {
+            required: 'Required',
+          })}
+          error={errors.password}
+        />
+        <SignInButton
+          type="link"
+          display="link"
+          text="Forgot your password?"
+          href="/forgot-password"
+        />
+        <SignInButton
+          type="button"
+          display="button1"
+          text="Sign In"
+          onClick={handleSubmit(onSubmit)}
+        />
+        <SignInButton type="link" href="/register" text="Sign Up" display="button2" />
+      </VerticalForm>
+      <CheckInModal open={destination.includes('code')} />;
+    </>
   );
 };
 

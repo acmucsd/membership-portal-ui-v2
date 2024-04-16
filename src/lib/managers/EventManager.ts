@@ -1,7 +1,11 @@
 import { EventAPI } from '@/lib/api';
 import type { APIHandlerProps, AuthAPIHandlerProps } from '@/lib/types';
-import type { AttendEventRequest, GetEventRequest } from '@/lib/types/apiRequests';
-import type { PublicEvent } from '@/lib/types/apiResponses';
+import type {
+  AttendEventRequest,
+  ExpressCheckInRequest,
+  GetEventRequest,
+} from '@/lib/types/apiRequests';
+import type { CustomErrorBody, PublicEvent } from '@/lib/types/apiResponses';
 import { getErrorMessage } from '@/lib/utils';
 
 /**
@@ -58,5 +62,20 @@ export const attendEvent = async (
   } catch (e) {
     onFailCallback?.(e);
     return { error: getErrorMessage(e) };
+  }
+};
+
+export const expressCheckIn = async (
+  data: ExpressCheckInRequest & APIHandlerProps
+): Promise<PublicEvent | CustomErrorBody> => {
+  const { email, attendanceCode, onSuccessCallback, onFailCallback } = data;
+
+  try {
+    const response = await EventAPI.expressCheckin(email, attendanceCode);
+    onSuccessCallback?.(response.event);
+    return response.event;
+  } catch (e: any) {
+    onFailCallback?.(e.response.data.error);
+    return e.response.data.error;
   }
 };
