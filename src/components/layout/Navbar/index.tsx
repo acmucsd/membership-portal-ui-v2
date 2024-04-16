@@ -2,7 +2,7 @@ import ThemeToggle from '@/components/common/ThemeToggle';
 import { config } from '@/lib';
 import { useWindowSize } from '@/lib/hooks/useWindowSize';
 import { PermissionService } from '@/lib/services';
-import type { PrivateProfile } from '@/lib/types/apiResponses';
+import { UserAccessType } from '@/lib/types/enums';
 import LightModeLogo from '@/public/assets/acm-logos/general/light-mode.png';
 import CalendarIcon from '@/public/assets/icons/calendar-icon.svg';
 import HomeIcon from '@/public/assets/icons/home-icon.svg';
@@ -16,9 +16,9 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import styles from './style.module.scss';
 
 interface NavbarProps {
-  user?: PrivateProfile;
+  accessType?: UserAccessType;
 }
-const Navbar = ({ user }: NavbarProps) => {
+const Navbar = ({ accessType }: NavbarProps) => {
   const size = useWindowSize();
   const headerRef = useRef<HTMLHeadElement>(null);
 
@@ -47,7 +47,7 @@ const Navbar = ({ user }: NavbarProps) => {
     if (!isMobile) setMenuOpen(false);
   }, [isMobile]);
 
-  if (!user) {
+  if (!accessType) {
     return (
       <header className={styles.header}>
         <div className={styles.content}>
@@ -57,12 +57,12 @@ const Navbar = ({ user }: NavbarProps) => {
           </Link>
           <ThemeToggle />
         </div>
-        <hr className={styles.wainbow} />
+        <hr className={`${styles.wainbow} ${styles.loggedOut}`} />
       </header>
     );
   }
 
-  const isAdmin = PermissionService.canViewAdminPage.includes(user.accessType);
+  const isAdmin = PermissionService.canViewAdminPage.includes(accessType);
 
   return (
     <header className={styles.header} ref={headerRef}>
@@ -81,7 +81,9 @@ const Navbar = ({ user }: NavbarProps) => {
           <p aria-hidden>·</p>
           <Link href={config.eventsRoute}>Events</Link>
           <p aria-hidden>·</p>
-          <Link href="/leaderboard">Leaderboard</Link>
+          <Link href={config.leaderboardRoute}>Leaderboard</Link>
+          <p aria-hidden>·</p>
+          <Link href={config.store.homeRoute}>Store</Link>
         </nav>
         <nav className={styles.iconLinks}>
           <ThemeToggle />
@@ -90,9 +92,6 @@ const Navbar = ({ user }: NavbarProps) => {
               <SettingsIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
             </Link>
           ) : null}
-          <Link href="/store" className={styles.iconLink}>
-            <ShopIcon color="var(--theme-text-on-background-1)" className={styles.iconLink} />
-          </Link>
           <Link href={config.profile.route} className={styles.iconLink}>
             <ProfileIcon color="var(--theme-text-on-background-1)" />
           </Link>
@@ -122,7 +121,7 @@ const Navbar = ({ user }: NavbarProps) => {
           <ProfileIcon className={styles.iconLink} />
           Profile
         </Link>
-        <Link className={styles.mobileNavItem} href={config.storeRoute}>
+        <Link className={styles.mobileNavItem} href={config.store.homeRoute}>
           <ShopIcon className={styles.iconLink} />
           Store
         </Link>
@@ -132,7 +131,7 @@ const Navbar = ({ user }: NavbarProps) => {
             Admin Settings
           </Link>
         ) : null}
-        <div>
+        <div className={styles.mobileSwitch}>
           <ThemeToggle />
         </div>
         <hr className={styles.wainbow} />

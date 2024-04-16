@@ -1,15 +1,21 @@
 import { LinkButton, Typography } from '@/components/common';
 import { config } from '@/lib';
 import withAccessType from '@/lib/hoc/withAccessType';
-import { PermissionService } from '@/lib/services';
+import { CookieService, PermissionService } from '@/lib/services';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
+import { CookieType } from '@/lib/types/enums';
 import type { GetServerSideProps } from 'next';
+import { useState } from 'react';
 
 interface AdminProps {
   user: PrivateProfile;
+  preview: string;
 }
 
-const AdminPage = ({ user: { accessType } }: AdminProps) => {
+const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
+  const [previewMode, setPreviewMode] = useState(preview);
+  const storeAdminVisible = previewMode !== 'member';
+
   return (
     <div>
       <Typography variant="h1/bold">Admin Actions</Typography>
@@ -18,29 +24,53 @@ const AdminPage = ({ user: { accessType } }: AdminProps) => {
       <div
         style={{
           display: 'flex',
+          flexWrap: 'wrap',
           gap: '1rem',
           margin: '1rem 0',
         }}
       >
-        <LinkButton href={config.admin.events.homeRoute}>Manage Events</LinkButton>
+        {PermissionService.canManageEvents.includes(accessType) ? (
+          <>
+            <LinkButton href={config.admin.events.homeRoute}>Manage Events</LinkButton>
+            <LinkButton href={config.feedbackRoute}>View Feedback</LinkButton>
+          </>
+        ) : (
+          'Restricted Access'
+        )}
       </div>
       <br />
       <Typography variant="h2/bold">Store</Typography>
+      <label>
+        <input
+          type="checkbox"
+          defaultChecked={!storeAdminVisible}
+          onChange={e => {
+            const previewMode = e.currentTarget.checked ? 'member' : 'admin';
+            CookieService.setClientCookie(CookieType.USER_PREVIEW_ENABLED, previewMode);
+            setPreviewMode(previewMode);
+          }}
+        />{' '}
+        Preview store as member
+      </label>
       <div
         style={{
           display: 'flex',
+          flexWrap: 'wrap',
           gap: '1rem',
           margin: '1rem 0',
         }}
       >
-        <LinkButton href={config.admin.store.items}>Manage Store Merchandise</LinkButton>
-        <LinkButton href={config.admin.store.pickupEvents}>Manage Pickup Events</LinkButton>
+        <LinkButton href={config.store.homeRoute}>
+          {storeAdminVisible ? 'Manage Store Merchandise' : 'View Merch Store'}
+        </LinkButton>
+        <LinkButton href={config.admin.store.pickup}>Manage Pickup Events</LinkButton>
       </div>
       <br />
       <Typography variant="h2/bold">User Points</Typography>
       <div
         style={{
           display: 'flex',
+          flexWrap: 'wrap',
           gap: '1rem',
           margin: '1rem 0',
         }}
@@ -60,6 +90,7 @@ const AdminPage = ({ user: { accessType } }: AdminProps) => {
       <div
         style={{
           display: 'flex',
+          flexWrap: 'wrap',
           gap: '1rem',
           margin: '1rem 0',
         }}
@@ -76,14 +107,14 @@ const AdminPage = ({ user: { accessType } }: AdminProps) => {
 
 export default AdminPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async () => {
-  return {
-    props: {},
-  };
+const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
+  const preview =
+    CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res }) ?? '';
+  return { props: { title: 'Admin Actions', preview } };
 };
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canViewAdminPage,
-  config.homeRoute
+  { redirectTo: config.homeRoute }
 );

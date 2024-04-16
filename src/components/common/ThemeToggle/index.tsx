@@ -6,7 +6,7 @@ import { useEffect, useId, useState } from 'react';
 import styles from './style.module.scss';
 
 const ThemeToggle = () => {
-  const { theme = 'system', setTheme } = useTheme();
+  const { theme = 'system', resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   const lightId = `light${useId()}`;
@@ -22,15 +22,22 @@ const ThemeToggle = () => {
   };
 
   const switchPos = themeToSwitch[theme];
-  const currAltText = `Icon representing ${theme} theme is on.`;
+  const currAltText = mounted ? `Icon representing ${theme} theme is on.` : '';
+
+  useEffect(() => {
+    // Adjusting the <meta name="theme-color"> tag.
+    // This affects the color of the safe zone on iPhone 15.
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor && resolvedTheme === 'dark') {
+      metaThemeColor.setAttribute('content', '#37393e');
+    } else if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', '#fff');
+    }
+  }, [resolvedTheme]);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  if (!mounted) {
-    return null;
-  }
 
   return (
     <form className={styles.switch}>
@@ -44,8 +51,8 @@ const ThemeToggle = () => {
           id={lightId}
           name="state-d"
           type="radio"
-          defaultChecked={theme === 'light'}
-          onClick={() => setTheme('light')}
+          checked={theme === 'light'}
+          onChange={() => setTheme('light')}
         />
       </label>
 
@@ -59,8 +66,8 @@ const ThemeToggle = () => {
           id={systemId}
           name="state-d"
           type="radio"
-          defaultChecked={theme === 'system'}
-          onClick={() => setTheme('system')}
+          checked={theme === 'system'}
+          onChange={() => setTheme('system')}
         />
       </label>
 
@@ -74,11 +81,11 @@ const ThemeToggle = () => {
           id={darkId}
           name="state-d"
           type="radio"
-          defaultChecked={theme === 'dark'}
-          onClick={() => setTheme('dark')}
+          checked={theme === 'dark'}
+          onChange={() => setTheme('dark')}
         />
       </label>
-      <div className={`${switchPos} ${styles.switchindicator}`} />
+      {mounted ? <div className={`${switchPos} ${styles.switchindicator}`} /> : null}
     </form>
   );
 };

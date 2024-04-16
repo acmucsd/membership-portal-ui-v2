@@ -1,4 +1,4 @@
-import { Cropper } from '@/components/common';
+import { Cropper, GifSafeImage } from '@/components/common';
 import {
   EditBlock,
   EditField,
@@ -9,47 +9,20 @@ import {
 } from '@/components/profile';
 import { config, showToast } from '@/lib';
 import { AuthAPI, ResumeAPI, UserAPI } from '@/lib/api';
-import majors from '@/lib/constants/majors.json';
+import majors from '@/lib/constants/majors';
 import socialMediaTypes from '@/lib/constants/socialMediaTypes';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
+import { ExistingSocialMedia, SocialMedia } from '@/lib/types/apiRequests';
 import { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, SocialMediaType } from '@/lib/types/enums';
-import { capitalize, getMessagesFromError, getProfilePicture, isSrcAGif } from '@/lib/utils';
+import { capitalize, fixUrl, getProfilePicture, reportError } from '@/lib/utils';
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import DropdownIcon from '@/public/assets/icons/dropdown-arrow-1.svg';
-import styles from '@/styles/pages/profile/edit.module.scss';
-import { AxiosError } from 'axios';
+import styles from '@/styles/pages/EditProfile.module.scss';
 import type { GetServerSideProps } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FormEvent, useEffect, useId, useMemo, useState } from 'react';
-
-function reportError(title: string, error: unknown) {
-  if (error instanceof AxiosError && error.response?.data?.error) {
-    showToast(title, getMessagesFromError(error.response.data.error).join('\n\n'));
-  } else if (error instanceof Error) {
-    showToast(title, error.message);
-  } else {
-    showToast(title, 'Unknown error');
-  }
-}
-
-function fixUrl(input: string, prefix?: string): string {
-  if (!input || input.startsWith('https://')) {
-    return input;
-  }
-  // Encourage https://
-  if (prefix && input.startsWith('http://')) {
-    return input.replace('http', 'https');
-  }
-  // If the user typed in their username
-  if (prefix && /^[\w.-]+(?<!\.com)\/?$/.test(input)) {
-    return `https://${prefix}/${input}`;
-  }
-  // Add https:// if it was left out
-  return `https://${input}`;
-}
 
 interface EditProfileProps {
   user: PrivateProfile;
@@ -61,7 +34,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
 
   useEffect(() => {
     if (user !== initUser) {
-      CookieService.setClientCookie(CookieType.USER, JSON.stringify(user));
+      CookieService.setClientCookie(CookieType.USER, JSON.stringify(user), { maxAge: 5 * 60 });
     }
   }, [user, initUser]);
 
@@ -87,6 +60,8 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [loading, setLoading] = useState(false);
 
   const [socialMedia, setSocialMedia] = useState(
     () => new Map(initUser.userSocialMedia?.map(social => [social.type, social.url]) ?? [])
@@ -120,7 +95,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     let changed = false;
     if (profileChanged) {
       try {
@@ -152,57 +127,81 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
         reportError('Email failed to change', error);
       }
     }
-    await Promise.all(
-      Array.from(socialMedia, async ([type, url]) => {
-        const social = user.userSocialMedia?.find(social => social.type === type);
-        if (social?.url !== url) {
-          if (social) {
-            if (url) {
-              try {
-                const newSocial = await UserAPI.updateSocialMedia(authToken, social.uuid, { url });
-                setUser(user => ({
-                  ...user,
-                  userSocialMedia: user.userSocialMedia?.map(social =>
-                    social.type === type ? newSocial : social
-                  ) ?? [newSocial],
-                }));
-                changed = true;
-              } catch (error) {
-                reportError(`Failed to update ${capitalize(type)} URL`, error);
-              }
-            } else {
-              try {
-                await UserAPI.deleteSocialMedia(authToken, social.uuid);
-                setUser(user => ({
-                  ...user,
-                  userSocialMedia: user.userSocialMedia?.filter(social => social.type !== type),
-                }));
-                changed = true;
-              } catch (error) {
-                reportError(`Failed to remove ${capitalize(type)} URL`, error);
-              }
-            }
-          } else if (url) {
-            try {
-              const newSocial = await UserAPI.insertSocialMedia(authToken, {
-                type,
-                url,
-              });
-              setUser(user => ({
-                ...user,
-                userSocialMedia: [...(user.userSocialMedia ?? []), newSocial],
-              }));
-              changed = true;
-            } catch (error) {
-              reportError(`Failed to add ${capitalize(type)} URL`, error);
-            }
+    const newSocialMedia: SocialMedia[] = [];
+    const updatedSocialMedia: ExistingSocialMedia[] = [];
+    const deletedSocialMedia: ExistingSocialMedia[] = [];
+    socialMedia.forEach((url: string, type: SocialMediaType) => {
+      const social = user.userSocialMedia?.find(social => social.type === type);
+      if (social?.url !== url) {
+        // If there are changes to the social media at all...
+        if (social) {
+          if (url) {
+            // Case 1: Social media existed before but has been changed.
+            updatedSocialMedia.push({ type, uuid: social.uuid, url });
+          } else {
+            // Case 2: Social media existed before but doesn't exist now.
+            deletedSocialMedia.push({ type, uuid: social.uuid, url });
           }
+        } else if (url) {
+          // Case 3: Social media didn't exist before but does exist now.
+          newSocialMedia.push({ type, url });
         }
-      })
+      }
+    });
+
+    const savedSocialMedia = new Map(
+      user.userSocialMedia?.map(socialMedia => [socialMedia.type, socialMedia]) || []
     );
+
+    if (newSocialMedia.length > 0) {
+      try {
+        const response = await UserAPI.insertSocialMedia(authToken, newSocialMedia);
+        changed = true;
+        response.forEach(socialMedia => savedSocialMedia.set(socialMedia.type, socialMedia));
+      } catch (error) {
+        const mediaList = newSocialMedia.map(({ type }) => capitalize(type)).join(', ');
+        reportError(`Failed to update ${mediaList}`, error);
+      }
+    }
+
+    if (updatedSocialMedia.length > 0) {
+      try {
+        const response = await UserAPI.updateSocialMedia(authToken, updatedSocialMedia);
+        changed = true;
+        response.forEach(socialMedia => savedSocialMedia.set(socialMedia.type, socialMedia));
+      } catch (error) {
+        const mediaList = updatedSocialMedia.map(({ type }) => capitalize(type)).join(', ');
+        reportError(`Failed to update ${mediaList}`, error);
+      }
+    }
+
+    if (deletedSocialMedia.length > 0) {
+      // We do each of these indivdually.
+      await Promise.all(
+        deletedSocialMedia.map(async ({ type, uuid }) => {
+          try {
+            await UserAPI.deleteSocialMedia(authToken, uuid);
+            savedSocialMedia.delete(type);
+            changed = true;
+          } catch (error) {
+            reportError(`Failed to remove ${capitalize(type)}`, error);
+          }
+        })
+      );
+    }
+
+    setUser(user => ({
+      ...user,
+      userSocialMedia: Array.from(savedSocialMedia.values()),
+    }));
+
     if (changed) {
       showToast('Changes saved!');
+      CookieService.setClientCookie(CookieType.USER, JSON.stringify(user), {
+        maxAge: 5 * 60,
+      });
     }
+    setLoading(false);
   };
 
   // Warn if there are unsaved changes
@@ -278,7 +277,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                     onDragLeave={() => setPfpDrop(false)}
                   >
                     <label className={styles.pfpOutline} htmlFor={pfpUploadId}>
-                      <Image
+                      <GifSafeImage
                         className={styles.pfp}
                         src={
                           getProfilePicture(user) +
@@ -287,7 +286,6 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                         alt="Profile picture"
                         width={125}
                         height={125}
-                        unoptimized={isSrcAGif(user.profilePicture)}
                       />
                     </label>
                     <div className={styles.pfpButtons}>
@@ -376,7 +374,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 </EditBlock>
               </div>
             </details>
-            <details open>
+            <details open id="about">
               <summary>
                 <h2>About Me</h2>
                 <DropdownIcon aria-hidden />
@@ -385,7 +383,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 <EditField
                   label="Major"
                   element="select"
-                  options={majors.majors}
+                  options={majors}
                   changed={majorChanged}
                   value={major}
                   onChange={setMajor}
@@ -472,19 +470,25 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                   <Switch
                     checked={isResumeVisible}
                     onCheck={checked => {
-                      resumes.forEach(async resume => {
-                        try {
+                      Promise.all(
+                        resumes.map(async resume => {
                           const { isResumeVisible } = await ResumeAPI.uploadResumeVisibility(
                             authToken,
                             resume.uuid,
                             checked
                           );
-                          setIsResumeVisible(isResumeVisible);
+                          return isResumeVisible;
+                        })
+                      )
+                        .then((resumeVisibility: boolean[]) => {
+                          if (resumeVisibility.length === 0) {
+                            setIsResumeVisible(visible => !visible);
+                          } else {
+                            setIsResumeVisible(resumeVisibility.every(v => v));
+                          }
                           showToast('Resume visibility preference saved!');
-                        } catch (error) {
-                          reportError('Failed to update resume visibility', error);
-                        }
-                      });
+                        })
+                        .catch(error => reportError('Failed to update resume visibility', error));
                     }}
                   >
                     Share my resume with recruiters from ACM sponsor companies
@@ -497,9 +501,9 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 <EditBlock title="Attendance">
                   <Switch checked={isAttendancePublic} onCheck={setIsAttendancePublic}>
                     Display my ACM attendance history on my profile
-                    {isAttendancePublicChanged && (
+                    {isAttendancePublicChanged ? (
                       <span className={styles.unsavedChange}> (unsaved change)</span>
-                    )}
+                    ) : null}
                   </Switch>
                 </EditBlock>
               </div>
@@ -551,7 +555,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
               <button
                 type="submit"
                 className={`${styles.button} ${styles.primaryBtn}`}
-                disabled={!hasChange}
+                disabled={!hasChange || loading}
               >
                 Save
               </button>
@@ -576,12 +580,7 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                 reportError('Photo failed to upload', error);
               }
             }}
-            onClose={reason => {
-              setPfp(null);
-              if (reason !== null) {
-                showToast('This image format is not supported.');
-              }
-            }}
+            onClose={() => setPfp(null)}
           />
         </div>
       </div>
@@ -594,12 +593,12 @@ export default EditProfilePage;
 const getServerSidePropsFunc: GetServerSideProps<EditProfileProps> = async ({ req, res }) => {
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   // Ensure `user` is up-to-date
-  const user = await UserAPI.getCurrentUser(AUTH_TOKEN);
+  const user = await UserAPI.getFreshCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
 
-  return { props: { authToken: AUTH_TOKEN, user } };
+  return { props: { title: 'Edit Profile', authToken: AUTH_TOKEN, user } };
 };
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );

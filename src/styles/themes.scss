@@ -23,6 +23,10 @@
 
   --theme-background: #{vars.$light-background};
 
+  --theme-elevated-background: #{vars.$light-elevated-background};
+  --theme-elevated-background-transparent: #{vars.$light-elevated-background-transparent};
+  --theme-elevated-stroke: #{vars.$light-elevated-stroke};
+
   --theme-surface-1: #{vars.$light-surface-1}; // table rows
   --theme-surface-2: #{vars.$light-surface-2}; // nav bar background
 
@@ -32,6 +36,7 @@
   --theme-accent-line-1-transparent: #{vars.$light-accent-line-1-transparent}; // light accent lines
   --theme-accent-line-2-transparent: #{vars.$light-accent-line-2-transparent}; // light accent lines
   --theme-shadow: #{vars.$light-accent-line-2-transparent};
+  --theme-card-outline: #{vars.$light-text-on-background-3}; // event card outline
 
   --theme-text-on-background-1: #{vars.$light-text-on-background-1}; // text on primary titles and input borders
   --theme-text-on-background-2: #{vars.$light-text-on-background-2}; // text on primary subtitles (LVL, Dates)
@@ -44,6 +49,7 @@
 
   --theme-mode-indicator: #{vars.$light-mode-indicator};
   --theme-mode-icon: #{vars.$black};
+  --theme-size-selector-border: #{vars.$light-primary-4};
 
   --theme-success-1: #{vars.$success-1};
   --theme-success-2: #{vars.$success-2};
@@ -70,6 +76,10 @@
 
   --theme-background: #{vars.$dark-background};
 
+  --theme-elevated-background: #{vars.$dark-elevated-background};
+  --theme-elevated-background-transparent: #{vars.$dark-elevated-background-transparent};
+  --theme-elevated-stroke: #{vars.$dark-elevated-stroke};
+
   --theme-surface-1: #{vars.$dark-surface-1}; // table rows
   --theme-surface-2: #{vars.$dark-surface-2}; // nav bar background
 
@@ -79,6 +89,7 @@
   --theme-accent-line-1-transparent: #{vars.$dark-accent-line-1-transparent}; // dark accent lines
   --theme-accent-line-2-transparent: #{vars.$dark-accent-line-2-transparent}; // dark accent lines
   --theme-shadow: #{vars.$dark-accent-line-1-transparent};
+  --theme-card-outline: #{vars.$dark-surface-1}; // event card outline
 
   --theme-text-on-background-1: #{vars.$dark-text-on-background-1}; // text on primary titles and input borders
   --theme-text-on-background-2: #{vars.$dark-text-on-background-2}; // text on primary subtitles (LVL, Dates)
@@ -91,12 +102,10 @@
 
   --theme-mode-indicator: #{vars.$dark-mode-indicator};
   --theme-mode-icon: #{vars.$white};
+  --theme-size-selector-border: #{vars.$dark-primary-4};
 }
 
 html,
 body {
   background-color: var(--theme-background);
-  transition-duration: 0.3s;
-  transition-property: background-color, color, border-color, border, filter;
-  transition-timing-function: ease;
 }

@@ -39,6 +39,10 @@ $light-bronze-hover: #f8e9d3;
 
 $light-background: #fff;
 
+$light-elevated-background: #fbfbfb;
+$light-elevated-background-transparent: rgba(251, 251, 251, 0.8);
+$light-elevated-stroke: #979797;
+
 $light-surface-1: #f4f4f4;
 $light-surface-2: #f8f8f8;
 
@@ -74,7 +78,11 @@ $dark-silver-hover: #2d3739;
 $dark-bronze: #c3a77d;
 $dark-bronze-hover: #463720;
 
-$dark-background: #37393e;
+$dark-background: #25262b;
+
+$dark-elevated-background: #37393e;
+$dark-elevated-background-transparent: rgba(55, 57, 62, 0.8);
+$dark-elevated-stroke: #525252;
 
 $dark-surface-1: #525252;
 $dark-surface-2: #2e3036;
@@ -95,6 +103,13 @@ $dark-text-on-surface-2: #fff;
 /*
  * Communities
 */
+// General
+$blue-1: #ebf5ff;
+$blue-2: #cce5ff;
+$blue-3: #a8d3ff;
+$blue-4: #85c2ff;
+$blue-5: #62b0ff;
+
 // Hack
 $orange-1: #fff2e6;
 $orange-2: #ffe4c9;
@@ -150,15 +165,13 @@ $blue-100: #cce5ff;
 
 $white: #fff;
 
-$gray-100: #fafafa;
-$gray-200: #f4f4f4;
-$gray-300: #f8f8f8;
-$gray-400: #e4e4e4;
-$gray-500: #c4c4c4;
-$gray-600: #979797;
-$gray-700: #525252;
-$gray-800: #37393e;
-$gray-900: #2e3036;
+$gray-1: #f3f3f3;
+$gray-2: #ebebeb;
+$gray-3: #d8d8d8;
+$gray-4: #b4b4b4;
+$gray-5: #909090;
+$gray-6: #6c6c6c;
+$gray-7: #484848;
 
 $black: #000000d9;
 
@@ -173,7 +186,7 @@ $general-heading-2-3: 1.75rem;
 $general-heading-3: 1.5rem;
 $general-heading-3-4: 1.25rem;
 $general-heading-4: 1rem;
-$general-body: 1.125rem;
+$general-body: 1.125rem; //~18px if root 16px
 
 $card-heading-1: 1.5rem;
 $card-heading-2: 1rem;

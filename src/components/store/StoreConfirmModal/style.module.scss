@@ -1,0 +1,64 @@
+@use 'src/styles/vars.scss' as vars;
+
+.card {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    align-items: center;
+    background-color: var(--theme-surface-1);
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    height: 3.75rem;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+    width: 100%;
+
+    h1 {
+      text-align: center;
+    }
+  }
+
+  .body {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    width: 100%;
+
+    > div {
+      background-color: var(--theme-background);
+    }
+  }
+
+  .options {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+
+    button {
+      border: 1px solid var(--theme-accent-line-2);
+      border-radius: 0.625rem;
+      color: vars.$light-background;
+      flex-grow: 1;
+      height: 2.5rem;
+      max-width: 12.5rem;
+    }
+
+    .confirm {
+      background: var(--theme-primary-2);
+    }
+
+    .confirmRemove {
+      background: vars.$danger-1;
+    }
+
+    .cancel {
+      background: var(--theme-surface-1);
+      color: var(--theme-text-on-surface-1);
+    }
+  }
+}

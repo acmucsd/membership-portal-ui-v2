@@ -1,24 +1,35 @@
 @use 'src/styles/vars.scss' as vars;
 
 .itemCard {
-  background-color: var(--theme-background);
+  background-color: var(--theme-elevated-background);
   border: 1px solid var(--theme-shadow);
-  border-radius: 10px;
+  border-radius: 0.5rem;
   box-shadow: 0 4px 4px var(--theme-shadow);
   display: inline-flex;
-  flex-direction: column;
-  gap: 1rem;
   overflow: hidden;
-  padding-bottom: 1rem;
+  position: relative;
 
-  &:not(article):hover {
-    background-color: var(--theme-surface-2);
+  .linkWrapper {
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 1rem;
+
+    &:hover {
+      background-color: var(--theme-surface-2);
+    }
   }
 
   .imageWrapper {
+    background-color: var(--theme-surface-1);
     // Enforce a square image while allowing the card to be squished
     padding-bottom: 100%;
     position: relative;
+
+    img {
+      object-fit: cover;
+    }
   }
 
   .details {
@@ -27,6 +38,8 @@
     flex-direction: column;
     gap: 0.5rem;
     padding: 0 1rem;
+    white-space: pre-wrap;
+    word-break: break-word;
 
     .title {
       font-size: 1.375rem;
@@ -42,5 +55,13 @@
         margin-left: 0.7rem;
       }
     }
+  }
+
+  .icons {
+    display: flex;
+    gap: 0.5rem;
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
   }
 }

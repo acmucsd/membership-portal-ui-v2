@@ -1,0 +1,50 @@
+.card {
+  background-color: var(--theme-surface-1);
+  border-radius: 1rem;
+  box-shadow: 0 0 4px var(--theme-accent-line-1-transparent);
+  padding: 1rem;
+
+  .title {
+    transition: 0.3s color;
+  }
+
+  &:hover > .title {
+    color: var(--theme-primary-2);
+  }
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+}
+
+.active {
+  color: var(--theme-primary-2);
+}
+
+.completed {
+  color: var(--theme-success-1);
+}
+
+.cancelled {
+  color: var(--theme-danger-1);
+}
+
+.displayButton {
+  background-color: var(--theme-surface-1);
+  border-radius: 1rem;
+  box-shadow: 0 0 4px var(--theme-accent-line-1-transparent);
+  color: var(--theme-text-on-background-1);
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  padding: 0.5rem 1rem;
+
+  transition: 0.3s background-color;
+
+  &.active {
+    background-color: var(--theme-primary-2);
+  }
+}

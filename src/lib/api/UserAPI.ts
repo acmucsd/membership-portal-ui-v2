@@ -1,4 +1,5 @@
 import { config } from '@/lib';
+import { CookieService } from '@/lib/services';
 import type { UUID } from '@/lib/types';
 import {
   InsertUserSocialMediaRequest,
@@ -9,17 +10,21 @@ import {
   UserPatches,
 } from '@/lib/types/apiRequests';
 import type {
+  GetAttendancesForUserResponse,
   GetCurrentUserResponse,
   GetUserResponse,
   InsertSocialMediaResponse,
   PatchUserResponse,
   PrivateProfile,
+  PublicAttendance,
   PublicProfile,
   PublicUserSocialMedia,
   UpdateProfilePictureResponse,
   UpdateSocialMediaResponse,
 } from '@/lib/types/apiResponses';
+import { CookieType } from '@/lib/types/enums';
 import axios from 'axios';
+import { OptionsType } from 'cookies-next/lib/types';
 
 /**
  * Get current user's private profile
@@ -28,7 +33,6 @@ import axios from 'axios';
  */
 export const getCurrentUser = async (token: string): Promise<PrivateProfile> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.user}`;
-
   const response = await axios.get<GetCurrentUserResponse>(requestUrl, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -36,6 +40,41 @@ export const getCurrentUser = async (token: string): Promise<PrivateProfile> => 
   });
 
   return response.data.user;
+};
+
+export const getCurrentUserAndRefreshCookie = async (
+  token: string,
+  options: OptionsType
+): Promise<PrivateProfile> => {
+  const userCookie = CookieService.getServerCookie(CookieType.USER, options);
+  if (userCookie) return JSON.parse(userCookie);
+
+  const user: PrivateProfile = await getCurrentUser(token);
+
+  const { req, res } = options;
+  CookieService.setServerCookie(CookieType.USER, JSON.stringify(user), {
+    req,
+    res,
+    maxAge: 5 * 60,
+  });
+
+  return user;
+};
+
+export const getFreshCurrentUserAndRefreshCookie = async (
+  token: string,
+  options: OptionsType
+): Promise<PrivateProfile> => {
+  const user: PrivateProfile = await getCurrentUser(token);
+
+  const { req, res } = options;
+  CookieService.setServerCookie(CookieType.USER, JSON.stringify(user), {
+    req,
+    res,
+    maxAge: 5 * 60,
+  });
+
+  return user;
 };
 
 /**
@@ -111,8 +150,8 @@ export const updateCurrentUserProfile = async (
  */
 export const insertSocialMedia = async (
   token: string,
-  socialMedia: SocialMedia
-): Promise<PublicUserSocialMedia> => {
+  socialMedia: SocialMedia[]
+): Promise<PublicUserSocialMedia[]> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}`;
 
   const requestBody: InsertUserSocialMediaRequest = { socialMedia };
@@ -135,10 +174,9 @@ export const insertSocialMedia = async (
  */
 export const updateSocialMedia = async (
   token: string,
-  uuid: UUID,
-  socialMedia: SocialMediaPatches
-): Promise<PublicUserSocialMedia> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}/${uuid}`;
+  socialMedia: SocialMediaPatches[]
+): Promise<PublicUserSocialMedia[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.socialMedia}`;
 
   const requestBody: UpdateUserSocialMediaRequest = { socialMedia };
 
@@ -164,4 +202,46 @@ export const deleteSocialMedia = async (token: string, uuid: UUID): Promise<void
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+export const getAttendancesForCurrentUser = async (token: string): Promise<PublicAttendance[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.attendance}`;
+
+  const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.attendances;
+};
+
+export const getAttendancesForUserByUUID = async (
+  token: string,
+  uuid: UUID
+): Promise<PublicAttendance[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.forUserByUUID}/${uuid}`;
+
+  const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.attendances;
+};
+
+export const getPublicUserProfileByUUID = async (
+  token: string,
+  uuid: UUID
+): Promise<PublicProfile> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.user.user}/${uuid}`;
+
+  const response = await axios.get<GetUserResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.user;
 };

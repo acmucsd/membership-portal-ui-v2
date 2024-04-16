@@ -5,6 +5,12 @@ import { UserAccessType } from '@/lib/types/enums';
  */
 export const canEditMerchItems = [UserAccessType.ADMIN, UserAccessType.MERCH_STORE_MANAGER];
 
+export const canManagePickupEvents = [
+  UserAccessType.ADMIN,
+  UserAccessType.MERCH_STORE_DISTRIBUTOR,
+  UserAccessType.MERCH_STORE_MANAGER,
+];
+
 export const canManageEvents = [UserAccessType.ADMIN, UserAccessType.MARKETING];
 
 export const canAwardPoints = [UserAccessType.ADMIN];
@@ -22,7 +28,7 @@ export const canViewAdminPage = [
 /**
  * @returns Array of all possible user access types
  */
-export const allUserTypes = () => Object.values(UserAccessType) as UserAccessType[];
+export const allUserTypes = Object.values(UserAccessType);
 
 /**
  * @param types to exclude from array
@@ -32,3 +38,8 @@ export const allUserTypesExcept = (types: UserAccessType[]): UserAccessType[] =>
   const values = Object.keys(UserAccessType) as UserAccessType[];
   return values.filter(value => !types.includes(value));
 };
+
+/**
+ * @returns Valid logged in user types
+ */
+export const loggedInUser = allUserTypesExcept([UserAccessType.RESTRICTED]);

@@ -87,12 +87,12 @@ const getServerSidePropsFunc: GetServerSideProps = async () => {
   ]);
 
   return {
-    props: { allEvents, pastEvents, futureEvents },
+    props: { title: 'Manage Events', allEvents, pastEvents, futureEvents },
   };
 };
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canManageEvents,
-  config.admin.homeRoute
+  { redirectTo: config.admin.homeRoute }
 );

@@ -3,7 +3,7 @@ import { VerticalForm } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { AuthManager } from '@/lib/managers';
 import { ValidationService } from '@/lib/services';
-import { getMessagesFromError } from '@/lib/utils';
+import { reportError } from '@/lib/utils';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -40,7 +40,7 @@ const ResetPasswordPage = ({ code }: ResetPasswordProps) => {
         router.push(config.loginRoute);
       },
       onFailCallback: error => {
-        showToast('Unable to reset password', getMessagesFromError(error)[0]);
+        reportError('Unable to reset password', error);
       },
     });
   };
@@ -97,8 +97,6 @@ export default ResetPasswordPage;
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const code = params?.accessCode as string;
   return {
-    props: {
-      code,
-    },
+    props: { title: 'Reset Password', code },
   };
 };

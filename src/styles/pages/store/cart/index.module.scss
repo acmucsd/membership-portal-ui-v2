@@ -1,0 +1,194 @@
+@use 'src/styles/vars.scss' as vars;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 0 auto;
+  max-width: 81rem;
+
+  .content {
+    align-items: start;
+    display: grid;
+    grid-column-gap: 2rem;
+    grid-template-areas:
+      'title placeOrder'
+      'confirmation event'
+      'items event'
+      'items summary'
+      'items warning';
+    grid-template-columns: 1fr 20rem;
+    grid-template-rows: auto auto auto auto 1fr;
+
+    @media screen and (max-width: vars.$breakpoint-md) {
+      grid-template-areas:
+        'title'
+        'placeOrder'
+        'warning'
+        'confirmation'
+        'event'
+        'items'
+        'summary';
+      grid-template-columns: 1fr;
+    }
+
+    .storeButton {
+      align-items: center;
+      background-color: var(--theme-primary-2);
+      border-radius: 0.625rem;
+      color: vars.$light-background;
+      display: flex;
+      justify-content: center;
+      min-height: 2rem;
+      width: 100%;
+    }
+
+    .title {
+      grid-area: title;
+      margin-bottom: 2rem;
+    }
+
+    .placeOrder {
+      background: var(--primaries-primary-2, #62b0ff);
+      border: 1px solid var(--theme-accent-line-2, #e4e4e4);
+      border-radius: 10px;
+      color: vars.$light-background;
+      font-size: 20px;
+      font-weight: 700;
+      grid-area: placeOrder;
+      height: 2.5rem;
+      margin-bottom: 2rem;
+
+      &:disabled {
+        background-color: transparent;
+        color: vars.$disabled;
+        cursor: not-allowed;
+      }
+
+      .confirming {
+        background: vars.$success-1;
+      }
+    }
+
+    .cartCard {
+      border: 1px solid var(--theme-elevated-stroke);
+      border-radius: 0.625rem;
+      overflow: hidden;
+
+      .header {
+        align-items: center;
+        background-color: var(--theme-surface-1);
+        border-bottom: 1px solid var(--theme-elevated-stroke);
+        border-top-left-radius: 0.625rem;
+        border-top-right-radius: 0.625rem;
+        display: flex;
+        height: 3.75rem;
+        padding: 1.5rem 1rem;
+      }
+    }
+
+    .confirmation {
+      align-items: center;
+      background-color: var(--theme-elevated-background);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      grid-area: confirmation;
+      margin-bottom: 2rem;
+      padding: 2rem;
+      text-align: center;
+
+      div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        width: 100%;
+
+        a {
+          flex-grow: 1;
+          max-width: 11.625rem;
+        }
+      }
+    }
+
+    .items {
+      background-color: var(--theme-elevated-background);
+      display: flex;
+      flex-direction: column;
+      grid-area: items;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+
+      .emptyCart {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 2rem 0;
+        text-align: center;
+        width: 100%;
+
+        a {
+          margin: 0 1rem;
+          width: 12.5rem;
+        }
+      }
+    }
+
+    .pointsCard {
+      background-color: var(--theme-elevated-background);
+      grid-area: summary;
+      margin-bottom: 2rem;
+
+      .points {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        justify-content: space-around;
+        padding: 1rem;
+
+        > div {
+          align-items: baseline;
+          display: flex;
+          justify-content: space-between;
+
+          span {
+            text-align: end;
+          }
+        }
+
+        hr {
+          border-top: 1px solid var(--theme-elevated-stroke);
+        }
+      }
+    }
+
+    .eventPicker {
+      grid-area: event;
+      margin-bottom: 2rem;
+    }
+
+    .warning {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      grid-area: warning;
+      margin-bottom: 2rem;
+
+      p {
+        color: var(--theme-danger-1);
+      }
+    }
+  }
+}
+
+.pickupEventDetail {
+  max-width: 80rem;
+  padding: 0 1rem;
+  width: 80vw;
+
+  @media screen and (width <= vars.$breakpoint-md) {
+    width: 100vw;
+  }
+}

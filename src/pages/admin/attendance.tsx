@@ -79,11 +79,14 @@ const AwardPointsPage: NextPage = () => {
 export default AwardPointsPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: {},
+  props: {
+    title: 'Retroactive Attendance',
+    description: 'Mark members as attended for past events',
+  },
 });
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canAwardPoints,
-  config.admin.homeRoute
+  { redirectTo: config.admin.homeRoute }
 );

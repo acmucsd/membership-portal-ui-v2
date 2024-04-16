@@ -32,9 +32,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
   try {
     const editEvent = await EventAPI.getEvent(uuid, token);
     return {
-      props: {
-        editEvent,
-      },
+      props: { title: `Edit ${editEvent.title}`, editEvent },
     };
   } catch (err: any) {
     return { redirect: { destination: config.admin.homeRoute, permanent: false } };
@@ -44,5 +42,5 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canManageEvents,
-  config.admin.homeRoute
+  { redirectTo: config.admin.homeRoute }
 );

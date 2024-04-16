@@ -105,6 +105,8 @@
       .iconLink {
         color: var(--theme-text-on-background-1);
         cursor: pointer;
+        height: 24px;
+        width: 24px;
       }
     }
   }
@@ -150,6 +152,15 @@
       &:hover {
         background-color: var(--theme-surface-1);
       }
+
+      svg {
+        height: 24px;
+        width: 24px;
+      }
+    }
+
+    .mobileSwitch {
+      padding-bottom: 0.75rem;
     }
   }
 
@@ -157,7 +168,11 @@
     background: vars.$wainbow;
     height: 0.25rem;
     margin: 0 -1rem;
-    width: calc(100% + 2rem);
+    width: 100vw;
+
+    &.loggedOut {
+      margin: 0;
+    }
   }
 }
 

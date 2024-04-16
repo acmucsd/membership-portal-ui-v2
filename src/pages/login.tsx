@@ -9,7 +9,7 @@ import { URL } from '@/lib/types';
 import type { LoginRequest } from '@/lib/types/apiRequests';
 import type { PrivateProfile } from '@/lib/types/apiResponses';
 import { CookieType, UserState } from '@/lib/types/enums';
-import { getMessagesFromError } from '@/lib/utils';
+import { reportError } from '@/lib/utils';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -45,14 +45,21 @@ const LoginPage: NextPage<LoginProps> = ({ destination }) => {
             },
           ]);
 
-          CookieService.deleteClientCookie(CookieType.USER);
+          CookieService.clearClientCookies();
 
           return;
         }
+        if (user.state === UserState.BLOCKED) {
+          showToast('This account has been disabled', 'Email acm@ucsd.edu if you have questions.');
+
+          CookieService.clearClientCookies();
+          return;
+        }
+
         router.push(destination);
       },
       onFailCallback: error => {
-        showToast('Unable to login', getMessagesFromError(error)[0]);
+        reportError('Unable to login', error);
       },
     });
   };

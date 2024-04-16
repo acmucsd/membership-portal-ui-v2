@@ -1,0 +1,132 @@
+@use 'src/styles/vars.scss' as vars;
+
+.wrapper {
+  border: 1px solid var(--theme-elevated-stroke);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  white-space: pre-wrap;
+  word-break: break-word;
+
+  &.noHeader {
+    background-color: var(--theme-elevated-background);
+  }
+
+  .header {
+    align-items: center;
+    background-color: var(--theme-elevated-background);
+    border-bottom: 1px solid var(--theme-elevated-stroke);
+    border-radius: 0.5rem 0.5rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    position: relative;
+
+    .user,
+    .event {
+      align-items: center;
+      display: flex;
+      gap: 0.5rem;
+
+      &:hover span {
+        text-decoration: underline;
+      }
+    }
+
+    .user img {
+      border-radius: 50%;
+    }
+
+    .event img {
+      border-radius: 2px;
+    }
+
+    > span {
+      margin: auto 0;
+    }
+
+    &.hasUser::after {
+      background-color: var(--theme-background);
+      border-right: 1px solid var(--theme-elevated-stroke);
+      border-top: 1px solid var(--theme-elevated-stroke);
+      content: '';
+      height: 0.5rem;
+      left: 1.25rem;
+      margin: -0.25rem;
+      position: absolute;
+      top: 100%;
+      transform: rotate(-45deg);
+      width: 0.5rem;
+    }
+  }
+
+  .body {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+
+    @media (max-width: vars.$breakpoint-sm) {
+      flex-direction: column;
+    }
+
+    .feedback {
+      display: flex;
+      flex: auto;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .date {
+        color: var(--theme-text-on-background-2);
+      }
+    }
+
+    .response {
+      display: flex;
+      flex: none;
+      flex-direction: column;
+      gap: 0.5rem;
+      justify-content: flex-end;
+
+      @media (max-width: vars.$breakpoint-sm) {
+        flex-direction: row;
+      }
+
+      .button {
+        border-radius: 2rem;
+        color: var(--theme-background);
+        font-size: 1rem;
+        font-weight: bold;
+        height: 2rem;
+        padding: 0 1rem;
+
+        @media (max-width: vars.$breakpoint-sm) {
+          flex: auto;
+        }
+
+        &.acknowledge {
+          background-color: var(--theme-primary-2);
+        }
+
+        &.ignore {
+          background-color: var(--theme-text-on-background-2);
+        }
+      }
+    }
+
+    .status {
+      display: flex;
+      flex: none;
+      gap: 0.25rem;
+      margin-top: auto;
+
+      &.acknowledged {
+        color: var(--theme-blue-text-button);
+      }
+
+      &.ignored {
+        color: var(--theme-text-on-background-2);
+      }
+    }
+  }
+}

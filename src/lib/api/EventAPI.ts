@@ -1,18 +1,18 @@
 import { config } from '@/lib';
 import { FillInLater, UUID } from '@/lib/types';
-import { AttendEventRequest, Event } from '@/lib/types/apiRequests';
+import { AttendEventRequest, Event, OrderPickupEvent } from '@/lib/types/apiRequests';
 import {
   AttendEventResponse,
+  CompleteOrderPickupEventResponse,
   CreateEventResponse,
   ExpressCheckInResponse,
   GetAllEventsResponse,
-  GetAttendancesForUserResponse,
   GetFutureEventsResponse,
   GetOneEventResponse,
   GetPastEventsResponse,
   PatchEventResponse,
-  PublicAttendance,
   PublicEvent,
+  PublicOrderPickupEvent,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
 
@@ -71,18 +71,6 @@ export const getAllEvents = async (): Promise<PublicEvent[]> => {
   const response = await axios.get<GetAllEventsResponse>(requestUrl);
 
   return response.data.events;
-};
-
-export const getAttendancesForUser = async (token: string): Promise<PublicAttendance[]> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.attendance}`;
-
-  const response = await axios.get<GetAttendancesForUserResponse>(requestUrl, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return response.data.attendances;
 };
 
 export const attendEvent = async (
@@ -155,6 +143,86 @@ export const deleteEvent = async (token: string, event: UUID): Promise<void> => 
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+export const createPickupEvent = async (
+  token: string,
+  pickupEvent: Partial<OrderPickupEvent>
+): Promise<PublicOrderPickupEvent> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}`;
+
+  const requestBody = { pickupEvent };
+
+  const response = await axios.post<CreatePickupEventResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.pickupEvent;
+};
+
+export const editPickupEvent = async (
+  token: string,
+  uuid: UUID,
+  pickupEvent: Partial<OrderPickupEvent>
+): Promise<PublicOrderPickupEvent> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${uuid}`;
+
+  const requestBody = { pickupEvent };
+
+  const response = await axios.patch<EditOrderPickupEventResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.pickupEvent;
+};
+
+export const deletePickupEvent = async (token: string, pickupEvent: UUID): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${pickupEvent}`;
+
+  await axios.delete(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const completePickupEvent = async (
+  token: string,
+  uuid: UUID
+): Promise<CompleteOrderPickupEventResponse> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${uuid}/complete`;
+
+  const response = await axios.post(
+    requestUrl,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data.orders;
+};
+
+export const cancelPickupEvent = async (token: string, uuid: UUID): Promise<void> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.pickup.single}/${uuid}/cancel`;
+
+  const response = await axios.post(
+    requestUrl,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
 };
 
 export const uploadEventImage = async (

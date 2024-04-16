@@ -1,0 +1,178 @@
+@use 'src/styles/vars.scss' as vars;
+
+.container {
+  display: grid;
+  gap: 2.5rem;
+  grid-template-areas:
+    'image header'
+    'description description';
+  grid-template-columns: 1fr minmax(30rem, 1fr);
+  padding: 2.5rem;
+  position: relative;
+  width: 80vw;
+
+  &.standalone {
+    padding: 0;
+    width: auto;
+  }
+
+  .image {
+    aspect-ratio: 1920 / 1080;
+    border-radius: 10px;
+    flex-shrink: 0;
+    grid-area: image;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  @media screen and (width <= vars.$breakpoint-lg) {
+    grid-row-gap: 2.5rem;
+    grid-template-areas:
+      'image'
+      'header'
+      'description';
+    grid-template-columns: 1fr;
+    max-width: unset;
+    padding: 0;
+    padding-bottom: 2.5rem;
+
+    .header,
+    .description {
+      padding: 0 2.5rem;
+      width: 100%;
+
+      &.standalone {
+        padding: 0;
+      }
+    }
+
+    .image {
+      border-radius: 10px 10px 0 0;
+
+      &.standalone {
+        border-radius: 10px;
+      }
+    }
+  }
+
+  @media screen and (width <= vars.$breakpoint-md) {
+    grid-row-gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    width: 100vw;
+
+    .header,
+    .description {
+      padding: 0 1.5rem;
+      width: 100%;
+    }
+  }
+
+  .close {
+    align-items: center;
+    backdrop-filter: blur(1px);
+    background-color: vars.$dark-accent-line-2-transparent;
+    border-radius: 50%;
+    display: flex;
+    padding: 0.25rem;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    transition: background-color 0.2s;
+    z-index: 100;
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      right: 0.75rem;
+      top: 0.75rem;
+    }
+
+    .closeIcon {
+      fill: vars.$light-background;
+    }
+
+    &:hover {
+      background-color: var(--theme-accent-line-1-transparent);
+    }
+  }
+
+  .header,
+  .description {
+    gap: 2.5rem;
+  }
+
+  .header {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 1rem;
+    grid-area: header;
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .eventTitle,
+    .eventDetails {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    @media screen and (width <= vars.$breakpoint-md) {
+      .eventTitle {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+      }
+
+      .eventInfo {
+        font-size: 1rem !important;
+        line-height: 1.5rem !important;
+      }
+    }
+
+    .eventDetails {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      .badges {
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+
+        > div {
+          font-size: 1rem !important;
+          padding: 0.25rem 0.5rem;
+
+          @media screen and (width <= vars.$breakpoint-md) {
+            font-size: 0.75rem !important;
+          }
+        }
+      }
+    }
+
+    .feedbackBtn {
+      align-items: center;
+      align-self: flex-start;
+      background-color: var(--theme-elevated-background);
+      border: 1px solid var(--theme-elevated-stroke);
+      border-radius: 10px;
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-start;
+      padding: 0.75rem;
+      transition: all 0.2s;
+
+      &:hover {
+        background: var(--theme-surface-2);
+      }
+    }
+  }
+
+  .description {
+    grid-area: description;
+    white-space: pre-wrap;
+  }
+}

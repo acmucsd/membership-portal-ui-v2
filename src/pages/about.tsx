@@ -34,19 +34,19 @@ const AboutPage = () => {
         <div className={styles.socials}>
           <p className={styles.description}>{about}</p>
           <a href="https://acmucsd.com">
-            <WebIcon className={styles.theme} />
+            <WebIcon className={styles.icon} />
             acmucsd.com
           </a>
           <a href="https://facebook.com/acm.ucsd">
-            <FacebookIcon className={styles.theme} />
+            <FacebookIcon className={styles.icon} />
             acmurl.com/facebook
           </a>
           <a href="https://instagram.com/acm.ucsd">
-            <IgIcon className={styles.theme} />
+            <IgIcon className={styles.icon} />
             acmurl.com/instagram
           </a>
           <a href="https://acmurl.com/discord">
-            <DiscordIcon className={styles.theme} />
+            <DiscordIcon className={styles.icon} />
             acmurl.com/discord
           </a>
         </div>
@@ -66,10 +66,10 @@ const AboutPage = () => {
 export default AboutPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: {},
+  props: { title: 'About ACM @ UCSD' },
 });
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );

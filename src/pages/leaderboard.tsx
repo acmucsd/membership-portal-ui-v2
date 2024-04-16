@@ -1,4 +1,5 @@
 import { Dropdown, PaginationControls } from '@/components/common';
+import { DIVIDER } from '@/components/common/Dropdown';
 import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { config } from '@/lib';
 import { LeaderboardAPI } from '@/lib/api';
@@ -106,7 +107,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             { value: 'past-month', label: 'Past month' },
             { value: 'past-year', label: 'Past year' },
             { value: 'all-time', label: 'All time' },
-            '---',
+            DIVIDER,
             ...years,
           ]}
           value={sort}
@@ -115,15 +116,16 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             setPage(0);
             setScrollIntoView(0);
           }}
+          className={styles.timeDropdown}
         />
       </div>
-      {topThreeUsers.length > 0 && (
+      {topThreeUsers.length > 0 ? (
         <div className={styles.topThreeContainer}>
           {topThreeUsers.map(user => (
             <TopThreeCard
               key={user.uuid}
               position={user.position}
-              rank={getUserRank(user)}
+              rank={getUserRank(user.points)}
               name={`${user.firstName} ${user.lastName}`}
               url={`${config.userProfileRoute}${user.handle}`}
               points={user.points}
@@ -131,15 +133,15 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             />
           ))}
         </div>
-      )}
-      {leaderboardRows.length > 0 && (
+      ) : null}
+      {leaderboardRows.length > 0 ? (
         <div className={styles.leaderboard}>
           {leaderboardRows.map(user => {
             return (
               <LeaderboardRow
                 key={user.uuid}
                 position={user.position}
-                rank={getUserRank(user)}
+                rank={getUserRank(user.points)}
                 name={`${user.firstName} ${user.lastName}`}
                 url={`${config.userProfileRoute}${user.handle}`}
                 points={user.points}
@@ -150,7 +152,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
             );
           })}
         </div>
-      )}
+      ) : null}
       {allRows.length > 0 ? (
         <PaginationControls
           page={page}
@@ -173,14 +175,15 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
   const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   const sort = typeof query.sort === 'string' ? query.sort : getEndYear() - 1;
+
   const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN, getLeaderboardRange(sort));
 
   return {
-    props: { sort, leaderboard },
+    props: { title: 'Leaderboard', sort, leaderboard },
   };
 };
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
-  PermissionService.allUserTypes()
+  PermissionService.loggedInUser
 );

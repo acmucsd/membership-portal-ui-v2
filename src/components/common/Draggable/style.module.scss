@@ -1,0 +1,17 @@
+.dragHandle {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.dragItem {
+  position: relative;
+  transition: transform 0.2s;
+  z-index: 0;
+
+  &.dragging {
+    filter: drop-shadow(0 3px 10px var(--theme-shadow));
+    transition: none;
+    z-index: 10;
+  }
+}

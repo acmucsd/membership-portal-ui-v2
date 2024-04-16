@@ -2,6 +2,7 @@ import { Button } from '@/components/common';
 import { showToast } from '@/lib';
 import { AdminEventManager } from '@/lib/managers';
 import type { NotionEventDetails, NotionEventPreview } from '@/lib/types/apiResponses';
+import { reportError } from '@/lib/utils';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
 import style from './style.module.scss';
@@ -28,7 +29,7 @@ const NotionAutofill = ({ setFields, loading, upcomingEvents }: IProps) => {
         showToast(`Filled out fields for event: ${data.title}!`);
       },
       onFailCallback: err => {
-        showToast('Notion API Error', err);
+        reportError('Notion API Error', err);
       },
     });
 

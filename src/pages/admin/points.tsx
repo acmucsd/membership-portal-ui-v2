@@ -76,11 +76,11 @@ const AwardPointsPage: NextPage = () => {
 export default AwardPointsPage;
 
 const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: {},
+  props: { title: 'Award Bonus Points', description: 'Grant bonus points to a specific user' },
 });
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canAwardPoints,
-  config.admin.homeRoute
+  { redirectTo: config.admin.homeRoute }
 );

@@ -1,5 +1,5 @@
-import LeftArrowIcon from '@/public/assets/icons/page-left-icon.svg';
-import RightArrowIcon from '@/public/assets/icons/page-right-icon.svg';
+import LeftArrowIcon from '@/public/assets/icons/arrow-left.svg';
+import RightArrowIcon from '@/public/assets/icons/arrow-right.svg';
 import { useEffect, useState } from 'react';
 import style from './style.module.scss';
 
@@ -54,7 +54,7 @@ const PaginationControls = ({ page, onPage, pages }: PaginationControlsProps) =>
             }
           }}
         />
-        <span>of</span>
+        <span>/</span>
         <span className={style.pageNumber}>{pages}</span>
       </div>
       <button

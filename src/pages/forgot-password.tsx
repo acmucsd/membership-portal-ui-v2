@@ -4,8 +4,8 @@ import { config, showToast } from '@/lib';
 import { AuthManager } from '@/lib/managers';
 import { ValidationService } from '@/lib/services';
 import type { SendPasswordResetEmailRequest } from '@/lib/types/apiRequests';
-import { getMessagesFromError } from '@/lib/utils';
-import type { NextPage } from 'next';
+import { reportError } from '@/lib/utils';
+import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineMail } from 'react-icons/ai';
@@ -27,7 +27,7 @@ const ForgotPassword: NextPage = () => {
         showToast('Success! Check your email shortly', `Email has been sent to ${email}`);
       },
       onFailCallback: error => {
-        showToast('Error with email!', getMessagesFromError(error)[0]);
+        reportError('Error with email!', error);
       },
     });
   };
@@ -60,3 +60,7 @@ const ForgotPassword: NextPage = () => {
 };
 
 export default ForgotPassword;
+
+export const getServerSideProps: GetServerSideProps = async () => ({
+  props: { title: 'Forgot Password' },
+});

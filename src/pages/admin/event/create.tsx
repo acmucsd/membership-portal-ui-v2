@@ -21,16 +21,16 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
   if (typeof query.duplicate === 'string') {
     const defaultData = await EventAPI.getEvent(query.duplicate, token);
     return {
-      props: { defaultData },
+      props: { title: 'Create Event', defaultData },
     };
   }
   return {
-    props: { defaultData: {} },
+    props: { title: 'Create Event', defaultData: {} },
   };
 };
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
   PermissionService.canManageEvents,
-  config.admin.homeRoute
+  { redirectTo: config.admin.homeRoute }
 );
