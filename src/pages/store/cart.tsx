@@ -249,7 +249,11 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
 
   const savedCartPromise = CartService.getCart({ req, res });
   const pickupEventsPromise = getFutureOrderPickupEvents(AUTH_TOKEN).then(events =>
-    events.filter(event => event.status !== 'CANCELLED')
+    events
+      .filter(event => event.status !== 'CANCELLED')
+      .filter(
+        event => (event.orders?.length ?? 0) <= (event?.orderLimit ?? Number.MAX_SAFE_INTEGER)
+      )
   );
   const userPromise = getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
 
