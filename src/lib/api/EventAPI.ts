@@ -103,12 +103,12 @@ export const attendEvent = async (
 };
 
 export const expressCheckin = async (
-  attendanceCode: string,
-  email: string
+  email: string,
+  attendanceCode: string
 ): Promise<ExpressCheckInResponse> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.attendance.expressCheckIn}`;
 
-  const requestBody = { attendanceCode, email } as AttendEventRequest;
+  const requestBody = { email, attendanceCode } as AttendEventRequest;
 
   const response = await axios.post<ExpressCheckInResponse>(requestUrl, requestBody);
 
