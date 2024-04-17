@@ -5,11 +5,15 @@
   justify-content: center;
 
   .paginationBtn {
-    background: none;
+    background: var(--theme-elevated-background);
+    border: 1px solid var(--theme-elevated-stroke);
+    border-radius: 50%;
+    color: var(--theme-primary-2);
     font-size: 0;
     padding: 0;
 
     &:disabled {
+      color: var(--theme-elevated-stroke);
       cursor: auto;
       opacity: 0.5;
     }
@@ -17,19 +21,24 @@
 
   .paginationText {
     align-items: center;
+    background-color: var(--theme-elevated-background);
+    border: 1px solid var(--theme-elevated-stroke);
+    border-radius: 1rem;
     display: flex;
     font-weight: bold;
-    gap: 1em;
+    gap: 0.5rem;
+    padding: 0.375rem 1rem;
 
     .pageNumber {
+      text-align: center;
       width: 24px;
 
       &:is(input) {
-        border: 1px solid var(--theme-text-on-background-1);
-        border-radius: 2px;
-        color: inherit;
+        background-color: inherit;
+        border-bottom: 1.5px solid var(--theme-text-on-background-1);
+        color: var(--theme-text-on-background-1);
         font: inherit;
-        height: 24px;
+        margin-bottom: -1.5px;
         text-align: center;
       }
     }

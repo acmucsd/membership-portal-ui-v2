@@ -25,6 +25,13 @@ interface IProps {
   upcomingEvents: PublicEvent[];
 }
 
+const parseProps = (isoStart: string, isoEnd: string, rawOrderLimit: string) => {
+  const start = new Date(isoStart).toISOString();
+  const end = new Date(isoEnd).toISOString();
+  const orderLimit = parseInt(`${rawOrderLimit}`, 10);
+  return { start, end, orderLimit };
+};
+
 export const completePickupEvent = async (uuid: UUID, token: string) => {
   try {
     await AdminEventManager.completePickupEvent({
@@ -89,18 +96,16 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       orderLimit: rawOrderLimit,
     } = formData;
 
-    const start = new Date(isoStart).toISOString();
-    const end = new Date(isoEnd).toISOString();
-    const orderLimit = parseInt(`${rawOrderLimit}`, 10);
-
     try {
+      const { start, end, orderLimit } = parseProps(isoStart, isoEnd, `${rawOrderLimit}`);
+
       const uuid = await AdminEventManager.createPickupEvent(token, {
         title,
         start,
         end,
         description,
         orderLimit,
-        linkedEventUuid,
+        linkedEventUuid: linkedEventUuid || null,
       });
       showToast('Pickup Event created successfully!', '', [
         {
@@ -110,7 +115,11 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       ]);
       router.push(`${config.admin.store.pickup}/${uuid}`);
     } catch (error) {
-      reportError('Could not create pickup event', error);
+      if (error instanceof RangeError) {
+        reportError('Invalid date, could not create pickup event', error);
+      } else {
+        reportError('Could not create pickup event', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -128,13 +137,18 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       orderLimit: rawOrderLimit,
     } = formData;
 
-    const start = new Date(isoStart).toISOString();
-    const end = new Date(isoEnd).toISOString();
-    const orderLimit = parseInt(`${rawOrderLimit}`, 10);
-
     try {
+      const { start, end, orderLimit } = parseProps(isoStart, isoEnd, `${rawOrderLimit}`);
+
       await AdminEventManager.editPickupEvent({
-        pickupEvent: { title, start, end, description, orderLimit, linkedEventUuid },
+        pickupEvent: {
+          title,
+          start,
+          end,
+          description,
+          orderLimit,
+          linkedEventUuid: linkedEventUuid || null,
+        },
         uuid: defaultData.uuid ?? '',
         token: token,
 
@@ -153,7 +167,11 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
         },
       });
     } catch (error) {
-      reportError('Could not save changes', error);
+      if (error instanceof RangeError) {
+        reportError("Invalid date, can't save changes", error);
+      } else {
+        reportError('Could not save changes', error);
+      }
     } finally {
       setLoading(false);
     }
