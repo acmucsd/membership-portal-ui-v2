@@ -74,10 +74,8 @@ const EventCard = ({
       <Link
         href={`${config.eventsRoute}/${uuid}`}
         data-community={community}
-        data-disabled={borderless ? 'true' : 'false'}
-        className={`${styles.container} ${borderless ? 'disabled' : styles.bordered} ${
-          className || ''
-        }`}
+        data-disabled={borderless}
+        className={`${styles.container} ${borderless ? '' : styles.bordered} ${className || ''}`}
         onClick={e => {
           e.preventDefault();
           setExpanded(true);

@@ -252,7 +252,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
     events
       .filter(event => event.status !== 'CANCELLED')
       .filter(
-        event => (event.orders?.length ?? 0) <= (event?.orderLimit ?? Number.MAX_SAFE_INTEGER)
+        event => !(event.orders && event.orderLimit && event.orders.length > event.orderLimit)
       )
   );
   const userPromise = getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
