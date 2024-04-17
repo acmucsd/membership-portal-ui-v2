@@ -25,14 +25,15 @@ const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents }: AdminPickupPa
         <Typography variant="h1/bold" style={{ marginRight: 'auto' }}>
           Manage Pickup Events
         </Typography>
-
-        <button
-          type="button"
-          className={`${styles.displayButton} ${display === 'future' && styles.active}`}
-          onClick={() => router.push(`${config.admin.store.pickupCreate}`)}
-        >
-          <Typography variant="h5/bold">Create New Pickup Event</Typography>
-        </button>
+        <div className={styles.displayButtons}>
+          <button
+            type="button"
+            className={`${styles.displayButton} ${styles.active}`}
+            onClick={() => router.push(`${config.admin.store.pickupCreate}`)}
+          >
+            <Typography variant="h5/bold">Create New Pickup Event</Typography>
+          </button>
+        </div>
 
         <div className={styles.displayButtons}>
           <button
