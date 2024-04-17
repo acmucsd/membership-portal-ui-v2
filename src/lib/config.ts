@@ -106,7 +106,7 @@ const config = {
     grantPastAttendance: '/admin/attendance',
     awardMilestone: '/admin/milestone',
     viewResumes: '/admin/resumes',
-    manageUserAccess: '/admin/manage-user-access',
+    manageUserAccess: '/admin/access',
     store: {
       items: '/admin/store/items',
       pickup: '/admin/store/pickup',

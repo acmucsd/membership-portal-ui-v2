@@ -6,23 +6,11 @@ import manageUserAccess from '@/lib/managers/AdminUserManager';
 import { PermissionService, ValidationService } from '@/lib/services';
 import { UserAccessUpdates } from '@/lib/types/apiRequests';
 import { UserAccessType } from '@/lib/types/enums';
-import { getMessagesFromError } from '@/lib/utils';
-import { AxiosError } from 'axios';
+import { reportError } from '@/lib/utils';
 import { GetServerSideProps } from 'next';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BsPerson } from 'react-icons/bs';
-
-// This function needs to be moved to the util class after Sean's PR is merged
-function reportError(title: string, error: unknown) {
-  if (error instanceof AxiosError && error.response?.data?.error) {
-    showToast(title, getMessagesFromError(error.response.data.error).join('\n\n'));
-  } else if (error instanceof Error) {
-    showToast(title, error.message);
-  } else {
-    showToast(title, 'Unknown error');
-  }
-}
 
 const ManageUserAccessPage = () => {
   const {
