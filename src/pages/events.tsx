@@ -191,22 +191,24 @@ const EventsPage = ({ events, attendances, initialFilters, loggedOut }: EventsPa
           />
         </div>
 
-        <div className={styles.filterOption}>
-          <Dropdown
-            name="attendanceOptions"
-            ariaLabel="Filter events by attendance"
-            options={[
-              { value: 'any', label: 'Any Attendance' },
-              { value: 'attended', label: 'Attended' },
-              { value: 'not-attended', label: 'Not Attended' },
-            ]}
-            value={attendanceFilter}
-            onChange={v => {
-              setStates('attendance', v);
-              setPage(0);
-            }}
-          />
-        </div>
+        {loggedOut ? null : (
+          <div className={styles.filterOption}>
+            <Dropdown
+              name="attendanceOptions"
+              ariaLabel="Filter events by attendance"
+              options={[
+                { value: 'any', label: 'Any Attendance' },
+                { value: 'attended', label: 'Attended' },
+                { value: 'not-attended', label: 'Not Attended' },
+              ]}
+              value={attendanceFilter}
+              onChange={v => {
+                setStates('attendance', v);
+                setPage(0);
+              }}
+            />
+          </div>
+        )}
       </div>
       <EventDisplay events={displayedEvents} attendances={attendances} />
 
