@@ -38,7 +38,10 @@ const EventPage = ({ token, event, attended, feedback: initFeedback }: EventPage
         <Feedback feedback={feedback} />
       </div>
     );
-  } else if (started && token) {
+  } else if ((started || attended) && token) {
+    // People can check in before the event starts, and the check-in modal
+    // prompts them to add feedback. If they click "Add feedback" before the
+    // event starts, it should still let them give feedback
     feedbackForm = (
       <FeedbackForm event={event} attended={attended} authToken={token} onSubmit={setFeedback} />
     );
