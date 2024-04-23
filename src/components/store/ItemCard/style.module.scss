@@ -30,6 +30,15 @@
     img {
       object-fit: cover;
     }
+
+    .first {
+      transition: opacity 0.2s;
+      z-index: 1;
+    }
+  }
+
+  &:hover .imageWrapper .first {
+    opacity: 0;
   }
 
   .details {
