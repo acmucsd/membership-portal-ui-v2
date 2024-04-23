@@ -1,5 +1,7 @@
-import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
 import VerticalForm from '@/components/common/VerticalForm';
+import VerticalFormButton from '@/components/common/VerticalFormButton';
+import VerticalFormItem from '@/components/common/VerticalFormItem';
+import VerticalFormTitle from '@/components/common/VerticalFormTitle';
 import { config, showToast } from '@/lib';
 import { resendEmailVerification } from '@/lib/api/AuthAPI';
 import { AuthManager } from '@/lib/managers';
@@ -65,8 +67,8 @@ const Login = ({ destination, full }: LoginProps) => {
 
   return (
     <VerticalForm onEnterPress={handleSubmit(onSubmit)} style={{ height: full ? '' : 'auto' }}>
-      {full ? <SignInTitle text="Welcome to ACM!" /> : null}
-      <SignInFormItem
+      {full ? <VerticalFormTitle text="Welcome to ACM!" /> : null}
+      <VerticalFormItem
         icon={<AiOutlineMail />}
         element="input"
         name="email"
@@ -80,7 +82,7 @@ const Login = ({ destination, full }: LoginProps) => {
         })}
         error={errors.email}
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<VscLock />}
         name="password"
         element="input"
@@ -91,20 +93,25 @@ const Login = ({ destination, full }: LoginProps) => {
         })}
         error={errors.password}
       />
-      <SignInButton
+      <VerticalFormButton
         type="link"
         display="link"
         text="Forgot your password?"
         href="/forgot-password"
       />
-      <SignInButton
+      <VerticalFormButton
         type="button"
         display="button1"
         text="Sign In"
         onClick={handleSubmit(onSubmit)}
       />
       {full ? (
-        <SignInButton type="link" href={config.registerRoute} text="Sign Up" display="button2" />
+        <VerticalFormButton
+          type="link"
+          href={config.registerRoute}
+          text="Sign Up"
+          display="button2"
+        />
       ) : null}
     </VerticalForm>
   );
