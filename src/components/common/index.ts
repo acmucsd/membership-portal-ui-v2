@@ -13,3 +13,6 @@ export { default as SEO } from './SEO';
 export { default as Typography } from './Typography';
 export type { Variant } from './Typography';
 export { default as VerticalForm } from './VerticalForm';
+export { default as VerticalFormButton } from './VerticalFormButton';
+export { default as VerticalFormItem } from './VerticalFormItem';
+export { default as VerticalFormTitle } from './VerticalFormTitle';

@@ -1,5 +1,9 @@
-import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
-import { VerticalForm } from '@/components/common';
+import {
+  VerticalForm,
+  VerticalFormButton,
+  VerticalFormItem,
+  VerticalFormTitle,
+} from '@/components/common';
 import { config, showToast } from '@/lib';
 import { AuthManager } from '@/lib/managers';
 import { ValidationService } from '@/lib/services';
@@ -34,8 +38,8 @@ const ForgotPassword: NextPage = () => {
 
   return (
     <VerticalForm onEnterPress={handleSubmit(onSubmit)}>
-      <SignInTitle text="Forgot Password" />
-      <SignInFormItem
+      <VerticalFormTitle text="Forgot Password" />
+      <VerticalFormItem
         icon={<AiOutlineMail />}
         element="input"
         name="email"
@@ -49,7 +53,7 @@ const ForgotPassword: NextPage = () => {
         })}
         error={errors.email}
       />
-      <SignInButton
+      <VerticalFormButton
         type="button"
         display="button1"
         text="Submit"

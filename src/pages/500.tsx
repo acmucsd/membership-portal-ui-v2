@@ -1,5 +1,4 @@
-import { SignInButton } from '@/components/auth';
-import { VerticalForm } from '@/components/common';
+import { VerticalForm, VerticalFormButton } from '@/components/common';
 import Cat404 from '@/public/assets/graphics/cat404.png';
 import styles from '@/styles/pages/404.module.scss';
 import Image from 'next/image';
@@ -17,7 +16,7 @@ const InternalServerError = () => {
         >
           Logging out will usually fix your issue.
         </span>
-        <SignInButton type="link" display="button1" href="/logout" text="Logout" />
+        <VerticalFormButton type="link" display="button1" href="/logout" text="Logout" />
         <span
           style={{
             textAlign: 'center',

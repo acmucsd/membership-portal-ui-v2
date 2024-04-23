@@ -1,5 +1,4 @@
-import { SignInButton } from '@/components/auth';
-import { VerticalForm } from '@/components/common';
+import { VerticalForm, VerticalFormButton } from '@/components/common';
 import styles from '@/styles/pages/check-email.module.scss';
 import type { GetServerSideProps } from 'next';
 
@@ -21,7 +20,7 @@ const CheckEmail = ({ email }: CheckEmailProps) => {
         We&apos;ve sent an email to <b>{email}</b> to verify your email address and activate your
         account.
       </span>
-      <SignInButton
+      <VerticalFormButton
         type="link"
         display="button1"
         href="/login"
