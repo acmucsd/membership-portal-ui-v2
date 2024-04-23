@@ -22,7 +22,10 @@
   }
 
   .imageWrapper {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
     background-color: var(--theme-surface-1);
+    overflow: hidden;
     // Enforce a square image while allowing the card to be squished
     padding-bottom: 100%;
     position: relative;
@@ -31,14 +34,15 @@
       object-fit: cover;
     }
 
-    .first {
-      transition: opacity 0.2s;
+    .second {
+      clip-path: circle(0% at var(--mouse-x) var(--mouse-y));
+      transition: all 0.2s;
       z-index: 1;
     }
   }
 
-  &:hover .imageWrapper .first {
-    opacity: 0;
+  &:hover .imageWrapper .second {
+    clip-path: circle(160% at var(--mouse-x) var(--mouse-y));
   }
 
   .details {

@@ -38,12 +38,26 @@ const ItemCard = ({
   ...props
 }: PropsWithChildren<ItemCardProps>) => {
   const [first = NoImage, second = first] = images;
+
   return (
     <article className={`${styles.itemCard} ${className}`}>
       <Link href={href} className={styles.linkWrapper}>
-        <div className={styles.imageWrapper}>
-          <Image className={styles.first} src={first} alt={title} fill />
-          <Image src={second} alt="" aria-hidden fill />
+        <div
+          className={styles.imageWrapper}
+          onPointerMove={e => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            e.currentTarget.style.setProperty(
+              '--mouse-x',
+              `${((e.clientX - rect.left) / rect.width) * 100}%`
+            );
+            e.currentTarget.style.setProperty(
+              '--mouse-y',
+              `${((e.clientY - rect.top) / rect.width) * 100}%`
+            );
+          }}
+        >
+          <Image src={first} alt={title} fill />
+          <Image className={styles.second} src={second} alt="" aria-hidden fill />
         </div>
         <div className={styles.details}>
           <p className={styles.title}>{title}</p>
