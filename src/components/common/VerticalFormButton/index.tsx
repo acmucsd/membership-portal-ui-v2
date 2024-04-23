@@ -20,9 +20,9 @@ interface DisplayOptions {
   style?: CSSProperties;
 }
 
-type SignInButtonProps = (LinkInterface | ButtonInterface) & DisplayOptions;
+type VerticalFormButtonProps = (LinkInterface | ButtonInterface) & DisplayOptions;
 
-const SignInButton = (props: SignInButtonProps) => {
+const VerticalFormButton = (props: VerticalFormButtonProps) => {
   const { type, text, display, style = {} } = props;
 
   if (type === 'link') {
@@ -45,4 +45,4 @@ const SignInButton = (props: SignInButtonProps) => {
   return null;
 };
 
-export default SignInButton;
+export default VerticalFormButton;

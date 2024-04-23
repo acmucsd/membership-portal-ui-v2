@@ -1,5 +1,9 @@
-import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
-import { VerticalForm } from '@/components/common';
+import {
+  VerticalForm,
+  VerticalFormButton,
+  VerticalFormItem,
+  VerticalFormTitle,
+} from '@/components/common';
 import { config } from '@/lib';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService, ValidationService } from '@/lib/services';
@@ -26,8 +30,11 @@ const AwardPointsPage: NextPage = () => {
 
   return (
     <VerticalForm onEnterPress={handleSubmit(onSubmit)}>
-      <SignInTitle text="Award Bonus Points" description="Grant Bonus Points to a Specific User" />
-      <SignInFormItem
+      <VerticalFormTitle
+        text="Award Bonus Points"
+        description="Grant Bonus Points to a Specific User"
+      />
+      <VerticalFormItem
         icon={<AiOutlineMail />}
         element="input"
         name="email"
@@ -41,7 +48,7 @@ const AwardPointsPage: NextPage = () => {
         })}
         error={errors.email}
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<AiOutlineMail />}
         element="input"
         name="description"
@@ -52,7 +59,7 @@ const AwardPointsPage: NextPage = () => {
         })}
         error={errors.description}
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<VscLock />}
         name="points"
         element="input"
@@ -63,7 +70,7 @@ const AwardPointsPage: NextPage = () => {
         })}
         error={errors.points}
       />
-      <SignInButton
+      <VerticalFormButton
         type="button"
         display="button1"
         text="Award Points"

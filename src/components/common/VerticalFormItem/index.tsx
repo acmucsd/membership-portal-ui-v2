@@ -20,9 +20,9 @@ interface FormItemProps {
   inputHeight?: string;
 }
 
-type SignInFormProps = FormItemProps & (InputTypeProps | SelectTypeProps);
+type VerticalFormProps = FormItemProps & (InputTypeProps | SelectTypeProps);
 
-const SignInFormItem = (props: SignInFormProps) => {
+const VerticalFormItem = (props: VerticalFormProps) => {
   const { icon, placeholder, formRegister, element, error, inputHeight } = props;
 
   if (element === 'input') {
@@ -74,4 +74,4 @@ const SignInFormItem = (props: SignInFormProps) => {
   return null;
 };
 
-export default SignInFormItem;
+export default VerticalFormItem;
