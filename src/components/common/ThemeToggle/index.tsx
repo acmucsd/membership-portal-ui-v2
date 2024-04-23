@@ -29,7 +29,7 @@ const ThemeToggle = () => {
     // This affects the color of the safe zone on iPhone 15.
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor && resolvedTheme === 'dark') {
-      metaThemeColor.setAttribute('content', '#37393e');
+      metaThemeColor.setAttribute('content', '#25262b');
     } else if (metaThemeColor) {
       metaThemeColor.setAttribute('content', '#fff');
     }

@@ -74,6 +74,7 @@ const EventCard = ({
       <Link
         href={`${config.eventsRoute}/${uuid}`}
         data-community={community}
+        data-disabled={borderless}
         className={`${styles.container} ${borderless ? '' : styles.bordered} ${className || ''}`}
         onClick={e => {
           e.preventDefault();
