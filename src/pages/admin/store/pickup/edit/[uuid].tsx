@@ -4,12 +4,10 @@ import AdminPickupEventForm from '@/components/admin/event/AdminPickupEvent/Admi
 import { Navbar } from '@/components/store';
 import { config } from '@/lib';
 import { EventAPI, StoreAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicEvent, PublicOrderPickupEvent } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/StoreItemEditPage.module.scss';
-import { GetServerSideProps } from 'next';
 
 interface EditPickupEventProps {
   user: PrivateProfile;
@@ -38,9 +36,8 @@ const EditPickupEventPage = ({
 
 export default EditPickupEventPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ params, authToken: token }) => {
   const uuid = params?.uuid as string;
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   const [futureEvents, pickupEvent] = await Promise.all([
     EventAPI.getAllFutureEvents(),
     StoreAPI.getPickupEvent(token, uuid),

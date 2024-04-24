@@ -3,7 +3,7 @@ import { CheckInModal, EventCarousel } from '@/components/events';
 import { UserProgress } from '@/components/profile/UserProgress';
 import { config, showToast } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import { attendEvent } from '@/lib/managers/EventManager';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PrivateProfile, PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
@@ -12,7 +12,6 @@ import RaccoonGraphic from '@/public/assets/graphics/portal/raccoon-hero.svg';
 import WavesGraphic from '@/public/assets/graphics/portal/waves.svg';
 import CheckMark from '@/public/assets/icons/check-mark.svg';
 import styles from '@/styles/pages/Home.module.scss';
-import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -173,9 +172,12 @@ const PortalHomePage = ({
 
 export default PortalHomePage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
-  const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({
+  req,
+  res,
+  query,
+  authToken,
+}) => {
   let checkInResponse = null;
   if (typeof query.code === 'string') {
     // If a check-in code is specified, first check in to that event.

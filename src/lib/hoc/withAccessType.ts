@@ -12,12 +12,39 @@ import type {
 } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 
-export type GetServerSidePropsWithUser<
+/**
+ * Tries to read the user object from the cookie. If the user object doesn't
+ * exist or is invalid, then it will try to fetch a new one with the auth token.
+ */
+export async function getCurrentUser(
+  { req, res }: Pick<GetServerSidePropsContext, 'req' | 'res'>,
+  authToken: string
+): Promise<PrivateProfile> {
+  const userCookie = CookieService.getServerCookie(CookieType.USER, { req, res });
+  let user: PrivateProfile | undefined;
+
+  if (userCookie) {
+    // Standard flow will use the existing user cookie as src data unless it's corrupted or missing keys, then try to refresh user otherwise redirect on fail
+    try {
+      user = JSON.parse(userCookie);
+    } catch {
+      user = undefined;
+    }
+  }
+
+  if (!user?.accessType) {
+    user = await UserAPI.getCurrentUserAndRefreshCookie(authToken, { req, res });
+  }
+
+  return user;
+}
+
+export type GetServerSidePropsWithAuth<
   Props extends { [key: string]: any } = { [key: string]: any },
   Params extends ParsedUrlQuery = ParsedUrlQuery,
   Preview extends PreviewData = PreviewData
 > = (
-  context: GetServerSidePropsContext<Params, Preview> & { user: PrivateProfile }
+  context: GetServerSidePropsContext<Params, Preview> & { user: PrivateProfile; authToken: string }
 ) => Promise<GetServerSidePropsResult<Props>>;
 
 interface AccessTypeOptions {
@@ -35,14 +62,13 @@ interface AccessTypeOptions {
  * @returns
  */
 export default function withAccessType(
-  gssp: GetServerSidePropsWithUser,
+  gssp: GetServerSidePropsWithAuth,
   validAccessTypes: UserAccessType[],
   { redirectTo = config.loginRoute }: AccessTypeOptions = {}
 ): GetServerSideProps {
   // Generate a new getServerSideProps function by taking the return value of the original function and appending the user prop onto it if the user cookie exists, otherwise force user to login page
   const modified: GetServerSideProps = async (context: GetServerSidePropsContext) => {
     const { req, res } = context;
-    const userCookie = CookieService.getServerCookie(CookieType.USER, { req, res });
     const authTokenCookie = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
     const { homeRoute, loginRoute } = config;
@@ -73,23 +99,8 @@ export default function withAccessType(
       return loginRedirect;
     }
 
-    let user: PrivateProfile | undefined;
-    let userAccessLevel: UserAccessType | undefined;
-
-    if (userCookie) {
-      // Standard flow will use the existing user cookie as src data unless it's corrupted or missing keys, then try to refresh user otherwise redirect on fail
-      try {
-        user = JSON.parse(userCookie);
-        userAccessLevel = user?.accessType;
-      } catch {
-        user = undefined;
-      }
-    }
-
-    if (!user || !userAccessLevel) {
-      user = await UserAPI.getCurrentUserAndRefreshCookie(authTokenCookie, { req, res });
-      userAccessLevel = user.accessType;
-    }
+    const user = await getCurrentUser({ req, res }, authTokenCookie);
+    const userAccessLevel = user.accessType;
 
     // This block should be impossible to hit assuming the portal API doesn't go down
     if (!userAccessLevel) throw new Error('User access level is not defined');
@@ -98,7 +109,7 @@ export default function withAccessType(
     if (!validAccessTypes.includes(userAccessLevel)) return missingAccessRedirect;
 
     // If we haven't short-circuited, user has valid access. Show the page and add the user prop.
-    const originalReturnValue = await gssp({ ...context, user });
+    const originalReturnValue = await gssp({ ...context, user, authToken: authTokenCookie });
     // Insert the user object to the original return value if it doesn't exist already
     if ('props' in originalReturnValue) {
       const existingProps = await Promise.resolve(originalReturnValue.props);

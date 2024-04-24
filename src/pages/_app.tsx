@@ -29,7 +29,12 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
           font-family: ${dmSans.style.fontFamily}, sans-serif;
         }
       `}</style>
-      <SEO title={title} description={pageProps.description} />
+      <SEO
+        title={title}
+        description={pageProps.description}
+        previewImage={pageProps.previewImage}
+        bigPreviewImage={pageProps.bigPreviewImage}
+      />
       <ThemeProvider>
         <ToastContainer />
         <PageLayout accessType={pageProps?.user?.accessType}>

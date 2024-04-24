@@ -11,13 +11,12 @@ import { Button, Typography } from '@/components/common';
 import { EventCard } from '@/components/events';
 import { StoreAPI } from '@/lib/api';
 import config from '@/lib/config';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { PermissionService } from '@/lib/services';
 import { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
-import { CookieType, OrderPickupEventStatus } from '@/lib/types/enums';
+import { OrderPickupEventStatus } from '@/lib/types/enums';
 import { formatEventDate } from '@/lib/utils';
 import styles from '@/styles/pages/StorePickupEventDetailsPage.module.scss';
-import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import router from 'next/router';
 import { useState } from 'react';
@@ -121,9 +120,8 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
 
 export default PickupEventDetailsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ params, authToken: token }) => {
   const uuid = params?.uuid as string;
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   try {
     const pickupEvent = await StoreAPI.getPickupEvent(token, uuid);
     if (pickupEvent.orders)

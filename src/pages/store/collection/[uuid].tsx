@@ -2,12 +2,11 @@ import { Typography } from '@/components/common';
 import { CreateButton, HiddenIcon, ItemCard, Navbar, StoreEditButton } from '@/components/store';
 import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/StoreCollectionPage.module.scss';
-import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useMemo } from 'react';
 
@@ -90,16 +89,21 @@ const CollectionsPage = ({
 
 export default CollectionsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({
+  params,
+  req,
+  res,
+  authToken,
+}) => {
   const uuid = params?.uuid as string;
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   const preview = CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res });
   try {
-    const collection = await StoreAPI.getCollection(token, uuid);
+    const collection = await StoreAPI.getCollection(authToken, uuid);
     return {
       props: {
         title: collection.title,
         description: collection.description,
+        previewImage: getDefaultMerchCollectionPhoto(collection),
         uuid,
         collection,
         previewPublic: preview === 'member',

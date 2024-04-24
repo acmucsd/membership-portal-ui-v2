@@ -2,12 +2,10 @@ import { ItemDetailsForm } from '@/components/admin/store';
 import { Navbar } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import config from '@/lib/config';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection, PublicMerchItem } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/StoreItemEditPage.module.scss';
-import { GetServerSideProps } from 'next';
 
 interface ItemEditPageProps {
   user: PrivateProfile;
@@ -26,10 +24,8 @@ const ItemEditPage = ({ user: { credits }, token, item, collections }: ItemEditP
 
 export default ItemEditPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ params, authToken: token }) => {
   const uuid = params?.uuid as string;
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-
   try {
     const [item, collections] = await Promise.all([
       StoreAPI.getItem(token, uuid),

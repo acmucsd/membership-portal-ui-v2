@@ -3,15 +3,13 @@ import { DIVIDER } from '@/components/common/Dropdown';
 import { LeaderboardRow, TopThreeCard } from '@/components/leaderboard';
 import { config } from '@/lib';
 import { LeaderboardAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { PermissionService } from '@/lib/services';
 import { SlidingLeaderboardQueryParams } from '@/lib/types/apiRequests';
 import { PrivateProfile, PublicProfile } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
 import { getDateRange, getEndYear, getProfilePicture, getUserRank, getYears } from '@/lib/utils';
 import MyPositionIcon from '@/public/assets/icons/my-position-icon.svg';
 import styles from '@/styles/pages/leaderboard.module.scss';
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
@@ -171,12 +169,10 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
 
 export default LeaderboardPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
-  const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ query, authToken }) => {
   const sort = typeof query.sort === 'string' ? query.sort : getEndYear() - 1;
 
-  const leaderboard = await LeaderboardAPI.getLeaderboard(AUTH_TOKEN, getLeaderboardRange(sort));
+  const leaderboard = await LeaderboardAPI.getLeaderboard(authToken, getLeaderboardRange(sort));
 
   return {
     props: { title: 'Leaderboard', sort, leaderboard },

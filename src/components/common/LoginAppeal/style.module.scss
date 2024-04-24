@@ -1,0 +1,56 @@
+@use 'src/styles/vars.scss' as vars;
+
+.wrapper {
+  background-color: var(--theme-elevated-background);
+  border: 1px solid var(--theme-elevated-stroke);
+  border-radius: 0.5rem;
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+
+  @media (max-width: vars.$breakpoint-md) {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .aside {
+    display: flex;
+    flex-basis: 30rem;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    margin-right: auto;
+
+    @media (max-width: vars.$breakpoint-md) {
+      flex-basis: auto;
+      margin: 0 auto;
+      max-width: 30rem;
+    }
+  }
+
+  .line {
+    border-left: 1px solid var(--theme-elevated-stroke);
+    @media (max-width: vars.$breakpoint-md) {
+      border-top: 1px solid var(--theme-elevated-stroke);
+      margin: 0 auto;
+      width: 10rem;
+    }
+  }
+
+  .login {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 0 auto;
+    max-width: 300px;
+    width: 100%;
+
+    .signUp {
+      color: var(--theme-blue-text-button);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
