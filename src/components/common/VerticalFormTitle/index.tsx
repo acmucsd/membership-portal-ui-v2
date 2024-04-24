@@ -1,11 +1,11 @@
 import styles from './style.module.scss';
 
-interface SignInTitleProps {
+interface VerticalFormTitleProps {
   text: string;
   description?: string;
 }
 
-const SignInTitle = ({ text, description }: SignInTitleProps) => {
+const VerticalFormTitle = ({ text, description }: VerticalFormTitleProps) => {
   return (
     <>
       <h1 className={styles.title}>{text}</h1>
@@ -14,4 +14,4 @@ const SignInTitle = ({ text, description }: SignInTitleProps) => {
   );
 };
 
-export default SignInTitle;
+export default VerticalFormTitle;

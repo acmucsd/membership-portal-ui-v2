@@ -1,11 +1,11 @@
-import { Dropdown, PaginationControls, Typography } from '@/components/common';
+import { Dropdown, LoginAppeal, PaginationControls, Typography } from '@/components/common';
 import { DIVIDER } from '@/components/common/Dropdown';
 import { EventDisplay } from '@/components/events';
 import { config } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
+import { getCurrentUser } from '@/lib/hoc/withAccessType';
 import useQueryState from '@/lib/hooks/useQueryState';
-import { CookieService, PermissionService } from '@/lib/services';
+import { CookieService } from '@/lib/services';
 import type { PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
 import {
   FilterEventOptions,
@@ -16,13 +16,14 @@ import {
 import { CookieType } from '@/lib/types/enums';
 import { formatSearch, getDateRange, getYears } from '@/lib/utils';
 import styles from '@/styles/pages/events.module.scss';
-import type { GetServerSideProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { useMemo, useState } from 'react';
 
 interface EventsPageProps {
   events: PublicEvent[];
   attendances: PublicAttendance[];
   initialFilters: FilterEventOptions;
+  loggedOut: boolean;
 }
 
 interface FilterOptions {
@@ -76,7 +77,7 @@ const DEFAULT_FILTER_STATE = {
 
 const ROWS_PER_PAGE = 25;
 
-const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) => {
+const EventsPage = ({ events, attendances, initialFilters, loggedOut }: EventsPageProps) => {
   const [page, setPage] = useState(0);
   const years = useMemo(getYears, []);
 
@@ -131,6 +132,12 @@ const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) =>
   return (
     <div className={styles.page}>
       <Typography variant="headline/heavy/small">Events</Typography>
+      {loggedOut ? (
+        <LoginAppeal>
+          Create an account to check into events, give feedback, earn points, and join a community
+          of thousands.
+        </LoginAppeal>
+      ) : null}
       <div className={styles.controls}>
         <input
           className={styles.search}
@@ -184,22 +191,24 @@ const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) =>
           />
         </div>
 
-        <div className={styles.filterOption}>
-          <Dropdown
-            name="attendanceOptions"
-            ariaLabel="Filter events by attendance"
-            options={[
-              { value: 'any', label: 'Any Attendance' },
-              { value: 'attended', label: 'Attended' },
-              { value: 'not-attended', label: 'Not Attended' },
-            ]}
-            value={attendanceFilter}
-            onChange={v => {
-              setStates('attendance', v);
-              setPage(0);
-            }}
-          />
-        </div>
+        {loggedOut ? null : (
+          <div className={styles.filterOption}>
+            <Dropdown
+              name="attendanceOptions"
+              ariaLabel="Filter events by attendance"
+              options={[
+                { value: 'any', label: 'Any Attendance' },
+                { value: 'attended', label: 'Attended' },
+                { value: 'not-attended', label: 'Not Attended' },
+              ]}
+              value={attendanceFilter}
+              onChange={v => {
+                setStates('attendance', v);
+                setPage(0);
+              }}
+            />
+          </div>
+        )}
       </div>
       <EventDisplay events={displayedEvents} attendances={attendances} />
 
@@ -216,11 +225,13 @@ const EventsPage = ({ events, attendances, initialFilters }: EventsPageProps) =>
 
 export default EventsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
-  const authToken = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
+  const authToken: string | null =
+    CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res }) ?? null;
+  const user = authToken !== null ? await getCurrentUser({ req, res }, authToken) : null;
 
   const getEventsPromise = EventAPI.getAllEvents();
-  const getAttendancesPromise = UserAPI.getAttendancesForCurrentUser(authToken);
+  const getAttendancesPromise = authToken ? UserAPI.getAttendancesForCurrentUser(authToken) : [];
 
   const [events, attendances] = await Promise.all([getEventsPromise, getAttendancesPromise]);
 
@@ -233,10 +244,15 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) =
 
   const initialFilters = { community, date, attendance, search };
 
-  return { props: { title: 'Events', events, attendances, initialFilters } };
+  return {
+    props: {
+      title: 'Events',
+      events,
+      attendances,
+      initialFilters,
+      loggedOut: authToken === null,
+      // For navbar
+      user,
+    },
+  };
 };
-
-export const getServerSideProps = withAccessType(
-  getServerSidePropsFunc,
-  PermissionService.loggedInUser
-);

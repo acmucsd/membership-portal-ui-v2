@@ -1,16 +1,18 @@
-import { Typography } from '@/components/common';
+import { LoginAppeal, Typography } from '@/components/common';
 import EventDetail from '@/components/events/EventDetail';
 import { Feedback, FeedbackForm } from '@/components/feedback';
 import { EventAPI, FeedbackAPI, UserAPI } from '@/lib/api';
-import withAccessType, { GetServerSidePropsWithUser } from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
+import { getCurrentUser } from '@/lib/hoc/withAccessType';
+import { CookieService } from '@/lib/services';
 import type { PublicEvent, PublicFeedback } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import { formatEventDate } from '@/lib/utils';
 import styles from '@/styles/pages/event.module.scss';
+import { GetServerSideProps } from 'next';
 import { useMemo, useState } from 'react';
 
 interface EventPageProps {
-  token: string;
+  token: string | null;
   event: PublicEvent;
   attended: boolean;
   feedback: PublicFeedback | null;
@@ -20,7 +22,14 @@ const EventPage = ({ token, event, attended, feedback: initFeedback }: EventPage
   const [feedback, setFeedback] = useState(initFeedback);
 
   let feedbackForm = null;
-  if (feedback) {
+  if (!token) {
+    feedbackForm = (
+      <LoginAppeal>
+        Create an account to check into events, give feedback, earn points, and join a community of
+        thousands.
+      </LoginAppeal>
+    );
+  } else if (feedback) {
     feedbackForm = (
       <div className={styles.submittedFeedback}>
         <Typography variant="h2/bold" component="h2">
@@ -29,7 +38,10 @@ const EventPage = ({ token, event, attended, feedback: initFeedback }: EventPage
         <Feedback feedback={feedback} />
       </div>
     );
-  } else if (started) {
+  } else if ((started || attended) && token) {
+    // People can check in before the event starts, and the check-in modal
+    // prompts them to add feedback. If they click "Add feedback" before the
+    // event starts, it should still let them give feedback
     feedbackForm = (
       <FeedbackForm event={event} attended={attended} authToken={token} onSubmit={setFeedback} />
     );
@@ -45,31 +57,36 @@ const EventPage = ({ token, event, attended, feedback: initFeedback }: EventPage
 
 export default EventPage;
 
-const getServerSidePropsFunc: GetServerSidePropsWithUser = async ({ params, req, res, user }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params, req, res }) => {
   const uuid = params?.uuid as string;
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+
+  const token: string | null =
+    CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res }) ?? null;
+  const user = token !== null ? await getCurrentUser({ req, res }, token) : null;
 
   try {
     const [event, attendances, [feedback = null]] = await Promise.all([
       EventAPI.getEvent(uuid, token),
-      UserAPI.getAttendancesForCurrentUser(token),
-      FeedbackAPI.getFeedback(token, { user: user.uuid, event: uuid }),
+      token ? UserAPI.getAttendancesForCurrentUser(token) : [],
+      user ? FeedbackAPI.getFeedback(token, { user: user.uuid, event: uuid }) : [],
     ]);
     return {
       props: {
         title: event.title,
+        description: `${formatEventDate(event.start, event.end, true)} at ${event.location}\n\n${
+          event.description
+        }`,
+        previewImage: event.cover,
+        bigPreviewImage: true,
         token,
         event,
         attended: attendances.some(attendance => attendance.event.uuid === uuid),
         feedback,
+        // For navbar
+        user,
       },
     };
   } catch {
     return { notFound: true };
   }
 };
-
-export const getServerSideProps = withAccessType(
-  getServerSidePropsFunc,
-  PermissionService.loggedInUser
-);

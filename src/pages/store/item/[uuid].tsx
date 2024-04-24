@@ -2,7 +2,7 @@ import { Typography } from '@/components/common';
 import { CartOptionsGroup, ItemHeader, Navbar, SizeSelector } from '@/components/store';
 import { config, showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import { CartService, CookieService, PermissionService } from '@/lib/services';
 import {
   PrivateProfile,
@@ -10,9 +10,9 @@ import {
   PublicMerchItemWithPurchaseLimits,
 } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import styles from '@/styles/pages/StoreItemPage.module.scss';
-import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useId, useMemo, useState } from 'react';
@@ -130,17 +130,22 @@ const StoreItemPage = ({
 
 export default StoreItemPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ params, req, res }) => {
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({
+  params,
+  req,
+  res,
+  authToken,
+}) => {
   const uuid = params?.uuid as string;
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
   const preview = CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res });
 
   try {
-    const item = await StoreAPI.getItem(token, uuid);
+    const item = await StoreAPI.getItem(authToken, uuid);
     return {
       props: {
         title: item.itemName,
         description: item.description,
+        previewImage: getDefaultMerchItemPhoto(item),
         uuid,
         item,
         previewPublic: preview === 'member',

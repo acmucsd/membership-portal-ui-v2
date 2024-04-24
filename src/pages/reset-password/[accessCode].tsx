@@ -1,5 +1,9 @@
-import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
-import { VerticalForm } from '@/components/common';
+import {
+  VerticalForm,
+  VerticalFormButton,
+  VerticalFormItem,
+  VerticalFormTitle,
+} from '@/components/common';
 import { config, showToast } from '@/lib';
 import { AuthManager } from '@/lib/managers';
 import { ValidationService } from '@/lib/services';
@@ -47,8 +51,8 @@ const ResetPasswordPage = ({ code }: ResetPasswordProps) => {
 
   return (
     <VerticalForm onEnterPress={handleSubmit(onSubmit)}>
-      <SignInTitle text="Reset Password" />
-      <SignInFormItem
+      <VerticalFormTitle text="Reset Password" />
+      <VerticalFormItem
         icon={<VscLock />}
         type="password"
         element="input"
@@ -62,7 +66,7 @@ const ResetPasswordPage = ({ code }: ResetPasswordProps) => {
         })}
         error={errors.newPassword}
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<VscLock />}
         type="password"
         element="input"
@@ -82,7 +86,7 @@ const ResetPasswordPage = ({ code }: ResetPasswordProps) => {
         })}
         error={errors.confirmPassword}
       />
-      <SignInButton
+      <VerticalFormButton
         type="button"
         display="button1"
         text="Submit"

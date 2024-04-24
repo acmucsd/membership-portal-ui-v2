@@ -11,7 +11,7 @@ import { config, showToast } from '@/lib';
 import { AuthAPI, ResumeAPI, UserAPI } from '@/lib/api';
 import majors from '@/lib/constants/majors';
 import socialMediaTypes from '@/lib/constants/socialMediaTypes';
-import withAccessType from '@/lib/hoc/withAccessType';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { ExistingSocialMedia, SocialMedia } from '@/lib/types/apiRequests';
 import { PrivateProfile } from '@/lib/types/apiResponses';
@@ -20,7 +20,6 @@ import { capitalize, fixUrl, getProfilePicture, reportError } from '@/lib/utils'
 import DownloadIcon from '@/public/assets/icons/download-icon.svg';
 import DropdownIcon from '@/public/assets/icons/dropdown-arrow-1.svg';
 import styles from '@/styles/pages/EditProfile.module.scss';
-import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { FormEvent, useEffect, useId, useMemo, useState } from 'react';
 
@@ -590,12 +589,15 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
 
 export default EditProfilePage;
 
-const getServerSidePropsFunc: GetServerSideProps<EditProfileProps> = async ({ req, res }) => {
-  const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+const getServerSidePropsFunc: GetServerSidePropsWithAuth<EditProfileProps> = async ({
+  req,
+  res,
+  authToken,
+}) => {
   // Ensure `user` is up-to-date
-  const user = await UserAPI.getFreshCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
+  const user = await UserAPI.getFreshCurrentUserAndRefreshCookie(authToken, { req, res });
 
-  return { props: { title: 'Edit Profile', authToken: AUTH_TOKEN, user } };
+  return { props: { title: 'Edit Profile', authToken, user } };
 };
 
 export const getServerSideProps = withAccessType(

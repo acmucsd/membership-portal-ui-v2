@@ -7,5 +7,6 @@
   height: calc(vars.$min-content-height - 4rem);
   justify-content: center;
   margin: 0 auto;
-  width: 300px;
+  max-width: 300px;
+  width: 100%;
 }
