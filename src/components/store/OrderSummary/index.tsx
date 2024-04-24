@@ -30,7 +30,11 @@ const isOrderActionable = (status: OrderStatus, pickupEvent: PublicOrderPickupEv
   const now = new Date();
   const eventStart = new Date(pickupEvent.start);
   eventStart.setDate(eventStart.getDate() - 2);
-  if (now > eventStart) {
+  if (
+    now > eventStart &&
+    status !== OrderStatus.PICKUP_MISSED &&
+    status !== OrderStatus.PICKUP_CANCELLED
+  ) {
     return false;
   }
   return true;
