@@ -36,7 +36,7 @@
 
     .second {
       clip-path: circle(0% at var(--mouse-x) var(--mouse-y));
-      transition: all 0.2s;
+      transition: clip-path 0.2s;
       z-index: 1;
     }
   }

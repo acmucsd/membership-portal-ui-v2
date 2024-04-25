@@ -6,6 +6,7 @@ import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccess
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
+import { getDefaultMerchCollectionPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/StoreCollectionPage.module.scss';
 import Image from 'next/image';
 import { useMemo } from 'react';
