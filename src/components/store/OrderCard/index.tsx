@@ -48,8 +48,6 @@ const OrderCard = ({ order, futurePickupEvents }: OrderCardProps) => {
   const orderOpen = open && orderData !== null;
   const [statusName, setStatusName] = useState<string>(orderStatusName[orderStatus]);
 
-  // console.log(new Date(pickupEvent.start).getFullYear());
-
   useEffect(() => {
     if (open && orderData === null) {
       // Only run if we haven't fetched the data yet (orderData === null)
