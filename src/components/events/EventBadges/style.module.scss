@@ -34,11 +34,10 @@
       }
 
       &::before {
-        animation: pulse2 2s ease-in-out reverse infinite;
+        animation: pulse2 2s ease-out reverse infinite;
         border: 2px solid vars.$danger-1;
         border-radius: 5px;
         content: '';
-        opacity: 0;
         position: absolute;
 
         @keyframes pulse2 {
