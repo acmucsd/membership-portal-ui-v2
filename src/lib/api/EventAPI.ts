@@ -20,10 +20,11 @@ import axios from 'axios';
 /**
  * Get a single event by UUID
  * @param uuid Search query uuid
- * @param token Bearer token
+ * @param token Bearer token. Optional, but should be provided if you need to
+ * see attendance codes.
  * @returns Event info
  */
-export const getEvent = async (uuid: UUID, token: string): Promise<PublicEvent> => {
+export const getEvent = async (uuid: UUID, token?: string): Promise<PublicEvent> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.event.event}/${uuid}`;
 
   const response = await axios.get<GetOneEventResponse>(requestUrl, {

@@ -1,0 +1,5 @@
+@use 'src/styles/vars.scss' as vars;
+
+:export {
+  #{defaultThemeColorHex}: vars.$blue-5;
+}

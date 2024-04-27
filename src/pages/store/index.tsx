@@ -10,13 +10,12 @@ import {
 } from '@/components/store';
 import { config, showToast } from '@/lib';
 import { StoreAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
 import { getDefaultMerchCollectionPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/StoreHomePage.module.scss';
-import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -142,11 +141,15 @@ const StoreHomePage = ({
 
 export default StoreHomePage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res, query }) => {
-  const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({
+  req,
+  res,
+  query,
+  authToken,
+}) => {
   const preview = CookieService.getServerCookie(CookieType.USER_PREVIEW_ENABLED, { req, res });
 
-  const collections = await StoreAPI.getAllCollections(AUTH_TOKEN);
+  const collections = await StoreAPI.getAllCollections(authToken);
 
   return {
     props: {

@@ -1,17 +1,15 @@
 import { config } from '@/lib';
 import { UserAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
-import { CookieType } from '@/lib/types/enums';
-import type { GetServerSideProps, NextPage } from 'next';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { PermissionService } from '@/lib/services';
+import type { NextPage } from 'next';
 
 const UserProfilePage: NextPage = () => null;
 
 export default UserProfilePage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-  const user = await UserAPI.getCurrentUserAndRefreshCookie(token, { req, res });
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ req, res, authToken }) => {
+  const user = await UserAPI.getCurrentUserAndRefreshCookie(authToken, { req, res });
 
   return {
     redirect: {

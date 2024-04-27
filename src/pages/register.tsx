@@ -1,5 +1,9 @@
-import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
-import { VerticalForm } from '@/components/common';
+import {
+  VerticalForm,
+  VerticalFormButton,
+  VerticalFormItem,
+  VerticalFormTitle,
+} from '@/components/common';
 import majors from '@/lib/constants/majors';
 import { AuthManager } from '@/lib/managers';
 import { ValidationService } from '@/lib/services';
@@ -54,8 +58,8 @@ const RegisterPage: NextPage = () => {
       }}
       onEnterPress={handleSubmit(onSubmit)}
     >
-      <SignInTitle text="Become a Member" />
-      <SignInFormItem
+      <VerticalFormTitle text="Become a Member" />
+      <VerticalFormItem
         icon={<BsPerson />}
         name="firstName"
         type="text"
@@ -67,7 +71,7 @@ const RegisterPage: NextPage = () => {
         })}
         inputHeight="1.5rem"
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<BsPerson />}
         name="lastName"
         type="text"
@@ -79,7 +83,7 @@ const RegisterPage: NextPage = () => {
         })}
         inputHeight="1.5rem"
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<AiOutlineMail />}
         name="email"
         type="email"
@@ -94,7 +98,7 @@ const RegisterPage: NextPage = () => {
         })}
         inputHeight="1.5rem"
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<VscLock />}
         name="password"
         type="password"
@@ -109,7 +113,7 @@ const RegisterPage: NextPage = () => {
         })}
         inputHeight="1.5rem"
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<VscLock />}
         name="confirmPassword"
         type="password"
@@ -129,7 +133,7 @@ const RegisterPage: NextPage = () => {
         })}
         inputHeight="1.5rem"
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<IoBookOutline />}
         name="major"
         options={majors}
@@ -138,7 +142,7 @@ const RegisterPage: NextPage = () => {
         formRegister={register('major')}
         inputHeight="1.25rem"
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<SlGraduation />}
         name="major"
         element="select"
@@ -149,13 +153,13 @@ const RegisterPage: NextPage = () => {
         })}
         inputHeight="1.25rem"
       />
-      <SignInButton
+      <VerticalFormButton
         type="button"
         display="button1"
         text="Sign Up"
         onClick={handleSubmit(onSubmit)}
       />
-      <SignInButton
+      <VerticalFormButton
         type="link"
         display="link"
         style={{

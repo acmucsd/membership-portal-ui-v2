@@ -17,6 +17,43 @@
       background-color: vars.$danger-1;
       border-color: vars.$danger-1;
       color: #fff;
+      position: relative;
+
+      > span {
+        animation: pulse 1s ease-in-out infinite alternate;
+
+        @keyframes pulse {
+          0% {
+            opacity: 0;
+          }
+
+          100% {
+            opacity: 1;
+          }
+        }
+      }
+
+      &::before {
+        animation: pulse2 2s ease-out reverse infinite;
+        border: 2px solid vars.$danger-1;
+        border-radius: 5px;
+        content: '';
+        position: absolute;
+
+        @keyframes pulse2 {
+          0% {
+            filter: blur(2px);
+            inset: -0.75rem;
+            opacity: 0;
+          }
+
+          100% {
+            filter: blur(0);
+            inset: 0;
+            opacity: 1;
+          }
+        }
+      }
     }
 
     &.badgeGeneral {

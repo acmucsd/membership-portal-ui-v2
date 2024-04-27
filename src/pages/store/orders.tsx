@@ -1,12 +1,10 @@
 import { Dropdown, Typography } from '@/components/common';
 import { Navbar, OrdersDisplay } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicOrder, PublicOrderPickupEvent } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/StoreOrders.module.scss';
-import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 
 interface OrderPageProps {
@@ -68,11 +66,9 @@ const StoreOrderPage = ({ user: { credits }, orders, futurePickupEvents }: Order
 
 export default StoreOrderPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
-  const AUTH_TOKEN = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
-
-  const ordersPromise = StoreAPI.getAllOrders(AUTH_TOKEN);
-  const futurePickupEventsPromise = StoreAPI.getFutureOrderPickupEvents(AUTH_TOKEN);
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ authToken }) => {
+  const ordersPromise = StoreAPI.getAllOrders(authToken);
+  const futurePickupEventsPromise = StoreAPI.getFutureOrderPickupEvents(authToken);
 
   const [orders, futurePickupEvents] = await Promise.all([
     ordersPromise,

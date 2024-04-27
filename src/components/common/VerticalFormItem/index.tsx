@@ -5,7 +5,6 @@ import styles from './style.module.scss';
 interface InputTypeProps {
   element: 'input';
   type: HTMLInputTypeAttribute;
-  placeholder: string;
 }
 
 interface SelectTypeProps {
@@ -15,18 +14,19 @@ interface SelectTypeProps {
 interface FormItemProps {
   icon: ReactNode;
   name: string;
+  placeholder: string;
   formRegister: UseFormRegisterReturn;
   error: any;
   inputHeight?: string;
 }
 
-type SignInFormProps = FormItemProps & (InputTypeProps | SelectTypeProps);
+type VerticalFormProps = FormItemProps & (InputTypeProps | SelectTypeProps);
 
-const SignInFormItem = (props: SignInFormProps) => {
-  const { icon, formRegister, element, error, inputHeight } = props;
+const VerticalFormItem = (props: VerticalFormProps) => {
+  const { icon, placeholder, formRegister, element, error, inputHeight } = props;
 
   if (element === 'input') {
-    const { type, placeholder } = props;
+    const { type } = props;
     return (
       <div className={styles.formItem}>
         <div className={styles.formInput}>
@@ -74,4 +74,4 @@ const SignInFormItem = (props: SignInFormProps) => {
   return null;
 };
 
-export default SignInFormItem;
+export default VerticalFormItem;

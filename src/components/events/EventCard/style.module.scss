@@ -20,7 +20,7 @@
     border-radius: 10px;
   }
 
-  &:not([disabled]):hover {
+  &:not([data-disabled]):hover {
     outline-width: 4px;
     transform: scale(0.975);
 

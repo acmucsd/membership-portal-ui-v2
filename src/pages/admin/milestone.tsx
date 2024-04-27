@@ -1,5 +1,9 @@
-import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
-import { VerticalForm } from '@/components/common';
+import {
+  VerticalForm,
+  VerticalFormButton,
+  VerticalFormItem,
+  VerticalFormTitle,
+} from '@/components/common';
 import { config } from '@/lib';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
@@ -25,11 +29,11 @@ const AwardPointsPage: NextPage = () => {
 
   return (
     <VerticalForm onEnterPress={handleSubmit(onSubmit)}>
-      <SignInTitle
+      <VerticalFormTitle
         text="Create Milestone"
         description="Award points to all active users (e.g. for ACM's 8 year anniversary)"
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<AiOutlineMail />}
         element="input"
         name="name"
@@ -40,7 +44,7 @@ const AwardPointsPage: NextPage = () => {
         })}
         error={errors.name}
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<VscLock />}
         name="points"
         element="input"
@@ -51,7 +55,7 @@ const AwardPointsPage: NextPage = () => {
         })}
         error={errors.points}
       />
-      <SignInButton
+      <VerticalFormButton
         type="button"
         display="button1"
         text="Create Milestone"

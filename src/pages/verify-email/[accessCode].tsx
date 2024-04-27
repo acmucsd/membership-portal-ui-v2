@@ -1,5 +1,4 @@
-import { SignInButton } from '@/components/auth';
-import { VerticalForm } from '@/components/common';
+import { VerticalForm, VerticalFormButton } from '@/components/common';
 import { AuthAPI } from '@/lib/api';
 import styles from '@/styles/pages/verify-email.module.scss';
 import { GetServerSideProps } from 'next';
@@ -19,7 +18,7 @@ const VerifyEmail = ({ status }: VerifyPageProps) => {
         }}
       >
         <h1 className={styles.header}>Success! Your account has been verified.</h1>
-        <SignInButton
+        <VerticalFormButton
           type="link"
           href="/login"
           display="button1"
@@ -41,7 +40,7 @@ const VerifyEmail = ({ status }: VerifyPageProps) => {
       }}
     >
       <h1 className={styles.header}>Unable to verify your email! Please try again.</h1>
-      <SignInButton
+      <VerticalFormButton
         type="link"
         href="/login"
         display="button1"

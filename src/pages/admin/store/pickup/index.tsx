@@ -2,12 +2,10 @@ import { PickupEventCard } from '@/components/admin/store';
 import { Typography } from '@/components/common';
 import { config } from '@/lib';
 import { StoreAPI } from '@/lib/api';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { CookieService, PermissionService } from '@/lib/services';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { PermissionService } from '@/lib/services';
 import type { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
-import { CookieType } from '@/lib/types/enums';
 import styles from '@/styles/pages/StorePickupEventPage.module.scss';
-import { GetServerSideProps } from 'next';
 import router from 'next/router';
 import { useState } from 'react';
 
@@ -25,14 +23,15 @@ const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents }: AdminPickupPa
         <Typography variant="h1/bold" style={{ marginRight: 'auto' }}>
           Manage Pickup Events
         </Typography>
-
-        <button
-          type="button"
-          className={`${styles.displayButton} ${display === 'future' && styles.active}`}
-          onClick={() => router.push(`${config.admin.store.pickupCreate}`)}
-        >
-          <Typography variant="h5/bold">Create New Pickup Event</Typography>
-        </button>
+        <div className={styles.displayButtons}>
+          <button
+            type="button"
+            className={`${styles.displayButton} ${styles.active}`}
+            onClick={() => router.push(`${config.admin.store.pickupCreate}`)}
+          >
+            <Typography variant="h5/bold">Create New Pickup Event</Typography>
+          </button>
+        </div>
 
         <div className={styles.displayButtons}>
           <button
@@ -66,8 +65,7 @@ const AdminPickupPage = ({ futurePickupEvents, pastPickupEvents }: AdminPickupPa
 
 export default AdminPickupPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
-  const token = CookieService.getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ authToken: token }) => {
   const futurePickupEventsPromise = StoreAPI.getFutureOrderPickupEvents(token);
   const pastPickupEventsPromise = StoreAPI.getPastOrderPickupEvents(token);
   const [futurePickupEvents, pastPickupEvents] = await Promise.all([

@@ -9,6 +9,8 @@ export type Styles = {
   badgeLive: string;
   badgePoints: string;
   badges: string;
+  pulse: string;
+  pulse2: string;
 };
 
 export type ClassNames = keyof Styles;
