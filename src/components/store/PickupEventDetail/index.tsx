@@ -29,7 +29,7 @@ const PickupEventDetail = ({ pickupEvent }: PickupEventDetailProps) => {
             {title}
           </Typography>
           <Typography variant="h2/regular" className={styles.title} suppressHydrationWarning>
-            {formatEventDate(start, end)}
+            {formatEventDate(start, end, true)}
           </Typography>
           {hasLinkedEvent ? (
             <Typography variant="h3/regular">{linkedEvent?.location}</Typography>
