@@ -1,4 +1,5 @@
 import { Typography } from '@/components/common';
+import OrderStatusIndicator from '@/components/store/OrderStatusIndicator';
 import { getOrder } from '@/lib/api/StoreAPI';
 import { StoreManager } from '@/lib/managers';
 import { getClientCookie } from '@/lib/services/CookieService';
@@ -13,28 +14,6 @@ import { useEffect, useState } from 'react';
 import OrderSummary from '../OrderSummary';
 import styles from './style.module.scss';
 
-export const orderStatusName: { [_ in OrderStatus]: string } = {
-  [OrderStatus.FULFILLED]: 'Fulfilled',
-  [OrderStatus.CANCELLED]: 'Cancelled',
-  [OrderStatus.PLACED]: 'Placed',
-  [OrderStatus.PARTIALLY_FULFILLED]: 'Partially Fulfilled',
-  [OrderStatus.PICKUP_MISSED]: 'Pickup Missed',
-  [OrderStatus.PICKUP_CANCELLED]: 'Pickup Cancelled',
-};
-
-export const orderStatusColor: { [_ in OrderStatus]: string } = {
-  // Green: Order completed and picked up.
-  [OrderStatus.FULFILLED]: styles.green,
-  // Gray: Order completed, no further action needed.
-  [OrderStatus.CANCELLED]: styles.gray,
-  // Blue: Order pending.
-  [OrderStatus.PLACED]: styles.blue,
-  [OrderStatus.PARTIALLY_FULFILLED]: styles.blue,
-  // Red: Order pending, requires user action.
-  [OrderStatus.PICKUP_MISSED]: styles.red,
-  [OrderStatus.PICKUP_CANCELLED]: styles.red,
-};
-
 interface OrderCardProps {
   order: PublicOrder;
   futurePickupEvents: PublicOrderPickupEvent[];
@@ -44,9 +23,8 @@ const OrderCard = ({ order, futurePickupEvents }: OrderCardProps) => {
   const [open, setOpen] = useState(false);
   const [orderData, setOrderData] = useState<PublicOrderWithItems | null>(null);
   const [pickupEvent, setPickupEvent] = useState<PublicOrderPickupEvent>(order.pickupEvent);
-  const [orderStatus, setOrderStatus] = useState<OrderStatus>(order.status);
+  const [orderStatus, setOrderStatus] = useState(order.status);
   const orderOpen = open && orderData !== null;
-  const [statusName, setStatusName] = useState<string>(orderStatusName[orderStatus]);
 
   useEffect(() => {
     if (open && orderData === null) {
@@ -58,8 +36,6 @@ const OrderCard = ({ order, futurePickupEvents }: OrderCardProps) => {
           reportError('Error loading order!', e);
           setOrderData(null);
         });
-    } else if (open) {
-      setStatusName(orderStatusName[orderStatus]);
     }
   }, [open, order.uuid, orderData, pickupEvent, orderStatus]);
 
@@ -73,8 +49,6 @@ const OrderCard = ({ order, futurePickupEvents }: OrderCardProps) => {
     setPickupEvent(pickup);
     setOrderStatus(OrderStatus.PLACED);
   };
-
-  const statusColor = orderStatusColor[orderStatus];
 
   return (
     <div className={styles.card}>
@@ -92,9 +66,7 @@ const OrderCard = ({ order, futurePickupEvents }: OrderCardProps) => {
                 {formatDate(order.orderedAt, true)}
               </Typography>
             </div>
-            <div className={`${styles.orderStatus} ${statusColor} ${styles.mobile}`}>
-              <Typography variant="body/medium">{statusName}</Typography>
-            </div>
+            <OrderStatusIndicator orderStatus={orderStatus} className={styles.mobile} />
           </div>
           <div className={styles.label}>
             <Typography variant="label/small">PICK UP</Typography>
@@ -104,9 +76,7 @@ const OrderCard = ({ order, futurePickupEvents }: OrderCardProps) => {
           </div>
         </div>
         {/* For desktop, status is located at the end of the row. */}
-        <div className={`${styles.orderStatus} ${statusColor} ${styles.desktop}`}>
-          <Typography variant="body/medium">{statusName}</Typography>
-        </div>
+        <OrderStatusIndicator orderStatus={orderStatus} className={styles.desktop} />
       </button>
       {orderOpen ? (
         <OrderSummary

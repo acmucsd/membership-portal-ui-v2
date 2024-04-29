@@ -1,4 +1,5 @@
 import { Button, Typography } from '@/components/common';
+import { OrderStatusIndicator } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import {
   PublicOrder,
@@ -99,7 +100,7 @@ const PickupOrdersPrepareDisplay = ({
                 <tr key={order.uuid}>
                   <td>
                     <Typography variant="h5/regular">{`${order.user.firstName} ${order.user.lastName}`}</Typography>
-                    <strong>{order.status.replaceAll('_', ' ')}</strong>
+                    <OrderStatusIndicator orderStatus={order.status} />
                     {canFulfill && itemQuantities.length > 1 ? (
                       <Button
                         size="small"
