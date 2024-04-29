@@ -14,6 +14,7 @@ import styles from './style.module.scss';
 
 interface PickupOrdersDisplayPrepareProps {
   token: string;
+  canFulfill: boolean;
   orders: PublicOrderWithItems[];
   onOrderUpdate: (orders: PublicOrderWithItems[]) => void;
 }
@@ -26,6 +27,7 @@ const itemToString = (item: PublicOrderItemWithQuantity): string => {
 
 const PickupOrdersPrepareDisplay = ({
   token,
+  canFulfill,
   orders,
   onOrderUpdate,
 }: PickupOrdersDisplayPrepareProps) => {
@@ -92,16 +94,17 @@ const PickupOrdersPrepareDisplay = ({
           </thead>
           <tbody>
             {orders.map(order => {
-              const canFulfill =
-                order.status === OrderStatus.PLACED ||
-                order.status === OrderStatus.PARTIALLY_FULFILLED;
+              const showFulfill =
+                canFulfill &&
+                (order.status === OrderStatus.PLACED ||
+                  order.status === OrderStatus.PARTIALLY_FULFILLED);
               const itemQuantities = getOrderItemQuantities(order.items);
               return (
                 <tr key={order.uuid}>
                   <td>
                     <Typography variant="h5/regular">{`${order.user.firstName} ${order.user.lastName}`}</Typography>
                     <OrderStatusIndicator orderStatus={order.status} />
-                    {canFulfill && itemQuantities.length > 1 ? (
+                    {showFulfill && itemQuantities.length > 1 ? (
                       <Button
                         size="small"
                         onClick={() =>
@@ -130,7 +133,7 @@ const PickupOrdersPrepareDisplay = ({
                             <Typography variant="h5/regular">{`${item.quantity} x ${itemToString(
                               item
                             )}`}</Typography>
-                            {canFulfill ? fulfillButton : null}
+                            {showFulfill ? fulfillButton : null}
                           </li>
                         );
                       })}

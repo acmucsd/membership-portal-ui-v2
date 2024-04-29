@@ -15,7 +15,7 @@ import { formatEventDate } from '@/lib/utils';
 import styles from '@/styles/pages/StorePickupEventDetailsPage.module.scss';
 import Link from 'next/link';
 import router from 'next/router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 interface PickupEventDetailsPageProps {
   pickupEvent: PublicOrderPickupEvent;
@@ -35,6 +35,8 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
     orders: initOrders,
   } = pickupEvent;
   const [orders, setOrders] = useState(initOrders);
+
+  const started = useMemo(() => Date.now() >= new Date(start).getTime(), [start]);
 
   return (
     <div className={styles.page}>
@@ -89,7 +91,12 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
         </div>
         <div className={styles.orders}>
           {orders && orders.length > 0 ? (
-            <PickupOrdersPrepareDisplay orders={orders} onOrderUpdate={setOrders} token={token} />
+            <PickupOrdersPrepareDisplay
+              orders={orders}
+              onOrderUpdate={setOrders}
+              token={token}
+              canFulfill={status === OrderPickupEventStatus.ACTIVE && started}
+            />
           ) : (
             'No orders placed.'
           )}
