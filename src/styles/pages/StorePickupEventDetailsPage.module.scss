@@ -51,12 +51,6 @@
       flex-direction: column;
       gap: 0.5rem;
 
-      .header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-      }
-
       .displayButtons {
         border-radius: 1rem;
         box-shadow: 0 0 4px var(--theme-accent-line-1-transparent);

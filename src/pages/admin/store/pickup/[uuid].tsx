@@ -2,11 +2,7 @@ import {
   cancelPickupEvent,
   completePickupEvent,
 } from '@/components/admin/event/AdminPickupEvent/AdminPickupEventForm';
-import {
-  PickupEventStatus,
-  PickupOrdersFulfillDisplay,
-  PickupOrdersPrepareDisplay,
-} from '@/components/admin/store';
+import { PickupEventStatus, PickupOrdersPrepareDisplay } from '@/components/admin/store';
 import { Button, Typography } from '@/components/common';
 import { EventCard } from '@/components/events';
 import { StoreAPI } from '@/lib/api';
@@ -39,16 +35,6 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
     orders: initOrders,
   } = pickupEvent;
   const [orders, setOrders] = useState(initOrders);
-  const [ordersView, setOrdersView] = useState<'fulfill' | 'prepare'>('fulfill');
-
-  let ordersComponent;
-  if (orders && orders.length > 0)
-    ordersComponent =
-      ordersView === 'fulfill' ? (
-        <PickupOrdersFulfillDisplay orders={orders} onOrderUpdate={setOrders} token={token} />
-      ) : (
-        <PickupOrdersPrepareDisplay orders={orders} />
-      );
 
   return (
     <div className={styles.page}>
@@ -102,26 +88,11 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
           </div>
         </div>
         <div className={styles.orders}>
-          <div className={styles.header}>
-            <Typography variant="h1/bold">Orders</Typography>
-            <div className={styles.displayButtons}>
-              <button
-                type="button"
-                className={`${styles.displayButton} ${ordersView === 'fulfill' && styles.active}`}
-                onClick={() => setOrdersView('fulfill')}
-              >
-                <Typography variant="h5/bold">Fulfill</Typography>
-              </button>
-              <button
-                type="button"
-                className={`${styles.displayButton} ${ordersView === 'prepare' && styles.active}`}
-                onClick={() => setOrdersView('prepare')}
-              >
-                <Typography variant="h5/bold">Prepare</Typography>
-              </button>
-            </div>
-          </div>
-          {ordersComponent || 'No orders placed.'}
+          {orders && orders.length > 0 ? (
+            <PickupOrdersPrepareDisplay orders={orders} onOrderUpdate={setOrders} token={token} />
+          ) : (
+            'No orders placed.'
+          )}
         </div>
       </div>
     </div>

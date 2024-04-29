@@ -27,7 +27,7 @@
     padding: 1.5rem;
   }
 
-  tr {
+  tbody tr {
     border-top: 1px solid var(--theme-accent-line-2);
   }
 
@@ -38,4 +38,11 @@
 
 .itemList {
   list-style-type: disc;
+
+  li {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 }
