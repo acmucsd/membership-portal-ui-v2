@@ -27,15 +27,25 @@ interface PickupEventDetailsPageProps {
 }
 
 const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPageProps) => {
-  const { uuid, status, title, start, end, orderLimit, description, linkedEvent, orders } =
-    pickupEvent;
+  const {
+    uuid,
+    status,
+    title,
+    start,
+    end,
+    orderLimit,
+    description,
+    linkedEvent,
+    orders: initOrders,
+  } = pickupEvent;
+  const [orders, setOrders] = useState(initOrders);
   const [ordersView, setOrdersView] = useState<'fulfill' | 'prepare'>('fulfill');
 
   let ordersComponent;
   if (orders && orders.length > 0)
     ordersComponent =
       ordersView === 'fulfill' ? (
-        <PickupOrdersFulfillDisplay orders={orders} />
+        <PickupOrdersFulfillDisplay orders={orders} onOrderUpdate={setOrders} token={token} />
       ) : (
         <PickupOrdersPrepareDisplay orders={orders} />
       );
