@@ -1,12 +1,7 @@
 import { Button, Typography } from '@/components/common';
 import { OrderStatusIndicator } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
-import {
-  PublicOrder,
-  PublicOrderItem,
-  PublicOrderItemWithQuantity,
-  PublicOrderWithItems,
-} from '@/lib/types/apiResponses';
+import { PublicOrderItemWithQuantity, PublicOrderWithItems } from '@/lib/types/apiResponses';
 import { OrderStatus } from '@/lib/types/enums';
 import { getOrderItemQuantities, reportError } from '@/lib/utils';
 import { useMemo } from 'react';
@@ -36,17 +31,6 @@ const PickupOrdersPrepareDisplay = ({
     const allItems = orders.flatMap(a => a.items);
     return getOrderItemQuantities(allItems);
   }, [orders]);
-
-  const fulfillItems = async (order: PublicOrder, items: PublicOrderItem[]): Promise<void> => {
-    try {
-      const newOrder = await StoreAPI.fulfillOrderPickup(token, order.uuid, items);
-      onOrderUpdate(
-        orders.map(order => (order.uuid === newOrder.uuid ? { ...order, ...newOrder } : order))
-      );
-    } catch (error: unknown) {
-      reportError('Failed to fulfill order', error);
-    }
-  };
 
   return (
     <div className={styles.container}>
@@ -94,10 +78,7 @@ const PickupOrdersPrepareDisplay = ({
           </thead>
           <tbody>
             {orders.map(order => {
-              const showFulfill =
-                canFulfill &&
-                (order.status === OrderStatus.PLACED ||
-                  order.status === OrderStatus.PARTIALLY_FULFILLED);
+              const showFulfill = canFulfill && order.status === OrderStatus.PLACED;
               const itemQuantities = getOrderItemQuantities(order.items);
               return (
                 <tr key={order.uuid}>
@@ -107,33 +88,46 @@ const PickupOrdersPrepareDisplay = ({
                     {showFulfill && itemQuantities.length > 1 ? (
                       <Button
                         size="small"
-                        onClick={() =>
-                          fulfillItems(
-                            order,
-                            order.items.filter(item => !item.fulfilled)
-                          )
-                        }
+                        onClick={async () => {
+                          try {
+                            const newOrder = await StoreAPI.fulfillOrderPickup(
+                              token,
+                              order.uuid,
+                              order.items
+                            );
+                            const itemUuids = order.items.map(item => item.uuid);
+                            onOrderUpdate(
+                              orders.map(
+                                (order): PublicOrderWithItems =>
+                                  order.uuid === newOrder.uuid
+                                    ? {
+                                        ...newOrder,
+                                        items: order.items.map(item =>
+                                          itemUuids.includes(item.uuid)
+                                            ? { ...item, fulfilled: true }
+                                            : item
+                                        ),
+                                      }
+                                    : order
+                              )
+                            );
+                          } catch (error: unknown) {
+                            reportError('Failed to fulfill order', error);
+                          }
+                        }}
                       >
-                        Fulfill All
+                        Fulfill
                       </Button>
                     ) : null}
                   </td>
                   <td>
                     <ul className={styles.itemList}>
                       {itemQuantities.map(item => {
-                        const fulfillButton = item.fulfilled ? (
-                          <strong>Fulfilled</strong>
-                        ) : (
-                          <Button size="small" onClick={() => fulfillItems(order, [item])}>
-                            Fulfill
-                          </Button>
-                        );
                         return (
                           <li key={item.uuid}>
                             <Typography variant="h5/regular">{`${item.quantity} x ${itemToString(
                               item
                             )}`}</Typography>
-                            {showFulfill ? fulfillButton : null}
                           </li>
                         );
                       })}
