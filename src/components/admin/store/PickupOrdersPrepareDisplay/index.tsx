@@ -6,6 +6,7 @@ import {
   PublicOrderItemWithQuantity,
   PublicOrderWithItems,
 } from '@/lib/types/apiResponses';
+import { OrderStatus } from '@/lib/types/enums';
 import { getOrderItemQuantities, reportError } from '@/lib/utils';
 import { useMemo } from 'react';
 import styles from './style.module.scss';
@@ -90,29 +91,48 @@ const PickupOrdersPrepareDisplay = ({
           </thead>
           <tbody>
             {orders.map(order => {
+              const canFulfill =
+                order.status === OrderStatus.PLACED ||
+                order.status === OrderStatus.PARTIALLY_FULFILLED;
               const itemQuantities = getOrderItemQuantities(order.items);
               return (
                 <tr key={order.uuid}>
                   <td>
                     <Typography variant="h5/regular">{`${order.user.firstName} ${order.user.lastName}`}</Typography>
-                    {order.items.length > 1 ? (
-                      <Button size="small" onClick={() => fulfillItems(order, order.items)}>
+                    <strong>{order.status.replaceAll('_', ' ')}</strong>
+                    {canFulfill && itemQuantities.length > 1 ? (
+                      <Button
+                        size="small"
+                        onClick={() =>
+                          fulfillItems(
+                            order,
+                            order.items.filter(item => !item.fulfilled)
+                          )
+                        }
+                      >
                         Fulfill All
                       </Button>
                     ) : null}
                   </td>
                   <td>
                     <ul className={styles.itemList}>
-                      {itemQuantities.map(item => (
-                        <li key={item.uuid}>
-                          <Typography variant="h5/regular">{`${item.quantity} x ${itemToString(
-                            item
-                          )}`}</Typography>
+                      {itemQuantities.map(item => {
+                        const fulfillButton = item.fulfilled ? (
+                          <strong>Fulfilled</strong>
+                        ) : (
                           <Button size="small" onClick={() => fulfillItems(order, [item])}>
                             Fulfill
                           </Button>
-                        </li>
-                      ))}
+                        );
+                        return (
+                          <li key={item.uuid}>
+                            <Typography variant="h5/regular">{`${item.quantity} x ${itemToString(
+                              item
+                            )}`}</Typography>
+                            {canFulfill ? fulfillButton : null}
+                          </li>
+                        );
+                      })}
                     </ul>
                   </td>
                 </tr>

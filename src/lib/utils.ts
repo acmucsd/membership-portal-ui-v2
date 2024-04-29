@@ -395,11 +395,12 @@ export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderIte
   const itemMap = new Map<string, PublicOrderItemWithQuantity>();
 
   items.forEach(item => {
-    const existingItem = itemMap.get(item.option.uuid);
+    const hash = `${item.option.uuid} ${item.fulfilled}`;
+    const existingItem = itemMap.get(hash);
     if (existingItem) {
       existingItem.quantity += 1;
     } else {
-      itemMap.set(item.option.uuid, { ...item, quantity: 1 });
+      itemMap.set(hash, { ...item, quantity: 1 });
     }
   });
 
