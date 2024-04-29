@@ -22,8 +22,6 @@
   }
 
   .imageWrapper {
-    --mouse-x: 50%;
-    --mouse-y: 50%;
     background-color: var(--theme-surface-1);
     overflow: hidden;
     // Enforce a square image while allowing the card to be squished
@@ -34,15 +32,14 @@
       object-fit: cover;
     }
 
-    .second {
-      clip-path: circle(0% at var(--mouse-x) var(--mouse-y));
-      transition: clip-path 0.2s;
+    .first {
+      transition: opacity 0.5s;
       z-index: 1;
     }
   }
 
-  &:hover .imageWrapper .second {
-    clip-path: circle(160% at var(--mouse-x) var(--mouse-y));
+  &:hover .imageWrapper .first {
+    opacity: 0;
   }
 
   .details {
