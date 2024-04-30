@@ -1,9 +1,7 @@
-import { Button, Typography } from '@/components/common';
-import { OrderStatusIndicator } from '@/components/store';
-import { StoreAPI } from '@/lib/api';
+import PickupOrder from '@/components/admin/store/PickupOrder';
+import { Typography } from '@/components/common';
 import { PublicOrderItemWithQuantity, PublicOrderWithItems } from '@/lib/types/apiResponses';
-import { OrderStatus } from '@/lib/types/enums';
-import { getOrderItemQuantities, reportError } from '@/lib/utils';
+import { getOrderItemQuantities } from '@/lib/utils';
 import { useMemo } from 'react';
 import styles from './style.module.scss';
 
@@ -77,65 +75,22 @@ const PickupOrdersPrepareDisplay = ({
             </tr>
           </thead>
           <tbody>
-            {orders.map(order => {
-              const showFulfill = canFulfill && order.status === OrderStatus.PLACED;
-              const itemQuantities = getOrderItemQuantities(order.items);
-              return (
-                <tr key={order.uuid}>
-                  <td>
-                    <Typography variant="h5/regular">{`${order.user.firstName} ${order.user.lastName}`}</Typography>
-                    <OrderStatusIndicator orderStatus={order.status} />
-                    {showFulfill && itemQuantities.length > 1 ? (
-                      <Button
-                        size="small"
-                        onClick={async () => {
-                          try {
-                            const newOrder = await StoreAPI.fulfillOrderPickup(
-                              token,
-                              order.uuid,
-                              order.items
-                            );
-                            const itemUuids = order.items.map(item => item.uuid);
-                            onOrderUpdate(
-                              orders.map(
-                                (order): PublicOrderWithItems =>
-                                  order.uuid === newOrder.uuid
-                                    ? {
-                                        ...newOrder,
-                                        items: order.items.map(item =>
-                                          itemUuids.includes(item.uuid)
-                                            ? { ...item, fulfilled: true }
-                                            : item
-                                        ),
-                                      }
-                                    : order
-                              )
-                            );
-                          } catch (error: unknown) {
-                            reportError('Failed to fulfill order', error);
-                          }
-                        }}
-                      >
-                        Fulfill
-                      </Button>
-                    ) : null}
-                  </td>
-                  <td>
-                    <ul className={styles.itemList}>
-                      {itemQuantities.map(item => {
-                        return (
-                          <li key={item.uuid}>
-                            <Typography variant="h5/regular">{`${item.quantity} x ${itemToString(
-                              item
-                            )}`}</Typography>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </td>
-                </tr>
-              );
-            })}
+            {orders.map(order => (
+              <PickupOrder
+                canFulfill={canFulfill}
+                order={order}
+                onOrderUpdate={newOrder =>
+                  onOrderUpdate(
+                    orders.map(
+                      (order): PublicOrderWithItems =>
+                        order.uuid === newOrder.uuid ? newOrder : order
+                    )
+                  )
+                }
+                token={token}
+                key={order.uuid}
+              />
+            ))}
           </tbody>
         </table>
       </div>

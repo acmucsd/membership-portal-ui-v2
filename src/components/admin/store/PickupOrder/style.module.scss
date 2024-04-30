@@ -1,0 +1,18 @@
+.row {
+  border-top: 1px solid var(--theme-accent-line-2);
+
+  td {
+    padding: 1.5rem;
+  }
+
+  .itemList {
+    list-style-type: disc;
+
+    li {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+  }
+}
