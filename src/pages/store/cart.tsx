@@ -254,6 +254,13 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
       .filter(
         event => !(event.orders && event.orderLimit && event.orders.length > event.orderLimit)
       )
+      // filter out events that have a start time less than 2 days from now
+      .filter(event => {
+        const startTime = new Date(event.start);
+        const now = new Date();
+        now.setDate(now.getDate() + 2);
+        return startTime >= now;
+      })
   );
   const userPromise = getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
 
