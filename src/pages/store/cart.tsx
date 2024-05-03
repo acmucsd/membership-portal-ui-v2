@@ -257,9 +257,9 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
       // filter out events that have a start time less than 2 days from now
       .filter(event => {
         const startTime = new Date(event.start);
-        const now = new Date();
-        now.setDate(now.getDate() + 2);
-        return startTime >= now;
+        const now = Date.now();
+        const twoDaysFromNow = new Date(now + 2 * 24 * 60 * 60 * 1000);
+        return startTime >= twoDaysFromNow;
       })
   );
   const userPromise = getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
