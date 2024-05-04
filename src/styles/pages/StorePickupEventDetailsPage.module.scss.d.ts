@@ -1,6 +1,7 @@
 export type Styles = {
   active: string;
   back: string;
+  buttonContainer: string;
   container: string;
   description: string;
   displayButton: string;
