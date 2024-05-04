@@ -23,15 +23,17 @@ const PickupEventPicker = ({ events, eventIndex, setEventIndex, active }: EventP
             className={styles.slider}
             style={{ transform: `translateX(calc(-1 * var(--width) * ${eventIndex}))` }}
           >
-            {events.map(event => (
-              <EventCard
-                key={event.uuid}
-                event={event}
-                attended={false}
-                borderless
-                showYear={false}
-              />
-            ))}
+            {events
+              .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
+              .map(event => (
+                <EventCard
+                  key={event.uuid}
+                  event={event}
+                  attended={false}
+                  borderless
+                  showYear={false}
+                />
+              ))}
           </div>
         ) : (
           <div className={styles.noEvents}>
