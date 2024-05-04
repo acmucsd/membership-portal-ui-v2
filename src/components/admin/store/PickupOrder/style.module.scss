@@ -1,3 +1,5 @@
+@use 'src/styles/vars.scss' as vars;
+
 .row {
   border-top: 1px solid var(--theme-accent-line-2);
 
@@ -13,6 +15,10 @@
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+
+      .notFulfilled {
+        color: vars.$red;
+      }
     }
   }
 }

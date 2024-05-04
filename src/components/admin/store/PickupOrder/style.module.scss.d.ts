@@ -1,5 +1,6 @@
 export type Styles = {
   itemList: string;
+  notFulfilled: string;
   row: string;
 };
 

@@ -1,7 +1,7 @@
 import defaultProfilePictures from '@/lib/constants/profilePictures';
 import ranks from '@/lib/constants/ranks';
 import showToast from '@/lib/showToast';
-import type { URL } from '@/lib/types';
+import type { URL, UUID } from '@/lib/types';
 import type {
   ApiResponse,
   CustomErrorBody,
@@ -388,23 +388,32 @@ export const isOrderPickupEvent = (
   event: PublicOrderPickupEvent | PublicEvent
 ): event is PublicOrderPickupEvent => 'status' in event;
 
+export type OrderItemQuantity = Omit<PublicOrderItemWithQuantity, 'uuid'> & { uuids: UUID[] };
+
 /**
  * Condenses a list of ordered items into unique items with quantities.
  */
-export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderItemWithQuantity[] => {
-  const itemMap = new Map<string, PublicOrderItemWithQuantity>();
+export const getOrderItemQuantities = (items: PublicOrderItem[]): OrderItemQuantity[] => {
+  const itemMap = new Map<string, OrderItemQuantity>();
 
   items.forEach(item => {
     const hash = `${item.option.uuid} ${item.fulfilled}`;
     const existingItem = itemMap.get(hash);
     if (existingItem) {
       existingItem.quantity += 1;
+      existingItem.uuids.push(item.uuid);
     } else {
-      itemMap.set(hash, { ...item, quantity: 1 });
+      itemMap.set(hash, { ...item, quantity: 1, uuids: [item.uuid] });
     }
   });
 
   return Array.from(itemMap.values());
+};
+
+export const itemToString = (item: Pick<PublicOrderItem, 'option'>): string => {
+  if (item.option.metadata !== null)
+    return `${item.option.item.itemName} (${item.option.metadata.type}: ${item.option.metadata.value})`;
+  return item.option.item.itemName;
 };
 
 export function isEnum<T extends Record<string, string>>(

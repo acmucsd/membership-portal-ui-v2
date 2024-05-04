@@ -22,4 +22,12 @@
     padding: 1rem 1.5rem;
     text-align: left;
   }
+
+  td {
+    padding: 1.5rem;
+  }
+
+  tbody tr {
+    border-top: 1px solid var(--theme-accent-line-2);
+  }
 }

@@ -1,7 +1,8 @@
 import PickupOrder from '@/components/admin/store/PickupOrder';
 import { Typography } from '@/components/common';
-import { PublicOrderItemWithQuantity, PublicOrderWithItems } from '@/lib/types/apiResponses';
-import { getOrderItemQuantities } from '@/lib/utils';
+import { PublicOrderWithItems } from '@/lib/types/apiResponses';
+import { OrderStatus } from '@/lib/types/enums';
+import { OrderItemQuantity, getOrderItemQuantities, itemToString } from '@/lib/utils';
 import { useMemo } from 'react';
 import styles from './style.module.scss';
 
@@ -12,19 +13,13 @@ interface PickupOrdersDisplayPrepareProps {
   onOrderUpdate: (orders: PublicOrderWithItems[]) => void;
 }
 
-const itemToString = (item: PublicOrderItemWithQuantity): string => {
-  if (item.option.metadata !== null)
-    return `${item.option.item.itemName} (${item.option.metadata.type}: ${item.option.metadata.value})`;
-  return item.option.item.itemName;
-};
-
 const PickupOrdersPrepareDisplay = ({
   token,
   canFulfill,
   orders,
   onOrderUpdate,
 }: PickupOrdersDisplayPrepareProps) => {
-  const itemBreakdown: PublicOrderItemWithQuantity[] = useMemo(() => {
+  const itemBreakdown: OrderItemQuantity[] = useMemo(() => {
     // Concatenate all items together into one large order to display the item breakdown.
     const allItems = orders.flatMap(a => a.items);
     return getOrderItemQuantities(allItems);
@@ -48,7 +43,7 @@ const PickupOrdersPrepareDisplay = ({
           <tbody>
             {itemBreakdown.map(item => {
               return (
-                <tr key={item.uuid}>
+                <tr key={item.uuids[0]}>
                   <td>
                     <Typography variant="h5/regular">{item.quantity}</Typography>
                   </td>
@@ -77,7 +72,7 @@ const PickupOrdersPrepareDisplay = ({
           <tbody>
             {orders.map(order => (
               <PickupOrder
-                canFulfill={canFulfill}
+                canFulfill={canFulfill && order.status === OrderStatus.PLACED}
                 order={order}
                 onOrderUpdate={newOrder =>
                   onOrderUpdate(
