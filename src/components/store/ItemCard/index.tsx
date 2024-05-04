@@ -1,11 +1,12 @@
 import Diamonds from '@/components/store/Diamonds';
+import NoImage from '@/public/assets/graphics/cat404.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 import styles from './style.module.scss';
 
 interface CommonOptions {
-  image: string;
+  images: string[];
   title: string;
   href: string;
   className?: string;
@@ -29,18 +30,21 @@ type ItemCardProps = (StoreItemOptions | CollectionOptions) & CommonOptions;
  * - a collection with a `description`.
  */
 const ItemCard = ({
-  image,
+  images,
   title,
   href,
   className,
   children,
   ...props
 }: PropsWithChildren<ItemCardProps>) => {
+  const [first = NoImage, second = first] = images;
+
   return (
     <article className={`${styles.itemCard} ${className}`}>
       <Link href={href} className={styles.linkWrapper}>
         <div className={styles.imageWrapper}>
-          <Image src={image} alt={title} fill />
+          <Image className={styles.first} src={first} alt={title} fill />
+          <Image src={second} alt="" aria-hidden fill />
         </div>
         <div className={styles.details}>
           <p className={styles.title}>{title}</p>
