@@ -1,4 +1,7 @@
 export type Styles = {
+  button: string;
+  downloading: string;
+  header: string;
   page: string;
 };
 

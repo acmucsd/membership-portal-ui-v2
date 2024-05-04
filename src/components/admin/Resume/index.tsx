@@ -1,7 +1,7 @@
 import { GifSafeImage, Typography } from '@/components/common';
 import { config } from '@/lib';
 import { PublicResume } from '@/lib/types/apiResponses';
-import { getProfilePicture } from '@/lib/utils';
+import { getFileName, getProfilePicture } from '@/lib/utils';
 import Link from 'next/link';
 import { BsDownload } from 'react-icons/bs';
 import styles from './style.module.scss';
@@ -11,7 +11,7 @@ interface ResumeProps {
 }
 
 const Resume = ({ resume }: ResumeProps) => {
-  const fileName = decodeURIComponent(resume.url.split('/').at(-1) ?? 'resume.pdf');
+  const fileName = getFileName(resume.url, 'resume.pdf');
 
   return (
     <div className={styles.wrapper}>

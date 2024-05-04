@@ -4,4 +4,27 @@
   gap: 1rem;
   margin: 0 auto;
   max-width: 60rem;
+
+  .header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    .button {
+      align-items: center;
+      background-color: var(--theme-primary-2);
+      border-radius: 0.5rem;
+      color: var(--theme-background);
+      display: flex;
+      font-size: 1rem;
+      gap: 1rem;
+      line-height: 1.5;
+      padding: 0.5rem 1rem;
+    }
+
+    .downloading {
+      color: var(--theme-text-on-background-2);
+      font-size: 1rem;
+    }
+  }
 }
