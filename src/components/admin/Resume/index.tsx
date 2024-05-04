@@ -28,7 +28,7 @@ const Resume = ({ resume }: ResumeProps) => {
             {resume.user.firstName} {resume.user.lastName}
           </Typography>
           <p className={styles.info}>
-            {resume.user.graduationYear} {resume.user.major}
+            {resume.user.major} ({resume.user.graduationYear})
           </p>
         </Link>
       ) : null}

@@ -1,25 +1,35 @@
 import Resume from '@/components/admin/Resume';
-import { Typography } from '@/components/common';
+import { PaginationControls, Typography } from '@/components/common';
 import { config } from '@/lib';
 import { ResumeAPI } from '@/lib/api';
 import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import type { PublicResume } from '@/lib/types/apiResponses';
 import styles from '@/styles/pages/resumes.module.scss';
+import { useState } from 'react';
+
+const ROWS_PER_PAGE = 25;
 
 interface AdminResumePageProps {
   resumes: PublicResume[];
 }
 
 const AdminResumePage = ({ resumes }: AdminResumePageProps) => {
+  const [page, setPage] = useState(0);
+
   return (
     <div className={styles.page}>
       <Typography variant="title/large" component="h1">
         Resumes
       </Typography>
-      {resumes.map(resume => (
+      {resumes.slice(page * ROWS_PER_PAGE, (page + 1) * ROWS_PER_PAGE).map(resume => (
         <Resume key={resume.uuid} resume={resume} />
       ))}
+      <PaginationControls
+        page={page}
+        onPage={page => setPage(page)}
+        pages={Math.ceil(resumes.length / ROWS_PER_PAGE)}
+      />
     </div>
   );
 };
