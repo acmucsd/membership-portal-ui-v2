@@ -258,7 +258,8 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
       .filter(event => {
         const startTime = new Date(event.start);
         const now = Date.now();
-        const twoDaysFromNow = new Date(now + 2 * 24 * 60 * 60 * 1000);
+        const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
+        const twoDaysFromNow = new Date(now + twoDaysInMs);
         return startTime >= twoDaysFromNow;
       })
   );
