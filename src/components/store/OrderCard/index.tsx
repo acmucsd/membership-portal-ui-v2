@@ -46,6 +46,7 @@ const OrderCard = ({ order, futurePickupEvents }: OrderCardProps) => {
   const [pickupEvent, setPickupEvent] = useState<PublicOrderPickupEvent>(order.pickupEvent);
   const [orderStatus, setOrderStatus] = useState<OrderStatus>(order.status);
   const orderOpen = open && orderData !== null;
+  const [statusName, setStatusName] = useState<string>(orderStatusName[orderStatus]);
 
   useEffect(() => {
     if (open && orderData === null) {
@@ -57,8 +58,10 @@ const OrderCard = ({ order, futurePickupEvents }: OrderCardProps) => {
           reportError('Error loading order!', e);
           setOrderData(null);
         });
+    } else if (open) {
+      setStatusName(orderStatusName[orderStatus]);
     }
-  }, [open, order.uuid, orderData]);
+  }, [open, order.uuid, orderData, pickupEvent, orderStatus]);
 
   const cancelOrder = async () => {
     await StoreManager.cancelMerchOrder(order.uuid);
@@ -68,10 +71,10 @@ const OrderCard = ({ order, futurePickupEvents }: OrderCardProps) => {
   const rescheduleOrderPickup = async (pickup: PublicOrderPickupEvent) => {
     await StoreManager.rescheduleOrderPickup(order.uuid, pickup.uuid);
     setPickupEvent(pickup);
+    setOrderStatus(OrderStatus.PLACED);
   };
 
   const statusColor = orderStatusColor[orderStatus];
-  const statusName = orderStatusName[orderStatus];
 
   return (
     <div className={styles.card}>

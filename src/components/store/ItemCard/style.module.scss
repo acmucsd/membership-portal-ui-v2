@@ -30,6 +30,15 @@
     img {
       object-fit: cover;
     }
+
+    .first {
+      transition: opacity 0.5s;
+      z-index: 1;
+    }
+  }
+
+  &:hover .imageWrapper .first {
+    opacity: 0;
   }
 
   .details {
@@ -63,5 +72,6 @@
     position: absolute;
     right: 0.5rem;
     top: 0.5rem;
+    z-index: 2;
   }
 }

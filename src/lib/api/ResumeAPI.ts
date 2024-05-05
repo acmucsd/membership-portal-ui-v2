@@ -1,10 +1,11 @@
 import { config } from '@/lib';
 import type { UUID } from '@/lib/types';
 import { PatchResumeRequest } from '@/lib/types/apiRequests';
-import type {
-  PatchResumeResponse,
-  PublicResume,
-  UpdateResumeResponse,
+import {
+  GetVisibleResumesResponse,
+  type PatchResumeResponse,
+  type PublicResume,
+  type UpdateResumeResponse,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
 
@@ -75,4 +76,21 @@ export const deleteResume = async (token: string, uuid: UUID): Promise<void> => 
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+/**
+ * Get all visible resumes
+ * @param token Authorization bearer token. User needs to be admin or
+ * sponsorship manager
+ */
+export const getResumes = async (token: string): Promise<PublicResume[]> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.resume}`;
+
+  const response = await axios.get<GetVisibleResumesResponse>(requestUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.resumes;
 };
