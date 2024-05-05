@@ -76,7 +76,7 @@ const OrderSummary = ({
       {items.map(item => (
         <Link
           href={`${config.store.itemRoute}${item.option.item.uuid}`}
-          key={item.uuid}
+          key={item.uuids[0]}
           className={styles.itemInfo}
         >
           <div className={styles.image}>

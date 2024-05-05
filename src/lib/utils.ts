@@ -314,7 +314,7 @@ export const getDefaultMerchItemPhoto = (
   return NoImage.src;
 };
 
-export const getDefaultOrderItemPhoto = (item: PublicOrderItem): string => {
+export const getDefaultOrderItemPhoto = (item: Pick<PublicOrderItem, 'option'>): string => {
   if (item.option.item.uploadedPhoto) {
     return item.option.item.uploadedPhoto;
   }
