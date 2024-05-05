@@ -24,7 +24,7 @@ import {
   type StaticImport,
   type StaticRequire,
 } from 'next/dist/shared/lib/get-img-props';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 
 /**
  * Get next `num` years from today in a number array to generate dropdown options for future selections
@@ -170,18 +170,15 @@ export const isSrcAGif = (src: string | StaticImport): boolean => {
  * @returns The object URL. Defaults an empty string if `file` is empty.
  */
 export function useObjectUrl(file?: Blob | null): string {
-  const [url, setUrl] = useState('');
+  const url = useMemo(() => (file ? URL.createObjectURL(file) : ''), [file]);
 
   useEffect(() => {
-    if (!file) {
-      return undefined;
-    }
-    const url = URL.createObjectURL(file);
-    setUrl(url);
     return () => {
-      URL.revokeObjectURL(url);
+      if (url !== '') {
+        URL.revokeObjectURL(url);
+      }
     };
-  }, [file]);
+  }, [url]);
 
   return url;
 }
@@ -472,4 +469,11 @@ export function seededRandom(a: number, b: number, c: number, d: number): () => 
     return (r >>> 0) / 4294967296;
     /* eslint-enable no-bitwise, no-param-reassign */
   };
+}
+
+/**
+ * Gets the file name from a URL by taking the last part of the URL.
+ */
+export function getFileName(url: string, defaultName: string): string {
+  return decodeURIComponent(url.split('/').at(-1) ?? defaultName);
 }
