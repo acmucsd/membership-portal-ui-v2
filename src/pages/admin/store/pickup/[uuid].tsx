@@ -57,31 +57,33 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
           <div>
             <PickupEventStatus status={status} variant="h3/bold" />
             <Typography variant="h1/bold">{title}</Typography>
-            <Button
-              className={`${styles.displayButton}`}
-              onClick={() => router.push(`${config.admin.store.pickupEdit}/${uuid}`)}
-            >
-              <Typography variant="h5/bold">Edit Pickup Event</Typography>
-            </Button>
-            {status === OrderPickupEventStatus.ACTIVE ? (
+            <div className={styles.buttonContainer}>
               <Button
                 className={`${styles.displayButton}`}
-                onClick={() => completePickupEvent(uuid, token)}
+                onClick={() => router.push(`${config.admin.store.pickupEdit}/${uuid}`)}
               >
-                <Typography variant="h5/bold">Complete Pickup Event</Typography>
+                <Typography variant="h5/bold">Edit Pickup Event</Typography>
               </Button>
-            ) : null}
-            {status === OrderPickupEventStatus.ACTIVE ? (
-              <Button
-                className={`${styles.displayButton}`}
-                onClick={() => {
-                  cancelPickupEvent(uuid, token);
-                }}
-                destructive
-              >
-                <Typography variant="h5/bold">Cancel Pickup Event</Typography>
-              </Button>
-            ) : null}
+              {status === OrderPickupEventStatus.ACTIVE ? (
+                <Button
+                  className={`${styles.displayButton}`}
+                  onClick={() => completePickupEvent(uuid, token)}
+                >
+                  <Typography variant="h5/bold">Complete Pickup Event</Typography>
+                </Button>
+              ) : null}
+              {status === OrderPickupEventStatus.ACTIVE ? (
+                <Button
+                  className={`${styles.displayButton}`}
+                  onClick={() => {
+                    cancelPickupEvent(uuid, token);
+                  }}
+                  destructive
+                >
+                  <Typography variant="h5/bold">Cancel Pickup Event</Typography>
+                </Button>
+              ) : null}
+            </div>
             <Typography variant="h4/regular" suppressHydrationWarning>
               {formatEventDate(start, end, true)}
             </Typography>
