@@ -18,7 +18,7 @@ const PickupOrdersPrepareDisplay = ({ orders }: PickupOrdersDisplayPrepareProps)
   const itemBreakdown: PublicOrderItemWithQuantity[] = useMemo(() => {
     // Concatenate all items together into one large order to display the item breakdown.
     const allItems = orders.flatMap(a => a.items);
-    return getOrderItemQuantities(allItems);
+    return getOrderItemQuantities({ items: allItems, ignoreFulfilled: true });
   }, [orders]);
 
   return (
@@ -56,7 +56,9 @@ const PickupOrdersPrepareDisplay = ({ orders }: PickupOrdersDisplayPrepareProps)
             <Typography variant="h4/bold">Items</Typography>
           </th>
           {orders.map(order => {
-            const itemQuantities = getOrderItemQuantities(order.items);
+            const itemQuantities = getOrderItemQuantities({
+              items: order.items,
+            });
             return (
               <tr key={order.uuid}>
                 <td>
@@ -66,9 +68,9 @@ const PickupOrdersPrepareDisplay = ({ orders }: PickupOrdersDisplayPrepareProps)
                   <ul className={styles.itemList}>
                     {itemQuantities.map(item => (
                       <li key={item.uuid}>
-                        <Typography variant="h5/regular">{`${item.quantity} x ${itemToString(
-                          item
-                        )}`}</Typography>
+                        <Typography variant="h5/regular">{`${item.fulfilled ? '✅' : '❌'} ${
+                          item.quantity
+                        } x ${itemToString(item)}`}</Typography>
                       </li>
                     ))}
                   </ul>

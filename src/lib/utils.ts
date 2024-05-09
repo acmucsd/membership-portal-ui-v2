@@ -385,13 +385,23 @@ export const isOrderPickupEvent = (
   event: PublicOrderPickupEvent | PublicEvent
 ): event is PublicOrderPickupEvent => 'status' in event;
 
+interface getOrderItemQuantitiesParams {
+  items: PublicOrderItem[];
+  ignoreFulfilled?: boolean;
+}
 /**
  * Condenses a list of ordered items into unique items with quantities.
  */
-export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderItemWithQuantity[] => {
+export const getOrderItemQuantities = ({
+  items,
+  ignoreFulfilled,
+}: getOrderItemQuantitiesParams): PublicOrderItemWithQuantity[] => {
   const itemMap = new Map<string, PublicOrderItemWithQuantity>();
 
   items.forEach(item => {
+    if (ignoreFulfilled && item.fulfilled) {
+      return;
+    }
     const existingItem = itemMap.get(item.option.uuid);
     if (existingItem) {
       existingItem.quantity += 1;
