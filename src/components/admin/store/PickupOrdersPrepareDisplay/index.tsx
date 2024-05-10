@@ -1,6 +1,6 @@
 import { Typography } from '@/components/common';
-import { PublicOrderItemWithQuantity, PublicOrderWithItems } from '@/lib/types/apiResponses';
-import { getOrderItemQuantities } from '@/lib/utils';
+import { PublicOrderWithItems } from '@/lib/types/apiResponses';
+import { OrderItemQuantity, getOrderItemQuantities } from '@/lib/utils';
 import { useMemo } from 'react';
 import styles from './style.module.scss';
 
@@ -8,17 +8,17 @@ interface PickupOrdersDisplayPrepareProps {
   orders: PublicOrderWithItems[];
 }
 
-const itemToString = (item: PublicOrderItemWithQuantity): string => {
+const itemToString = (item: OrderItemQuantity): string => {
   if (item.option.metadata !== null)
     return `${item.option.item.itemName} (${item.option.metadata.type}: ${item.option.metadata.value})`;
   return item.option.item.itemName;
 };
 
 const PickupOrdersPrepareDisplay = ({ orders }: PickupOrdersDisplayPrepareProps) => {
-  const itemBreakdown: PublicOrderItemWithQuantity[] = useMemo(() => {
+  const itemBreakdown: OrderItemQuantity[] = useMemo(() => {
     // Concatenate all items together into one large order to display the item breakdown.
     const allItems = orders.flatMap(a => a.items);
-    return getOrderItemQuantities({ items: allItems, ignoreFulfilled: true });
+    return getOrderItemQuantities(allItems);
   }, [orders]);
 
   return (
@@ -34,7 +34,7 @@ const PickupOrdersPrepareDisplay = ({ orders }: PickupOrdersDisplayPrepareProps)
           </th>
           {itemBreakdown.map(item => {
             return (
-              <tr key={item.uuid}>
+              <tr key={item.uuids[0]}>
                 <td>
                   <Typography variant="h5/regular">{item.quantity}</Typography>
                 </td>
@@ -56,9 +56,7 @@ const PickupOrdersPrepareDisplay = ({ orders }: PickupOrdersDisplayPrepareProps)
             <Typography variant="h4/bold">Items</Typography>
           </th>
           {orders.map(order => {
-            const itemQuantities = getOrderItemQuantities({
-              items: order.items,
-            });
+            const itemQuantities = getOrderItemQuantities(order.items);
             return (
               <tr key={order.uuid}>
                 <td>
@@ -67,7 +65,7 @@ const PickupOrdersPrepareDisplay = ({ orders }: PickupOrdersDisplayPrepareProps)
                 <td>
                   <ul className={styles.itemList}>
                     {itemQuantities.map(item => (
-                      <li key={item.uuid}>
+                      <li key={item.uuids[0]}>
                         <Typography variant="h5/regular">{`${item.fulfilled ? '✅' : '❌'} ${
                           item.quantity
                         } x ${itemToString(item)}`}</Typography>
