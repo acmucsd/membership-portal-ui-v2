@@ -44,7 +44,7 @@ const OrderSummary = ({
   reschedulePickupEvent,
   cancelOrder,
 }: OrderSummaryProps) => {
-  const items = getOrderItemQuantities({ items: order.items });
+  const items = getOrderItemQuantities(order.items);
 
   const totalCostWithoutDiscount = items.reduce((cost, item) => {
     return cost + item.quantity * item.option.price;
@@ -71,6 +71,11 @@ const OrderSummary = ({
       />
       {items.map(item => {
         if (item.fulfilled && orderStatus === OrderStatus.PLACED) {
+          /*
+           * When a partially fulfilled order is rescheduled,
+           * the status is changed to PLACED, but all items remain (some as fulfilled).
+           * These items should be hidden.
+           */
           return undefined;
         }
 
@@ -82,7 +87,7 @@ const OrderSummary = ({
         return (
           <Link
             href={`${config.store.itemRoute}${item.option.item.uuid}`}
-            key={item.uuid}
+            key={item.uuids[0]}
             className={styles.itemInfo}
           >
             <div className={styles.image}>
@@ -97,7 +102,7 @@ const OrderSummary = ({
             <div className={styles.itemSummary}>
               <Typography variant="h4/bold">{itemName}</Typography>
               <div className={styles.label}>
-                <Typography variant="h5/bold">Price: {`${item.fulfilled}`}</Typography>
+                <Typography variant="h5/bold">Price: </Typography>
                 <Diamonds
                   count={item.option.price * item.quantity}
                   discount={item.salePriceAtPurchase}

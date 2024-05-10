@@ -1,7 +1,7 @@
 import defaultProfilePictures from '@/lib/constants/profilePictures';
 import ranks from '@/lib/constants/ranks';
 import showToast from '@/lib/showToast';
-import type { URL } from '@/lib/types';
+import type { URL, UUID } from '@/lib/types';
 import type {
   ApiResponse,
   CustomErrorBody,
@@ -314,7 +314,7 @@ export const getDefaultMerchItemPhoto = (
   return NoImage.src;
 };
 
-export const getDefaultOrderItemPhoto = (item: PublicOrderItem): string => {
+export const getDefaultOrderItemPhoto = (item: Pick<PublicOrderItem, 'option'>): string => {
   if (item.option.item.uploadedPhoto) {
     return item.option.item.uploadedPhoto;
   }
@@ -385,28 +385,22 @@ export const isOrderPickupEvent = (
   event: PublicOrderPickupEvent | PublicEvent
 ): event is PublicOrderPickupEvent => 'status' in event;
 
-interface getOrderItemQuantitiesParams {
-  items: PublicOrderItem[];
-  ignoreFulfilled?: boolean;
-}
+export type OrderItemQuantity = Omit<PublicOrderItemWithQuantity, 'uuid'> & { uuids: UUID[] };
+
 /**
  * Condenses a list of ordered items into unique items with quantities.
  */
-export const getOrderItemQuantities = ({
-  items,
-  ignoreFulfilled,
-}: getOrderItemQuantitiesParams): PublicOrderItemWithQuantity[] => {
-  const itemMap = new Map<string, PublicOrderItemWithQuantity>();
+export const getOrderItemQuantities = (items: PublicOrderItem[]): OrderItemQuantity[] => {
+  const itemMap = new Map<string, OrderItemQuantity>();
 
   items.forEach(item => {
-    if (ignoreFulfilled && item.fulfilled) {
-      return;
-    }
-    const existingItem = itemMap.get(item.option.uuid);
+    const hash = `${item.option.uuid} ${item.fulfilled}`;
+    const existingItem = itemMap.get(hash);
     if (existingItem) {
       existingItem.quantity += 1;
+      existingItem.uuids.push(item.uuid);
     } else {
-      itemMap.set(item.option.uuid, { ...item, quantity: 1 });
+      itemMap.set(hash, { ...item, quantity: 1, uuids: [item.uuid] });
     }
   });
 
