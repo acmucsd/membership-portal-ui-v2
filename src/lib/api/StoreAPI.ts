@@ -400,6 +400,26 @@ export const getFutureOrderPickupEvents = async (
   return response.data.pickupEvents;
 };
 
+export const getValidFutureOrderPickupEvents = async (
+  token: string
+): Promise<PublicOrderPickupEvent[]> => {
+  return getFutureOrderPickupEvents(token).then(events =>
+    events
+      .filter(event => event.status !== 'CANCELLED')
+      .filter(
+        event => !(event.orders && event.orderLimit && event.orders.length > event.orderLimit)
+      )
+      // filter out events that have a start time less than 2 days from now
+      .filter(event => {
+        const startTime = new Date(event.start);
+        const now = Date.now();
+        const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
+        const twoDaysFromNow = new Date(now + twoDaysInMs);
+        return startTime >= twoDaysFromNow;
+      })
+  );
+};
+
 export const placeMerchOrder = async (
   token: string,
   data: PlaceMerchOrderRequest
