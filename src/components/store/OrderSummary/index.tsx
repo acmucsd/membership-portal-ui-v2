@@ -34,9 +34,11 @@ const isOrderActionable = (status: OrderStatus, pickupEvent: PublicOrderPickupEv
 
 interface OrderItemPreviewProps {
   item: OrderItemQuantity;
+  showFulfilled: boolean;
+  showNotFulfilled: boolean;
 }
 
-const OrderItemPreview = ({ item }: OrderItemPreviewProps) => {
+const OrderItemPreview = ({ item, showFulfilled, showNotFulfilled }: OrderItemPreviewProps) => {
   return (
     <Link href={`${config.store.itemRoute}${item.option.item.uuid}`} className={styles.itemInfo}>
       <div className={styles.image}>
@@ -47,6 +49,12 @@ const OrderItemPreview = ({ item }: OrderItemPreviewProps) => {
           alt="Store item picture"
           fill
         />
+        {showFulfilled && item.fulfilled ? (
+          <div className={styles.badge}>{showNotFulfilled ? 'Picked up' : 'Already picked up'}</div>
+        ) : null}
+        {showNotFulfilled && !item.fulfilled ? (
+          <div className={`${styles.badge} ${styles.notAvailable}`}>Not available</div>
+        ) : null}
       </div>
       <div className={styles.itemSummary}>
         <Typography variant="h4/bold">{item.option.item.itemName}</Typography>
@@ -68,60 +76,6 @@ const OrderItemPreview = ({ item }: OrderItemPreviewProps) => {
         ) : null}
       </div>
     </Link>
-  );
-};
-
-interface OrderItemsSummaryProps {
-  items: OrderItemQuantity[];
-  orderStatus: OrderStatus;
-}
-
-const OrderItemsSummary = ({ items, orderStatus }: OrderItemsSummaryProps) => {
-  const pickedUpItems = items.filter(item => item.fulfilled);
-  const notPickedUpItems = items.filter(item => !item.fulfilled);
-
-  if (
-    notPickedUpItems.length === 0 ||
-    (pickedUpItems.length === 0 && orderStatus === OrderStatus.PLACED)
-  ) {
-    return (
-      <>
-        {items.map(item => (
-          <OrderItemPreview item={item} key={item.uuids[0]} />
-        ))}
-      </>
-    );
-  }
-
-  const pickedUp = (
-    <>
-      <Typography variant="h3/bold" className={styles.partiallyFulfilledText}>
-        {orderStatus === OrderStatus.PLACED ? 'Already Picked Up:' : 'Items Picked Up:'}
-      </Typography>
-      {pickedUpItems.length > 0 ? (
-        pickedUpItems.map(item => <OrderItemPreview item={item} key={item.uuids[0]} />)
-      ) : (
-        <p className={styles.partiallyFulfilledText}>None</p>
-      )}
-    </>
-  );
-  const notPickedUp = (
-    <>
-      <Typography variant="h3/bold" className={styles.partiallyFulfilledText}>
-        Awaiting Pickup:
-      </Typography>
-      {notPickedUpItems.map(item => (
-        <OrderItemPreview item={item} key={item.uuids[0]} />
-      ))}
-    </>
-  );
-
-  return (
-    <div>
-      {orderStatus === OrderStatus.PLACED ? notPickedUp : pickedUp}
-      <hr className={styles.divider} />
-      {orderStatus === OrderStatus.PLACED ? pickedUp : notPickedUp}
-    </div>
   );
 };
 
@@ -167,8 +121,28 @@ const OrderSummary = ({
         onClose={() => setCancelModalOpen(false)}
         cancelOrder={cancelOrder}
       />
-      <OrderItemsSummary items={items} orderStatus={orderStatus} />
+      {items.map(item => (
+        <OrderItemPreview
+          item={item}
+          // It doesn't make sense for a fulfilled event to have non-fulfilled
+          // items, but if it does ever happen, it would be good to show it
+          showNotFulfilled={
+            orderStatus === OrderStatus.FULFILLED || orderStatus === OrderStatus.PARTIALLY_FULFILLED
+          }
+          // The only state when every item should be fulfilled is FULFILLED, so
+          // we don't need to show whether an item is fulfilled
+          showFulfilled={orderStatus !== OrderStatus.FULFILLED}
+          key={item.uuids[0]}
+        />
+      ))}
       <hr className={styles.divider} />
+      {actionable && items.some(item => !item.fulfilled) && orderStatus !== OrderStatus.PLACED ? (
+        <p className={styles.rescheduleReminder}>
+          {items.some(item => item.fulfilled)
+            ? 'We apologize for not having your complete order ready. Please schedule a new pickup time for the rest of your order.'
+            : 'Please schedule a new pickup time for your order.'}
+        </p>
+      ) : null}
       <div className={styles.footer}>
         <div className={styles.buttons}>
           <Button onClick={() => setModalOpen(true)}>Pickup Details</Button>

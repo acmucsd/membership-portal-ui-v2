@@ -1,4 +1,5 @@
 export type Styles = {
+  badge: string;
   buttons: string;
   container: string;
   divider: string;
@@ -7,7 +8,9 @@ export type Styles = {
   itemInfo: string;
   itemSummary: string;
   label: string;
+  notAvailable: string;
   partiallyFulfilledText: string;
+  rescheduleReminder: string;
   totalDiamonds: string;
   totalPrice: string;
 };
