@@ -12,7 +12,7 @@
 }
 
 .table {
-  background-color: var(--theme-surface-1);
+  background-color: var(--theme-elevated-background);
   border-radius: 1rem;
   box-shadow: 0 0 4px var(--theme-accent-line-1-transparent);
   padding: 1rem;
@@ -28,6 +28,6 @@
   }
 
   tbody tr {
-    border-top: 1px solid var(--theme-accent-line-2);
+    border-top: 1px solid var(--theme-elevated-stroke);
   }
 }
