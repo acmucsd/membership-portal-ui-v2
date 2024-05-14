@@ -17,7 +17,7 @@ interface PickupOrderProps {
 
 const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderProps) => {
   const itemQuantities = getOrderItemQuantities(order.items);
-  const [unselected, setUnselected] = useState(new Set<UUID>());
+  const [selected, setSelected] = useState(new Set<UUID>());
 
   return (
     <tr className={styles.row}>
@@ -51,15 +51,15 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
                       <input
                         key={uuid}
                         type="checkbox"
-                        checked={!unselected.has(uuid)}
+                        checked={selected.has(uuid)}
                         onChange={e => {
-                          const copy = new Set(unselected);
+                          const copy = new Set(selected);
                           if (e.currentTarget.checked) {
-                            copy.delete(uuid);
-                          } else {
                             copy.add(uuid);
+                          } else {
+                            copy.delete(uuid);
                           }
-                          setUnselected(copy);
+                          setSelected(copy);
                         }}
                       />
                     ))
@@ -73,7 +73,7 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
             size="small"
             onClick={async () => {
               try {
-                const items = order.items.filter(item => !unselected.has(item.uuid));
+                const items = order.items.filter(item => !selected.has(item.uuid));
                 const newOrder = await StoreAPI.fulfillOrderPickup(token, order.uuid, items);
                 const itemUuids = items.map(item => item.uuid);
                 onOrderUpdate({
@@ -87,7 +87,7 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
               }
             }}
           >
-            Fulfill {unselected.size > 0 ? 'Selected' : 'All'}
+            Fulfill Selected
           </Button>
         ) : null}
       </td>

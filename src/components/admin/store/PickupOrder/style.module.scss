@@ -23,6 +23,12 @@
       .fulfilled {
         color: vars.$green-300;
       }
+
+      [type='checkbox'] {
+        cursor: pointer;
+        height: 1rem;
+        width: 1rem;
+      }
     }
   }
 }
