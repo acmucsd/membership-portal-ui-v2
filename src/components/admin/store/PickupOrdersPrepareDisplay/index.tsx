@@ -22,7 +22,8 @@ const PickupOrdersPrepareDisplay = ({
   const itemBreakdown: OrderItemQuantity[] = useMemo(() => {
     // Concatenate all items together into one large order to display the item breakdown.
     const allItems = orders.flatMap(a => a.items);
-    return getOrderItemQuantities(allItems, { ignoreFulfilled: true });
+    // Don't include already-fulfilled items from rescheduled partially fulfilled orders
+    return getOrderItemQuantities(allItems).filter(item => !item.fulfilled);
   }, [orders]);
 
   const sorted = useMemo(

@@ -387,21 +387,14 @@ export const isOrderPickupEvent = (
 
 export type OrderItemQuantity = Omit<PublicOrderItemWithQuantity, 'uuid'> & { uuids: UUID[] };
 
-export type GetOrderItemQuantitiesOptions = {
-  ignoreFulfilled?: boolean;
-};
-
 /**
  * Condenses a list of ordered items into unique items with quantities.
  */
-export const getOrderItemQuantities = (
-  items: PublicOrderItem[],
-  { ignoreFulfilled = false }: GetOrderItemQuantitiesOptions = {}
-): OrderItemQuantity[] => {
+export const getOrderItemQuantities = (items: PublicOrderItem[]): OrderItemQuantity[] => {
   const itemMap = new Map<string, OrderItemQuantity>();
 
   items.forEach(item => {
-    const hash = `${item.option.uuid} ${ignoreFulfilled ? '' : item.fulfilled}`;
+    const hash = `${item.option.uuid} ${item.fulfilled}`;
     const existingItem = itemMap.get(hash);
     if (existingItem) {
       existingItem.quantity += 1;
