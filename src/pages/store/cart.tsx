@@ -8,7 +8,7 @@ import {
   StoreConfirmModal,
 } from '@/components/store';
 import { config, showToast } from '@/lib';
-import { getFutureOrderPickupEvents } from '@/lib/api/StoreAPI';
+import { getValidFutureOrderPickupEvents } from '@/lib/api/StoreAPI';
 import { getCurrentUserAndRefreshCookie } from '@/lib/api/UserAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { StoreManager } from '@/lib/managers';
@@ -248,21 +248,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const AUTH_TOKEN = getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   const savedCartPromise = CartService.getCart({ req, res });
-  const pickupEventsPromise = getFutureOrderPickupEvents(AUTH_TOKEN).then(events =>
-    events
-      .filter(event => event.status !== 'CANCELLED')
-      .filter(
-        event => !(event.orders && event.orderLimit && event.orders.length > event.orderLimit)
-      )
-      // filter out events that have a start time less than 2 days from now
-      .filter(event => {
-        const startTime = new Date(event.start);
-        const now = Date.now();
-        const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
-        const twoDaysFromNow = new Date(now + twoDaysInMs);
-        return startTime >= twoDaysFromNow;
-      })
-  );
+  const pickupEventsPromise = getValidFutureOrderPickupEvents(AUTH_TOKEN);
   const userPromise = getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
 
   // gather the API request promises and await them concurrently
