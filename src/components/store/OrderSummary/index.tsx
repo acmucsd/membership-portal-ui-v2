@@ -80,7 +80,10 @@ const OrderItemsSummary = ({ items, orderStatus }: OrderItemsSummaryProps) => {
   const pickedUpItems = items.filter(item => item.fulfilled);
   const notPickedUpItems = items.filter(item => !item.fulfilled);
 
-  if (pickedUpItems.length === 0 || notPickedUpItems.length === 0) {
+  if (
+    notPickedUpItems.length === 0 ||
+    (pickedUpItems.length === 0 && orderStatus === OrderStatus.PLACED)
+  ) {
     return (
       <>
         {items.map(item => (
@@ -95,9 +98,11 @@ const OrderItemsSummary = ({ items, orderStatus }: OrderItemsSummaryProps) => {
       <Typography variant="h3/bold" className={styles.partiallyFulfilledText}>
         {orderStatus === OrderStatus.PLACED ? 'Already Picked Up:' : 'Items Picked Up:'}
       </Typography>
-      {pickedUpItems.map(item => (
-        <OrderItemPreview item={item} key={item.uuids[0]} />
-      ))}
+      {pickedUpItems.length > 0 ? (
+        pickedUpItems.map(item => <OrderItemPreview item={item} key={item.uuids[0]} />)
+      ) : (
+        <p className={styles.partiallyFulfilledText}>None</p>
+      )}
     </>
   );
   const notPickedUp = (

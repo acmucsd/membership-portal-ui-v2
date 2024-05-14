@@ -24,6 +24,50 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
       <td>
         <Typography variant="h5/regular">{`${order.user.firstName} ${order.user.lastName}`}</Typography>
         <OrderStatusIndicator orderStatus={order.status} />
+      </td>
+      <td>
+        <ul className={styles.itemList}>
+          {itemQuantities.map(item => {
+            let badge = null;
+            if (
+              order.status === OrderStatus.FULFILLED ||
+              order.status === OrderStatus.PARTIALLY_FULFILLED
+            ) {
+              if (!item.fulfilled) {
+                badge = <span className={styles.notFulfilled}>Not fulfilled</span>;
+              }
+            } else if (order.status === OrderStatus.PLACED) {
+              if (item.fulfilled) {
+                badge = <span className={styles.fulfilled}>Fulfilled</span>;
+              }
+            }
+            return (
+              <li key={item.uuids[0]}>
+                <Typography variant="h5/regular">
+                  {`${item.quantity} x ${itemToString(item)}`} {badge}
+                </Typography>
+                {canFulfill && !item.fulfilled
+                  ? item.uuids.map(uuid => (
+                      <input
+                        key={uuid}
+                        type="checkbox"
+                        checked={!unselected.has(uuid)}
+                        onChange={e => {
+                          const copy = new Set(unselected);
+                          if (e.currentTarget.checked) {
+                            copy.delete(uuid);
+                          } else {
+                            copy.add(uuid);
+                          }
+                          setUnselected(copy);
+                        }}
+                      />
+                    ))
+                  : null}
+              </li>
+            );
+          })}
+        </ul>
         {canFulfill ? (
           <Button
             size="small"
@@ -46,42 +90,6 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
             Fulfill {unselected.size > 0 ? 'Selected' : 'All'}
           </Button>
         ) : null}
-      </td>
-      <td>
-        <ul className={styles.itemList}>
-          {itemQuantities.map(item => {
-            return (
-              <li key={item.uuids[0]}>
-                <Typography variant="h5/regular">
-                  {`${item.quantity} x ${itemToString(item)}`}{' '}
-                  {(order.status === OrderStatus.FULFILLED ||
-                    order.status === OrderStatus.PARTIALLY_FULFILLED) &&
-                  !item.fulfilled ? (
-                    <span className={styles.notFulfilled}>Not fulfilled</span>
-                  ) : null}
-                </Typography>
-                {canFulfill
-                  ? item.uuids.map(uuid => (
-                      <input
-                        key={uuid}
-                        type="checkbox"
-                        checked={!unselected.has(uuid)}
-                        onChange={e => {
-                          const copy = new Set(unselected);
-                          if (e.currentTarget.checked) {
-                            copy.delete(uuid);
-                          } else {
-                            copy.add(uuid);
-                          }
-                          setUnselected(copy);
-                        }}
-                      />
-                    ))
-                  : null}
-              </li>
-            );
-          })}
-        </ul>
       </td>
     </tr>
   );

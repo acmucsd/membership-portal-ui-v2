@@ -19,6 +19,10 @@
       .notFulfilled {
         color: vars.$red;
       }
+
+      .fulfilled {
+        color: vars.$green-300;
+      }
     }
   }
 }

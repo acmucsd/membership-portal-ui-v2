@@ -22,8 +22,36 @@ const PickupOrdersPrepareDisplay = ({
   const itemBreakdown: OrderItemQuantity[] = useMemo(() => {
     // Concatenate all items together into one large order to display the item breakdown.
     const allItems = orders.flatMap(a => a.items);
-    return getOrderItemQuantities(allItems);
+    return getOrderItemQuantities(allItems, { ignoreFulfilled: true });
   }, [orders]);
+
+  const sorted = useMemo(
+    () =>
+      [...orders].sort((a, b) => {
+        if (a.status !== b.status) {
+          // Sort by PLACED first
+          return (
+            (b.status === OrderStatus.PLACED ? 1 : 0) - (a.status === OrderStatus.PLACED ? 1 : 0)
+          );
+        }
+        // Get the latest pickup time. Default to order time.
+        const aTime = a.items.reduce((acc, curr) => {
+          if (!curr.fulfilledAt) {
+            return acc;
+          }
+          return Math.max(acc, new Date(curr.fulfilledAt).getTime());
+        }, new Date(a.orderedAt).getTime());
+        const bTime = b.items.reduce((acc, curr) => {
+          if (!curr.fulfilledAt) {
+            return acc;
+          }
+          return Math.max(acc, new Date(curr.fulfilledAt).getTime());
+        }, new Date(b.orderedAt).getTime());
+        // Sort by soonest first
+        return bTime - aTime;
+      }),
+    [orders]
+  );
 
   return (
     <div className={styles.container}>
@@ -70,7 +98,7 @@ const PickupOrdersPrepareDisplay = ({
             </tr>
           </thead>
           <tbody>
-            {orders.map(order => (
+            {sorted.map(order => (
               <PickupOrder
                 canFulfill={canFulfill && order.status === OrderStatus.PLACED}
                 order={order}
