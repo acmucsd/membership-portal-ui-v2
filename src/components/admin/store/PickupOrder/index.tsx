@@ -36,10 +36,8 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
               if (!item.fulfilled) {
                 badge = <span className={styles.notFulfilled}>Not fulfilled</span>;
               }
-            } else if (order.status === OrderStatus.PLACED) {
-              if (item.fulfilled) {
-                badge = <span className={styles.fulfilled}>Fulfilled</span>;
-              }
+            } else if (item.fulfilled) {
+              badge = <span className={styles.fulfilled}>Fulfilled</span>;
             }
             return (
               <li key={item.uuids[0]}>
@@ -73,7 +71,7 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
             size="small"
             onClick={async () => {
               try {
-                const items = order.items.filter(item => !selected.has(item.uuid));
+                const items = order.items.filter(item => selected.has(item.uuid));
                 const newOrder = await StoreAPI.fulfillOrderPickup(token, order.uuid, items);
                 const itemUuids = items.map(item => item.uuid);
                 onOrderUpdate({
