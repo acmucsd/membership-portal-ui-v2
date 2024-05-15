@@ -164,6 +164,7 @@ export interface OptionalEventProperties {
   eventLink?: string;
   requiresStaff?: boolean;
   staffPointBonus?: number;
+  discordEvent?: string | null;
 }
 
 export interface Event extends OptionalEventProperties {
@@ -414,6 +415,14 @@ export interface CreateDiscordEventRequest {
   description: string;
   location: string;
   image?: string;
+}
+
+export interface PatchDiscordEventRequest extends CreateDiscordEventRequest {
+  eventID: string;
+}
+
+export interface DeleteDiscordEventRequest {
+  eventID: string;
 }
 
 export interface GenerateACMURLRequest {

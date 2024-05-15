@@ -132,6 +132,7 @@ export interface PublicEvent {
   pointValue: number;
   requiresStaff: boolean;
   staffPointBonus: number;
+  discordEvent?: string | null;
 }
 
 export interface GetPastEventsResponse extends ApiResponse {

@@ -1,5 +1,6 @@
 import { EventAPI, KlefkiAPI } from '@/lib/api';
 import config from '@/lib/config';
+import { CookieService } from '@/lib/services';
 import type { APIHandlerProps, AuthAPIHandlerProps, URL, UUID } from '@/lib/types';
 import {
   CancelPickupEventRequest,
@@ -11,6 +12,7 @@ import {
   Event,
   GenerateACMURLRequest,
   OrderPickupEvent,
+  PatchDiscordEventRequest,
   UploadEventImageRequest,
 } from '@/lib/types/apiRequests';
 import type {
@@ -19,6 +21,7 @@ import type {
   PublicOrder,
   PublicOrderPickupEvent,
 } from '@/lib/types/apiResponses';
+import { CookieType } from '@/lib/types/enums';
 
 interface GetEventFromNotion {
   pageUrl: URL;
@@ -49,12 +52,28 @@ export const getEventFromNotionURL = async (
  * @param data
  */
 export const createDiscordEvent = async (
-  data: CreateDiscordEventRequest & APIHandlerProps<void>
+  data: CreateDiscordEventRequest & APIHandlerProps<string>
 ) => {
   const { onSuccessCallback, onFailCallback, ...event } = data;
   try {
-    await KlefkiAPI.createDiscordEvent(event);
-    onSuccessCallback?.();
+    const response = await KlefkiAPI.createDiscordEvent(event);
+    onSuccessCallback?.(response.data.message);
+  } catch (e: any) {
+    onFailCallback?.(e.response.data.error);
+  }
+};
+
+/**
+ * Patch Discord event
+ * @param data
+ */
+export const patchDiscordEvent = async (
+  data: PatchDiscordEventRequest & APIHandlerProps<string>
+) => {
+  const { onSuccessCallback, onFailCallback, ...event } = data;
+  try {
+    const response = await KlefkiAPI.patchDiscordEvent(event);
+    onSuccessCallback?.(response.data.message);
   } catch (e: any) {
     onFailCallback?.(e.response.data.error);
   }
@@ -113,6 +132,28 @@ export const editEvent = async (data: EditEventRequest & AuthAPIHandlerProps<Pub
     onSuccessCallback?.(modifiedEvent);
   } catch (e) {
     onFailCallback?.(e);
+  }
+};
+
+export const deleteDiscordEvent = async (data: PublicEvent & APIHandlerProps<void>) => {
+  const { onSuccessCallback, onFailCallback, ...event } = data;
+  try {
+    if (event.discordEvent) {
+      await KlefkiAPI.deleteDiscordEvent({
+        eventID: event.discordEvent,
+      });
+    }
+
+    const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
+    await editEvent({
+      token: AUTH_TOKEN,
+      uuid: event.uuid,
+      event: { ...event, discordEvent: null },
+    });
+
+    onSuccessCallback?.();
+  } catch (e: any) {
+    onFailCallback?.(e.response.data.error);
   }
 };
 
