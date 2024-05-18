@@ -14,7 +14,6 @@ import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccess
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getDefaultMerchCollectionPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/StoreHomePage.module.scss';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -96,20 +95,35 @@ const StoreHomePage = ({
         </div>
         {view === 'collections' ? (
           <div className={styles.collections}>
-            {visibleCollections.map(collection => (
-              <ItemCard
-                image={getDefaultMerchCollectionPhoto(collection)}
-                title={collection.title}
-                description={collection.description}
-                href={`${config.store.collectionRoute}${collection.uuid}`}
-                key={collection.uuid}
-              >
-                {storeAdminVisible && collection.archived ? <HiddenIcon type="collection" /> : null}
-                {storeAdminVisible ? (
-                  <StoreEditButton type="collection" uuid={collection.uuid} />
-                ) : null}
-              </ItemCard>
-            ))}
+            {visibleCollections.map(collection => {
+              const collectionPhotos = [...collection.collectionPhotos]
+                .sort((a, b) => a.position - b.position)
+                .map(photo => photo.uploadedPhoto);
+              return (
+                <ItemCard
+                  images={
+                    collectionPhotos.length > 0
+                      ? collectionPhotos
+                      : // Default to using item photos if there are no collection photos
+                        collection.items
+                          .flatMap(item => item.merchPhotos)
+                          .sort((a, b) => a.position - b.position)
+                          .map(photo => photo.uploadedPhoto)
+                  }
+                  title={collection.title}
+                  description={collection.description}
+                  href={`${config.store.collectionRoute}${collection.uuid}`}
+                  key={collection.uuid}
+                >
+                  {storeAdminVisible && collection.archived ? (
+                    <HiddenIcon type="collection" />
+                  ) : null}
+                  {storeAdminVisible ? (
+                    <StoreEditButton type="collection" uuid={collection.uuid} />
+                  ) : null}
+                </ItemCard>
+              );
+            })}
             {storeAdminVisible ? (
               <CreateButton type="collection">Create a collection</CreateButton>
             ) : null}

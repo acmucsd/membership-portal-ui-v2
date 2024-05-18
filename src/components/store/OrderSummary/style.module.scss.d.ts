@@ -7,6 +7,7 @@ export type Styles = {
   itemInfo: string;
   itemSummary: string;
   label: string;
+  partiallyFulfilledText: string;
   totalDiamonds: string;
   totalPrice: string;
 };

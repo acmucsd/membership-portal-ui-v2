@@ -1,7 +1,7 @@
 import defaultProfilePictures from '@/lib/constants/profilePictures';
 import ranks from '@/lib/constants/ranks';
 import showToast from '@/lib/showToast';
-import type { URL } from '@/lib/types';
+import type { URL, UUID } from '@/lib/types';
 import type {
   ApiResponse,
   CustomErrorBody,
@@ -24,7 +24,7 @@ import {
   type StaticImport,
   type StaticRequire,
 } from 'next/dist/shared/lib/get-img-props';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 
 /**
  * Get next `num` years from today in a number array to generate dropdown options for future selections
@@ -170,18 +170,15 @@ export const isSrcAGif = (src: string | StaticImport): boolean => {
  * @returns The object URL. Defaults an empty string if `file` is empty.
  */
 export function useObjectUrl(file?: Blob | null): string {
-  const [url, setUrl] = useState('');
+  const url = useMemo(() => (file ? URL.createObjectURL(file) : ''), [file]);
 
   useEffect(() => {
-    if (!file) {
-      return undefined;
-    }
-    const url = URL.createObjectURL(file);
-    setUrl(url);
     return () => {
-      URL.revokeObjectURL(url);
+      if (url !== '') {
+        URL.revokeObjectURL(url);
+      }
     };
-  }, [file]);
+  }, [url]);
 
   return url;
 }
@@ -317,7 +314,7 @@ export const getDefaultMerchItemPhoto = (
   return NoImage.src;
 };
 
-export const getDefaultOrderItemPhoto = (item: PublicOrderItem): string => {
+export const getDefaultOrderItemPhoto = (item: Pick<PublicOrderItem, 'option'>): string => {
   if (item.option.item.uploadedPhoto) {
     return item.option.item.uploadedPhoto;
   }
@@ -388,18 +385,22 @@ export const isOrderPickupEvent = (
   event: PublicOrderPickupEvent | PublicEvent
 ): event is PublicOrderPickupEvent => 'status' in event;
 
+export type OrderItemQuantity = Omit<PublicOrderItemWithQuantity, 'uuid'> & { uuids: UUID[] };
+
 /**
  * Condenses a list of ordered items into unique items with quantities.
  */
-export const getOrderItemQuantities = (items: PublicOrderItem[]): PublicOrderItemWithQuantity[] => {
-  const itemMap = new Map<string, PublicOrderItemWithQuantity>();
+export const getOrderItemQuantities = (items: PublicOrderItem[]): OrderItemQuantity[] => {
+  const itemMap = new Map<string, OrderItemQuantity>();
 
   items.forEach(item => {
-    const existingItem = itemMap.get(item.option.uuid);
+    const hash = `${item.option.uuid} ${item.fulfilled}`;
+    const existingItem = itemMap.get(hash);
     if (existingItem) {
       existingItem.quantity += 1;
+      existingItem.uuids.push(item.uuid);
     } else {
-      itemMap.set(item.option.uuid, { ...item, quantity: 1 });
+      itemMap.set(hash, { ...item, quantity: 1, uuids: [item.uuid] });
     }
   });
 
@@ -462,4 +463,11 @@ export function seededRandom(a: number, b: number, c: number, d: number): () => 
     return (r >>> 0) / 4294967296;
     /* eslint-enable no-bitwise, no-param-reassign */
   };
+}
+
+/**
+ * Gets the file name from a URL by taking the last part of the URL.
+ */
+export function getFileName(url: string, defaultName: string): string {
+  return decodeURIComponent(url.split('/').at(-1) ?? defaultName);
 }

@@ -132,6 +132,9 @@ const PortalHomePage = ({
         <div className={styles.checkinButtons}>
           <input
             type="text"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
             placeholder="Enter event check-in code"
             className={styles.checkinInput}
             value={checkinCode}

@@ -5,7 +5,6 @@ import ItemCard from '@/components/store/ItemCard';
 import StoreEditButton from '@/components/store/StoreEditButton';
 import { config } from '@/lib';
 import { PublicMerchItem } from '@/lib/types/apiResponses';
-import { getDefaultMerchItemPhoto } from '@/lib/utils';
 import Link from 'next/link';
 import styles from './style.module.scss';
 
@@ -40,7 +39,9 @@ const CollectionSlider = ({
           .map(item => (
             <ItemCard
               className={styles.card}
-              image={getDefaultMerchItemPhoto(item)}
+              images={[...item.merchPhotos]
+                .sort((a, b) => a.position - b.position)
+                .map(photo => photo.uploadedPhoto)}
               title={item.itemName}
               href={`${config.store.itemRoute}${item.uuid}`}
               cost={item.options[0]?.price ?? 0}

@@ -221,7 +221,8 @@
         width: 0;
 
         @media screen and (width <= vars.$breakpoint-md) {
-          font-size: 0.75rem;
+          // 1rem prevents auto zoom on iOS
+          font-size: 1rem;
           line-height: 1.5rem;
           padding: 0.625rem 1.25rem;
         }
