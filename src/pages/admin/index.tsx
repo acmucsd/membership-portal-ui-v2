@@ -96,7 +96,10 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
         }}
       >
         {PermissionService.canViewResumes.includes(accessType) ? (
-          <LinkButton href={config.admin.viewResumes}>View User Resumes</LinkButton>
+          <>
+            <LinkButton href={config.admin.viewResumes}>View User Resumes</LinkButton>
+            <LinkButton href={config.admin.manageUserAccess}>Manage User Access</LinkButton>
+          </>
         ) : (
           'Restricted Access'
         )}
