@@ -1,5 +1,9 @@
-import { SignInButton, SignInFormItem, SignInTitle } from '@/components/auth';
-import { VerticalForm } from '@/components/common';
+import {
+  VerticalForm,
+  VerticalFormButton,
+  VerticalFormItem,
+  VerticalFormTitle,
+} from '@/components/common';
 import { showToast } from '@/lib';
 import withAccessType from '@/lib/hoc/withAccessType';
 import manageUserAccess from '@/lib/managers/AdminUserManager';
@@ -34,8 +38,8 @@ const ManageUserAccessPage = () => {
 
   return (
     <VerticalForm onEnterPress={handleSubmit(onSubmit)}>
-      <SignInTitle text="Manage User Access" />
-      <SignInFormItem
+      <VerticalFormTitle text="Manage User Access" />
+      <VerticalFormItem
         icon={<AiOutlineMail />}
         element="input"
         name="user"
@@ -49,15 +53,16 @@ const ManageUserAccessPage = () => {
         })}
         error={errors.user}
       />
-      <SignInFormItem
+      <VerticalFormItem
         icon={<BsPerson />}
         element="select"
         name="User Access"
         options={Object.values(UserAccessType).filter(option => option !== 'ADMIN')}
         formRegister={register('accessType')}
         error={errors.user}
+        placeholder=""
       />
-      <SignInButton
+      <VerticalFormButton
         type="button"
         display="button1"
         text="Submit"
