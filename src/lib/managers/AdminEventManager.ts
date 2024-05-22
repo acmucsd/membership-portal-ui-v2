@@ -47,33 +47,25 @@ export const getEventFromNotionURL = async (
   }
 };
 
-/**
- * Create Discord event
- * @param data
- */
 export const createDiscordEvent = async (
   data: CreateDiscordEventRequest & APIHandlerProps<string>
 ) => {
   const { onSuccessCallback, onFailCallback, ...event } = data;
   try {
-    const response = await KlefkiAPI.createDiscordEvent(event);
-    onSuccessCallback?.(response.data.message);
+    const data = await KlefkiAPI.createDiscordEvent(event);
+    onSuccessCallback?.(data.message);
   } catch (e: any) {
     onFailCallback?.(e.response.data.error);
   }
 };
 
-/**
- * Patch Discord event
- * @param data
- */
 export const patchDiscordEvent = async (
   data: PatchDiscordEventRequest & APIHandlerProps<string>
 ) => {
   const { onSuccessCallback, onFailCallback, ...event } = data;
   try {
-    const response = await KlefkiAPI.patchDiscordEvent(event);
-    onSuccessCallback?.(response.data.message);
+    const data = await KlefkiAPI.patchDiscordEvent(event);
+    onSuccessCallback?.(data.message);
   } catch (e: any) {
     onFailCallback?.(e.response.data.error);
   }

@@ -6,7 +6,11 @@ import {
   GenerateACMURLRequest,
   PatchDiscordEventRequest,
 } from '@/lib/types/apiRequests';
-import type { NotionEventDetails, NotionEventPreview } from '@/lib/types/apiResponses';
+import type {
+  KlefkiAPIResponse,
+  NotionEventDetails,
+  NotionEventPreview,
+} from '@/lib/types/apiResponses';
 import axios from 'axios';
 import totp from 'totp-generator';
 
@@ -39,26 +43,34 @@ export const getNotionEventPage = async (pageUrl: URL): Promise<NotionEventDetai
   return response.data;
 };
 
-export const createDiscordEvent = async (event: CreateDiscordEventRequest): Promise<any> => {
+export const createDiscordEvent = async (
+  event: CreateDiscordEventRequest
+): Promise<KlefkiAPIResponse> => {
   const { klefki } = config;
   const requestUrl = `${klefki.baseUrl}${klefki.endpoints.discord.event}`;
 
-  return axios.post<void>(requestUrl, event, {
+  const response = await axios.post<KlefkiAPIResponse>(requestUrl, event, {
     headers: {
       Authorization: `Bearer ${generateToken(klefki.key)}`,
     },
   });
+
+  return response.data;
 };
 
-export const patchDiscordEvent = async (event: PatchDiscordEventRequest): Promise<any> => {
+export const patchDiscordEvent = async (
+  event: PatchDiscordEventRequest
+): Promise<KlefkiAPIResponse> => {
   const { klefki } = config;
   const requestUrl = `${klefki.baseUrl}${klefki.endpoints.discord.event}`;
 
-  return axios.patch<void>(requestUrl, event, {
+  const response = await axios.patch<KlefkiAPIResponse>(requestUrl, event, {
     headers: {
       Authorization: `Bearer ${generateToken(klefki.key)}`,
     },
   });
+
+  return response.data;
 };
 
 export const deleteDiscordEvent = async (event: DeleteDiscordEventRequest): Promise<void> => {

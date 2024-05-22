@@ -19,7 +19,7 @@ interface IProps {
 const ManageEventCard = ({ event }: IProps) => {
   const router = useRouter();
   const [acmurlLoading, setAcmurlLoading] = useState(false);
-  const [discordEvent, setDiscordEvent] = useState<string | null | undefined>(event.discordEvent);
+  const [discordEvent, setDiscordEvent] = useState<string | null>(event.discordEvent);
 
   const publicEventLink = `https://acmucsd.com/events/${event.uuid}`;
 
@@ -28,46 +28,51 @@ const ManageEventCard = ({ event }: IProps) => {
   };
 
   const generateDiscordEvent = () => {
-    if (discordEvent) {
-      AdminEventManager.patchDiscordEvent({
-        ...event,
-        eventID: discordEvent,
-        image: event.cover,
-        onSuccessCallback: () => {
-          showToast('Successfully edited event!', 'Check your server to confirm all details');
-        },
-        onFailCallback: e => {
-          reportError('Error while editing Discord Event!', e);
-        },
-      });
-    } else {
-      AdminEventManager.createDiscordEvent({
-        ...event,
-        image: event.cover,
-        onSuccessCallback: data => {
-          const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
-          const eventID = data.split(' ').pop();
+    AdminEventManager.createDiscordEvent({
+      ...event,
+      image: event.cover,
+      onSuccessCallback: data => {
+        const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
+        const eventID = data.split(' ').pop();
 
-          AdminEventManager.editEvent({
-            token: AUTH_TOKEN,
-            uuid: event.uuid,
-            event: {
-              ...event,
-              discordEvent: eventID,
-            },
-            onFailCallback: error => {
-              reportError('Unable to edit event', error);
-            },
-          });
+        AdminEventManager.editEvent({
+          token: AUTH_TOKEN,
+          uuid: event.uuid,
+          event: {
+            ...event,
+            discordEvent: eventID,
+          },
+          onFailCallback: error => {
+            reportError('Unable to edit event', error);
+          },
+        });
 
-          setDiscordEvent(eventID);
-          showToast('Successfully created event!', 'Check your server to confirm all details');
-        },
-        onFailCallback: e => {
-          reportError('Error while generating Discord Event!', e);
-        },
-      });
+        if (eventID) setDiscordEvent(eventID);
+        showToast('Successfully created event!', 'Check your server to confirm all details');
+      },
+      onFailCallback: e => {
+        reportError('Error while generating Discord Event!', e);
+      },
+    });
+  };
+
+  const updateDiscordEvent = () => {
+    if (!discordEvent) {
+      showToast("Couldn't update Discord Event...", `${event.title} doesn't have a Discord Event!`);
+      return;
     }
+
+    AdminEventManager.patchDiscordEvent({
+      ...event,
+      eventID: discordEvent,
+      image: event.cover,
+      onSuccessCallback: () => {
+        showToast('Successfully edited event!', 'Check your server to confirm all details');
+      },
+      onFailCallback: e => {
+        reportError('Error while editing Discord Event!', e);
+      },
+    });
   };
 
   const deleteDiscordEvent = () => {
@@ -136,7 +141,8 @@ const ManageEventCard = ({ event }: IProps) => {
       <a href={publicEventLink}>View Public Event Page</a>
       <Link href={`${config.admin.events.editRoute}/${event.uuid}`}>Edit Details</Link>
       <Button onClick={duplicateEvent}>Duplicate Event</Button>
-      <Button onClick={generateDiscordEvent}>Generate Discord Event</Button>
+      {!discordEvent && <Button onClick={generateDiscordEvent}>Create New Discord Event</Button>}
+      {discordEvent && <Button onClick={updateDiscordEvent}>Update Discord Event</Button>}
       {discordEvent && <Button onClick={deleteDiscordEvent}>Delete Discord Event</Button>}
       <Button onClick={generateACMURL} disabled={acmurlLoading}>
         Generate ACMURL

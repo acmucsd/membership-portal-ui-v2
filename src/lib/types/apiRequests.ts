@@ -164,7 +164,7 @@ export interface OptionalEventProperties {
   eventLink?: string;
   requiresStaff?: boolean;
   staffPointBonus?: number;
-  discordEvent?: string | null;
+  discordEvent: string | null;
 }
 
 export interface Event extends OptionalEventProperties {
