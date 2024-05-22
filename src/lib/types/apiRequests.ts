@@ -418,11 +418,11 @@ export interface CreateDiscordEventRequest {
 }
 
 export interface PatchDiscordEventRequest extends CreateDiscordEventRequest {
-  eventID: string;
+  eventID: UUID;
 }
 
 export interface DeleteDiscordEventRequest {
-  eventID: string;
+  eventID: UUID;
 }
 
 export interface GenerateACMURLRequest {
