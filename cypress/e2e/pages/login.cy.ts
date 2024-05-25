@@ -9,6 +9,16 @@ describe('Login Page', () => {
     cy.fixture('accounts').then(({ standard }) => {
       const { email, password } = standard;
 
+      cy.fixture('acmAuthResponse').then(({ authAdmin }) => {
+        cy.intercept('POST', 'login', authAdmin).as('authAdminGood');
+      });
+
+      cy.fixture('acmStandardProfile').then(standardProfile => {
+        cy.intercept('GET', 'user', standardProfile).as('adminProfile');
+      });
+
+      cy.log('Logging in with email:', email);
+
       cy.get('input[name="email"]').type(email);
       cy.get('input[name="password"]').type(password);
       cy.get('button').contains('Sign In').click();
@@ -22,6 +32,14 @@ describe('Login Page', () => {
     cy.fixture('accounts').then(({ admin }) => {
       const { email, password } = admin;
 
+      cy.fixture('acmAuthResponse').then(({ authAdmin }) => {
+        cy.intercept('POST', 'login', authAdmin).as('authAdminGood');
+      });
+
+      cy.fixture('acmAdminProfile').then(adminProfile => {
+        cy.intercept('GET', 'user', adminProfile).as('adminProfile');
+      });
+
       cy.get('input[name="email"]').type(email);
       cy.get('input[name="password"]').type(password);
       cy.get('button').contains('Sign In').click();
@@ -33,6 +51,10 @@ describe('Login Page', () => {
   });
 
   it('Should fail with invalid credentials', () => {
+    cy.fixture('acmAuthResponseBadPassword').then(({ authAdminBad }) => {
+      cy.intercept('POST', 'login', authAdminBad).as('authAdminBad');
+    });
+
     const [email, password] = ['abc123@xyz.com', 'abc'];
 
     cy.get('input[name="email"]').type(email);
