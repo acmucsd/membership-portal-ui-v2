@@ -132,6 +132,7 @@ export interface PublicEvent {
   pointValue: number;
   requiresStaff: boolean;
   staffPointBonus: number;
+  discordEvent: string | null;
 }
 
 export interface GetPastEventsResponse extends ApiResponse {
@@ -509,6 +510,11 @@ export interface PatchResumeResponse extends ApiResponse {
 }
 
 export interface DeleteResumeResponse extends ApiResponse {}
+
+export interface KlefkiAPIResponse {
+  message: string;
+  error: string;
+}
 
 export interface NotionEventDetails {
   title: string;
