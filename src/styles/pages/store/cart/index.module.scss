@@ -167,7 +167,10 @@
       background-color: var(--theme-elevated-background);
       grid-area: event;
       margin-bottom: 2rem;
-      overflow: visible;
+
+      @media screen and (min-width: vars.$breakpoint-md) {
+        overflow: visible;
+      }
 
       .mobile {
         display: none;
