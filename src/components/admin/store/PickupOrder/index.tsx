@@ -34,34 +34,41 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
               order.status === OrderStatus.PARTIALLY_FULFILLED
             ) {
               if (!item.fulfilled) {
-                badge = <span className={styles.notFulfilled}>Not fulfilled</span>;
+                badge = (
+                  <span className={styles.notFulfilled} title="Not fulfilled">
+                    ❌
+                  </span>
+                );
               }
             } else if (item.fulfilled) {
-              badge = <span className={styles.fulfilled}>Fulfilled</span>;
+              badge = (
+                <span className={styles.fulfilled} title="Fulfilled">
+                  ✅
+                </span>
+              );
             }
             return (
               <li key={item.uuids[0]}>
-                <Typography variant="h5/regular">
-                  {`${item.quantity} x ${itemToString(item)}`} {badge}
-                </Typography>
-                {canFulfill && !item.fulfilled
-                  ? item.uuids.map(uuid => (
-                      <input
-                        key={uuid}
-                        type="checkbox"
-                        checked={selected.has(uuid)}
-                        onChange={e => {
-                          const copy = new Set(selected);
-                          if (e.currentTarget.checked) {
-                            copy.add(uuid);
-                          } else {
-                            copy.delete(uuid);
-                          }
-                          setSelected(copy);
-                        }}
-                      />
-                    ))
-                  : null}
+                <label>
+                  {canFulfill && !item.fulfilled ? (
+                    <input
+                      type="checkbox"
+                      defaultChecked={false}
+                      onChange={e => {
+                        setSelected(
+                          new Set(
+                            e.currentTarget.checked
+                              ? [...Array.from(selected), ...item.uuids]
+                              : Array.from(selected).filter(uuid => !item.uuids.includes(uuid))
+                          )
+                        );
+                      }}
+                    />
+                  ) : null}
+                  <Typography variant="h5/regular" component="span">
+                    {`${item.quantity} x ${itemToString(item)}`} {badge}
+                  </Typography>
+                </label>
               </li>
             );
           })}
@@ -85,7 +92,7 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
               }
             }}
           >
-            Fulfill Selected
+            Fulfill {selected.size} item{selected.size === 1 ? '' : 's'}
           </Button>
         ) : null}
       </td>

@@ -407,7 +407,7 @@ export const getOrderItemQuantities = (items: PublicOrderItem[]): OrderItemQuant
   return Array.from(itemMap.values()).sort(
     (a, b) =>
       // Group unfulfilled items first
-      +b.fulfilled - +a.fulfilled ||
+      +a.fulfilled - +b.fulfilled ||
       // Alphabetize by item name
       a.option.item.itemName.localeCompare(b.option.item.itemName) ||
       // then by option name

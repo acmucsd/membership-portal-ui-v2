@@ -50,10 +50,16 @@ const OrderItemPreview = ({ item, showFulfilled, showNotFulfilled }: OrderItemPr
           fill
         />
         {showFulfilled && item.fulfilled ? (
+          // "Already picked up" means that the item could only have been picked
+          // up from a previous partially fulfilled order that was rescheduled.
+          // For example, if an item is fulfilled but the order is missed or
+          // cancelled
           <div className={styles.badge}>{showNotFulfilled ? 'Picked up' : 'Already picked up'}</div>
         ) : null}
         {showNotFulfilled && !item.fulfilled ? (
-          <div className={`${styles.badge} ${styles.notAvailable}`}>Not available</div>
+          // Only shows for partially fulfilled orders when the item wasn't
+          // available at the pickup event (e.g. hoodies haven't arrived yet)
+          <div className={`${styles.badge} ${styles.notAvailable}`}>Not picked up</div>
         ) : null}
       </div>
       <div className={styles.itemSummary}>
