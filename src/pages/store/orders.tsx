@@ -68,7 +68,7 @@ export default StoreOrderPage;
 
 const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ authToken }) => {
   const ordersPromise = StoreAPI.getAllOrders(authToken);
-  const futurePickupEventsPromise = StoreAPI.getFutureOrderPickupEvents(authToken);
+  const futurePickupEventsPromise = StoreAPI.getValidFutureOrderPickupEvents(authToken);
 
   const [orders, futurePickupEvents] = await Promise.all([
     ordersPromise,
