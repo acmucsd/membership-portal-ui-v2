@@ -54,7 +54,9 @@ const OrderItemPreview = ({ item, showFulfilled, showNotFulfilled }: OrderItemPr
           // up from a previous partially fulfilled order that was rescheduled.
           // For example, if an item is fulfilled but the order is missed or
           // cancelled
-          <div className={styles.badge}>{showNotFulfilled ? 'Picked up' : 'Already picked up'}</div>
+          <div className={`${styles.badge} ${styles.pickedUp}`}>
+            {showNotFulfilled ? 'Picked up' : 'Already picked up'}
+          </div>
         ) : null}
         {showNotFulfilled && !item.fulfilled ? (
           // Only shows for partially fulfilled orders when the item wasn't

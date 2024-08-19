@@ -10,6 +10,7 @@ export type Styles = {
   label: string;
   notAvailable: string;
   partiallyFulfilledText: string;
+  pickedUp: string;
   rescheduleReminder: string;
   totalDiamonds: string;
   totalPrice: string;
