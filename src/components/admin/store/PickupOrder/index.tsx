@@ -30,16 +30,15 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
           {itemQuantities.map(item => {
             let badge = null;
             if (
-              order.status === OrderStatus.FULFILLED ||
-              order.status === OrderStatus.PARTIALLY_FULFILLED
+              !item.fulfilled &&
+              (order.status === OrderStatus.FULFILLED ||
+                order.status === OrderStatus.PARTIALLY_FULFILLED)
             ) {
-              if (!item.fulfilled) {
-                badge = (
-                  <span className={styles.notFulfilled} title="Not fulfilled">
-                    ❌
-                  </span>
-                );
-              }
+              badge = (
+                <span className={styles.notFulfilled} title="Not fulfilled">
+                  ❌
+                </span>
+              );
             } else if (item.fulfilled) {
               badge = (
                 <span className={styles.fulfilled} title="Fulfilled">
