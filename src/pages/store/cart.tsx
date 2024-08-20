@@ -4,6 +4,7 @@ import {
   Diamonds,
   Navbar,
   PickupEventDetail,
+  PickupEventDropdown,
   PickupEventPicker,
   StoreConfirmModal,
 } from '@/components/store';
@@ -186,12 +187,21 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
                 {cartState !== CartState.CONFIRMED ? 'Choose Pickup Event' : 'Pickup Event Details'}
               </Typography>
             </div>
-            <PickupEventPicker
-              events={pickupEvents}
-              eventIndex={pickupIndex}
-              setEventIndex={setPickupIndex}
-              active={cartState !== CartState.CONFIRMED}
-            />
+            <div className={styles.mobile}>
+              <PickupEventPicker
+                events={pickupEvents}
+                eventIndex={pickupIndex}
+                setEventIndex={setPickupIndex}
+                active={cartState !== CartState.CONFIRMED}
+              />
+            </div>
+            <div className={styles.desktop}>
+              <PickupEventDropdown
+                events={pickupEvents}
+                eventIndex={pickupIndex}
+                setEventIndex={setPickupIndex}
+              />
+            </div>
           </div>
         )}
 

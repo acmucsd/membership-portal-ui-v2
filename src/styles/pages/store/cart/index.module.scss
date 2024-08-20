@@ -8,27 +8,26 @@
   max-width: 81rem;
 
   .content {
-    align-items: start;
     display: grid;
     grid-column-gap: 2rem;
     grid-template-areas:
-      'title placeOrder'
-      'confirmation event'
-      'items event'
+      'title title'
+      'confirmation confirmation'
       'items summary'
-      'items warning';
+      'event placeOrder'
+      'warning placeOrder';
     grid-template-columns: 1fr 20rem;
     grid-template-rows: auto auto auto auto 1fr;
 
     @media screen and (max-width: vars.$breakpoint-md) {
       grid-template-areas:
         'title'
-        'placeOrder'
         'warning'
         'confirmation'
         'event'
         'items'
-        'summary';
+        'summary'
+        'placeOrder';
       grid-template-columns: 1fr;
     }
 
@@ -165,8 +164,29 @@
     }
 
     .eventPicker {
+      background-color: var(--theme-elevated-background);
       grid-area: event;
       margin-bottom: 2rem;
+
+      @media screen and (min-width: vars.$breakpoint-md) {
+        overflow: visible;
+      }
+
+      .mobile {
+        display: none;
+
+        @media screen and (max-width: vars.$breakpoint-md) {
+          display: block;
+        }
+      }
+
+      .desktop {
+        display: block;
+
+        @media screen and (max-width: vars.$breakpoint-md) {
+          display: none;
+        }
+      }
     }
 
     .warning {
