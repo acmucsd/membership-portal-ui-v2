@@ -9,12 +9,14 @@
 
   .itemList {
     list-style-type: disc;
+    margin-bottom: 1rem;
 
     li {
       align-items: center;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+      word-break: break-word;
 
       .notFulfilled {
         color: vars.$red;

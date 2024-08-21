@@ -19,30 +19,47 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
   const itemQuantities = getOrderItemQuantities(order.items);
   const [selected, setSelected] = useState(new Set<UUID>());
 
+  const handleFulfillOrder = async () => {
+    try {
+      const items = order.items.filter(item => selected.has(item.uuid));
+      const newOrder = await StoreAPI.fulfillOrderPickup(token, order.uuid, items);
+      const itemUuids = items.map(item => item.uuid);
+      onOrderUpdate({
+        ...newOrder,
+        items: order.items.map(item =>
+          itemUuids.includes(item.uuid) ? { ...item, fulfilled: true } : item
+        ),
+      });
+    } catch (error: unknown) {
+      reportError('Failed to fulfill order', error);
+    }
+  };
+
   return (
     <tr className={styles.row}>
       <td>
-        <Typography variant="h5/regular">{`${order.user.firstName} ${order.user.lastName}`}</Typography>
+        <Typography variant="h5/regular">
+          {order.user.firstName} {order.user.lastName}
+        </Typography>
         <OrderStatusIndicator orderStatus={order.status} />
       </td>
       <td>
         <ul className={styles.itemList}>
           {itemQuantities.map(item => {
             let badge = null;
-            if (
-              !item.fulfilled &&
-              (order.status === OrderStatus.FULFILLED ||
-                order.status === OrderStatus.PARTIALLY_FULFILLED)
+            if (item.fulfilled) {
+              badge = (
+                <span className={styles.fulfilled} title="Fulfilled">
+                  ✅
+                </span>
+              );
+            } else if (
+              order.status === OrderStatus.FULFILLED ||
+              order.status === OrderStatus.PARTIALLY_FULFILLED
             ) {
               badge = (
                 <span className={styles.notFulfilled} title="Not fulfilled">
                   ❌
-                </span>
-              );
-            } else if (item.fulfilled) {
-              badge = (
-                <span className={styles.fulfilled} title="Fulfilled">
-                  ✅
                 </span>
               );
             }
@@ -65,7 +82,7 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
                     />
                   ) : null}
                   <Typography variant="h5/regular" component="span">
-                    {`${item.quantity} x ${itemToString(item)}`} {badge}
+                    {item.quantity} x {itemToString(item)} {badge}
                   </Typography>
                 </label>
               </li>
@@ -73,24 +90,7 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
           })}
         </ul>
         {canFulfill ? (
-          <Button
-            size="small"
-            onClick={async () => {
-              try {
-                const items = order.items.filter(item => selected.has(item.uuid));
-                const newOrder = await StoreAPI.fulfillOrderPickup(token, order.uuid, items);
-                const itemUuids = items.map(item => item.uuid);
-                onOrderUpdate({
-                  ...newOrder,
-                  items: order.items.map(item =>
-                    itemUuids.includes(item.uuid) ? { ...item, fulfilled: true } : item
-                  ),
-                });
-              } catch (error: unknown) {
-                reportError('Failed to fulfill order', error);
-              }
-            }}
-          >
+          <Button size="small" onClick={handleFulfillOrder}>
             Fulfill {selected.size} item{selected.size === 1 ? '' : 's'}
           </Button>
         ) : null}
