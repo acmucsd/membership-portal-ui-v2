@@ -14,6 +14,7 @@ export { default as OrderStatusIndicator } from './OrderStatusIndicator';
 export { default as OrdersDisplay } from './OrdersDisplay';
 export { default as PickupEventDetail } from './PickupEventDetail';
 export { default as PickupEventPicker } from './PickupEventPicker';
+export { default as PickupEventDropdown } from './PickupEventDropdown';
 export { default as StoreConfirmModal } from './StoreConfirmModal';
 export { default as StoreEditButton } from './StoreEditButton';
 export { default as Navbar } from './StoreNavbar';
