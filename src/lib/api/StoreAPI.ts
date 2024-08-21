@@ -6,11 +6,13 @@ import {
   CreateMerchItemRequest,
   EditMerchCollectionRequest,
   EditMerchItemRequest,
+  FulfillMerchOrderRequest,
   MerchCollection,
   MerchCollectionEdit,
   MerchItem,
   MerchItemEdit,
   MerchItemOption,
+  OrderItemFulfillmentUpdate,
   PlaceMerchOrderRequest,
   RescheduleOrderPickupRequest,
 } from '@/lib/types/apiRequests';
@@ -25,6 +27,7 @@ import type {
   DeleteMerchItemResponse,
   EditMerchCollectionResponse,
   EditMerchItemResponse,
+  FulfillMerchOrderResponse,
   GetAllMerchCollectionsResponse,
   GetMerchOrdersResponse,
   GetOneMerchCollectionResponse,
@@ -447,6 +450,24 @@ export const getPastOrderPickupEvents = async (
   });
 
   return response.data.pickupEvents;
+};
+
+export const fulfillOrderPickup = async (
+  token: string,
+  order: UUID,
+  items: OrderItemFulfillmentUpdate[]
+): Promise<PublicOrder> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${order}/fulfill`;
+
+  const requestBody: FulfillMerchOrderRequest = { items };
+
+  const response = await axios.post<FulfillMerchOrderResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.order;
 };
 
 export const rescheduleOrderPickup = async (

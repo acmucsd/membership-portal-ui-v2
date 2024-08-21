@@ -1,7 +1,9 @@
 export type Styles = {
-  breakdown: string;
-  container: string;
-  table: string;
+  blue: string;
+  gray: string;
+  green: string;
+  orderStatus: string;
+  red: string;
 };
 
 export type ClassNames = keyof Styles;

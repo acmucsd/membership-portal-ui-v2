@@ -21,6 +21,30 @@
       overflow: hidden;
       position: relative;
       width: 9.375rem;
+
+      .badge {
+        background-color: var(--theme-elevated-background);
+        border: 1px solid var(--theme-elevated-stroke);
+        border-radius: 3rem;
+        bottom: 0;
+        font-size: 0.7rem;
+        margin: 0.5rem;
+        padding: 0.5rem 0.7rem;
+        position: absolute;
+        right: 0;
+
+        &.pickedUp {
+          background-color: vars.$green-100;
+          border-color: vars.$green-300;
+          color: vars.$green-300;
+        }
+
+        &.notAvailable {
+          background-color: vars.$scarlet-1;
+          border-color: vars.$red;
+          color: vars.$red;
+        }
+      }
     }
 
     .itemSummary {
@@ -40,8 +64,12 @@
   .divider {
     border-top: 1px solid var(--theme-elevated-stroke);
     height: 0.1rem;
-    margin: 0.75rem 1rem;
+    margin: 0.75rem 1.5rem;
     width: auto;
+  }
+
+  .rescheduleReminder {
+    padding: 0.75rem 1.5rem;
   }
 
   .footer {
@@ -50,13 +78,14 @@
     flex-direction: row;
     gap: 2rem;
     justify-content: space-between;
-    margin: 1rem;
+    padding: 1.5rem;
+    padding-top: 0.75rem;
 
     .buttons {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 1.5rem;
 
       button {
         font-size: 1rem;
