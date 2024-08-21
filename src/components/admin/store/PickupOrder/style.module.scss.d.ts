@@ -1,7 +1,8 @@
 export type Styles = {
-  breakdown: string;
-  container: string;
-  table: string;
+  fulfilled: string;
+  itemList: string;
+  notFulfilled: string;
+  row: string;
 };
 
 export type ClassNames = keyof Styles;

@@ -404,7 +404,21 @@ export const getOrderItemQuantities = (items: PublicOrderItem[]): OrderItemQuant
     }
   });
 
-  return Array.from(itemMap.values());
+  return Array.from(itemMap.values()).sort(
+    (a, b) =>
+      // Group unfulfilled items first
+      +a.fulfilled - +b.fulfilled ||
+      // Alphabetize by item name
+      a.option.item.itemName.localeCompare(b.option.item.itemName) ||
+      // then by option name
+      a.option.metadata.value.localeCompare(b.option.metadata.value)
+  );
+};
+
+export const itemToString = (item: Pick<PublicOrderItem, 'option'>): string => {
+  if (item.option.metadata !== null)
+    return `${item.option.item.itemName} (${item.option.metadata.type}: ${item.option.metadata.value})`;
+  return item.option.item.itemName;
 };
 
 export function isEnum<T extends Record<string, string>>(

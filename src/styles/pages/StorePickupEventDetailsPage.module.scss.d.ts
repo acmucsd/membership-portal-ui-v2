@@ -6,7 +6,6 @@ export type Styles = {
   description: string;
   displayButton: string;
   displayButtons: string;
-  header: string;
   noEvent: string;
   orders: string;
   page: string;
