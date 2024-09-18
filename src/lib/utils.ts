@@ -183,19 +183,22 @@ export function useObjectUrl(file?: Blob | null): string {
   return url;
 }
 
+// Set timeZone to Pacific Time on server-side, use local time on client. Users
+// will usually be in California, so this helps with hydration.
 const dateFormat = new Intl.DateTimeFormat('en-US', {
   month: 'short',
   day: 'numeric',
   hour: 'numeric',
   minute: '2-digit',
+  timeZone: typeof window === 'undefined' ? 'America/Los_Angeles' : undefined,
 });
-
 const dateFormatWithYear = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
   month: 'short',
   day: 'numeric',
   hour: 'numeric',
   minute: '2-digit',
+  timeZone: typeof window === 'undefined' ? 'America/Los_Angeles' : undefined,
 });
 
 export const formatDate = (date: Date | string, year?: boolean): string => {
