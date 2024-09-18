@@ -1,4 +1,5 @@
 import { Button, Typography } from '@/components/common';
+import { OnboardingModal } from '@/components/onboarding';
 import { config, showToast } from '@/lib';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
@@ -6,8 +7,11 @@ import { setClientCookie } from '@/lib/services/CookieService';
 import { CookieCartItem } from '@/lib/types/client';
 import { CookieType } from '@/lib/types/enums';
 import { GetServerSideProps } from 'next';
+import { useState } from 'react';
 
 const DebugPage = () => {
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
   return (
     <div>
       <Typography variant="h1/bold">Debug</Typography>
@@ -43,6 +47,9 @@ const DebugPage = () => {
       >
         Fill Cart
       </Button>
+      <Typography variant="h2/medium">Onboarding</Typography>
+      <Button onClick={() => setShowOnboarding(true)}>Teach Me the Ways</Button>
+      {showOnboarding ? <OnboardingModal /> : null}
     </div>
   );
 };
