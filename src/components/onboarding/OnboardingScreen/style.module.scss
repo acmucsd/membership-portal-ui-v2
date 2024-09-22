@@ -54,6 +54,12 @@
     display: flex;
     flex: auto;
     flex-direction: column;
+
+    .endImage {
+      animation: raccoon-in 3s;
+      margin: auto;
+      transform: scaleX(-1);
+    }
   }
 
   .caption {
@@ -76,5 +82,15 @@
   .header,
   .buttonRow {
     animation: fade-in 1s 2s backwards;
+  }
+}
+
+@keyframes raccoon-in {
+  from {
+    transform: perspective(30rem) scale(0) rotateY(2 * 360deg) scaleX(-1);
+  }
+
+  to {
+    transform: perspective(30rem) scale(1) rotateY(0) scaleX(-1);
   }
 }

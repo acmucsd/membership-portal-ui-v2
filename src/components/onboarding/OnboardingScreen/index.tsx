@@ -1,5 +1,7 @@
 import { Button, Typography } from '@/components/common';
+import Communities from '@/components/onboarding/Communities';
 import Intro from '@/components/onboarding/Intro';
+import Step4 from '@/public/assets/graphics/store/step4.svg';
 import { ReactNode, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import styles from './style.module.scss';
@@ -21,29 +23,29 @@ const steps: Step[] = [
     title: 'Find your niche here.',
     caption:
       'We have a space for you! Pursue your interests by exploring different communities such as ACM AI, ACM Hack, ACM Cyber, and ACM Design.',
-    content: <Intro />,
+    content: <Communities />,
   },
   {
     title: 'Join us at our events and workshops.',
     caption:
       'Learn technical skills and connect with other members with shared interests. We can’t wait to see you there!',
-    content: <Intro />,
+    content: 'TODO',
   },
   {
     title: 'Race your friends to the top of the leaderboard',
     caption: 'Each point you gain allows you to level up and rise up in the ranks!',
-    content: <Intro />,
+    content: 'TODO',
   },
   {
     title: 'Redeem your points at the ACM Store!',
     caption: 'Purchase merch with your points and show off your ACM spirit!',
-    content: <Intro />,
+    content: 'TODO',
   },
   {
     title: 'That’s a glimpse on how we run ACM at UCSD.',
     caption:
       'Let’s get started with setting up your account! You can earn your first 10 points by completing the tasks under the profile dashboard. ',
-    content: <Intro />,
+    content: <Step4 className={styles.endImage} />,
   },
 ];
 
