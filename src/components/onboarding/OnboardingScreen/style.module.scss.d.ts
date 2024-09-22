@@ -3,10 +3,12 @@ export type Styles = {
   caption: string;
   clockIcon: string;
   content: string;
+  fadeIn: string;
   header: string;
   progress: string;
   progressBar: string;
   showProgress: string;
+  title: string;
   wrapper: string;
 };
 

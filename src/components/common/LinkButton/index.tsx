@@ -1,3 +1,4 @@
+import Typography from '@/components/common/Typography';
 import type { URL } from '@/lib/types';
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';
@@ -21,7 +22,9 @@ const LinkButton = (props: PropsWithChildren<IProps>) => {
       data-size={size}
       href={href}
     >
-      {children}
+      <Typography variant="h5/medium" component="span">
+        {children}
+      </Typography>
     </Link>
   );
 };

@@ -74,7 +74,7 @@ const OnboardingScreen = ({ onDismiss, onFinish }: OnboardingScreenProps) => {
           <p>Estimated time of onboarding: 2 minutes</p>
         )}
       </div>
-      <Typography variant="h2/bold" component="h2">
+      <Typography variant="h2/bold" component="h2" className={styles.title}>
         {title}
       </Typography>
       <div className={styles.content}>{content}</div>

@@ -83,6 +83,7 @@ const config = {
   registerRoute: '/register',
   loginRoute: '/login',
   logoutRoute: '/logout',
+  onboardRoute: '/onboard',
   leaderboardRoute: '/leaderboard',
   profileRoute: '/profile',
   aboutRoute: '/about',
