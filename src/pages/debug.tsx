@@ -65,6 +65,9 @@ const DebugPage = () => {
           />
         </div>
       ) : null}
+      <Button variant="secondary" onClick={() => {}}>
+        doesnt do anything
+      </Button>
     </div>
   );
 };
