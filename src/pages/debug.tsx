@@ -1,5 +1,5 @@
 import { Button, Typography } from '@/components/common';
-import { OnboardingModal } from '@/components/onboarding';
+import { OnboardingScreen } from '@/components/onboarding';
 import { config, showToast } from '@/lib';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
@@ -49,7 +49,22 @@ const DebugPage = () => {
       </Button>
       <Typography variant="h2/medium">Onboarding</Typography>
       <Button onClick={() => setShowOnboarding(true)}>Teach Me the Ways</Button>
-      {showOnboarding ? <OnboardingModal /> : null}
+      {showOnboarding ? (
+        <div
+          style={{
+            position: 'fixed',
+            inset: '0',
+            backgroundColor: 'var(--theme-background)',
+            zIndex: 1000,
+            padding: '4rem',
+          }}
+        >
+          <OnboardingScreen
+            onDismiss={() => setShowOnboarding(false)}
+            onFinish={() => setShowOnboarding(false)}
+          />
+        </div>
+      ) : null}
     </div>
   );
 };

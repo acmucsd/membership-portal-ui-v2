@@ -1,0 +1,53 @@
+@use 'src/styles/vars.scss' as vars;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+
+  .header {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+
+    .progress {
+      border-radius: 1rem;
+      height: 1rem;
+      overflow: hidden;
+
+      &.showProgress {
+        flex: auto;
+        margin-right: 1rem;
+      }
+
+      .progressBar {
+        background-color: var(--theme-primary-2);
+        border-radius: 1rem;
+        height: 100%;
+        transition: width 0.5s;
+      }
+    }
+
+    .clockIcon {
+      margin-right: 0.5rem;
+    }
+  }
+
+  .content {
+    flex: auto;
+  }
+
+  .caption {
+    margin: 0 auto;
+    max-width: 38rem;
+    width: 100%;
+  }
+
+  .buttonRow {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+  }
+}

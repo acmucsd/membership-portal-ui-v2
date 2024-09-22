@@ -1,2 +1,2 @@
 // eslint-disable-next-line import/prefer-default-export
-export { default as OnboardingModal } from './OnboardingModal';
+export { default as OnboardingScreen } from './OnboardingScreen';
