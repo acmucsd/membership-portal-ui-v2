@@ -1,6 +1,7 @@
 import { Modal, Typography } from '@/components/common';
 import { config } from '@/lib';
 import { PublicEvent } from '@/lib/types/apiResponses';
+import { prefillAsCheckinUrl } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
@@ -113,6 +114,13 @@ const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
             className={`${style.button} ${style.addFeedback}`}
           >
             <Typography variant="h4/bold">Add Feedback</Typography>
+          </Link>
+          <Link
+            href={prefillAsCheckinUrl(event.title)}
+            className={`${style.button} ${style.addFeedback}`}
+            target="_blank"
+          >
+            <Typography variant="h4/bold">Check In (A.S.)</Typography>
           </Link>
           <button type="submit" className={style.button}>
             <Typography variant="h4/bold">Close</Typography>

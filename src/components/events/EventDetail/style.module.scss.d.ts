@@ -1,5 +1,7 @@
 export type Styles = {
   badges: string;
+  button: string;
+  buttons: string;
   close: string;
   closeIcon: string;
   container: string;
@@ -7,7 +9,6 @@ export type Styles = {
   eventDetails: string;
   eventInfo: string;
   eventTitle: string;
-  feedbackBtn: string;
   header: string;
   image: string;
   standalone: string;

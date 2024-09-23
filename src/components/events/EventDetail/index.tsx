@@ -3,10 +3,16 @@ import CalendarButtons from '@/components/events/CalendarButtons';
 import EventBadges from '@/components/events/EventBadges';
 import { config } from '@/lib';
 import { PublicEvent, PublicOrderPickupEvent } from '@/lib/types/apiResponses';
-import { formatEventDate, getDefaultEventCover, isOrderPickupEvent } from '@/lib/utils';
+import {
+  formatEventDate,
+  getDefaultEventCover,
+  isOrderPickupEvent,
+  prefillAsCheckinUrl,
+} from '@/lib/utils';
 import CloseIcon from '@/public/assets/icons/close-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { IoFastFoodOutline } from 'react-icons/io5';
 import { VscFeedback } from 'react-icons/vsc';
 import styles from './style.module.scss';
 
@@ -31,12 +37,20 @@ const EventDetail = ({ event, attended, inModal = false }: EventDetailProps) => 
   if (!isOrderPickupEvent(event)) {
     if (isUpcomingEvent) {
       buttons = <CalendarButtons event={event} />;
-    } else if (inModal) {
+    } else {
       buttons = (
-        <Link href={`${config.eventsRoute}/${event.uuid}`} className={styles.feedbackBtn}>
-          <VscFeedback aria-hidden />
-          Add Feedback
-        </Link>
+        <div className={styles.buttons}>
+          {inModal ? (
+            <Link href={`${config.eventsRoute}/${event.uuid}`} className={styles.button}>
+              <VscFeedback aria-hidden />
+              Add Feedback
+            </Link>
+          ) : null}
+          <Link href={prefillAsCheckinUrl(event.title)} className={styles.button} target="_blank">
+            <IoFastFoodOutline aria-hidden />
+            Check In (A.S.)
+          </Link>
+        </div>
       );
     }
   }

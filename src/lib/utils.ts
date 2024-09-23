@@ -485,3 +485,27 @@ export function seededRandom(a: number, b: number, c: number, d: number): () => 
 export function getFileName(url: string, defaultName: string): string {
   return decodeURIComponent(url.split('/').at(-1) ?? defaultName);
 }
+
+/**
+ * The name of the org as known to AS. Assuming no data entry errors, the form
+ * will probably contain a corresponding entry for the event following the
+ * format `<org_name> - <event_name>`.
+ */
+const AS_ORG_NAME = 'Sample Org 1';
+const GFORM_URL =
+  'https://docs.google.com/forms/d/e/1FAIpQLSc-akfqTNzrWUmOub_rMDj5wExBUDfakMXDbeGicOrpxBr6jg/viewform';
+/**
+ * ID of the "Select the event you are signing in to:" dropdown in the check-in
+ * form.
+ */
+const GFORM_EVENT_FIELD = 'entry.219446721';
+
+/**
+ * Generates the URL to AS's funded event attendance check-in form with the
+ * event prefilled.
+ */
+export function prefillAsCheckinUrl(eventName: string): string {
+  return `${GFORM_URL}?${new URLSearchParams({
+    [GFORM_EVENT_FIELD]: `${AS_ORG_NAME} - ${eventName}`,
+  })}`;
+}
