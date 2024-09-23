@@ -49,20 +49,21 @@
   }
 
   @media (max-width: vars.$breakpoint-md) {
+    gap: 1.5rem;
     grid-auto-flow: row;
 
     .community {
       .logo {
-        height: 3rem;
-        width: 3rem;
+        height: 4rem;
+        width: 4rem;
       }
 
       .name {
-        font-size: 1.5rem;
+        font-size: 2rem;
       }
 
       .description {
-        font-size: 1rem;
+        font-size: 1.25rem;
       }
     }
   }

@@ -1,5 +1,6 @@
 export type Styles = {
   appear: string;
+  desktopOnly: string;
   image: string;
   wrapper: string;
 };

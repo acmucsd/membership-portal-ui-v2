@@ -29,7 +29,7 @@ const steps: Step[] = [
     title: 'Join us at our events and workshops.',
     caption:
       'Learn technical skills and connect with other members with shared interests. We can’t wait to see you there!',
-    content: 'TODO',
+    content: <div className={styles.rainbow} />,
   },
   {
     title: 'Race your friends to the top of the leaderboard',
@@ -39,7 +39,7 @@ const steps: Step[] = [
   {
     title: 'Redeem your points at the ACM Store!',
     caption: 'Purchase merch with your points and show off your ACM spirit!',
-    content: 'TODO',
+    content: <div className={styles.rainbow} />,
   },
   {
     title: 'That’s a glimpse on how we run ACM at UCSD.',

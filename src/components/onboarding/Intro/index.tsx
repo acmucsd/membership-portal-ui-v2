@@ -10,7 +10,7 @@ const Intro = () => {
         alt="temp image"
         width={256}
         height={256}
-        className={styles.image}
+        className={`${styles.image} ${styles.desktopOnly}`}
         style={{ animationDelay: '0.2s' }}
       />
       <Image src={TempImage} alt="temp image" width={256} height={256} className={styles.image} />
@@ -19,7 +19,7 @@ const Intro = () => {
         alt="temp image"
         width={256}
         height={256}
-        className={styles.image}
+        className={`${styles.image} ${styles.desktopOnly}`}
         style={{ animationDelay: '0.4s' }}
       />
     </div>

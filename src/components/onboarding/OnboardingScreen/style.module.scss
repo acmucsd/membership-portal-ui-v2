@@ -1,18 +1,10 @@
 @use 'src/styles/vars.scss' as vars;
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
 .wrapper {
   display: flex;
+  flex: auto;
   flex-direction: column;
+  gap: 2rem;
   height: 100%;
   margin: 0 auto;
   max-width: 60rem;
@@ -23,7 +15,6 @@
     align-items: center;
     display: flex;
     justify-content: center;
-    margin-bottom: 2rem;
     text-align: left;
 
     .progress {
@@ -60,6 +51,15 @@
       margin: auto;
       transform: scaleX(-1);
     }
+
+    .rainbow {
+      animation: rainbow-appear 1s;
+      background-image: vars.$wainbow;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      flex: none;
+      height: 4px;
+    }
   }
 
   .caption {
@@ -71,7 +71,6 @@
   .buttonRow {
     display: flex;
     justify-content: space-between;
-    margin-top: 2rem;
   }
 
   .title,
@@ -85,6 +84,16 @@
   }
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes raccoon-in {
   from {
     transform: perspective(30rem) scale(0) rotateY(2 * 360deg) scaleX(-1);
@@ -92,5 +101,15 @@
 
   to {
     transform: perspective(30rem) scale(1) rotateY(0) scaleX(-1);
+  }
+}
+
+@keyframes rainbow-appear {
+  from {
+    clip-path: xywh(50% 0% 0% 100% round 4px);
+  }
+
+  to {
+    clip-path: xywh(0% 0% 100% 100% round 4px);
   }
 }

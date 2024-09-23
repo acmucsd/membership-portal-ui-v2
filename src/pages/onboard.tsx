@@ -16,7 +16,7 @@ const OnboardPage: NextPage<OnboardProps> = ({ destination }) => {
   };
 
   return (
-    <div style={{ height: 'calc(100vh - 8.25rem)' }}>
+    <div style={{ minHeight: 'calc(100vh - 8.25rem)', display: 'flex', flexDirection: 'column' }}>
       <OnboardingScreen onDismiss={handleExit} onFinish={handleExit} />
     </div>
   );

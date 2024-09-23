@@ -9,6 +9,8 @@ export type Styles = {
   progress: string;
   progressBar: string;
   raccoonIn: string;
+  rainbow: string;
+  rainbowAppear: string;
   showProgress: string;
   title: string;
   wrapper: string;
