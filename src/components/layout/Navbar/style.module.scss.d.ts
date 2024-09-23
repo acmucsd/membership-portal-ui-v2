@@ -13,6 +13,7 @@ export type Styles = {
   mobileSwitch: string;
   navLeft: string;
   portalLinks: string;
+  quiet: string;
   toggleIcon: string;
   wainbow: string;
 };

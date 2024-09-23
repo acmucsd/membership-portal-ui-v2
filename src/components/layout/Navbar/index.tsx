@@ -17,8 +17,9 @@ import styles from './style.module.scss';
 
 interface NavbarProps {
   accessType?: UserAccessType;
+  quiet?: boolean;
 }
-const Navbar = ({ accessType }: NavbarProps) => {
+const Navbar = ({ accessType, quiet }: NavbarProps) => {
   const size = useWindowSize();
   const headerRef = useRef<HTMLHeadElement>(null);
 
@@ -50,14 +51,20 @@ const Navbar = ({ accessType }: NavbarProps) => {
   if (!accessType) {
     return (
       <header className={styles.header}>
-        <div className={styles.content}>
-          <Link href={config.homeRoute} className={styles.navLeft}>
-            <Image src={LightModeLogo} alt="ACM General Logo" width={48} height={48} />
-            <span className={styles.headerTitle}>Membership Portal</span>
-          </Link>
+        <div className={`${styles.content} ${quiet ? styles.quiet : ''}`}>
+          {quiet ? (
+            <span className={styles.navLeft}>
+              <Image src={LightModeLogo} alt="ACM General Logo" width={48} height={48} />
+            </span>
+          ) : (
+            <Link href={config.homeRoute} className={styles.navLeft}>
+              <Image src={LightModeLogo} alt="ACM General Logo" width={48} height={48} />
+              <span className={styles.headerTitle}>Membership Portal</span>
+            </Link>
+          )}
           <ThemeToggle />
         </div>
-        <hr className={`${styles.wainbow} ${styles.loggedOut}`} />
+        {!quiet ? <hr className={`${styles.wainbow} ${styles.loggedOut}`} /> : null}
       </header>
     );
   }

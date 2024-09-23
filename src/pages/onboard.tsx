@@ -30,6 +30,7 @@ export const getServerSideProps: GetServerSideProps<OnboardProps> = async ({ que
   return {
     props: {
       destination: route || config.homeRoute,
+      quietNavbar: true,
     },
   };
 };

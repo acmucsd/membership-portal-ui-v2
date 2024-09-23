@@ -1,6 +1,7 @@
 import { Button, Typography } from '@/components/common';
 import Communities from '@/components/onboarding/Communities';
 import Intro from '@/components/onboarding/Intro';
+import { CollectionSlider } from '@/components/store';
 import Step4 from '@/public/assets/graphics/store/step4.svg';
 import { ReactNode, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
@@ -39,7 +40,19 @@ const steps: Step[] = [
   {
     title: 'Redeem your points at the ACM Store!',
     caption: 'Purchase merch with your points and show off your ACM spirit!',
-    content: <div className={styles.rainbow} />,
+    content: (
+      <>
+        <div className={styles.rainbow} />
+        <div style={{ padding: '2rem', textAlign: 'left' }}>
+          <CollectionSlider
+            uuid=""
+            title="The Cozy Collection"
+            description="Bundle up by the fire with a blanket and this new collection of cute sweaters and hoodies."
+            items={[]}
+          />
+        </div>
+      </>
+    ),
   },
   {
     title: 'That’s a glimpse on how we run ACM at UCSD.',
