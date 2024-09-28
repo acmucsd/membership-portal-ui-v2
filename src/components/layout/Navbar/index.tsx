@@ -17,6 +17,7 @@ import styles from './style.module.scss';
 
 interface NavbarProps {
   accessType?: UserAccessType;
+  /** Used on the onboarding screen to avoid a distracting double rainbow */
   quiet?: boolean;
 }
 const Navbar = ({ accessType, quiet }: NavbarProps) => {

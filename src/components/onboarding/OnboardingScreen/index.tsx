@@ -1,7 +1,8 @@
-import { Button, Typography } from '@/components/common';
+import { Button, LinkButton, Typography } from '@/components/common';
 import Communities from '@/components/onboarding/Communities';
 import Intro from '@/components/onboarding/Intro';
 import { CollectionSlider } from '@/components/store';
+import { config } from '@/lib';
 import Step4 from '@/public/assets/graphics/store/step4.svg';
 import { ReactNode, useState } from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
@@ -56,8 +57,7 @@ const steps: Step[] = [
   },
   {
     title: 'That’s a glimpse on how we run ACM at UCSD.',
-    caption:
-      'Let’s get started with setting up your account! You can earn your first 10 points by completing the tasks under the profile dashboard. ',
+    caption: 'Let’s get started with setting up your account!', // You can earn your first 10 points by completing the tasks under the profile dashboard.
     content: <Step4 className={styles.endImage} />,
   },
 ];
@@ -66,7 +66,7 @@ const TOTAL_STEPS = steps.length - 1;
 
 interface OnboardingScreenProps {
   onDismiss: () => void;
-  onFinish: () => void;
+  onFinish?: () => void;
 }
 
 const OnboardingScreen = ({ onDismiss, onFinish }: OnboardingScreenProps) => {
@@ -103,9 +103,13 @@ const OnboardingScreen = ({ onDismiss, onFinish }: OnboardingScreenProps) => {
         >
           {step > 0 ? 'Back' : 'Maybe later'}
         </Button>
-        <Button onClick={step < steps.length - 1 ? () => setStep(step => step + 1) : onFinish}>
-          {step < steps.length - 1 ? 'Next' : 'Finish'}
-        </Button>
+        {!onFinish && step === steps.length - 1 ? (
+          <LinkButton href={config.profile.editRoute}>Finish</LinkButton>
+        ) : (
+          <Button onClick={step < steps.length - 1 ? () => setStep(step => step + 1) : onFinish}>
+            {step < steps.length - 1 ? 'Next' : 'Finish'}
+          </Button>
+        )}
       </div>
     </div>
   );
