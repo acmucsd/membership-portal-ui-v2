@@ -134,7 +134,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
       ) : null}
       {leaderboardRows.length > 0 ? (
         <div className={styles.leaderboard}>
-          {leaderboardRows.map(user => {
+          {leaderboardRows.map((user, i) => {
             return (
               <LeaderboardRow
                 key={user.uuid}
@@ -144,6 +144,7 @@ const LeaderboardPage = ({ sort, leaderboard, user: { uuid } }: LeaderboardProps
                 url={`${config.userProfileRoute}${user.handle}`}
                 points={user.points}
                 image={getProfilePicture(user)}
+                even={i % 2 === 0}
                 match={user.match}
                 scrollIntoView={user.uuid === uuid ? scrollIntoView : 0}
               />

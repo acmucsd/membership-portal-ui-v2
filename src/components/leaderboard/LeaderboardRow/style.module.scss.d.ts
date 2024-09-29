@@ -1,5 +1,6 @@
 export type Styles = {
   blinker: string;
+  even: string;
   flash: string;
   match: string;
   name: string;

@@ -161,6 +161,12 @@ const dummyItems: PublicMerchItem[] = [
   },
 ];
 
+const itemClasses = [
+  '',
+  `${styles.hideOnMobile} ${styles.fadeOut}`,
+  `${styles.desktopOnly} ${styles.fadeOut}`,
+];
+
 const BadgeAnnotation = ({ children }: PropsWithChildren) => {
   return (
     <div className={styles.annotationWrapper}>
@@ -198,7 +204,7 @@ const Events = () => {
             event={event}
             attended={false}
             showYear
-            className={i !== 0 ? `${styles.desktopOnly} ${styles.fadeOut}` : undefined}
+            className={itemClasses[i]}
             badgeWrapper={i === 0 ? BadgeAnnotation : undefined}
             interactive={false}
           />
@@ -240,7 +246,7 @@ const Store = () => {
             title={item.itemName}
             cost={item.options[0]?.price ?? 0}
             discountPercentage={item.options[0]?.discountPercentage ?? 0}
-            className={i !== 0 ? `${styles.desktopOnly} ${styles.fadeOut}` : undefined}
+            className={itemClasses[i]}
             costWrapper={i === 0 ? CostAnnotation : undefined}
             key={item.uuid}
           />

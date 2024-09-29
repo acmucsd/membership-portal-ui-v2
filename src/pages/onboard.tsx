@@ -1,14 +1,18 @@
 import { OnboardingScreen } from '@/components/onboarding';
 import { config } from '@/lib';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { PermissionService } from '@/lib/services';
 import { URL } from '@/lib/types';
-import type { GetServerSideProps, NextPage } from 'next';
+import { PrivateProfile } from '@/lib/types/apiResponses';
+import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
 interface OnboardProps {
   destination: URL;
+  user: PrivateProfile;
 }
 
-const OnboardPage: NextPage<OnboardProps> = ({ destination }) => {
+const OnboardPage: NextPage<OnboardProps> = ({ user, destination }) => {
   const router = useRouter();
 
   const handleExit = () => {
@@ -17,14 +21,14 @@ const OnboardPage: NextPage<OnboardProps> = ({ destination }) => {
 
   return (
     <div style={{ minHeight: 'calc(100vh - 8.25rem)', display: 'flex', flexDirection: 'column' }}>
-      <OnboardingScreen onDismiss={handleExit} />
+      <OnboardingScreen user={user} onDismiss={handleExit} />
     </div>
   );
 };
 
 export default OnboardPage;
 
-export const getServerSideProps: GetServerSideProps<OnboardProps> = async ({ query }) => {
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ query }) => {
   const route = query?.destination ? decodeURIComponent(query?.destination as string) : null;
 
   return {
@@ -34,3 +38,8 @@ export const getServerSideProps: GetServerSideProps<OnboardProps> = async ({ que
     },
   };
 };
+
+export const getServerSideProps = withAccessType(
+  getServerSidePropsFunc,
+  PermissionService.loggedInUser
+);
