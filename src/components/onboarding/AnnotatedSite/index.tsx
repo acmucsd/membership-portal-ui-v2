@@ -166,8 +166,11 @@ const BadgeAnnotation = ({ children }: PropsWithChildren) => {
     <div className={styles.annotationWrapper}>
       {children}
       <div className={styles.annotation}>
-        Each event is categorized under one of the ACM communities and tagged with the number of
-        points you can earn from attending.
+        <div className={styles.annotationLine} />
+        <Typography variant="h5/regular" component="p" className={styles.annotationContent}>
+          Each event is categorized under one of the ACM communities and tagged with the number of
+          points you can earn from attending.
+        </Typography>
       </div>
     </div>
   );
@@ -180,7 +183,7 @@ const Events = () => {
         Events
       </Typography>
       <EventFilter
-        className={`${styles.desktopOnly} ${styles.fadeOut}`}
+        className={`${styles.hideOnMobile} ${styles.fadeOut}`}
         filters={{
           search: DEFAULT_FILTER_STATE.search,
           communityFilter: DEFAULT_FILTER_STATE.community,
@@ -210,7 +213,10 @@ const CostAnnotation = ({ children }: PropsWithChildren) => {
     <div className={styles.annotationWrapper}>
       {children}
       <div className={styles.annotation}>
-        You need to collect the listed number of points to make the purchase.
+        <div className={styles.annotationLine} />
+        <Typography variant="h5/regular" component="p" className={styles.annotationContent}>
+          You need to collect the listed number of points to make the purchase.
+        </Typography>
       </div>
     </div>
   );

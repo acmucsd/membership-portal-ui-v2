@@ -1,15 +1,14 @@
 @use 'src/styles/vars.scss' as vars;
 
 .itemCard {
-  background-color: var(--theme-elevated-background);
-  border: 1px solid var(--theme-shadow);
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 4px var(--theme-shadow);
   display: inline-flex;
-  overflow: hidden;
   position: relative;
 
   .linkWrapper {
+    background-color: var(--theme-elevated-background);
+    border: 1px solid var(--theme-shadow);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 4px var(--theme-shadow);
     display: flex;
     flex: auto;
     flex-direction: column;
@@ -23,6 +22,9 @@
 
   .imageWrapper {
     background-color: var(--theme-surface-1);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    overflow: hidden;
     // Enforce a square image while allowing the card to be squished
     padding-bottom: 100%;
     position: relative;
