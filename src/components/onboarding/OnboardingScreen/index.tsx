@@ -1,8 +1,7 @@
 import { Button, LinkButton, Typography } from '@/components/common';
+import { Events, Store } from '@/components/onboarding/AnnotatedSite';
 import Communities from '@/components/onboarding/Communities';
-import Events from '@/components/onboarding/Events';
 import Intro from '@/components/onboarding/Intro';
-import Store from '@/components/onboarding/Store';
 import { config } from '@/lib';
 import Step4 from '@/public/assets/graphics/store/step4.svg';
 import { ReactNode, useState } from 'react';

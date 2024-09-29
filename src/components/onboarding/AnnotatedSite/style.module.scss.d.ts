@@ -1,11 +1,11 @@
 export type Styles = {
   annotation: string;
   annotationAppear: string;
-  badgeHighlight: string;
-  badgeWrapper: string;
+  annotationHighlight: string;
+  annotationWrapper: string;
   desktopOnly: string;
-  events: string;
   fadeOut: string;
+  items: string;
   page: string;
 };
 

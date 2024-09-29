@@ -6,7 +6,7 @@
   gap: 1.5rem;
   padding: 1.5rem;
 
-  .events {
+  .items {
     display: flex;
     gap: 1rem;
     justify-content: space-between;
@@ -23,8 +23,8 @@
       }
     }
 
-    .badgeWrapper {
-      animation: badge-highlight 0.5s 1s forwards;
+    .annotationWrapper {
+      animation: annotation-highlight 0.5s 1s forwards;
       border: 2px solid transparent;
       border-radius: 4px;
       margin: calc(-0.25rem - 2px);
@@ -65,7 +65,7 @@
   }
 }
 
-@keyframes badge-highlight {
+@keyframes annotation-highlight {
   from {
     background-color: transparent;
     border-color: transparent;

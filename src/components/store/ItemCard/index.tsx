@@ -2,7 +2,7 @@ import Diamonds from '@/components/store/Diamonds';
 import NoImage from '@/public/assets/graphics/cat404.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PropsWithChildren } from 'react';
+import { ComponentType, Fragment, PropsWithChildren, ReactNode } from 'react';
 import styles from './style.module.scss';
 
 interface CommonOptions {
@@ -16,6 +16,8 @@ interface StoreItemOptions {
   cost: number;
   discountPercentage: number;
   outOfStock?: boolean;
+  /** Used by onboarding to highlight the cost */
+  costWrapper?: ComponentType<{ children: ReactNode }>;
 }
 
 interface CollectionOptions {
@@ -41,6 +43,8 @@ const ItemCard = ({
 
   const Component = href ? Link : 'div';
 
+  const CostWrapper = ('costWrapper' in props && props.costWrapper) || Fragment;
+
   return (
     <article className={`${styles.itemCard} ${className}`}>
       <Component href={href ?? ''} className={styles.linkWrapper}>
@@ -52,18 +56,20 @@ const ItemCard = ({
           <p className={styles.title}>{title}</p>
           {'description' in props ? <p>{props.description}</p> : null}
           {'cost' in props ? (
-            <p className={styles.cost}>
-              <Diamonds
-                count={props.cost}
-                discount={
-                  props.discountPercentage !== 0
-                    ? props.cost * (1 - props.discountPercentage / 100)
-                    : undefined
-                }
-              />
-              &nbsp;
-              {props.outOfStock ? <span className={styles.outOfStock}>Out of stock</span> : null}
-            </p>
+            <CostWrapper>
+              <p className={styles.cost}>
+                <Diamonds
+                  count={props.cost}
+                  discount={
+                    props.discountPercentage !== 0
+                      ? props.cost * (1 - props.discountPercentage / 100)
+                      : undefined
+                  }
+                />
+                &nbsp;
+                {props.outOfStock ? <span className={styles.outOfStock}>Out of stock</span> : null}
+              </p>
+            </CostWrapper>
           ) : null}
         </div>
       </Component>
