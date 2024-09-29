@@ -2,7 +2,7 @@ import { Button, LinkButton, Typography } from '@/components/common';
 import Communities from '@/components/onboarding/Communities';
 import Events from '@/components/onboarding/Events';
 import Intro from '@/components/onboarding/Intro';
-import { CollectionSlider } from '@/components/store';
+import Store from '@/components/onboarding/Store';
 import { config } from '@/lib';
 import Step4 from '@/public/assets/graphics/store/step4.svg';
 import { ReactNode, useState } from 'react';
@@ -50,14 +50,7 @@ const steps: Step[] = [
     content: (
       <>
         <div className={styles.rainbow} />
-        <div style={{ padding: '2rem', textAlign: 'left' }}>
-          <CollectionSlider
-            uuid=""
-            title="The Cozy Collection"
-            description="Bundle up by the fire with a blanket and this new collection of cute sweaters and hoodies."
-            items={[]}
-          />
-        </div>
+        <Store />
       </>
     ),
   },

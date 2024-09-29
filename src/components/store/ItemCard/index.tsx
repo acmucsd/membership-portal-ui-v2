@@ -8,14 +8,14 @@ import styles from './style.module.scss';
 interface CommonOptions {
   images: string[];
   title: string;
-  href: string;
+  href?: string;
   className?: string;
 }
 
 interface StoreItemOptions {
   cost: number;
   discountPercentage: number;
-  outOfStock: boolean;
+  outOfStock?: boolean;
 }
 
 interface CollectionOptions {
@@ -39,9 +39,11 @@ const ItemCard = ({
 }: PropsWithChildren<ItemCardProps>) => {
   const [first = NoImage, second = first] = images;
 
+  const Component = href ? Link : 'div';
+
   return (
     <article className={`${styles.itemCard} ${className}`}>
-      <Link href={href} className={styles.linkWrapper}>
+      <Component href={href ?? ''} className={styles.linkWrapper}>
         <div className={styles.imageWrapper}>
           <Image className={styles.first} src={first} alt={title} fill />
           <Image src={second} alt="" aria-hidden fill />
@@ -64,7 +66,7 @@ const ItemCard = ({
             </p>
           ) : null}
         </div>
-      </Link>
+      </Component>
       {children ? <div className={styles.icons}>{children}</div> : null}
     </article>
   );
