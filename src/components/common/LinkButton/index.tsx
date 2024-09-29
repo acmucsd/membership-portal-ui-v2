@@ -9,10 +9,18 @@ interface IProps {
   destructive?: boolean;
   href: URL;
   size?: 'default' | 'small';
+  onClick?: () => void;
 }
 
 const LinkButton = (props: PropsWithChildren<IProps>) => {
-  const { variant = 'primary', destructive = false, href, size = 'default', children } = props;
+  const {
+    variant = 'primary',
+    destructive = false,
+    href,
+    size = 'default',
+    onClick,
+    children,
+  } = props;
 
   return (
     <Link
@@ -21,6 +29,7 @@ const LinkButton = (props: PropsWithChildren<IProps>) => {
       data-destructive={destructive}
       data-size={size}
       href={href}
+      onClick={onClick}
     >
       <Typography variant="h5/medium" component="span">
         {children}

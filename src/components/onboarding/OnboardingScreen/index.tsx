@@ -110,12 +110,12 @@ const OnboardingScreen = ({ user, onDismiss, onFinish }: OnboardingScreenProps) 
         >
           {step > 0 ? 'Back' : 'Maybe later'}
         </Button>
-        {!onFinish && step === steps.length - 1 ? (
-          <LinkButton href={config.profile.editRoute}>Finish</LinkButton>
+        {step === steps.length - 1 ? (
+          <LinkButton href={config.profile.editRoute} onClick={onFinish}>
+            Set up
+          </LinkButton>
         ) : (
-          <Button onClick={step < steps.length - 1 ? () => setStep(step => step + 1) : onFinish}>
-            {step < steps.length - 1 ? 'Next' : 'Finish'}
-          </Button>
+          <Button onClick={() => setStep(step => step + 1)}>Next</Button>
         )}
       </div>
     </div>

@@ -21,7 +21,13 @@ const OnboardPage: NextPage<OnboardProps> = ({ user, destination }) => {
 
   return (
     <div style={{ minHeight: 'calc(100vh - 8.25rem)', display: 'flex', flexDirection: 'column' }}>
-      <OnboardingScreen user={user} onDismiss={handleExit} />
+      <OnboardingScreen
+        user={user}
+        onDismiss={handleExit}
+        onFinish={() => {
+          localStorage.setItem(config.tempLocalOnboardingKey, 'onboarded');
+        }}
+      />
     </div>
   );
 };

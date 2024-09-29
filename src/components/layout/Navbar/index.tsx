@@ -49,7 +49,7 @@ const Navbar = ({ accessType, quiet }: NavbarProps) => {
     if (!isMobile) setMenuOpen(false);
   }, [isMobile]);
 
-  if (!accessType) {
+  if (!accessType || quiet) {
     return (
       <header className={styles.header}>
         <div className={`${styles.content} ${quiet ? styles.quiet : ''}`}>
