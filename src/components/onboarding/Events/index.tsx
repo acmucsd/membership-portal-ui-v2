@@ -1,6 +1,7 @@
 import { Typography } from '@/components/common';
 import { DEFAULT_FILTER_STATE, EventCard, EventFilter } from '@/components/events';
 import { PublicEvent } from '@/lib/types/apiResponses';
+import { PropsWithChildren } from 'react';
 import styles from './style.module.scss';
 
 const dummyEvents: PublicEvent[] = [
@@ -24,50 +25,65 @@ const dummyEvents: PublicEvent[] = [
     discordEvent: '1285653645505069086',
   },
   {
-    uuid: '4c44e774-ada8-4a04-921e-4587d819effd',
+    uuid: 'e154acf7-3465-49e4-baa6-f40bfa2f4ad8',
     organization: 'ACM',
-    committee: 'General',
+    committee: 'Cyber',
     thumbnail: null,
     cover:
-      'https://acmucsd.s3.us-west-1.amazonaws.com/portal/events/4c44e774-ada8-4a04-921e-4587d819effd.png',
-    title: 'Bit Byte Info Session',
+      'https://acmucsd.s3.us-west-1.amazonaws.com/portal/events/e154acf7-3465-49e4-baa6-f40bfa2f4ad8.png',
+    title: 'Lockpicking 101',
     description:
-      "Looking to learn about ACM's Bit-Byte mentorship big/little program? Swing by our info session where we'll discuss the timeline, structure, requirements, and overall vibes! ask any questions and get hyped for the upcoming iteration!",
-    location: 'CSE 1202',
-    eventLink: 'acmurl.com/bitbyteinfosesh',
-    start: '2024-10-02T00:00:00.000Z',
-    end: '2024-10-02T01:30:00.000Z',
+      "Wanna learn how to pick locks? Ever gotten locked out of your dorm? \n\nCome and join ACM Cyber at Lockpicking 101! We'll be demonstrating the core theory of breaking the security of locks, including techniques such as bumping, raking, single-pin picking, and impressioning! We will also be providing practice locks and picks for YOU🫵 to hone your picking skills. Become a lockpicking virtuoso 🤩✨✨",
+    location: 'SME ASML Room',
+    eventLink: 'acmurl.com/lockpicking',
+    start: '2024-04-13T01:30:00.000Z',
+    end: '2024-04-13T03:30:00.000Z',
     pointValue: 10,
     requiresStaff: false,
     staffPointBonus: 0,
-    discordEvent: '1288736115079118881',
+    discordEvent: null,
   },
   {
-    uuid: 'eb4cb2c6-f6e1-4fc0-b086-a93ac066d933',
+    uuid: '9d2023d4-3649-4407-8538-d71687656c45',
     organization: 'ACM',
-    committee: 'General',
+    committee: 'AI',
     thumbnail: null,
     cover:
-      'https://acmucsd.s3.us-west-1.amazonaws.com/portal/events/eb4cb2c6-f6e1-4fc0-b086-a93ac066d933.png',
-    title: 'Resume Review',
+      'https://acmucsd.s3.us-west-1.amazonaws.com/portal/events/9d2023d4-3649-4407-8538-d71687656c45.png',
+    title: 'Deep Reinforcement Learning',
     description:
-      "Recruitment is in season! Come out and join ACM's resume review night, where we'll go over bulletproof strategies for creating and tailoring your resume for whatever opportunities you want to pursue! Regardless of your experience level, we will help you workshop and develop your resume so that you can present your best self!",
-    location: 'Qualcomm Room',
-    eventLink: 'acmurl.com/resume-review',
-    start: '2024-10-03T00:30:00.000Z',
-    end: '2024-10-03T02:00:00.000Z',
+      "Come learn about AI tools and models at ACM AI's third spring quarter technical workshop!",
+    location: 'DIB 202/208',
+    eventLink: 'acmurl.com/ai-sp-ws3',
+    start: '2023-06-03T01:00:00.000Z',
+    end: '2023-06-03T03:00:00.000Z',
     pointValue: 10,
     requiresStaff: false,
     staffPointBonus: 0,
-    discordEvent: '1288736670102851625',
+    discordEvent: null,
   },
 ];
+
+const BadgeAnnotation = ({ children }: PropsWithChildren) => {
+  return (
+    <div className={styles.badgeWrapper}>
+      {children}
+      <div className={styles.annotation}>
+        Each event is categorized under one of the ACM communities and tagged with the number of
+        points you can earn from attending.
+      </div>
+    </div>
+  );
+};
 
 const Events = () => {
   return (
     <div className={styles.page}>
-      <Typography variant="headline/heavy/small">Events</Typography>
+      <Typography variant="headline/heavy/small" className={styles.fadeOut}>
+        Events
+      </Typography>
       <EventFilter
+        className={`${styles.desktopOnly} ${styles.fadeOut}`}
         filters={{
           search: DEFAULT_FILTER_STATE.search,
           communityFilter: DEFAULT_FILTER_STATE.community,
@@ -76,8 +92,16 @@ const Events = () => {
         }}
       />
       <div className={styles.events}>
-        {dummyEvents.map(event => (
-          <EventCard key={event.uuid} event={event} attended={false} showYear />
+        {dummyEvents.map((event, i) => (
+          <EventCard
+            key={event.uuid}
+            event={event}
+            attended={false}
+            showYear
+            className={i !== 0 ? `${styles.desktopOnly} ${styles.fadeOut}` : undefined}
+            badgeWrapper={i === 0 ? BadgeAnnotation : undefined}
+            interactive={false}
+          />
         ))}
       </div>
     </div>

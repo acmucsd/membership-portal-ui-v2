@@ -16,6 +16,7 @@ interface EventFilterProps {
   filters: FilterOptions;
   onFilter?: (param: string, value: string) => void;
   loggedOut?: boolean;
+  className?: string;
 }
 
 export const DEFAULT_FILTER_STATE: FilterEventOptions = {
@@ -29,11 +30,12 @@ const EventFilter = ({
   filters: { search, communityFilter, dateFilter, attendanceFilter },
   onFilter,
   loggedOut,
+  className = '',
 }: EventFilterProps) => {
   const years = useMemo(getYears, []);
 
   return (
-    <div className={styles.controls}>
+    <div className={`${styles.controls} ${className}`}>
       <input
         className={styles.search}
         type="search"

@@ -10,5 +10,75 @@
     display: flex;
     gap: 1rem;
     justify-content: space-between;
+
+    @media (max-width: vars.$breakpoint-lg) {
+      justify-content: center;
+    }
+
+    .badgeWrapper {
+      animation: badge-highlight 0.5s 1s forwards;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      margin: calc(-0.25rem - 2px);
+      padding: 0.25rem;
+      position: relative;
+      transform-origin: left;
+      width: fit-content;
+
+      .annotation {
+        animation: annotation-appear 0.5s 1.5s backwards;
+        bottom: 100%;
+        left: 0;
+        position: absolute;
+        transform: scale(calc(1 / 1.2));
+        white-space: pre-wrap;
+      }
+    }
+  }
+
+  .fadeOut {
+    animation: fade-out 0.5s 1s forwards;
+  }
+
+  .desktopOnly {
+    @media (max-width: vars.$breakpoint-lg) {
+      display: none;
+    }
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.3;
+  }
+}
+
+@keyframes badge-highlight {
+  from {
+    background-color: transparent;
+    border-color: transparent;
+    transform: scale(1);
+  }
+
+  to {
+    background-color: rgba(255, 243, 181, 0.6);
+    border-color: #ffdc24;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes annotation-appear {
+  from {
+    opacity: 0;
+    transform: translateY(1rem) scale(calc(1 / 1.2));
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(calc(1 / 1.2));
   }
 }
