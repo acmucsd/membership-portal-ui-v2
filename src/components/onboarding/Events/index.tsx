@@ -1,4 +1,5 @@
-import { EventList } from '@/components/events';
+import { Typography } from '@/components/common';
+import { DEFAULT_FILTER_STATE, EventCard, EventFilter } from '@/components/events';
 import { PublicEvent } from '@/lib/types/apiResponses';
 import styles from './style.module.scss';
 
@@ -65,7 +66,20 @@ const dummyEvents: PublicEvent[] = [
 const Events = () => {
   return (
     <div className={styles.page}>
-      <EventList events={dummyEvents} />
+      <Typography variant="headline/heavy/small">Events</Typography>
+      <EventFilter
+        filters={{
+          search: DEFAULT_FILTER_STATE.search,
+          communityFilter: DEFAULT_FILTER_STATE.community,
+          dateFilter: DEFAULT_FILTER_STATE.date,
+          attendanceFilter: DEFAULT_FILTER_STATE.attendance,
+        }}
+      />
+      <div className={styles.events}>
+        {dummyEvents.map(event => (
+          <EventCard key={event.uuid} event={event} attended={false} showYear />
+        ))}
+      </div>
     </div>
   );
 };

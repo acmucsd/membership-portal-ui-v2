@@ -1,4 +1,5 @@
 export type Styles = {
+  events: string;
   page: string;
 };
 

@@ -5,4 +5,10 @@
   flex-direction: column;
   gap: 1.5rem;
   margin-top: 1.5rem;
+
+  .events {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
 }
