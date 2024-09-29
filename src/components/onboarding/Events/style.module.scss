@@ -1,7 +1,8 @@
+@use 'src/styles/vars.scss' as vars;
+
 .page {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  margin: 0 auto;
-  max-width: 1920px;
+  margin-top: 1.5rem;
 }

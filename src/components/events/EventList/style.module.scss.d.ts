@@ -1,5 +1,7 @@
 export type Styles = {
-  page: string;
+  controls: string;
+  filterOption: string;
+  search: string;
 };
 
 export type ClassNames = keyof Styles;

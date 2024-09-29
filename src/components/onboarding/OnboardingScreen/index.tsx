@@ -1,5 +1,6 @@
 import { Button, LinkButton, Typography } from '@/components/common';
 import Communities from '@/components/onboarding/Communities';
+import Events from '@/components/onboarding/Events';
 import Intro from '@/components/onboarding/Intro';
 import { CollectionSlider } from '@/components/store';
 import { config } from '@/lib';
@@ -31,7 +32,12 @@ const steps: Step[] = [
     title: 'Join us at our events and workshops.',
     caption:
       'Learn technical skills and connect with other members with shared interests. We can’t wait to see you there!',
-    content: <div className={styles.rainbow} />,
+    content: (
+      <>
+        <div className={styles.rainbow} />
+        <Events />
+      </>
+    ),
   },
   {
     title: 'Race your friends to the top of the leaderboard',

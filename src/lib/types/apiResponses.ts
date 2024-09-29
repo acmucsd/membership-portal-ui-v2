@@ -120,7 +120,7 @@ export interface PublicEvent {
   uuid: UUID;
   organization: string;
   committee: string;
-  thumbnail: string;
+  thumbnail: string | null;
   cover: string;
   title: string;
   description: string;
