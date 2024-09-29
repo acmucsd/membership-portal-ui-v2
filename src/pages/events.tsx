@@ -18,6 +18,13 @@ import styles from '@/styles/pages/events.module.scss';
 import { GetServerSideProps } from 'next';
 import { useMemo, useState } from 'react';
 
+interface EventsPageProps {
+  events: PublicEvent[];
+  attendances: PublicAttendance[];
+  initialFilters: FilterEventOptions;
+  loggedOut: boolean;
+}
+
 interface FilterOptions {
   search: string;
   communityFilter: string;
@@ -61,13 +68,6 @@ const filterEvent = (
 };
 
 const ROWS_PER_PAGE = 25;
-
-interface EventsPageProps {
-  events: PublicEvent[];
-  attendances: PublicAttendance[];
-  initialFilters: FilterEventOptions;
-  loggedOut: boolean;
-}
 
 const EventsPage = ({ events, attendances, initialFilters, loggedOut }: EventsPageProps) => {
   const [page, setPage] = useState(0);
