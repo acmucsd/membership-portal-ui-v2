@@ -18,19 +18,19 @@ type Step = {
 
 const steps: Step[] = [
   {
-    title: 'Welcome to the ACM at UCSD!',
+    title: 'Welcome to ACM at UCSD',
     caption:
       'The Association of Computing Machinery (ACM) is UCSD’s largest computing organization! Our goal is to establish and foster an inclusive member-first community for all who are interested in the field of computing.',
     content: Intro,
   },
   {
-    title: 'Find your niche here.',
+    title: 'Find your niche here',
     caption:
       'We have a space for you! Pursue your interests by exploring different communities such as ACM AI, ACM Hack, ACM Cyber, and ACM Design.',
     content: Communities,
   },
   {
-    title: 'Join us at our events and workshops.',
+    title: 'Join us at our events and workshops',
     caption:
       'Learn technical skills and connect with other members with shared interests. We can’t wait to see you there!',
     content: () => (
@@ -46,7 +46,7 @@ const steps: Step[] = [
     content: Leaderboard,
   },
   {
-    title: 'Redeem your points at the ACM Store!',
+    title: 'Redeem your points at the ACM Store',
     caption: 'Purchase merch with your points and show off your ACM spirit!',
     content: () => (
       <>
@@ -56,7 +56,7 @@ const steps: Step[] = [
     ),
   },
   {
-    title: 'That’s a glimpse on how we run ACM at UCSD.',
+    title: 'That’s a glimpse on how we run ACM at UCSD',
     caption: 'Let’s get started with setting up your account!', // You can earn your first 10 points by completing the tasks under the profile dashboard.
     content: () => <Step4 className={styles.endImage} />,
   },
