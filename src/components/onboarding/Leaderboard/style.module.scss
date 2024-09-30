@@ -1,0 +1,15 @@
+@use 'src/styles/vars.scss' as vars;
+
+.wrapper {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  position: relative;
+
+  .row {
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: transform 0.2s;
+  }
+}

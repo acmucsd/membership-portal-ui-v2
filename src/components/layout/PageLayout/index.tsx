@@ -5,11 +5,12 @@ import styles from './style.module.scss';
 
 interface LayoutProps {
   accessType?: UserAccessType;
+  quietNavbar?: boolean;
 }
 
-const PageLayout = ({ accessType, children }: PropsWithChildren<LayoutProps>) => (
+const PageLayout = ({ accessType, quietNavbar, children }: PropsWithChildren<LayoutProps>) => (
   <>
-    <Navbar accessType={accessType} />
+    <Navbar accessType={accessType} quiet={quietNavbar} />
     <main className={styles.content}>{children}</main>
   </>
 );

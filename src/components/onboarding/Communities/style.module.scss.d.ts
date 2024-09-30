@@ -1,5 +1,10 @@
 export type Styles = {
-  page: string;
+  community: string;
+  description: string;
+  fadeIn: string;
+  logo: string;
+  name: string;
+  wrapper: string;
 };
 
 export type ClassNames = keyof Styles;

@@ -83,6 +83,7 @@ const config = {
   registerRoute: '/register',
   loginRoute: '/login',
   logoutRoute: '/logout',
+  onboardRoute: '/onboard',
   leaderboardRoute: '/leaderboard',
   profileRoute: '/profile',
   aboutRoute: '/about',
@@ -130,6 +131,7 @@ const config = {
     MAX_COLLECTION_PHOTO_SIZE_KB: 1024,
     MAX_RESUME_SIZE_KB: isDevelopment ? 256 : 2048,
   },
+  tempLocalOnboardingKey: 'onboarding',
 };
 
 export default config;

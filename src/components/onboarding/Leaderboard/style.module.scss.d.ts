@@ -1,5 +1,6 @@
 export type Styles = {
-  page: string;
+  row: string;
+  wrapper: string;
 };
 
 export type ClassNames = keyof Styles;

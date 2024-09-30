@@ -7,8 +7,6 @@
   flex-direction: column;
   height: fit-content;
   outline: 0 solid var(--theme-elevated-stroke);
-  -ms-overflow-style: none;
-  overflow-x: hidden;
   padding: 0;
   position: relative;
   text-align: left;
@@ -20,7 +18,7 @@
     border-radius: 10px;
   }
 
-  &:not([data-disabled]):hover {
+  &.interactive:not([data-disabled]):hover {
     outline-width: 4px;
     transform: scale(0.975);
 
@@ -56,8 +54,10 @@
 
   .image {
     aspect-ratio: 1920 / 1080;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
     flex-shrink: 0;
-    overflow: none;
+    overflow: hidden;
     position: relative;
     width: 100%;
   }
