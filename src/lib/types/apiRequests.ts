@@ -160,7 +160,7 @@ export interface ModifyUserAccessLevelRequest {
 export interface OptionalEventProperties {
   organization?: string;
   committee?: string;
-  thumbnail?: string;
+  thumbnail?: string | null;
   eventLink?: string;
   requiresStaff?: boolean;
   staffPointBonus?: number;

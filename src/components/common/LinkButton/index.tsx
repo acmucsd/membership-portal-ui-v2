@@ -1,3 +1,4 @@
+import Typography from '@/components/common/Typography';
 import type { URL } from '@/lib/types';
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';
@@ -8,10 +9,18 @@ interface IProps {
   destructive?: boolean;
   href: URL;
   size?: 'default' | 'small';
+  onClick?: () => void;
 }
 
 const LinkButton = (props: PropsWithChildren<IProps>) => {
-  const { variant = 'primary', destructive = false, href, size = 'default', children } = props;
+  const {
+    variant = 'primary',
+    destructive = false,
+    href,
+    size = 'default',
+    onClick,
+    children,
+  } = props;
 
   return (
     <Link
@@ -20,8 +29,11 @@ const LinkButton = (props: PropsWithChildren<IProps>) => {
       data-destructive={destructive}
       data-size={size}
       href={href}
+      onClick={onClick}
     >
-      {children}
+      <Typography variant="h5/medium" component="span">
+        {children}
+      </Typography>
     </Link>
   );
 };

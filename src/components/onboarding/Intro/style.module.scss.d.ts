@@ -1,5 +1,8 @@
 export type Styles = {
-  page: string;
+  appear: string;
+  desktopOnly: string;
+  image: string;
+  wrapper: string;
 };
 
 export type ClassNames = keyof Styles;

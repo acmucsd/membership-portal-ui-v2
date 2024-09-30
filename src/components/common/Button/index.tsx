@@ -1,3 +1,4 @@
+import Typography from '@/components/common/Typography';
 import { PropsWithChildren } from 'react';
 import style from './style.module.scss';
 
@@ -11,6 +12,11 @@ interface IProps {
   className?: string;
 }
 
+/**
+ * Equivalent to
+ * {@link https://www.figma.com/design/YQjQ1ruLtMICqnzzxBXxOL/ACM-Portal---Onboarding-Screens?node-id=158-1208&t=GsDtnYW4YBMPSN8C-4|"Desktop and mobile buttons"}
+ * in the Figma
+ */
 const Button = (props: PropsWithChildren<IProps>) => {
   const {
     variant = 'primary',
@@ -20,7 +26,7 @@ const Button = (props: PropsWithChildren<IProps>) => {
     size = 'default',
     onClick,
     children,
-    className,
+    className = '',
   } = props;
 
   return (
@@ -33,7 +39,9 @@ const Button = (props: PropsWithChildren<IProps>) => {
       data-destructive={destructive}
       data-size={size}
     >
-      {children}
+      <Typography variant="h5/medium" component="span">
+        {children}
+      </Typography>
     </button>
   );
 };

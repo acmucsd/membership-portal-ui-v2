@@ -37,7 +37,7 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
       />
       <ThemeProvider>
         <ToastContainer />
-        <PageLayout accessType={pageProps?.user?.accessType}>
+        <PageLayout accessType={pageProps?.user?.accessType} quietNavbar={pageProps.quietNavbar}>
           <Component {...pageProps} />
         </PageLayout>
       </ThemeProvider>

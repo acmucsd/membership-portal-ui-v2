@@ -1,4 +1,4 @@
-import { Button, Typography } from '@/components/common';
+import { Button, LinkButton, Typography } from '@/components/common';
 import { config, showToast } from '@/lib';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
@@ -43,6 +43,8 @@ const DebugPage = () => {
       >
         Fill Cart
       </Button>
+      <Typography variant="h2/medium">Onboarding</Typography>
+      <LinkButton href={`${config.onboardRoute}?destination=/debug`}>Teach Me the Ways</LinkButton>
     </div>
   );
 };

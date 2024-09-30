@@ -1,6 +1,5 @@
-import { Dropdown, LoginAppeal, PaginationControls, Typography } from '@/components/common';
-import { DIVIDER } from '@/components/common/Dropdown';
-import { EventDisplay } from '@/components/events';
+import { LoginAppeal, PaginationControls, Typography } from '@/components/common';
+import { DEFAULT_FILTER_STATE, EventDisplay, EventFilter } from '@/components/events';
 import { config } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
 import { getCurrentUser } from '@/lib/hoc/withAccessType';
@@ -68,13 +67,6 @@ const filterEvent = (
   return true;
 };
 
-const DEFAULT_FILTER_STATE = {
-  community: 'all',
-  date: 'all-time',
-  attendance: 'any',
-  search: '',
-};
-
 const ROWS_PER_PAGE = 25;
 
 const EventsPage = ({ events, attendances, initialFilters, loggedOut }: EventsPageProps) => {
@@ -138,78 +130,14 @@ const EventsPage = ({ events, attendances, initialFilters, loggedOut }: EventsPa
           of thousands.
         </LoginAppeal>
       ) : null}
-      <div className={styles.controls}>
-        <input
-          className={styles.search}
-          type="search"
-          placeholder="Search Events"
-          aria-label="Search Events"
-          value={search}
-          onChange={e => {
-            setStates('search', e.currentTarget.value);
-            setPage(0);
-          }}
-        />
-        <div className={styles.filterOption}>
-          <Dropdown
-            name="communityOptions"
-            ariaLabel="Filter events by community"
-            options={[
-              { value: 'all', label: 'All Communities' },
-              { value: 'general', label: 'General' },
-              { value: 'ai', label: 'AI' },
-              { value: 'cyber', label: 'Cyber' },
-              { value: 'design', label: 'Design' },
-              { value: 'hack', label: 'Hack' },
-            ]}
-            value={communityFilter}
-            onChange={v => {
-              setStates('community', v);
-              setPage(0);
-            }}
-          />
-        </div>
-
-        <div className={styles.filterOption}>
-          <Dropdown
-            name="dateOptions"
-            ariaLabel="Filter events by date"
-            options={[
-              { value: 'upcoming', label: 'Upcoming' },
-              { value: 'past-week', label: 'Past Week' },
-              { value: 'past-month', label: 'Past Month' },
-              { value: 'past-year', label: 'Past Year' },
-              { value: 'all-time', label: 'All Time' },
-              DIVIDER,
-              ...years,
-            ]}
-            value={dateFilter}
-            onChange={v => {
-              setStates('date', v);
-              setPage(0);
-            }}
-          />
-        </div>
-
-        {loggedOut ? null : (
-          <div className={styles.filterOption}>
-            <Dropdown
-              name="attendanceOptions"
-              ariaLabel="Filter events by attendance"
-              options={[
-                { value: 'any', label: 'Any Attendance' },
-                { value: 'attended', label: 'Attended' },
-                { value: 'not-attended', label: 'Not Attended' },
-              ]}
-              value={attendanceFilter}
-              onChange={v => {
-                setStates('attendance', v);
-                setPage(0);
-              }}
-            />
-          </div>
-        )}
-      </div>
+      <EventFilter
+        filters={{ search, communityFilter, dateFilter, attendanceFilter }}
+        onFilter={(param, value) => {
+          setStates(param, value);
+          setPage(0);
+        }}
+        loggedOut={loggedOut}
+      />
       <EventDisplay events={displayedEvents} attendances={attendances} />
 
       {filteredEvents.length > 0 ? (
