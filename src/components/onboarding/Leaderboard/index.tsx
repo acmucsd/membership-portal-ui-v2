@@ -90,7 +90,7 @@ const Leaderboard = ({ user }: LeaderboardProps) => {
             even={name !== userName}
             className={styles.row}
             style={{
-              transform: `translateY(${position * 4}rem)`,
+              transform: `translateY(calc(${position} * var(--leaderboard-height)))`,
               zIndex: name === userName ? '5' : undefined,
             }}
           />
