@@ -75,8 +75,8 @@ const Leaderboard = ({ user }: LeaderboardProps) => {
   return (
     <div
       className={styles.wrapper}
-      style={{ height: `calc(${users.length} * var(--leaderboard-height))`
-    }}>
+      style={{ height: `calc(${users.length} * var(--leaderboard-height))` }}
+    >
       {users.map(({ name, points, image }) => {
         const position = sorted.indexOf(name);
         return (
