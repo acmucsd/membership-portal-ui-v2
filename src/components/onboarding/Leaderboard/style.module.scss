@@ -4,6 +4,11 @@
   border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
+  --leaderboard-height: 4rem;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    --leaderboard-height: 6rem;
+  }
 
   .row {
     left: 0;
@@ -11,5 +16,6 @@
     right: 0;
     top: 0;
     transition: transform 0.2s;
+    height: var(--leaderboard-height);
   }
 }
