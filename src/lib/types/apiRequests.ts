@@ -165,6 +165,7 @@ export interface OptionalEventProperties {
   requiresStaff?: boolean;
   staffPointBonus?: number;
   discordEvent: string | null;
+  foodItems?: string;
 }
 
 export interface Event extends OptionalEventProperties {
