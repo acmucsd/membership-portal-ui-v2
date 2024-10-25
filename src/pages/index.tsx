@@ -98,6 +98,10 @@ const PortalHomePage = ({
 
           // Start onboarding after checking in
           // TEMP: This should be saved server-side in the future
+          // Do not start onboarding if user already attended other events
+          if (attendance.length > 1) {
+            return;
+          }
           const onboardingState = localStorage.getItem(config.tempLocalOnboardingKey);
           if (onboardingState === 'onboarded') {
             return;
