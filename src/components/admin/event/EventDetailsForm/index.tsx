@@ -38,6 +38,7 @@ const EventDetailsForm = (props: IProps) => {
     cover: defaultData?.cover,
     uuid: defaultData?.uuid,
     eventLink: defaultData?.eventLink,
+    foodItems: defaultData?.foodItems,
   };
 
   const {
@@ -271,7 +272,12 @@ const EventDetailsForm = (props: IProps) => {
           />
         </DetailsFormItem>
 
-        <label htmlFor="description">Event Link</label>
+        <label htmlFor="foodItems">Food (if A.S. Funded)</label>
+        <DetailsFormItem error={errors.foodItems?.message}>
+          <input type="text" id="foodItems" {...register('foodItems')} />
+        </DetailsFormItem>
+
+        <label htmlFor="eventLink">Event Link</label>
         <DetailsFormItem error={errors.eventLink?.message}>
           <input type="text" id="eventLink" {...register('eventLink')} />
         </DetailsFormItem>
