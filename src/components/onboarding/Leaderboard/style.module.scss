@@ -6,8 +6,8 @@
   overflow: hidden;
   position: relative;
 
-  @media (max-width: vars.$breakpoint-sm) {
-    --leaderboard-height: 6rem;
+  @media (max-width: vars.$breakpoint-md) {
+    --leaderboard-height: 5rem;
   }
 
   .row {
@@ -17,5 +17,11 @@
     right: 0;
     top: 0;
     transition: transform 0.2s;
+
+    @media (max-width: vars.$breakpoint-sm) {
+      img {
+        display: none;
+      }
+    }
   }
 }
