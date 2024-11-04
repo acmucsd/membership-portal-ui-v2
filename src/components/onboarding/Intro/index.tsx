@@ -7,6 +7,7 @@ import TiltKickoff from '@/public/assets/graphics/onboarding/ACM_Fall24Kickoff_1
 import FocusPerson from '@/public/assets/graphics/onboarding/ACM_Fall24Kickoff_2-JustinLu.jpg';
 import KickoffBig from '@/public/assets/graphics/onboarding/ACM_Fall24Kickoff_3-JustinLu.jpg';
 import Image, { StaticImageData } from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 import styles from './style.module.scss';
 
 type IntroImage = {
@@ -30,25 +31,53 @@ const OFFSET_X = 173 + 631 / 2;
 const OFFSET_Y = 116 + 308 / 2;
 
 const Intro = () => {
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e: PointerEvent) => {
+      if (!ref.current) {
+        return;
+      }
+      const { left, top } = ref.current.getBoundingClientRect();
+      setMouseX(e.pointerType === 'mouse' ? e.clientX - left : 0);
+      setMouseY(e.pointerType === 'mouse' ? e.clientY - top : 0);
+    };
+    document.addEventListener('pointermove', handleMouseMove);
+    return () => {
+      document.removeEventListener('pointermove', handleMouseMove);
+    };
+  });
+
   return (
     <div className={styles.wrapper}>
-      <div className={styles.anchor}>
+      <div className={styles.anchor} ref={ref}>
         {images.map(({ src, size: [x, y, width, height], round }, i) => (
-          <Image
+          <div
             key={src.src}
-            className={`${styles.image} ${round ? styles.pill : ''}`}
-            src={src}
-            alt="todo"
-            width={width}
-            height={height}
+            className={styles.imageWrapper}
             style={{
               left: `${x - OFFSET_X}px`,
               top: `${y - OFFSET_Y}px`,
-              transformOrigin: `${OFFSET_X - x}px ${OFFSET_Y - y}px`,
-              animationDelay: `${i * 0.1 + 0.5}s`,
-              animationDuration: `${i * 0.05 + 1}s`,
+              transform: `translate(${mouseX / (10 + images.length - i)}px, ${
+                mouseY / (10 + images.length - i)
+              }px)`,
             }}
-          />
+          >
+            <Image
+              className={`${styles.image} ${round ? styles.pill : ''}`}
+              src={src}
+              alt="todo"
+              width={width}
+              height={height}
+              style={{
+                transformOrigin: `${OFFSET_X - x}px ${OFFSET_Y - y}px`,
+                animationDelay: `${i * 0.1 + 0.5}s`,
+                animationDuration: `${i * 0.05 + 1}s`,
+              }}
+            />
+          </div>
         ))}
       </div>
     </div>

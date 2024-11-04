@@ -2,6 +2,7 @@ export type Styles = {
   anchor: string;
   appear: string;
   image: string;
+  imageWrapper: string;
   pill: string;
   wrapper: string;
 };

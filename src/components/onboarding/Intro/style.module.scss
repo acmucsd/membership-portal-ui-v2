@@ -23,15 +23,18 @@
   .anchor {
     position: relative;
 
-    .image {
-      animation: appear 1s backwards;
-      border-radius: 1rem;
-      object-fit: cover;
-      object-position: center;
+    .imageWrapper {
       position: absolute;
 
-      &.pill {
-        border-radius: 10rem;
+      .image {
+        animation: appear 1s backwards;
+        border-radius: 1rem;
+        object-fit: cover;
+        object-position: center;
+
+        &.pill {
+          border-radius: 10rem;
+        }
       }
     }
   }
