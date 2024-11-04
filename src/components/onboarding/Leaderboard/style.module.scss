@@ -1,21 +1,21 @@
 @use 'src/styles/vars.scss' as vars;
 
 .wrapper {
+  --leaderboard-height: 4rem;
   border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
-  --leaderboard-height: 4rem;
 
   @media (max-width: vars.$breakpoint-sm) {
     --leaderboard-height: 6rem;
   }
 
   .row {
+    height: var(--leaderboard-height);
     left: 0;
     position: absolute;
     right: 0;
     top: 0;
     transition: transform 0.2s;
-    height: var(--leaderboard-height);
   }
 }

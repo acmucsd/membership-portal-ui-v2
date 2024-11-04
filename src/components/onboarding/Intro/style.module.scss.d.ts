@@ -1,7 +1,8 @@
 export type Styles = {
+  anchor: string;
   appear: string;
-  desktopOnly: string;
   image: string;
+  pill: string;
   wrapper: string;
 };
 

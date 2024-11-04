@@ -4,7 +4,7 @@
   from {
     filter: blur(2rem);
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(1.2);
   }
 
   to {
@@ -18,16 +18,21 @@
   align-items: center;
   display: flex;
   flex: auto;
-  gap: 1rem;
   justify-content: center;
 
-  .image {
-    animation: appear 1.5s backwards;
-  }
+  .anchor {
+    position: relative;
 
-  @media (max-width: vars.$breakpoint-md) {
-    .desktopOnly {
-      display: none;
+    .image {
+      animation: appear 1s backwards;
+      border-radius: 1rem;
+      object-fit: cover;
+      object-position: center;
+      position: absolute;
+
+      &.pill {
+        border-radius: 10rem;
+      }
     }
   }
 }
