@@ -1,5 +1,6 @@
 import { OnboardingScreen } from '@/components/onboarding';
 import { config } from '@/lib';
+import { UserAPI } from '@/lib/api';
 import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import { URL } from '@/lib/types';
@@ -9,10 +10,11 @@ import { useRouter } from 'next/router';
 
 interface OnboardProps {
   destination: URL;
+  authToken: string;
   user: PrivateProfile;
 }
 
-const OnboardPage: NextPage<OnboardProps> = ({ user, destination }) => {
+const OnboardPage: NextPage<OnboardProps> = ({ authToken, user, destination }) => {
   const router = useRouter();
 
   const handleExit = () => {
@@ -25,7 +27,7 @@ const OnboardPage: NextPage<OnboardProps> = ({ user, destination }) => {
         user={user}
         onDismiss={handleExit}
         onFinish={() => {
-          localStorage.setItem(config.tempLocalOnboardingKey, 'onboarded');
+          UserAPI.updateCurrentUserProfile(authToken, { onboardingSeen: true });
         }}
       />
     </div>
@@ -34,12 +36,13 @@ const OnboardPage: NextPage<OnboardProps> = ({ user, destination }) => {
 
 export default OnboardPage;
 
-const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ query }) => {
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ query, authToken }) => {
   const route = query?.destination ? decodeURIComponent(query?.destination as string) : null;
 
   return {
     props: {
       destination: route || config.homeRoute,
+      authToken,
       quietNavbar: true,
     },
   };

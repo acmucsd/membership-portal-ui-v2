@@ -382,6 +382,7 @@ export interface PrivateProfile extends PublicProfile {
   state: UserState;
   credits: number;
   resumes?: PublicResume[];
+  onboardingSeen: boolean;
 }
 
 export interface PublicFeedback {
