@@ -1,6 +1,7 @@
 import DetailsFormItem from '@/components/admin/DetailsFormItem';
 import { Button } from '@/components/common';
 import { config, showToast } from '@/lib';
+import useConfirm from '@/lib/hooks/useConfirm';
 import { AdminEventManager } from '@/lib/managers';
 import { UUID } from '@/lib/types';
 import { OrderPickupEvent } from '@/lib/types/apiRequests';
@@ -203,136 +204,181 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
 
   const defaultFormText = loading ? 'Loading events from API...' : 'Select an Event';
 
+  const confirmComplete = useConfirm({
+    title: 'Confirm completion',
+    question:
+      'Are you sure you want to complete this pickup event? Pending orders will be marked as missed. This cannot be undone.',
+    action: 'Complete',
+  });
+  const confirmCancel = useConfirm({
+    title: 'Confirm cancellation',
+    question: 'Are you sure you want to cancel this pickup event? This cannot be undone.',
+    action: 'Cancel event',
+    cancel: 'Back',
+  });
+  const confirmDelete = useConfirm({
+    title: 'Confirm deletion',
+    question: 'Are you sure you want to delete this pickup event? This cannot be undone.',
+    action: 'Delete',
+  });
+  const confirmReset = useConfirm({
+    title: 'Confirm reset',
+    question: 'Are you sure you want to reset this form? This cannot be undone.',
+    action: 'Reset',
+  });
+
   return (
-    <form onSubmit={handleSubmit(mode === 'edit' ? editPickupEvent : createPickupEvent)}>
-      <div className={style.header}>
-        <h1>{mode === 'edit' ? 'Modify' : 'Create'} Pickup Event</h1>
+    <>
+      {confirmComplete.modal}
+      {confirmCancel.modal}
+      {confirmDelete.modal}
+      {confirmReset.modal}
+      <form onSubmit={handleSubmit(mode === 'edit' ? editPickupEvent : createPickupEvent)}>
+        <div className={style.header}>
+          <h1>{mode === 'edit' ? 'Modify' : 'Create'} Pickup Event</h1>
 
-        {defaultData.uuid ? (
-          <Link
-            className={style.viewPage}
-            href={`${config.admin.store.pickup}/${defaultData.uuid}`}
-          >
-            View pickup event page
-            <BsArrowRight aria-hidden />
-          </Link>
-        ) : null}
-      </div>
+          {defaultData.uuid ? (
+            <Link
+              className={style.viewPage}
+              href={`${config.admin.store.pickup}/${defaultData.uuid}`}
+            >
+              View pickup event page
+              <BsArrowRight aria-hidden />
+            </Link>
+          ) : null}
+        </div>
 
-      <div className={style.form}>
-        <label htmlFor="title">Title</label>
-        <DetailsFormItem error={errors.title?.message}>
-          <input
-            type="text"
-            id="title"
-            placeholder="The Raccoon Pickup Event"
-            {...register('title', {
-              required: 'Required',
-            })}
-          />
-        </DetailsFormItem>
+        <div className={style.form}>
+          <label htmlFor="title">Title</label>
+          <DetailsFormItem error={errors.title?.message}>
+            <input
+              type="text"
+              id="title"
+              placeholder="The Raccoon Pickup Event"
+              {...register('title', {
+                required: 'Required',
+              })}
+            />
+          </DetailsFormItem>
 
-        <label htmlFor="start">Starts At</label>
-        <DetailsFormItem error={errors.start?.message}>
-          <input
-            type="datetime-local"
-            id="start"
-            {...register('start', {
-              required: 'Required',
-            })}
-          />
-        </DetailsFormItem>
+          <label htmlFor="start">Starts At</label>
+          <DetailsFormItem error={errors.start?.message}>
+            <input
+              type="datetime-local"
+              id="start"
+              {...register('start', {
+                required: 'Required',
+              })}
+            />
+          </DetailsFormItem>
 
-        <label htmlFor="end">Ends At</label>
-        <DetailsFormItem error={errors.end?.message}>
-          <input
-            type="datetime-local"
-            id="end"
-            {...register('end', {
-              required: 'Required',
-            })}
-          />
-        </DetailsFormItem>
+          <label htmlFor="end">Ends At</label>
+          <DetailsFormItem error={errors.end?.message}>
+            <input
+              type="datetime-local"
+              id="end"
+              {...register('end', {
+                required: 'Required',
+              })}
+            />
+          </DetailsFormItem>
 
-        <label htmlFor="description">Description</label>
-        <DetailsFormItem error={errors.description?.message}>
-          <textarea
-            id="description"
-            {...register('description', {
-              required: 'Required',
-            })}
-          />
-        </DetailsFormItem>
+          <label htmlFor="description">Description</label>
+          <DetailsFormItem error={errors.description?.message}>
+            <textarea
+              id="description"
+              {...register('description', {
+                required: 'Required',
+              })}
+            />
+          </DetailsFormItem>
 
-        <label htmlFor="points">Order Limit</label>
-        <DetailsFormItem error={errors.orderLimit?.message}>
-          <input
-            type="number"
-            id="orderLimit"
-            {...register('orderLimit', {
-              required: 'Required',
-            })}
-          />
-        </DetailsFormItem>
+          <label htmlFor="points">Order Limit</label>
+          <DetailsFormItem error={errors.orderLimit?.message}>
+            <input
+              type="number"
+              id="orderLimit"
+              {...register('orderLimit', {
+                required: 'Required',
+              })}
+            />
+          </DetailsFormItem>
 
-        <label htmlFor="LinkedEvent">Linked Event</label>
-        <DetailsFormItem error={errors.linkedEventUuid?.message}>
-          <select
-            id=""
-            placeholder={defaultFormText}
-            defaultValue={defaultFormText}
-            {...register('linkedEventUuid', {})}
-          >
-            <option disabled>{defaultFormText}</option>
+          <label htmlFor="LinkedEvent">Linked Event</label>
+          <DetailsFormItem error={errors.linkedEventUuid?.message}>
+            <select
+              id=""
+              placeholder={defaultFormText}
+              defaultValue={defaultFormText}
+              {...register('linkedEventUuid', {})}
+            >
+              <option disabled>{defaultFormText}</option>
 
-            {upcomingEvents?.map(event => (
-              <option key={event.uuid} value={event.uuid}>
-                {event.title} ({DateTime.fromISO(event.start).toFormat('f')})
-              </option>
-            ))}
-          </select>
-        </DetailsFormItem>
-      </div>
-      <div className={style.submitButtons}>
-        {mode === 'edit' ? (
-          <>
-            <Button submit disabled={loading}>
-              Save changes
-            </Button>
-
-            <Button onClick={resetForm} disabled={loading} destructive>
-              Discard changes
-            </Button>
-            {status === OrderPickupEventStatus.ACTIVE ? (
-              <Button onClick={() => completePickupEvent(uuid ?? '', token)} disabled={loading}>
-                Complete pickup event
+              {upcomingEvents?.map(event => (
+                <option key={event.uuid} value={event.uuid}>
+                  {event.title} ({DateTime.fromISO(event.start).toFormat('f')})
+                </option>
+              ))}
+            </select>
+          </DetailsFormItem>
+        </div>
+        <div className={style.submitButtons}>
+          {mode === 'edit' ? (
+            <>
+              <Button submit disabled={loading}>
+                Save changes
               </Button>
-            ) : null}
-            {status === OrderPickupEventStatus.ACTIVE ? (
               <Button
-                onClick={() => cancelPickupEvent(uuid ?? '', token)}
+                onClick={() => confirmReset.confirm(resetForm)}
                 disabled={loading}
                 destructive
               >
-                Cancel pickup event
+                Discard changes
               </Button>
-            ) : null}
-            <Button onClick={deletePickupEvent} disabled={loading} destructive>
-              Delete pickup event
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button submit disabled={loading}>
-              Create pickup event
-            </Button>
-            <Button onClick={resetForm} disabled={loading} destructive>
-              Clear form
-            </Button>
-          </>
-        )}
-      </div>
-    </form>
+              {status === OrderPickupEventStatus.ACTIVE ? (
+                <Button
+                  onClick={() =>
+                    confirmComplete.confirm(() => completePickupEvent(uuid ?? '', token))
+                  }
+                  disabled={loading}
+                >
+                  Complete pickup event
+                </Button>
+              ) : null}
+              {status === OrderPickupEventStatus.ACTIVE ? (
+                <Button
+                  onClick={() => confirmCancel.confirm(() => cancelPickupEvent(uuid ?? '', token))}
+                  disabled={loading}
+                  destructive
+                >
+                  Cancel pickup event
+                </Button>
+              ) : null}
+              <Button
+                onClick={() => confirmDelete.confirm(deletePickupEvent)}
+                disabled={loading}
+                destructive
+              >
+                Delete pickup event
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button submit disabled={loading}>
+                Create pickup event
+              </Button>
+              <Button
+                onClick={() => confirmReset.confirm(resetForm)}
+                disabled={loading}
+                destructive
+              >
+                Clear form
+              </Button>
+            </>
+          )}
+        </div>
+      </form>
+    </>
   );
 };
 
