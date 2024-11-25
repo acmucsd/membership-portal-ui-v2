@@ -73,7 +73,10 @@ const Leaderboard = ({ user }: LeaderboardProps) => {
   }, [userPoints]);
 
   return (
-    <div className={styles.wrapper} style={{ height: `${users.length * 4}rem` }}>
+    <div
+      className={styles.wrapper}
+      style={{ height: `calc(${users.length} * var(--leaderboard-height))` }}
+    >
       {users.map(({ name, points, image }) => {
         const position = sorted.indexOf(name);
         return (
@@ -87,7 +90,7 @@ const Leaderboard = ({ user }: LeaderboardProps) => {
             even={name !== userName}
             className={styles.row}
             style={{
-              transform: `translateY(${position * 4}rem)`,
+              transform: `translateY(calc(${position} * var(--leaderboard-height)))`,
               zIndex: name === userName ? '5' : undefined,
             }}
           />

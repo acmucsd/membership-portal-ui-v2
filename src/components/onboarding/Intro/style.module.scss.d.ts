@@ -1,7 +1,11 @@
 export type Styles = {
+  anchor: string;
   appear: string;
   desktopOnly: string;
   image: string;
+  imageWrapper: string;
+  mobileOnly: string;
+  pill: string;
   wrapper: string;
 };
 

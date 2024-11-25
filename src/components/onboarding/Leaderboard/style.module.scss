@@ -1,15 +1,27 @@
 @use 'src/styles/vars.scss' as vars;
 
 .wrapper {
+  --leaderboard-height: 4rem;
   border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
 
+  @media (max-width: vars.$breakpoint-md) {
+    --leaderboard-height: 5rem;
+  }
+
   .row {
+    height: var(--leaderboard-height);
     left: 0;
     position: absolute;
     right: 0;
     top: 0;
     transition: transform 0.2s;
+
+    @media (max-width: vars.$breakpoint-sm) {
+      img {
+        display: none;
+      }
+    }
   }
 }
