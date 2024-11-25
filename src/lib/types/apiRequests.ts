@@ -77,6 +77,7 @@ export interface UserPatches {
   graduationYear?: number;
   bio?: string;
   isAttendancePublic?: boolean;
+  onboardingSeen?: boolean;
   passwordChange?: PasswordUpdate;
 }
 
