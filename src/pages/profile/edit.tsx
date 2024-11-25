@@ -12,6 +12,7 @@ import { AuthAPI, ResumeAPI, UserAPI } from '@/lib/api';
 import majors from '@/lib/constants/majors';
 import socialMediaTypes from '@/lib/constants/socialMediaTypes';
 import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import useConfirm from '@/lib/hooks/useConfirm';
 import { CookieService, PermissionService } from '@/lib/services';
 import { ExistingSocialMedia, SocialMedia } from '@/lib/types/apiRequests';
 import { PrivateProfile } from '@/lib/types/apiResponses';
@@ -235,8 +236,21 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
     return years;
   }, [user.graduationYear]);
 
+  const confirmResumeDelete = useConfirm({
+    title: 'Confirm resume deletion',
+    question: 'Are you sure you want to delete your resume? This cannot be undone.',
+    action: 'Delete',
+  });
+  const confirmResumeReplace = useConfirm({
+    title: 'Confirm resume replacement',
+    question: 'Are you sure you want to replace your resume? Your old resume will be lost forever.',
+    action: 'Replace',
+  });
+
   return (
     <>
+      {confirmResumeDelete.modal}
+      {confirmResumeReplace.modal}
       <div className={styles.title}>
         <h1>Edit Profile</h1>
         <Link
@@ -421,15 +435,17 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                         <button
                           className={`${styles.button} ${styles.dangerBtn} ${styles.smaller}`}
                           type="button"
-                          onClick={async () => {
-                            try {
-                              await ResumeAPI.deleteResume(authToken, resume.uuid);
-                              setResumes(resumes.filter(({ uuid }) => uuid !== resume.uuid));
-                              showToast('Successfully deleted resume!');
-                            } catch (error) {
-                              reportError('Failed to delete resume', error);
-                            }
-                          }}
+                          onClick={() =>
+                            confirmResumeDelete.confirm(async () => {
+                              try {
+                                await ResumeAPI.deleteResume(authToken, resume.uuid);
+                                setResumes(resumes.filter(({ uuid }) => uuid !== resume.uuid));
+                                showToast('Successfully deleted resume!');
+                              } catch (error) {
+                                reportError('Failed to delete resume', error);
+                              }
+                            })
+                          }
                         >
                           Delete
                         </button>
@@ -442,24 +458,31 @@ const EditProfilePage = ({ user: initUser, authToken }: EditProfileProps) => {
                         className={styles.fileInput}
                         type="file"
                         accept=".pdf"
-                        onChange={async e => {
+                        onChange={e => {
                           const file = e.currentTarget.files?.[0];
                           e.currentTarget.value = '';
-                          try {
-                            if (file) {
-                              const resume = await ResumeAPI.uploadResume(
-                                authToken,
-                                file,
-                                isResumeVisible
-                              );
-                              // NOTE: The server currently overwrites the
-                              // previous resume with the new one.
-                              // https://github.com/acmucsd/membership-portal/blob/a45a68833854068aa3a6cceee59700f84114c308/api/controllers/ResumeController.ts#L45-L46
-                              setResumes([resume]);
-                              showToast('Resume uploaded!');
+                          const uploadResume = async () => {
+                            try {
+                              if (file) {
+                                const resume = await ResumeAPI.uploadResume(
+                                  authToken,
+                                  file,
+                                  isResumeVisible
+                                );
+                                // NOTE: The server currently overwrites the
+                                // previous resume with the new one.
+                                // https://github.com/acmucsd/membership-portal/blob/a45a68833854068aa3a6cceee59700f84114c308/api/controllers/ResumeController.ts#L45-L46
+                                setResumes([resume]);
+                                showToast('Resume uploaded!');
+                              }
+                            } catch (error) {
+                              reportError('Resume failed to upload', error);
                             }
-                          } catch (error) {
-                            reportError('Resume failed to upload', error);
+                          };
+                          if (resumes.length > 0) {
+                            confirmResumeReplace.confirm(uploadResume);
+                          } else {
+                            uploadResume();
                           }
                         }}
                       />
