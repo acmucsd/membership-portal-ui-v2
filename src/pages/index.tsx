@@ -97,8 +97,6 @@ const PortalHomePage = ({
           setCheckinModalVisible(false);
 
           // Start onboarding after checking in
-          // TEMP: This should be saved server-side in the future
-          // Do not start onboarding if user already attended other events
           if (user.onboardingSeen) {
             return;
           }
