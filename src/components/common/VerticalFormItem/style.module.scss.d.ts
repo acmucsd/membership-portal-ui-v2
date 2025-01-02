@@ -5,6 +5,7 @@ export type Styles = {
   iconContainer: string;
   inputField: string;
   selectField: string;
+  selectMultipleField: string;
 };
 
 export type ClassNames = keyof Styles;

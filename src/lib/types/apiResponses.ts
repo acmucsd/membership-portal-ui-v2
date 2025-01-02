@@ -42,12 +42,25 @@ export interface CreateBonusResponse extends ApiResponse {
   emails: string[];
 }
 
+export interface AddAttendanceResponse extends ApiResponse {
+  emails: string[];
+}
+
 export interface UploadBannerResponse extends ApiResponse {
   banner: string;
 }
 
 export interface GetAllEmailsResponse extends ApiResponse {
   emails: string[];
+}
+
+export interface NameAndEmail {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+export interface GetAllNamesAndEmailsResponse extends ApiResponse {
+  namesAndEmails: NameAndEmail[];
 }
 
 export interface SubmitAttendanceForUsersResponse extends ApiResponse {

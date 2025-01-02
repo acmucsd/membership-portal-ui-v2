@@ -4,28 +4,54 @@ import {
   VerticalFormItem,
   VerticalFormTitle,
 } from '@/components/common';
-import { config } from '@/lib';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { PermissionService, ValidationService } from '@/lib/services';
-import type { GetServerSideProps, NextPage } from 'next';
+import { showToast, config } from '@/lib';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { PermissionService } from '@/lib/services';
+
+import { AdminAPI, EventAPI } from '@/lib/api';
+
+import type { NextPage } from 'next';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { AiOutlineMail } from 'react-icons/ai';
+import { AiOutlineMail, AiOutlineArrowDown } from 'react-icons/ai';
 import { VscLock } from 'react-icons/vsc';
 
 interface FormValues {
-  email: string;
+  event: string;
+  email: string[];
   description: string;
   points: number;
 }
-const AwardPointsPage: NextPage = () => {
+
+interface AwardPointsPageProps {
+  title: string;
+  description: string;
+  properEvents: (number | string)[];
+  authToken: string;
+  sortedEmails: string[];
+}
+
+const AwardPointsPage: NextPage<AwardPointsPageProps> = ({
+  properEvents,
+  authToken,
+  sortedEmails,
+}) => {
+  // const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
 
-  const onSubmit: SubmitHandler<FormValues> = () => {
-    // TODO
+  const onSubmit: SubmitHandler<FormValues> = async ({ email, description, points }) => {
+    try {
+      const parsedPoints = Number(points);
+
+      await AdminAPI.addBonus(authToken, email, description, parsedPoints);
+
+      showToast('Successfully awarded points!');
+    } catch (error) {
+      showToast('An error occurred!');
+    }
   };
 
   return (
@@ -34,20 +60,30 @@ const AwardPointsPage: NextPage = () => {
         text="Award Bonus Points"
         description="Grant Bonus Points to a Specific User"
       />
+
       <VerticalFormItem
-        icon={<AiOutlineMail />}
-        element="input"
+        icon={<AiOutlineArrowDown />}
+        element="select"
+        name="event"
+        options={properEvents}
+        placeholder="Select an Event"
+        formRegister={register('event', {
+          required: 'Required',
+        })}
+        error={errors.event}
+      />
+      <VerticalFormItem
+        icon={<AiOutlineArrowDown />}
+        element="select-multiple"
         name="email"
-        type="email"
-        placeholder="User Email (user@ucsd.edu)"
+        options={sortedEmails}
+        placeholder="Select a User"
         formRegister={register('email', {
-          validate: email => {
-            const validation = ValidationService.isValidEmail(email);
-            return validation.valid || validation.error;
-          },
+          required: 'Required',
         })}
         error={errors.email}
       />
+
       <VerticalFormItem
         icon={<AiOutlineMail />}
         element="input"
@@ -74,7 +110,9 @@ const AwardPointsPage: NextPage = () => {
         type="button"
         display="button1"
         text="Award Points"
-        onClick={handleSubmit(onSubmit)}
+        onClick={() => {
+          handleSubmit(onSubmit)(); // Ensure this is called
+        }}
       />
     </VerticalForm>
   );
@@ -82,9 +120,24 @@ const AwardPointsPage: NextPage = () => {
 
 export default AwardPointsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: { title: 'Award Bonus Points', description: 'Grant bonus points to a specific user' },
-});
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ authToken }) => {
+  const allEvents = await EventAPI.getAllEvents();
+  const allUsers = await AdminAPI.getAllUserEmails(authToken);
+
+  const properEvents = allEvents.map(event => event.title);
+  const properEmails = allUsers.map(user => user.email);
+  const sortedEmails = properEmails.sort((a, b) => a.localeCompare(b));
+
+  return {
+    props: {
+      title: 'Award Bonus Points',
+      description: 'Grant bonus points to a specific user',
+      properEvents,
+      authToken,
+      sortedEmails,
+    },
+  };
+};
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
