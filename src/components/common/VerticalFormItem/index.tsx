@@ -30,7 +30,7 @@ type VerticalFormProps = FormItemProps &
 const VerticalFormItem = (props: VerticalFormProps) => {
   const { icon, placeholder, formRegister, element, error, inputHeight } = props;
   const { setValue } = useForm();
-  const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   if (element === 'input') {
@@ -83,7 +83,6 @@ const VerticalFormItem = (props: VerticalFormProps) => {
   }
 
   if (element === 'select-multiple') {
-    // const { control, handleSubmit, setValue } = useForm();
     const { options } = props;
     const handleSelectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       const selectedValues = Array.from(event.target.selectedOptions, option => option.value);
@@ -114,14 +113,9 @@ const VerticalFormItem = (props: VerticalFormProps) => {
                   lineHeight: inputHeight,
                 }}
                 multiple
-                // {...register('email', { required: 'At least one email must be selected' })}
                 {...formRegister}
                 onChange={handleSelectionChange}
-                // {...formRegister}
               >
-                {/* <option value="" disabled>
-                  {placeholder}
-                </option> */}
                 {filteredOptions.map(value => (
                   <option key={value}>{value}</option>
                 ))}

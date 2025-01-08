@@ -16,7 +16,6 @@ import { PublicEvent } from '@/lib/types/apiResponses';
 interface FormValues {
   email: string[];
   event: string;
-  // points: number;
 }
 interface AwardPointsPageProps {
   title: string;

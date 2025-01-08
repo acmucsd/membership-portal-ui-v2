@@ -35,7 +35,6 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({
   authToken,
   sortedEmails,
 }) => {
-  // const router = useRouter();
   const {
     register,
     handleSubmit,
