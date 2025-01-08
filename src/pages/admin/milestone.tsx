@@ -10,7 +10,7 @@ import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccess
 import { PermissionService } from '@/lib/services';
 import type { NextPage } from 'next';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { AiOutlineMail } from 'react-icons/ai';
+import { AiOutlineStar } from 'react-icons/ai';
 import { VscLock } from 'react-icons/vsc';
 
 interface FormValues {
@@ -29,7 +29,7 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({ authToken }) => {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async ({ name, points }) => {
-    // TODO
+    
     try {
       await AdminAPI.createMilestone(authToken, name, Number(points));
       showToast('Successfully awarded attendance!');
@@ -45,7 +45,7 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({ authToken }) => {
         description="Award points to all active users (e.g. for ACM's 8 year anniversary)"
       />
       <VerticalFormItem
-        icon={<AiOutlineMail />}
+        icon={<AiOutlineStar />}
         element="input"
         name="name"
         type="text"

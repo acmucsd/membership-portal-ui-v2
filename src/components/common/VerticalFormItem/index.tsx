@@ -1,7 +1,7 @@
 import React, { HTMLInputTypeAttribute, ReactNode, useState } from 'react';
 import { UseFormRegisterReturn, useForm } from 'react-hook-form';
 import styles from './style.module.scss';
-
+import { AiOutlineSearch } from 'react-icons/ai';
 interface InputTypeProps {
   element: 'input';
   type: HTMLInputTypeAttribute;
@@ -97,13 +97,13 @@ const VerticalFormItem = (props: VerticalFormProps) => {
     return (
       <div className={styles.formItem}>
         <div className={styles.formInput}>
-          <div className={styles.iconContainer}>{icon}</div>
+          <div className={styles.iconContainer}>{<AiOutlineSearch />}</div>
           <div>
             <h1>Selected: {selectedOptions.join(', ')}</h1>
             <div>
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Click to search"
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
                 className={styles.inputField}
@@ -119,9 +119,9 @@ const VerticalFormItem = (props: VerticalFormProps) => {
                 onChange={handleSelectionChange}
                 // {...formRegister}
               >
-                <option value="" disabled>
+                {/* <option value="" disabled>
                   {placeholder}
-                </option>
+                </option> */}
                 {filteredOptions.map(value => (
                   <option key={value}>{value}</option>
                 ))}
@@ -133,20 +133,7 @@ const VerticalFormItem = (props: VerticalFormProps) => {
       </div>
     );
   }
-  // if (element === 'select-multiple') {
-  //   const { options } = props;
-  //   const [searchTerm, setSearchTerm] = useState('');
-  //   const [filteredOptions, setFilteredOptions] = useState(options);
 
-  //   useEffect(() => {
-  //     setFilteredOptions(options.filter(option => option.toLowerCase().includes(searchTerm.toLowerCase())));
-  //   }, [searchTerm, options]);
-
-  //   const handleSelectionChange = (event, field) => {
-  //     const selectedValues = Array.from(event.target.selectedOptions, option => option.value);
-  //     setValue()
-  //   }
-  // }
   return null;
 };
 

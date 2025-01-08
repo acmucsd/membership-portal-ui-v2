@@ -10,8 +10,7 @@ import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccess
 import type { NextPage } from 'next';
 import { AdminAPI, EventAPI } from '@/lib/api';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { AiOutlineArrowDown } from 'react-icons/ai';
-import {} from 'react-icons/vsc';
+import { AiOutlineArrowDown, AiOutlineCalendar } from 'react-icons/ai';
 import { PublicEvent } from '@/lib/types/apiResponses';
 
 interface FormValues {
@@ -47,7 +46,7 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({
     } catch (error) {
       showToast('An error occurred');
     }
-    // TODO
+    
   };
 
   return (
@@ -68,7 +67,7 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({
         error={errors.email}
       />
       <VerticalFormItem
-        icon={<AiOutlineArrowDown />}
+        icon={<AiOutlineCalendar />}
         element="select"
         name="event"
         options={allEvents.map(event => event.title)}

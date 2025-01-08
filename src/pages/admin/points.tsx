@@ -12,7 +12,7 @@ import { AdminAPI, EventAPI } from '@/lib/api';
 
 import type { NextPage } from 'next';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { AiOutlineMail, AiOutlineArrowDown } from 'react-icons/ai';
+import { AiOutlineMail, AiOutlineCalendar } from 'react-icons/ai';
 import { VscLock } from 'react-icons/vsc';
 
 interface FormValues {
@@ -62,7 +62,7 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({
       />
 
       <VerticalFormItem
-        icon={<AiOutlineArrowDown />}
+        icon={<AiOutlineCalendar />}
         element="select"
         name="event"
         options={properEvents}
@@ -73,11 +73,11 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({
         error={errors.event}
       />
       <VerticalFormItem
-        icon={<AiOutlineArrowDown />}
+        icon={<AiOutlineMail />}
         element="select-multiple"
         name="email"
         options={sortedEmails}
-        placeholder="Select a User"
+        placeholder=""
         formRegister={register('email', {
           required: 'Required',
         })}
