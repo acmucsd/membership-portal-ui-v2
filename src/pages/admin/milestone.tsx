@@ -29,7 +29,6 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({ authToken }) => {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async ({ name, points }) => {
-    
     try {
       await AdminAPI.createMilestone(authToken, name, Number(points));
       showToast('Successfully awarded attendance!');

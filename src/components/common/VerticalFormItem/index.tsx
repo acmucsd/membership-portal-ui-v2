@@ -1,7 +1,8 @@
 import React, { HTMLInputTypeAttribute, ReactNode, useState } from 'react';
 import { UseFormRegisterReturn, useForm } from 'react-hook-form';
-import styles from './style.module.scss';
 import { AiOutlineSearch } from 'react-icons/ai';
+import styles from './style.module.scss';
+
 interface InputTypeProps {
   element: 'input';
   type: HTMLInputTypeAttribute;
@@ -96,7 +97,9 @@ const VerticalFormItem = (props: VerticalFormProps) => {
     return (
       <div className={styles.formItem}>
         <div className={styles.formInput}>
-          <div className={styles.iconContainer}>{<AiOutlineSearch />}</div>
+          <div className={styles.iconContainer}>
+            <AiOutlineSearch />
+          </div>
           <div>
             <h1>Selected: {selectedOptions.join(', ')}</h1>
             <div>

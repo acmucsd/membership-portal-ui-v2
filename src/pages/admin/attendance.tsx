@@ -45,7 +45,6 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({
     } catch (error) {
       showToast('An error occurred');
     }
-    
   };
 
   return (
