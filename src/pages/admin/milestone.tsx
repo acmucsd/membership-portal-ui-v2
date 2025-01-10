@@ -6,6 +6,7 @@ import {
 } from '@/components/common';
 import { showToast, config } from '@/lib';
 import { AdminAPI } from '@/lib/api';
+import { reportError } from '@/lib/utils';
 import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
 import type { NextPage } from 'next';
@@ -33,7 +34,7 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({ authToken }) => {
       await AdminAPI.createMilestone(authToken, name, Number(points));
       showToast('Successfully awarded attendance!');
     } catch (error) {
-      showToast('Error found!');
+      reportError('Error found!', error);
     }
   };
 

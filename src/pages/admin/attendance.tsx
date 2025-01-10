@@ -5,6 +5,7 @@ import {
   VerticalFormTitle,
 } from '@/components/common';
 import { showToast, config } from '@/lib';
+import { reportError } from '@/lib/utils';
 import { PermissionService } from '@/lib/services';
 import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import type { NextPage } from 'next';
@@ -43,7 +44,7 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({
       await AdminAPI.addAttendance(authToken, email, selectedUUID || '');
       showToast('Successfully awarded attendance!');
     } catch (error) {
-      showToast('An error occurred');
+      reportError('Error found!', error);
     }
   };
 

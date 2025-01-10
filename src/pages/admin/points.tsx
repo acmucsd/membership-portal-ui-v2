@@ -7,7 +7,7 @@ import {
 import { showToast, config } from '@/lib';
 import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
-
+import { reportError } from '@/lib/utils';
 import { AdminAPI, EventAPI } from '@/lib/api';
 
 import type { NextPage } from 'next';
@@ -49,7 +49,7 @@ const AwardPointsPage: NextPage<AwardPointsPageProps> = ({
 
       showToast('Successfully awarded points!');
     } catch (error) {
-      showToast('An error occurred!');
+      reportError('Error found!', error);
     }
   };
 
