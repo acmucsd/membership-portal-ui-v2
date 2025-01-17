@@ -43,6 +43,28 @@
         display: none;
       }
     }
+
+    .selectMultipleField {
+      align-items: center;
+      appearance: none;
+      background-color: var(--theme-background);
+      border: 0;
+      border-radius: 0.25em;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1em;
+      height: auto; /* Adjust height to match your dropdown */
+      line-height: 1.75rem;
+      margin: 0;
+      outline: none;
+      padding: 2px;
+      transition: 0.3s ease;
+      width: 100%;
+
+     
+    }
+
+   
   }
 
   .formError {

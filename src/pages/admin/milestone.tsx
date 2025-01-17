@@ -4,27 +4,38 @@ import {
   VerticalFormItem,
   VerticalFormTitle,
 } from '@/components/common';
-import { config } from '@/lib';
-import withAccessType from '@/lib/hoc/withAccessType';
+import { showToast, config } from '@/lib';
+import { AdminAPI } from '@/lib/api';
+import { reportError } from '@/lib/utils';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
 import { PermissionService } from '@/lib/services';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { NextPage } from 'next';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { AiOutlineMail } from 'react-icons/ai';
+import { AiOutlineStar } from 'react-icons/ai';
 import { VscLock } from 'react-icons/vsc';
 
 interface FormValues {
   name: string;
   points: number;
 }
-const AwardPointsPage: NextPage = () => {
+
+interface AwardPointsPageProps {
+  authToken: string;
+}
+const AwardPointsPage: NextPage<AwardPointsPageProps> = ({ authToken }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
 
-  const onSubmit: SubmitHandler<FormValues> = () => {
-    // TODO
+  const onSubmit: SubmitHandler<FormValues> = async ({ name, points }) => {
+    try {
+      await AdminAPI.createMilestone(authToken, name, Number(points));
+      showToast('Successfully awarded attendance!');
+    } catch (error) {
+      reportError('Error found!', error);
+    }
   };
 
   return (
@@ -34,7 +45,7 @@ const AwardPointsPage: NextPage = () => {
         description="Award points to all active users (e.g. for ACM's 8 year anniversary)"
       />
       <VerticalFormItem
-        icon={<AiOutlineMail />}
+        icon={<AiOutlineStar />}
         element="input"
         name="name"
         type="text"
@@ -52,6 +63,7 @@ const AwardPointsPage: NextPage = () => {
         placeholder="Point Value"
         formRegister={register('points', {
           required: 'Required',
+          valueAsNumber: true,
         })}
         error={errors.points}
       />
@@ -67,10 +79,11 @@ const AwardPointsPage: NextPage = () => {
 
 export default AwardPointsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async () => ({
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ authToken }) => ({
   props: {
     title: 'Create Milestone',
     description: "Award points to all active users (e.g. for ACM's 8 year anniversary)",
+    authToken,
   },
 });
 
