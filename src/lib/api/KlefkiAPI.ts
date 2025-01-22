@@ -126,11 +126,9 @@ export const uploadBoardPhoto = async (file: File): Promise<KlefkiAPIResponse> =
   console.log(klefki.key);
   const token = generateToken(klefki.key);
   console.log(token);
-  const response = await axios.post<KlefkiAPIResponse>(requestUrl, {
-    formData,
+  const response = await axios.post<KlefkiAPIResponse>(requestUrl, formData, {
     headers: {
       Authorization: `Bearer ${generateToken(klefki.key)}`,
-      
     }
   });
   
