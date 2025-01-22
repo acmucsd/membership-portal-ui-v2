@@ -73,6 +73,9 @@ const config = {
       acmurl: {
         generate: '/acmurl/generate',
       },
+      board: {
+        photoUpload: '/board/uploadPhoto',
+      },
     },
   },
   defaultEventImage: Cat,
@@ -110,6 +113,7 @@ const config = {
     awardMilestone: '/admin/milestone',
     viewResumes: '/admin/resumes',
     manageUserAccess: '/admin/access',
+    updateProfile: '/admin/profile',
     store: {
       items: '/admin/store/items',
       pickup: '/admin/store/pickup',

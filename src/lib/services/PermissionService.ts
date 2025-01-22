@@ -25,6 +25,7 @@ export const canViewAdminPage = [
   UserAccessType.MERCH_STORE_DISTRIBUTOR,
 ];
 
+
 /**
  * @returns Array of all possible user access types
  */

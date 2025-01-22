@@ -114,3 +114,26 @@ export const generateACMURL = async (acmurlInfo: GenerateACMURLRequest): Promise
     },
   });
 };
+
+export const uploadBoardPhoto = async (file: File): Promise<KlefkiAPIResponse> => {
+  const { klefki } = config;
+  const formData = new FormData();
+  // console.log(file);
+  formData.append('file', file);
+  const requestUrl = `${klefki.baseUrl}${klefki.endpoints.board.photoUpload}`;
+  // console.log(requestUrl);
+  // console.log(formData);
+  console.log(klefki.key);
+  const token = generateToken(klefki.key);
+  console.log(token);
+  const response = await axios.post<KlefkiAPIResponse>(requestUrl, {
+    formData,
+    headers: {
+      Authorization: `Bearer ${generateToken(klefki.key)}`,
+      
+    }
+  });
+  
+  // console.log(response);
+  return response.data;
+};
