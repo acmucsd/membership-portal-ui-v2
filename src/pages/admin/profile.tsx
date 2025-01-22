@@ -12,6 +12,7 @@ import { PermissionService } from '@/lib/services';
 import { reportError } from '@/lib/utils';
 import { AdminAPI, EventAPI, KlefkiAPI } from '@/lib/api';
 
+
 import type { NextPage } from 'next';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineMail, AiOutlineCalendar } from 'react-icons/ai';
@@ -38,6 +39,7 @@ const updateProfilePage: NextPage<UploadBoardPhotoProps> = ({ authToken }) => {
   const [uploadedURL, setUploadedURL] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null); // Reference to the hidden file input
   const [previewURL, setPreviewURL] = useState<string>('');
+  
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0] || null;
     const max_file_size = 5 * 1024 * 1024;
@@ -94,6 +96,7 @@ const updateProfilePage: NextPage<UploadBoardPhotoProps> = ({ authToken }) => {
       if (previewURL) {
         URL.revokeObjectURL(previewURL); // Clean up the blob URL
       }
+      
     };
   }, [previewURL]);
 
