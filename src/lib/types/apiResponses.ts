@@ -529,6 +529,7 @@ export interface DeleteResumeResponse extends ApiResponse {}
 export interface KlefkiAPIResponse {
   message: string;
   error: string;
+  url?: string;
 }
 
 export interface NotionEventDetails {
