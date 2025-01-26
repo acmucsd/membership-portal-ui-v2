@@ -24,9 +24,6 @@
     "test:ui": "yarn cypress open"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
-    "@mui/material": "^5.11.6",
     "@next/env": "^13.2.4",
     "@svgr/webpack": "^6.5.1",
     "axios": "^1.6.0",
