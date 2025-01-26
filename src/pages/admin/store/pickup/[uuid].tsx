@@ -8,6 +8,7 @@ import { EventCard } from '@/components/events';
 import { StoreAPI } from '@/lib/api';
 import config from '@/lib/config';
 import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import useConfirm from '@/lib/hooks/useConfirm';
 import { PermissionService } from '@/lib/services';
 import { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
 import { OrderPickupEventStatus } from '@/lib/types/enums';
@@ -38,8 +39,23 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
 
   const started = useMemo(() => Date.now() >= new Date(start).getTime(), [start]);
 
+  const confirmComplete = useConfirm({
+    title: 'Confirm completion',
+    question:
+      'Are you sure you want to complete this pickup event? Pending orders will be marked as missed. This cannot be undone.',
+    action: 'Complete',
+  });
+  const confirmCancel = useConfirm({
+    title: 'Confirm cancellation',
+    question: 'Are you sure you want to cancel this pickup event? This cannot be undone.',
+    action: 'Cancel event',
+    cancel: 'Back',
+  });
+
   return (
     <div className={styles.page}>
+      {confirmComplete.modal}
+      {confirmCancel.modal}
       <Link href={config.admin.store.pickup} className={styles.back}>
         {'< Back to dashboard'}
       </Link>
@@ -65,7 +81,7 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
               {status === OrderPickupEventStatus.ACTIVE ? (
                 <Button
                   className={`${styles.displayButton}`}
-                  onClick={() => completePickupEvent(uuid, token)}
+                  onClick={() => confirmComplete.confirm(() => completePickupEvent(uuid, token))}
                 >
                   <Typography variant="h5/bold">Complete Pickup Event</Typography>
                 </Button>
@@ -73,9 +89,7 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
               {status === OrderPickupEventStatus.ACTIVE ? (
                 <Button
                   className={`${styles.displayButton}`}
-                  onClick={() => {
-                    cancelPickupEvent(uuid, token);
-                  }}
+                  onClick={() => confirmCancel.confirm(() => cancelPickupEvent(uuid, token))}
                   destructive
                 >
                   <Typography variant="h5/bold">Cancel Pickup Event</Typography>
