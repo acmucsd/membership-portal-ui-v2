@@ -27,6 +27,7 @@ const config = {
         bonus: '/admin/bonus',
         emails: '/admin/email',
         access: '/admin/access',
+        milestone: '/admin/milestone',
       },
       event: {
         event: '/event',

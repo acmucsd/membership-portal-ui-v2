@@ -4,28 +4,48 @@ import {
   VerticalFormItem,
   VerticalFormTitle,
 } from '@/components/common';
-import { config } from '@/lib';
-import withAccessType from '@/lib/hoc/withAccessType';
-import { PermissionService, ValidationService } from '@/lib/services';
-import type { GetServerSideProps, NextPage } from 'next';
+import { showToast, config } from '@/lib';
+import { reportError } from '@/lib/utils';
+import { PermissionService } from '@/lib/services';
+import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import type { NextPage } from 'next';
+import { AdminAPI, EventAPI } from '@/lib/api';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { AiOutlineMail } from 'react-icons/ai';
-import { VscLock } from 'react-icons/vsc';
+import { AiOutlineArrowDown, AiOutlineCalendar } from 'react-icons/ai';
+import { PublicEvent } from '@/lib/types/apiResponses';
 
 interface FormValues {
-  email: string;
-  description: string;
-  points: number;
+  email: string[];
+  event: string;
 }
-const AwardPointsPage: NextPage = () => {
+interface AwardPointsPageProps {
+  title: string;
+  description: string;
+  allEvents: PublicEvent[];
+  authToken: string;
+  sortedEmails: string[];
+}
+const AwardPointsPage: NextPage<AwardPointsPageProps> = ({
+  allEvents,
+  authToken,
+  sortedEmails,
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
 
-  const onSubmit: SubmitHandler<FormValues> = () => {
-    // TODO
+  const eventDict = Object.fromEntries(allEvents.map(event => [event.title, event.uuid]));
+
+  const onSubmit: SubmitHandler<FormValues> = async ({ email, event }) => {
+    try {
+      const selectedUUID: string | undefined = eventDict[event];
+      await AdminAPI.addAttendance(authToken, email, selectedUUID || '');
+      showToast('Successfully awarded attendance!');
+    } catch (error) {
+      reportError('Error found!', error);
+    }
   };
 
   return (
@@ -35,41 +55,28 @@ const AwardPointsPage: NextPage = () => {
         description="Mark members as attended for past events"
       />
       <VerticalFormItem
-        icon={<AiOutlineMail />}
-        element="input"
+        icon={<AiOutlineArrowDown />}
+        element="select-multiple"
         name="email"
-        type="email"
+        options={sortedEmails}
         placeholder="User Email (user@ucsd.edu)"
         formRegister={register('email', {
-          validate: email => {
-            const validation = ValidationService.isValidEmail(email);
-            return validation.valid || validation.error;
-          },
+          required: 'Required',
         })}
         error={errors.email}
       />
       <VerticalFormItem
-        icon={<AiOutlineMail />}
-        element="input"
-        name="description"
-        type="text"
-        placeholder="Description"
-        formRegister={register('description', {
+        icon={<AiOutlineCalendar />}
+        element="select"
+        name="event"
+        options={allEvents.map(event => event.title)}
+        placeholder="Select an Event"
+        formRegister={register('event', {
           required: 'Required',
         })}
-        error={errors.description}
+        error={errors.event}
       />
-      <VerticalFormItem
-        icon={<VscLock />}
-        name="points"
-        element="input"
-        type="number"
-        placeholder="Point Value"
-        formRegister={register('points', {
-          required: 'Required',
-        })}
-        error={errors.points}
-      />
+
       <VerticalFormButton
         type="button"
         display="button1"
@@ -82,12 +89,24 @@ const AwardPointsPage: NextPage = () => {
 
 export default AwardPointsPage;
 
-const getServerSidePropsFunc: GetServerSideProps = async () => ({
-  props: {
-    title: 'Retroactive Attendance',
-    description: 'Mark members as attended for past events',
-  },
-});
+const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ authToken }) => {
+  const allEvents = await EventAPI.getAllPastEvents();
+
+  const allUsers = await AdminAPI.getAllUserEmails(authToken);
+
+  const properEmails = allUsers.map(user => user.email);
+  const sortedEmails = properEmails.sort((a, b) => a.localeCompare(b));
+
+  return {
+    props: {
+      title: 'Retroactive Attendance',
+      description: 'Mark members as attended for past events',
+      allEvents,
+      authToken,
+      sortedEmails,
+    },
+  };
+};
 
 export const getServerSideProps = withAccessType(
   getServerSidePropsFunc,
