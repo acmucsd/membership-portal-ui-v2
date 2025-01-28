@@ -7,6 +7,7 @@ import { reportError } from '@/lib/utils';
 import { KlefkiAPI } from '@/lib/api';
 
 import type { NextPage } from 'next';
+import Image from 'next/image';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { ChangeEvent, useEffect, useState, useRef } from 'react';
@@ -23,7 +24,6 @@ const UpdateProfilePage: NextPage<UploadBoardPhotoProps> = ({
   const { handleSubmit } = useForm<FormValues>();
   const [file, setFile] = useState<Blob | null>(null);
   const [croppedImg, setCroppedImg] = useState<Blob | null>(null);
-  const [isCropperOpen, setIsCropperOpen] = useState(false);
   const [uploadedURL, setUploadedURL] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null); // Reference to the hidden file input
   const [previewURL, setPreviewURL] = useState<string>('');
@@ -43,13 +43,12 @@ const UpdateProfilePage: NextPage<UploadBoardPhotoProps> = ({
       }
       setUploadedURL(null);
       setFile(uploadedFile);
-      setIsCropperOpen(true);
     }
   };
 
   const handleCrop = async (croppedFile: Blob) => {
     setCroppedImg(croppedFile);
-    setIsCropperOpen(false);
+
     setPreviewURL(URL.createObjectURL(croppedFile));
   };
 
@@ -102,18 +101,7 @@ const UpdateProfilePage: NextPage<UploadBoardPhotoProps> = ({
       )}
       {!uploadedURL && croppedImg && (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          {/* <GifSafeImage src={previewURL} alt="Preview of image" width={200} height={200} /> */}
-          <img
-            src={previewURL}
-            alt="Cropped Preview"
-            style={{
-              width: '200px', // Set fixed width
-              height: '200px', // Set fixed height
-              borderRadius: '10px',
-              objectFit: 'cover',
-              border: '1px solid #ccc',
-            }}
-          />
+          <Image src={previewURL} width={200} height={200} alt="preview photo" />
         </div>
       )}
 
@@ -131,17 +119,17 @@ const UpdateProfilePage: NextPage<UploadBoardPhotoProps> = ({
         style={{ display: 'none' }}
         onChange={handleUpload}
       />
-      {!uploadedURL && isCropperOpen && file && (
-        <Cropper
-          file={file}
-          aspectRatio={1}
-          circle={false}
-          maxFileHeight={5000}
-          maxSize={5 * 1024 * 1024}
-          onCrop={handleCrop}
-          onClose={() => setIsCropperOpen(false)}
-        />
-      )}
+
+      <Cropper
+        file={file}
+        aspectRatio={1}
+        circle={false}
+        maxFileHeight={5000}
+        maxSize={5 * 1024 * 1024}
+        onCrop={handleCrop}
+        onClose={() => setFile(null)}
+      />
+
       {!uploadedURL && croppedImg && (
         <VerticalFormButton
           type="button"
