@@ -114,3 +114,17 @@ export const generateACMURL = async (acmurlInfo: GenerateACMURLRequest): Promise
     },
   });
 };
+
+export const uploadBoardPhoto = async (file: File): Promise<KlefkiAPIResponse> => {
+  const { klefki } = config;
+  const formData = new FormData();
+  formData.append('file', file);
+  const requestUrl = `${klefki.baseUrl}${klefki.endpoints.board.photoUpload}`;
+  const response = await axios.post<KlefkiAPIResponse>(requestUrl, formData, {
+    headers: {
+      Authorization: `Bearer ${generateToken(klefki.key)}`,
+    },
+  });
+
+  return response.data;
+};

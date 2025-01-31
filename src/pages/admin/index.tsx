@@ -99,6 +99,7 @@ const AdminPage = ({ user: { accessType }, preview }: AdminProps) => {
           <>
             <LinkButton href={config.admin.viewResumes}>View User Resumes</LinkButton>
             <LinkButton href={config.admin.manageUserAccess}>Manage User Access</LinkButton>
+            <LinkButton href={config.admin.updateProfile}>Update Board Website Photo</LinkButton>
           </>
         ) : (
           'Restricted Access'
