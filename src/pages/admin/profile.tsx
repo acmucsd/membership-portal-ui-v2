@@ -30,6 +30,7 @@ const UpdateProfilePage: NextPage<UploadBoardPhotoProps> = ({
 
   const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0] || null;
+    e.currentTarget.value = '';
     const maxFileSize = 5 * 1024 * 1024;
 
     if (uploadedFile) {
@@ -64,9 +65,13 @@ const UpdateProfilePage: NextPage<UploadBoardPhotoProps> = ({
       return;
     }
     try {
-      const croppedFile = new File([croppedImg], `${firstName}_${lastName}`, {
-        type: 'image/*',
-      });
+      const croppedFile = new File(
+        [croppedImg],
+        `${firstName}_${lastName}.${croppedImg.type.split('/')[1]}`,
+        {
+          type: croppedImg.type,
+        }
+      );
 
       const response = await KlefkiAPI.uploadBoardPhoto(croppedFile);
       showToast('Photo uploaded successfully!');
