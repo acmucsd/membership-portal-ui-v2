@@ -3,6 +3,7 @@ import NotionAutofill from '@/components/admin/event/NotionAutofill';
 import { Button, Cropper } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { KlefkiAPI } from '@/lib/api';
+import dmSans from '@/lib/constants/fontFamily';
 import useConfirm from '@/lib/hooks/useConfirm';
 import { AdminEventManager } from '@/lib/managers';
 import { CookieService } from '@/lib/services';
@@ -15,7 +16,7 @@ import { DateTime } from 'luxon';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import style from './style.module.scss';
 
@@ -46,6 +47,7 @@ const EventDetailsForm = (props: IProps) => {
     register,
     handleSubmit,
     setValue,
+    getValues,
     reset,
     formState: { errors },
   } = useForm<Event>({ defaultValues: initialValues });
@@ -186,6 +188,33 @@ const EventDetailsForm = (props: IProps) => {
     question: 'Are you sure you want to reset this form? This cannot be undone.',
     action: 'Reset',
   });
+
+  const formDetails = {
+    title: getValues('title') ?? '',
+    committee: getValues('committee')?.toLowerCase() ?? 'general',
+  };
+  const context = useRef<CanvasRenderingContext2D | null>(null);
+  useEffect(() => {
+    const c = context.current;
+    if (!c) {
+      return;
+    }
+    c.clearRect(0, 0, c.canvas.width, c.canvas.height);
+    c.fillStyle = 'black';
+    c.textAlign = 'center';
+    c.textBaseline = 'top';
+    c.font = `bold 80px ${dmSans.style.fontFamily}, sans-serif`;
+    c.fillText(formDetails.title, c.canvas.width / 2, 320);
+    c.font = `45px ${dmSans.style.fontFamily}, sans-serif`;
+    c.fillText('December 22 - December 24', c.canvas.width / 2, 440);
+    c.fillText('00:00 AM - 00:00 PM', c.canvas.width / 2, 490);
+    c.font = `500 45px ${dmSans.style.fontFamily}, sans-serif`;
+    c.fillText('Price Center West', c.canvas.width / 2, 660);
+    c.font = `45px ${dmSans.style.fontFamily}, sans-serif`;
+    c.textAlign = 'left';
+    c.fillStyle = 'white';
+    c.fillText('acmurl.com/whatever', 750, 775);
+  }, [formDetails.title, formDetails.committee]);
 
   return (
     <div className={style.container}>
@@ -330,6 +359,19 @@ const EventDetailsForm = (props: IProps) => {
               />
             </div>
           ) : null}
+          <canvas
+            width={1920}
+            height={1080}
+            className={style.eventAutoCover}
+            style={{
+              backgroundImage: `url("/assets/event-cover-templates/${
+                getValues('committee')?.toLowerCase() || 'general'
+              }.png")`,
+            }}
+            ref={canvas => {
+              context.current = canvas?.getContext('2d') ?? null;
+            }}
+          />
         </DetailsFormItem>
         <Cropper
           file={selectedCover}
