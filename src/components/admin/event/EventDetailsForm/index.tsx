@@ -47,7 +47,7 @@ const EventDetailsForm = (props: IProps) => {
     register,
     handleSubmit,
     setValue,
-    getValues,
+    watch,
     reset,
     formState: { errors },
   } = useForm<Event>({ defaultValues: initialValues });
@@ -189,10 +189,14 @@ const EventDetailsForm = (props: IProps) => {
     action: 'Reset',
   });
 
-  const formDetails = {
-    title: getValues('title') ?? '',
-    committee: getValues('committee')?.toLowerCase() ?? 'general',
-  };
+  const [eventCommittee, eventTitle, eventStart, eventEnd, eventLocation, eventLink] = watch([
+    'committee',
+    'title',
+    'start',
+    'end',
+    'location',
+    'eventLink',
+  ]);
   const context = useRef<CanvasRenderingContext2D | null>(null);
   useEffect(() => {
     const c = context.current;
@@ -200,21 +204,21 @@ const EventDetailsForm = (props: IProps) => {
       return;
     }
     c.clearRect(0, 0, c.canvas.width, c.canvas.height);
-    c.fillStyle = 'black';
+    c.fillStyle = '#333333';
     c.textAlign = 'center';
     c.textBaseline = 'top';
     c.font = `bold 80px ${dmSans.style.fontFamily}, sans-serif`;
-    c.fillText(formDetails.title, c.canvas.width / 2, 320);
+    c.fillText(eventTitle, 969, 340);
     c.font = `45px ${dmSans.style.fontFamily}, sans-serif`;
-    c.fillText('December 22 - December 24', c.canvas.width / 2, 440);
-    c.fillText('00:00 AM - 00:00 PM', c.canvas.width / 2, 490);
+    c.fillText('December 22 - December 24', 969, 460);
+    c.fillText('00:00 AM - 00:00 PM', 969, 510);
     c.font = `500 45px ${dmSans.style.fontFamily}, sans-serif`;
-    c.fillText('Price Center West', c.canvas.width / 2, 660);
+    c.fillText(eventLocation, 969, 670);
     c.font = `45px ${dmSans.style.fontFamily}, sans-serif`;
     c.textAlign = 'left';
     c.fillStyle = 'white';
-    c.fillText('acmurl.com/whatever', 750, 775);
-  }, [formDetails.title, formDetails.committee]);
+    c.fillText(eventLink || 'acmucsd.com', 756, 810);
+  }, [eventTitle, eventStart, eventEnd, eventLocation, eventLink]);
 
   return (
     <div className={style.container}>
@@ -365,7 +369,7 @@ const EventDetailsForm = (props: IProps) => {
             className={style.eventAutoCover}
             style={{
               backgroundImage: `url("/assets/event-cover-templates/${
-                getValues('committee')?.toLowerCase() || 'general'
+                eventCommittee?.toLowerCase() || 'general'
               }.png")`,
             }}
             ref={canvas => {
