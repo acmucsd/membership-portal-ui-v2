@@ -80,6 +80,7 @@ const Cropper = ({
   const handleImageError = useCallback(() => {
     if (file !== null) {
       showToast('This image format is not supported.');
+
       onClose();
     }
   }, [file, onClose]);

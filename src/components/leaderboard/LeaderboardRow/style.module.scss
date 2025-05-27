@@ -18,7 +18,7 @@
     padding-right: 1.5rem;
   }
 
-  &:nth-child(2n) {
+  &.even {
     background-color: var(--theme-elevated-background);
   }
 

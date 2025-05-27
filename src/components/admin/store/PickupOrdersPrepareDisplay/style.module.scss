@@ -12,7 +12,7 @@
 }
 
 .table {
-  background-color: var(--theme-surface-1);
+  background-color: var(--theme-elevated-background);
   border-radius: 1rem;
   box-shadow: 0 0 4px var(--theme-accent-line-1-transparent);
   padding: 1rem;
@@ -25,17 +25,10 @@
 
   td {
     padding: 1.5rem;
+    word-break: break-word;
   }
 
-  tr {
-    border-top: 1px solid var(--theme-accent-line-2);
+  tbody tr {
+    border-top: 1px solid var(--theme-elevated-stroke);
   }
-
-  tr:last-child td:first-child {
-    border-bottom-left-radius: 1rem;
-  }
-}
-
-.itemList {
-  list-style-type: disc;
 }

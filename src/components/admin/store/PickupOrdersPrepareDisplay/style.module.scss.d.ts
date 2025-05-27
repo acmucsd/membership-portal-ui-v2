@@ -1,7 +1,6 @@
 export type Styles = {
   breakdown: string;
   container: string;
-  itemList: string;
   table: string;
 };
 

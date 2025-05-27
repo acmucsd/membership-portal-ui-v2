@@ -1,28 +1,30 @@
 @use 'src/styles/vars.scss' as vars;
 
 .itemCard {
-  background-color: var(--theme-elevated-background);
-  border: 1px solid var(--theme-shadow);
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 4px var(--theme-shadow);
   display: inline-flex;
-  overflow: hidden;
   position: relative;
 
   .linkWrapper {
+    background-color: var(--theme-elevated-background);
+    border: 1px solid var(--theme-shadow);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 4px var(--theme-shadow);
     display: flex;
     flex: auto;
     flex-direction: column;
     gap: 1rem;
     padding-bottom: 1rem;
 
-    &:hover {
+    &:is(a):hover {
       background-color: var(--theme-surface-2);
     }
   }
 
   .imageWrapper {
     background-color: var(--theme-surface-1);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    overflow: hidden;
     // Enforce a square image while allowing the card to be squished
     padding-bottom: 100%;
     position: relative;
@@ -30,6 +32,15 @@
     img {
       object-fit: cover;
     }
+
+    .first {
+      transition: opacity 0.5s;
+      z-index: 1;
+    }
+  }
+
+  &:hover .imageWrapper .first {
+    opacity: 0;
   }
 
   .details {
@@ -63,5 +74,6 @@
     position: absolute;
     right: 0.5rem;
     top: 0.5rem;
+    z-index: 2;
   }
 }

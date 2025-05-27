@@ -4,11 +4,12 @@ import {
   Diamonds,
   Navbar,
   PickupEventDetail,
+  PickupEventDropdown,
   PickupEventPicker,
   StoreConfirmModal,
 } from '@/components/store';
 import { config, showToast } from '@/lib';
-import { getFutureOrderPickupEvents } from '@/lib/api/StoreAPI';
+import { getValidFutureOrderPickupEvents } from '@/lib/api/StoreAPI';
 import { getCurrentUserAndRefreshCookie } from '@/lib/api/UserAPI';
 import withAccessType from '@/lib/hoc/withAccessType';
 import { StoreManager } from '@/lib/managers';
@@ -186,12 +187,21 @@ const StoreCartPage = ({ user: { credits }, savedCart, pickupEvents }: CartPageP
                 {cartState !== CartState.CONFIRMED ? 'Choose Pickup Event' : 'Pickup Event Details'}
               </Typography>
             </div>
-            <PickupEventPicker
-              events={pickupEvents}
-              eventIndex={pickupIndex}
-              setEventIndex={setPickupIndex}
-              active={cartState !== CartState.CONFIRMED}
-            />
+            <div className={styles.mobile}>
+              <PickupEventPicker
+                events={pickupEvents}
+                eventIndex={pickupIndex}
+                setEventIndex={setPickupIndex}
+                active={cartState !== CartState.CONFIRMED}
+              />
+            </div>
+            <div className={styles.desktop}>
+              <PickupEventDropdown
+                events={pickupEvents}
+                eventIndex={pickupIndex}
+                setEventIndex={setPickupIndex}
+              />
+            </div>
           </div>
         )}
 
@@ -248,13 +258,7 @@ const getServerSidePropsFunc: GetServerSideProps = async ({ req, res }) => {
   const AUTH_TOKEN = getServerCookie(CookieType.ACCESS_TOKEN, { req, res });
 
   const savedCartPromise = CartService.getCart({ req, res });
-  const pickupEventsPromise = getFutureOrderPickupEvents(AUTH_TOKEN).then(events =>
-    events
-      .filter(event => event.status !== 'CANCELLED')
-      .filter(
-        event => !(event.orders && event.orderLimit && event.orders.length > event.orderLimit)
-      )
-  );
+  const pickupEventsPromise = getValidFutureOrderPickupEvents(AUTH_TOKEN);
   const userPromise = getCurrentUserAndRefreshCookie(AUTH_TOKEN, { req, res });
 
   // gather the API request promises and await them concurrently

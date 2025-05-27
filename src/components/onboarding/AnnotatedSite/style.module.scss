@@ -1,0 +1,153 @@
+@use 'src/styles/vars.scss' as vars;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+
+  .items {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+
+    > * {
+      flex: 1;
+    }
+
+    @media (max-width: vars.$breakpoint-lg) {
+      > * {
+        flex: unset;
+      }
+    }
+
+    @media (max-width: vars.$breakpoint-md) {
+      justify-content: center;
+    }
+
+    .annotationWrapper {
+      animation: annotation-highlight 0.5s 1s forwards;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      margin: calc(-0.25rem - 2px);
+      padding: 0.25rem;
+      position: relative;
+      transform-origin: left;
+      width: fit-content;
+      z-index: 5;
+
+      .annotation {
+        --offset: translateX(-1rem);
+        --clip-begin: xywh(100% 0% 0% 100%);
+        align-items: flex-end;
+        animation: annotation-appear 0.5s 1.5s backwards;
+        bottom: 0;
+        display: flex;
+        gap: 0.5rem;
+        left: 100%;
+        position: absolute;
+        transform: scale(calc(1 / 1.2));
+        transform-origin: bottom left;
+        white-space: pre-wrap;
+
+        .annotationLine {
+          animation: annotation-line-appear 0.5s 1.5s backwards;
+          background-color: #ffdc24;
+          flex: none;
+          height: 2px;
+          margin-bottom: 0.5rem;
+          width: 15rem;
+        }
+
+        .annotationContent {
+          width: 15rem;
+        }
+
+        @media (max-width: vars.$breakpoint-md) {
+          --offset: translateY(1rem);
+          --clip-begin: xywh(0% 0% 100% 0%);
+          align-items: flex-start;
+          bottom: 100%;
+          flex-direction: column-reverse;
+          gap: 0;
+          left: 0;
+
+          .annotationLine {
+            height: 5rem;
+            margin-bottom: 0;
+            margin-left: 0.5rem;
+            width: 2px;
+          }
+
+          .annotationContent {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+
+  .fadeOut {
+    animation: fade-out 0.5s 1s forwards;
+  }
+
+  .desktopOnly {
+    @media (max-width: vars.$breakpoint-lg) {
+      display: none;
+    }
+  }
+
+  .hideOnMobile {
+    @media (max-width: vars.$breakpoint-md) {
+      display: none;
+    }
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.1;
+  }
+}
+
+@keyframes annotation-highlight {
+  from {
+    background-color: transparent;
+    border-color: transparent;
+    transform: scale(1);
+  }
+
+  to {
+    background-color: rgba(255, 243, 181, 0.6);
+    border-color: #ffdc24;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes annotation-appear {
+  from {
+    opacity: 0;
+    transform: var(--offset) scale(calc(1 / 1.2));
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(calc(1 / 1.2));
+  }
+}
+
+@keyframes annotation-line-appear {
+  from {
+    clip-path: var(--clip-begin);
+  }
+
+  to {
+    clip-path: xywh(0% 0% 100% 100%);
+  }
+}

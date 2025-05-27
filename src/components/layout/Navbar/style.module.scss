@@ -18,6 +18,11 @@
     width: 100%;
     z-index: 20;
 
+    &.quiet {
+      border-bottom: 1px solid var(--theme-elevated-stroke);
+      height: vars.$header-height;
+    }
+
     .toggleIcon {
       background-color: inherit;
       display: none;
@@ -64,7 +69,6 @@
 
     .navLeft {
       align-items: center;
-      cursor: pointer;
       display: flex;
       gap: 1.25rem;
       height: 100%;

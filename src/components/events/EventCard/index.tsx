@@ -16,7 +16,7 @@ import {
 } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { ComponentType, Fragment, ReactNode, useState } from 'react';
 import styles from './style.module.scss';
 
 interface EventCardProps {
@@ -26,6 +26,9 @@ interface EventCardProps {
   showYear?: boolean;
   borderless?: boolean;
   hideInfo?: boolean;
+  interactive?: boolean;
+  /** Used by onboarding to highlight the badges */
+  badgeWrapper?: ComponentType<{ children: ReactNode }>;
 }
 
 const EventCard = ({
@@ -35,6 +38,8 @@ const EventCard = ({
   showYear,
   borderless,
   hideInfo,
+  interactive = true,
+  badgeWrapper: BadgeWrapper = Fragment,
 }: EventCardProps) => {
   const { uuid, cover, title, start, end, location, committee } = isOrderPickupEvent(event)
     ? {
@@ -48,6 +53,8 @@ const EventCard = ({
   const isPickupEvent = isOrderPickupEvent(event);
 
   const displayCover = getDefaultEventCover(cover);
+
+  const Component = interactive ? Link : 'div';
 
   return (
     <>
@@ -71,12 +78,17 @@ const EventCard = ({
         />
       )}
 
-      <Link
+      <Component
         href={`${config.eventsRoute}/${uuid}`}
         data-community={community}
         data-disabled={borderless}
-        className={`${styles.container} ${borderless ? '' : styles.bordered} ${className || ''}`}
+        className={`${styles.container} ${borderless ? '' : styles.bordered} ${className || ''} ${
+          interactive ? styles.interactive : ''
+        }`}
         onClick={e => {
+          if (!interactive) {
+            return;
+          }
           e.preventDefault();
           setExpanded(true);
         }}
@@ -117,10 +129,12 @@ const EventCard = ({
                 {location}
               </Typography>
             </div>
-            <EventBadges event={event} attended={attended} />
+            <BadgeWrapper>
+              <EventBadges event={event} attended={attended} />
+            </BadgeWrapper>
           </div>
         ) : null}
-      </Link>
+      </Component>
     </>
   );
 };

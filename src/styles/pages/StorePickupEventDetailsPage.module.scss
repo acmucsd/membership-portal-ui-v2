@@ -46,16 +46,18 @@
       }
     }
 
+    .buttonContainer {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
     .orders {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-
-      .header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-      }
 
       .displayButtons {
         border-radius: 1rem;

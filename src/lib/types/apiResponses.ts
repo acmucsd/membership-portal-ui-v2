@@ -42,12 +42,25 @@ export interface CreateBonusResponse extends ApiResponse {
   emails: string[];
 }
 
+export interface AddAttendanceResponse extends ApiResponse {
+  emails: string[];
+}
+
 export interface UploadBannerResponse extends ApiResponse {
   banner: string;
 }
 
 export interface GetAllEmailsResponse extends ApiResponse {
   emails: string[];
+}
+
+export interface NameAndEmail {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+export interface GetAllNamesAndEmailsResponse extends ApiResponse {
+  namesAndEmails: NameAndEmail[];
 }
 
 export interface SubmitAttendanceForUsersResponse extends ApiResponse {
@@ -120,7 +133,7 @@ export interface PublicEvent {
   uuid: UUID;
   organization: string;
   committee: string;
-  thumbnail: string;
+  thumbnail: string | null;
   cover: string;
   title: string;
   description: string;
@@ -132,6 +145,8 @@ export interface PublicEvent {
   pointValue: number;
   requiresStaff: boolean;
   staffPointBonus: number;
+  discordEvent: string | null;
+  foodItems: string | null;
 }
 
 export interface GetPastEventsResponse extends ApiResponse {
@@ -380,6 +395,7 @@ export interface PrivateProfile extends PublicProfile {
   state: UserState;
   credits: number;
   resumes?: PublicResume[];
+  onboardingSeen: boolean;
 }
 
 export interface PublicFeedback {
@@ -509,6 +525,12 @@ export interface PatchResumeResponse extends ApiResponse {
 }
 
 export interface DeleteResumeResponse extends ApiResponse {}
+
+export interface KlefkiAPIResponse {
+  message: string;
+  error: string;
+  url?: string;
+}
 
 export interface NotionEventDetails {
   title: string;

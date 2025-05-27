@@ -1,5 +1,6 @@
-import { HTMLInputTypeAttribute, ReactNode } from 'react';
-import { UseFormRegisterReturn } from 'react-hook-form';
+import React, { HTMLInputTypeAttribute, ReactNode, useState } from 'react';
+import { UseFormRegisterReturn, useForm } from 'react-hook-form';
+import { AiOutlineSearch } from 'react-icons/ai';
 import styles from './style.module.scss';
 
 interface InputTypeProps {
@@ -11,6 +12,10 @@ interface SelectTypeProps {
   element: 'select';
   options: (number | string)[];
 }
+interface SelectMultipleTypeProps {
+  element: 'select-multiple';
+  options: string[];
+}
 interface FormItemProps {
   icon: ReactNode;
   name: string;
@@ -20,10 +25,14 @@ interface FormItemProps {
   inputHeight?: string;
 }
 
-type VerticalFormProps = FormItemProps & (InputTypeProps | SelectTypeProps);
+type VerticalFormProps = FormItemProps &
+  (InputTypeProps | SelectTypeProps | SelectMultipleTypeProps);
 
 const VerticalFormItem = (props: VerticalFormProps) => {
   const { icon, placeholder, formRegister, element, error, inputHeight } = props;
+  const { setValue } = useForm();
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   if (element === 'input') {
     const { type } = props;
@@ -61,10 +70,61 @@ const VerticalFormItem = (props: VerticalFormProps) => {
               lineHeight: inputHeight,
             }}
           >
+            <option value="" disabled selected>
+              {placeholder}
+            </option>
             {options.map(value => (
               <option key={value}>{value}</option>
             ))}
           </select>
+        </div>
+        <p className={styles.formError}>{error?.message}</p>
+      </div>
+    );
+  }
+
+  if (element === 'select-multiple') {
+    const { options } = props;
+    const handleSelectionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const selectedValues = Array.from(event.target.selectedOptions, option => option.value);
+      setSelectedOptions(selectedValues);
+      setValue('email', selectedValues, { shouldValidate: true });
+    };
+    const filteredOptions = options.filter(option =>
+      option.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    return (
+      <div className={styles.formItem}>
+        <div className={styles.formInput}>
+          <div className={styles.iconContainer}>
+            <AiOutlineSearch />
+          </div>
+          <div>
+            <h1>Selected: {selectedOptions.join(', ')}</h1>
+            <div>
+              <input
+                type="text"
+                placeholder="Click to search"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                className={styles.inputField}
+              />
+              <select
+                className={styles.selectMultipleField}
+                style={{
+                  lineHeight: inputHeight,
+                }}
+                multiple
+                {...formRegister}
+                onChange={handleSelectionChange}
+              >
+                {filteredOptions.map(value => (
+                  <option key={value}>{value}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
         <p className={styles.formError}>{error?.message}</p>
       </div>

@@ -1,0 +1,36 @@
+@use 'src/styles/vars.scss' as vars;
+
+.orderStatus {
+  background: vars.$gray-2;
+  border: 1px solid vars.$gray-7;
+  border-radius: 0.875rem;
+  color: vars.$gray-7;
+  margin-right: 1rem;
+  padding: 0.25rem 0.5rem;
+
+  text-align: center;
+
+  &.green {
+    background: vars.$green-100;
+    border: 1px solid vars.$success-1;
+    color: vars.$success-1;
+  }
+
+  &.gray {
+    background: vars.$gray-2;
+    border: 1px solid vars.$gray-7;
+    color: vars.$gray-7;
+  }
+
+  &.blue {
+    background: vars.$blue-100;
+    border: 1px solid vars.$dark-primary-5;
+    color: vars.$dark-primary-5;
+  }
+
+  &.red {
+    background: vars.$scarlet-2;
+    border: 1px solid vars.$danger-1;
+    color: vars.$danger-1;
+  }
+}

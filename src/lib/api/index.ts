@@ -1,3 +1,4 @@
+export * as AdminAPI from './AdminAPI';
 export * as AuthAPI from './AuthAPI';
 export * as EventAPI from './EventAPI';
 export * as FeedbackAPI from './FeedbackAPI';

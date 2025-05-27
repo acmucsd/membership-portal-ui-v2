@@ -3,6 +3,7 @@ import NotionAutofill from '@/components/admin/event/NotionAutofill';
 import { Button, Cropper } from '@/components/common';
 import { config, showToast } from '@/lib';
 import { KlefkiAPI } from '@/lib/api';
+import useConfirm from '@/lib/hooks/useConfirm';
 import { AdminEventManager } from '@/lib/managers';
 import { CookieService } from '@/lib/services';
 import { FillInLater } from '@/lib/types';
@@ -38,6 +39,7 @@ const EventDetailsForm = (props: IProps) => {
     cover: defaultData?.cover,
     uuid: defaultData?.uuid,
     eventLink: defaultData?.eventLink,
+    foodItems: defaultData?.foodItems,
   };
 
   const {
@@ -174,8 +176,21 @@ const EventDetailsForm = (props: IProps) => {
     });
   };
 
+  const confirmDelete = useConfirm({
+    title: 'Confirm deletion',
+    question: 'Are you sure you want to delete this event? This cannot be undone.',
+    action: 'Delete',
+  });
+  const confirmReset = useConfirm({
+    title: 'Confirm reset',
+    question: 'Are you sure you want to reset this form? This cannot be undone.',
+    action: 'Reset',
+  });
+
   return (
     <div className={style.container}>
+      {confirmDelete.modal}
+      {confirmReset.modal}
       <Link href="/admin" className={style.back}>
         Back
       </Link>
@@ -271,7 +286,12 @@ const EventDetailsForm = (props: IProps) => {
           />
         </DetailsFormItem>
 
-        <label htmlFor="description">Event Link</label>
+        <label htmlFor="foodItems">Food (if A.S. Funded)</label>
+        <DetailsFormItem error={errors.foodItems?.message}>
+          <input type="text" id="foodItems" {...register('foodItems')} />
+        </DetailsFormItem>
+
+        <label htmlFor="eventLink">Event Link</label>
         <DetailsFormItem error={errors.eventLink?.message}>
           <input type="text" id="eventLink" {...register('eventLink')} />
         </DetailsFormItem>
@@ -334,10 +354,14 @@ const EventDetailsForm = (props: IProps) => {
             <Button onClick={handleSubmit(editEvent)} disabled={loading}>
               Save Changes
             </Button>
-            <Button onClick={resetForm} disabled={loading} destructive>
+            <Button onClick={() => confirmReset.confirm(resetForm)} disabled={loading} destructive>
               Discard Changes
             </Button>
-            <Button onClick={deleteEvent} disabled={loading} destructive>
+            <Button
+              onClick={() => confirmDelete.confirm(deleteEvent)}
+              disabled={loading}
+              destructive
+            >
               Delete Event
             </Button>
           </>
@@ -346,7 +370,7 @@ const EventDetailsForm = (props: IProps) => {
             <Button onClick={handleSubmit(createEvent)} disabled={loading}>
               Create Event
             </Button>
-            <Button onClick={resetForm} disabled={loading} destructive>
+            <Button onClick={() => confirmReset.confirm(resetForm)} disabled={loading} destructive>
               Clear Form
             </Button>
           </>

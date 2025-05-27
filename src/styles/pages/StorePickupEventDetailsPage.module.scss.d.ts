@@ -1,11 +1,11 @@
 export type Styles = {
   active: string;
   back: string;
+  buttonContainer: string;
   container: string;
   description: string;
   displayButton: string;
   displayButtons: string;
-  header: string;
   noEvent: string;
   orders: string;
   page: string;

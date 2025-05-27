@@ -2,16 +2,13 @@ import {
   cancelPickupEvent,
   completePickupEvent,
 } from '@/components/admin/event/AdminPickupEvent/AdminPickupEventForm';
-import {
-  PickupEventStatus,
-  PickupOrdersFulfillDisplay,
-  PickupOrdersPrepareDisplay,
-} from '@/components/admin/store';
+import { PickupEventStatus, PickupOrdersPrepareDisplay } from '@/components/admin/store';
 import { Button, Typography } from '@/components/common';
 import { EventCard } from '@/components/events';
 import { StoreAPI } from '@/lib/api';
 import config from '@/lib/config';
 import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import useConfirm from '@/lib/hooks/useConfirm';
 import { PermissionService } from '@/lib/services';
 import { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
 import { OrderPickupEventStatus } from '@/lib/types/enums';
@@ -19,7 +16,7 @@ import { formatEventDate } from '@/lib/utils';
 import styles from '@/styles/pages/StorePickupEventDetailsPage.module.scss';
 import Link from 'next/link';
 import router from 'next/router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 interface PickupEventDetailsPageProps {
   pickupEvent: PublicOrderPickupEvent;
@@ -27,21 +24,38 @@ interface PickupEventDetailsPageProps {
 }
 
 const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPageProps) => {
-  const { uuid, status, title, start, end, orderLimit, description, linkedEvent, orders } =
-    pickupEvent;
-  const [ordersView, setOrdersView] = useState<'fulfill' | 'prepare'>('fulfill');
+  const {
+    uuid,
+    status,
+    title,
+    start,
+    end,
+    orderLimit,
+    description,
+    linkedEvent,
+    orders: initOrders,
+  } = pickupEvent;
+  const [orders, setOrders] = useState(initOrders);
 
-  let ordersComponent;
-  if (orders && orders.length > 0)
-    ordersComponent =
-      ordersView === 'fulfill' ? (
-        <PickupOrdersFulfillDisplay orders={orders} />
-      ) : (
-        <PickupOrdersPrepareDisplay orders={orders} />
-      );
+  const started = useMemo(() => Date.now() >= new Date(start).getTime(), [start]);
+
+  const confirmComplete = useConfirm({
+    title: 'Confirm completion',
+    question:
+      'Are you sure you want to complete this pickup event? Pending orders will be marked as missed. This cannot be undone.',
+    action: 'Complete',
+  });
+  const confirmCancel = useConfirm({
+    title: 'Confirm cancellation',
+    question: 'Are you sure you want to cancel this pickup event? This cannot be undone.',
+    action: 'Cancel event',
+    cancel: 'Back',
+  });
 
   return (
     <div className={styles.page}>
+      {confirmComplete.modal}
+      {confirmCancel.modal}
       <Link href={config.admin.store.pickup} className={styles.back}>
         {'< Back to dashboard'}
       </Link>
@@ -57,31 +71,31 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
           <div>
             <PickupEventStatus status={status} variant="h3/bold" />
             <Typography variant="h1/bold">{title}</Typography>
-            <Button
-              className={`${styles.displayButton}`}
-              onClick={() => router.push(`${config.admin.store.pickupEdit}/${uuid}`)}
-            >
-              <Typography variant="h5/bold">Edit Pickup Event</Typography>
-            </Button>
-            {status === OrderPickupEventStatus.ACTIVE ? (
+            <div className={styles.buttonContainer}>
               <Button
                 className={`${styles.displayButton}`}
-                onClick={() => completePickupEvent(uuid, token)}
+                onClick={() => router.push(`${config.admin.store.pickupEdit}/${uuid}`)}
               >
-                <Typography variant="h5/bold">Complete Pickup Event</Typography>
+                <Typography variant="h5/bold">Edit Pickup Event</Typography>
               </Button>
-            ) : null}
-            {status === OrderPickupEventStatus.ACTIVE ? (
-              <Button
-                className={`${styles.displayButton}`}
-                onClick={() => {
-                  cancelPickupEvent(uuid, token);
-                }}
-                destructive
-              >
-                <Typography variant="h5/bold">Cancel Pickup Event</Typography>
-              </Button>
-            ) : null}
+              {status === OrderPickupEventStatus.ACTIVE ? (
+                <Button
+                  className={`${styles.displayButton}`}
+                  onClick={() => confirmComplete.confirm(() => completePickupEvent(uuid, token))}
+                >
+                  <Typography variant="h5/bold">Complete Pickup Event</Typography>
+                </Button>
+              ) : null}
+              {status === OrderPickupEventStatus.ACTIVE ? (
+                <Button
+                  className={`${styles.displayButton}`}
+                  onClick={() => confirmCancel.confirm(() => cancelPickupEvent(uuid, token))}
+                  destructive
+                >
+                  <Typography variant="h5/bold">Cancel Pickup Event</Typography>
+                </Button>
+              ) : null}
+            </div>
             <Typography variant="h4/regular" suppressHydrationWarning>
               {formatEventDate(start, end, true)}
             </Typography>
@@ -92,26 +106,16 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
           </div>
         </div>
         <div className={styles.orders}>
-          <div className={styles.header}>
-            <Typography variant="h1/bold">Orders</Typography>
-            <div className={styles.displayButtons}>
-              <button
-                type="button"
-                className={`${styles.displayButton} ${ordersView === 'fulfill' && styles.active}`}
-                onClick={() => setOrdersView('fulfill')}
-              >
-                <Typography variant="h5/bold">Fulfill</Typography>
-              </button>
-              <button
-                type="button"
-                className={`${styles.displayButton} ${ordersView === 'prepare' && styles.active}`}
-                onClick={() => setOrdersView('prepare')}
-              >
-                <Typography variant="h5/bold">Prepare</Typography>
-              </button>
-            </div>
-          </div>
-          {ordersComponent || 'No orders placed.'}
+          {orders && orders.length > 0 ? (
+            <PickupOrdersPrepareDisplay
+              orders={orders}
+              onOrderUpdate={setOrders}
+              token={token}
+              canFulfill={status === OrderPickupEventStatus.ACTIVE && started}
+            />
+          ) : (
+            'No orders placed.'
+          )}
         </div>
       </div>
     </div>

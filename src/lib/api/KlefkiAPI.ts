@@ -1,7 +1,16 @@
 import { config } from '@/lib';
 import { URL } from '@/lib/types';
-import { CreateDiscordEventRequest, GenerateACMURLRequest } from '@/lib/types/apiRequests';
-import type { NotionEventDetails, NotionEventPreview } from '@/lib/types/apiResponses';
+import {
+  CreateDiscordEventRequest,
+  DeleteDiscordEventRequest,
+  GenerateACMURLRequest,
+  PatchDiscordEventRequest,
+} from '@/lib/types/apiRequests';
+import type {
+  KlefkiAPIResponse,
+  NotionEventDetails,
+  NotionEventPreview,
+} from '@/lib/types/apiResponses';
 import axios from 'axios';
 import totp from 'totp-generator';
 
@@ -34,11 +43,42 @@ export const getNotionEventPage = async (pageUrl: URL): Promise<NotionEventDetai
   return response.data;
 };
 
-export const createDiscordEvent = async (event: CreateDiscordEventRequest): Promise<void> => {
+export const createDiscordEvent = async (
+  event: CreateDiscordEventRequest
+): Promise<KlefkiAPIResponse> => {
   const { klefki } = config;
   const requestUrl = `${klefki.baseUrl}${klefki.endpoints.discord.event}`;
 
-  await axios.post<void>(requestUrl, event, {
+  const response = await axios.post<KlefkiAPIResponse>(requestUrl, event, {
+    headers: {
+      Authorization: `Bearer ${generateToken(klefki.key)}`,
+    },
+  });
+
+  return response.data;
+};
+
+export const patchDiscordEvent = async (
+  event: PatchDiscordEventRequest
+): Promise<KlefkiAPIResponse> => {
+  const { klefki } = config;
+  const requestUrl = `${klefki.baseUrl}${klefki.endpoints.discord.event}`;
+
+  const response = await axios.patch<KlefkiAPIResponse>(requestUrl, event, {
+    headers: {
+      Authorization: `Bearer ${generateToken(klefki.key)}`,
+    },
+  });
+
+  return response.data;
+};
+
+export const deleteDiscordEvent = async (event: DeleteDiscordEventRequest): Promise<void> => {
+  const { klefki } = config;
+  const requestUrl = `${klefki.baseUrl}${klefki.endpoints.discord.event}`;
+
+  await axios.delete<void>(requestUrl, {
+    data: event,
     headers: {
       Authorization: `Bearer ${generateToken(klefki.key)}`,
     },
@@ -73,4 +113,18 @@ export const generateACMURL = async (acmurlInfo: GenerateACMURLRequest): Promise
       Authorization: `Bearer ${generateToken(klefki.key)}`,
     },
   });
+};
+
+export const uploadBoardPhoto = async (file: File): Promise<KlefkiAPIResponse> => {
+  const { klefki } = config;
+  const formData = new FormData();
+  formData.append('file', file);
+  const requestUrl = `${klefki.baseUrl}${klefki.endpoints.board.photoUpload}`;
+  const response = await axios.post<KlefkiAPIResponse>(requestUrl, formData, {
+    headers: {
+      Authorization: `Bearer ${generateToken(klefki.key)}`,
+    },
+  });
+
+  return response.data;
 };

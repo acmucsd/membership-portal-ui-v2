@@ -26,6 +26,8 @@ const config = {
         attendance: '/admin/attendance',
         bonus: '/admin/bonus',
         emails: '/admin/email',
+        access: '/admin/access',
+        milestone: '/admin/milestone',
       },
       event: {
         event: '/event',
@@ -71,6 +73,9 @@ const config = {
       acmurl: {
         generate: '/acmurl/generate',
       },
+      board: {
+        photoUpload: '/board/uploadPhoto',
+      },
     },
   },
   defaultEventImage: Cat,
@@ -82,6 +87,7 @@ const config = {
   registerRoute: '/register',
   loginRoute: '/login',
   logoutRoute: '/logout',
+  onboardRoute: '/onboard',
   leaderboardRoute: '/leaderboard',
   profileRoute: '/profile',
   aboutRoute: '/about',
@@ -106,6 +112,8 @@ const config = {
     grantPastAttendance: '/admin/attendance',
     awardMilestone: '/admin/milestone',
     viewResumes: '/admin/resumes',
+    manageUserAccess: '/admin/access',
+    updateProfile: '/admin/profile',
     store: {
       items: '/admin/store/items',
       pickup: '/admin/store/pickup',
@@ -128,6 +136,7 @@ const config = {
     MAX_COLLECTION_PHOTO_SIZE_KB: 1024,
     MAX_RESUME_SIZE_KB: isDevelopment ? 256 : 2048,
   },
+  tempLocalOnboardingKey: 'onboarding',
 };
 
 export default config;

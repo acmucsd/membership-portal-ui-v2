@@ -1,0 +1,73 @@
+@use 'src/styles/vars.scss' as vars;
+
+.wrapper {
+  background-color: var(--theme-elevated-background);
+  border: 1px solid var(--theme-elevated-stroke);
+  border-radius: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  word-break: break-word;
+
+  @media (max-width: vars.$breakpoint-md) {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .user,
+  .resume {
+    align-items: center;
+    display: grid;
+    gap: 0.5rem 1rem;
+    grid-template-areas:
+      'image name'
+      'image info';
+    grid-template-columns: auto 1fr;
+
+    .image {
+      grid-area: image;
+    }
+
+    .name {
+      grid-area: name;
+    }
+
+    &:hover .name {
+      text-decoration: underline;
+    }
+
+    .info {
+      grid-area: info;
+    }
+  }
+
+  .user {
+    flex: 1 0 0;
+
+    .image {
+      border-radius: 5rem;
+      object-fit: contain;
+    }
+  }
+
+  .resume {
+    flex: 1.5 0 0;
+
+    .image {
+      height: 1.5rem;
+      width: 1.5rem;
+
+      @media (max-width: vars.$breakpoint-md) {
+        width: 3rem;
+      }
+    }
+
+    .name {
+      color: var(--theme-blue-text-button);
+    }
+
+    .info {
+      color: var(--theme-text-on-background-2);
+    }
+  }
+}

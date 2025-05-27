@@ -4,10 +4,12 @@ export type Styles = {
   confirming: string;
   container: string;
   content: string;
+  desktop: string;
   emptyCart: string;
   eventPicker: string;
   header: string;
   items: string;
+  mobile: string;
   pickupEventDetail: string;
   placeOrder: string;
   points: string;

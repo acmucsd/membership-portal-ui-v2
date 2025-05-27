@@ -77,6 +77,7 @@ export interface UserPatches {
   graduationYear?: number;
   bio?: string;
   isAttendancePublic?: boolean;
+  onboardingSeen?: boolean;
   passwordChange?: PasswordUpdate;
 }
 
@@ -160,10 +161,12 @@ export interface ModifyUserAccessLevelRequest {
 export interface OptionalEventProperties {
   organization?: string;
   committee?: string;
-  thumbnail?: string;
+  thumbnail?: string | null;
   eventLink?: string;
   requiresStaff?: boolean;
   staffPointBonus?: number;
+  discordEvent: string | null;
+  foodItems?: string | null;
 }
 
 export interface Event extends OptionalEventProperties {
@@ -414,6 +417,14 @@ export interface CreateDiscordEventRequest {
   description: string;
   location: string;
   image?: string;
+}
+
+export interface PatchDiscordEventRequest extends CreateDiscordEventRequest {
+  eventID: UUID;
+}
+
+export interface DeleteDiscordEventRequest {
+  eventID: UUID;
 }
 
 export interface GenerateACMURLRequest {

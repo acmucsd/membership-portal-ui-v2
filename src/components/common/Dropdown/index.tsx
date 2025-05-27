@@ -15,10 +15,19 @@ interface DropdownProps {
   options: (Option | typeof DIVIDER)[];
   value: string;
   onChange: (value: string) => void;
+  readOnly?: boolean;
   className?: string;
 }
 
-const Dropdown = ({ name, ariaLabel, options, value, onChange, className }: DropdownProps) => {
+const Dropdown = ({
+  name,
+  ariaLabel,
+  options,
+  value,
+  onChange,
+  readOnly,
+  className,
+}: DropdownProps) => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -61,8 +70,11 @@ const Dropdown = ({ name, ariaLabel, options, value, onChange, className }: Drop
     // mouse/touch users.
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
-      className={`${styles.dropdownWrapper} ${className}`}
+      className={`${styles.dropdownWrapper} ${className} ${readOnly ? styles.readOnly : ''}`}
       onClick={e => {
+        if (readOnly) {
+          return;
+        }
         // Using the keyboard to select an option fires the click event on
         // <select>; prevent it from opening the fake dropdown. The <select> has
         // pointer-events: none so it shouldn't receive the click event any
@@ -82,7 +94,11 @@ const Dropdown = ({ name, ariaLabel, options, value, onChange, className }: Drop
       >
         {options.map(option =>
           option !== DIVIDER ? (
-            <option value={option.value} key={option.value}>
+            <option
+              value={option.value}
+              key={option.value}
+              disabled={value !== option.value && readOnly}
+            >
               {option.label}
             </option>
           ) : null

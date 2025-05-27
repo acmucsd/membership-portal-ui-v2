@@ -13,6 +13,7 @@ import WavesGraphic from '@/public/assets/graphics/portal/waves.svg';
 import CheckMark from '@/public/assets/icons/check-mark.svg';
 import styles from '@/styles/pages/Home.module.scss';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 interface HomePageProps {
@@ -41,6 +42,7 @@ const PortalHomePage = ({
   attendances,
   checkInResponse,
 }: HomePageProps) => {
+  const router = useRouter();
   const [points, setPoints] = useState<number>(user.points);
   const [checkinEvent, setCheckinEvent] = useState<PublicEvent | undefined>(undefined);
   const [checkinModalVisible, setCheckinModalVisible] = useState<boolean>(false);
@@ -91,7 +93,17 @@ const PortalHomePage = ({
       <CheckInModal
         open={checkinModalVisible}
         event={checkinEvent}
-        onClose={() => setCheckinModalVisible(false)}
+        onClose={() => {
+          setCheckinModalVisible(false);
+
+          // Start onboarding after checking in
+          if (user.onboardingSeen) {
+            return;
+          }
+          router.push(
+            `${config.onboardRoute}?${new URLSearchParams({ destination: config.homeRoute })}`
+          );
+        }}
       />
 
       <div className={styles.hero}>
@@ -132,6 +144,9 @@ const PortalHomePage = ({
         <div className={styles.checkinButtons}>
           <input
             type="text"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
             placeholder="Enter event check-in code"
             className={styles.checkinInput}
             value={checkinCode}

@@ -2,6 +2,7 @@ import DetailsFormItem from '@/components/admin/DetailsFormItem';
 import { Photo } from '@/components/admin/store/DetailsForm/types';
 import { Button, Cropper, DRAG_HANDLE, Draggable } from '@/components/common';
 import { config, showToast } from '@/lib';
+import useConfirm from '@/lib/hooks/useConfirm';
 import { AdminStoreManager } from '@/lib/managers';
 import { MerchCollection } from '@/lib/types/apiRequests';
 import { PublicMerchCollection } from '@/lib/types/apiResponses';
@@ -127,8 +128,22 @@ const CollectionDetailsForm = ({ mode, defaultData, token }: IProps) => {
     }
   };
 
+  const confirmDelete = useConfirm({
+    title: 'Confirm deletion',
+    question:
+      'Are you sure you want to delete this collection? All items in the collection will be lost forever. This cannot be undone.',
+    action: 'Delete',
+  });
+  const confirmReset = useConfirm({
+    title: 'Confirm reset',
+    question: 'Are you sure you want to reset this form? This cannot be undone.',
+    action: 'Reset',
+  });
+
   return (
     <>
+      {confirmDelete.modal}
+      {confirmReset.modal}
       <form onSubmit={handleSubmit(mode === 'edit' ? editCollection : createCollection)}>
         <div className={style.header}>
           <h1>{mode === 'edit' ? 'Modify' : 'Create'} Collection</h1>
@@ -237,10 +252,18 @@ const CollectionDetailsForm = ({ mode, defaultData, token }: IProps) => {
               <Button submit disabled={loading}>
                 Save changes
               </Button>
-              <Button onClick={resetForm} disabled={loading} destructive>
+              <Button
+                onClick={() => confirmReset.confirm(resetForm)}
+                disabled={loading}
+                destructive
+              >
                 Discard changes
               </Button>
-              <Button onClick={deleteCollection} disabled={loading} destructive>
+              <Button
+                onClick={() => confirmDelete.confirm(deleteCollection)}
+                disabled={loading}
+                destructive
+              >
                 Delete collection
               </Button>
             </>
@@ -249,7 +272,11 @@ const CollectionDetailsForm = ({ mode, defaultData, token }: IProps) => {
               <Button submit disabled={loading}>
                 Create collection
               </Button>
-              <Button onClick={resetForm} disabled={loading} destructive>
+              <Button
+                onClick={() => confirmReset.confirm(resetForm)}
+                disabled={loading}
+                destructive
+              >
                 Clear form
               </Button>
             </>

@@ -6,7 +6,7 @@ import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccess
 import { CookieService, PermissionService } from '@/lib/services';
 import { PrivateProfile, PublicMerchCollection } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { getDefaultMerchCollectionPhoto, getDefaultMerchItemPhoto } from '@/lib/utils';
+import { getDefaultMerchCollectionPhoto } from '@/lib/utils';
 import styles from '@/styles/pages/StoreCollectionPage.module.scss';
 import Image from 'next/image';
 import { useMemo } from 'react';
@@ -64,7 +64,9 @@ const CollectionsPage = ({
           .filter(item => storeAdminVisible || !item.hidden)
           .map(item => (
             <ItemCard
-              image={getDefaultMerchItemPhoto(item)}
+              images={[...item.merchPhotos]
+                .sort((a, b) => a.position - b.position)
+                .map(photo => photo.uploadedPhoto)}
               title={item.itemName}
               href={`${config.store.itemRoute}${item.uuid}`}
               cost={item.options[0]?.price ?? 0}

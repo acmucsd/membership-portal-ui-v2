@@ -8,6 +8,10 @@
   grid-area: 1 / 2;
   position: relative;
 
+  &.readOnly {
+    cursor: unset;
+  }
+
   select {
     appearance: none;
     background: none;

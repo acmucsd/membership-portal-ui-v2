@@ -4,6 +4,7 @@ export type Styles = {
   contents: string;
   dropdownWrapper: string;
   option: string;
+  readOnly: string;
 };
 
 export type ClassNames = keyof Styles;
