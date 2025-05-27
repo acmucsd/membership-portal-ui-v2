@@ -11,7 +11,7 @@ import { FillInLater } from '@/lib/types';
 import { Event } from '@/lib/types/apiRequests';
 import { NotionEventDetails, NotionEventPreview, PublicEvent } from '@/lib/types/apiResponses';
 import { CookieType } from '@/lib/types/enums';
-import { reportError, useObjectUrl } from '@/lib/utils';
+import { exportCanvas, reportError, useObjectUrl } from '@/lib/utils';
 import { DateTime } from 'luxon';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,6 +19,58 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import style from './style.module.scss';
+
+function drawTempCover(
+  context: CanvasRenderingContext2D,
+  backgroundImage: HTMLImageElement | null,
+  eventTitle: string,
+  eventStart: string,
+  eventEnd: string,
+  eventLocation: string,
+  eventLink?: string
+) {
+  const c = context; // To bypass eslint(no-param-reassign)
+  const start = new Date(eventStart);
+  const end = new Date(eventEnd);
+  c.clearRect(0, 0, c.canvas.width, c.canvas.height);
+  if (backgroundImage) {
+    c.drawImage(backgroundImage, 0, 0);
+  }
+  c.fillStyle = '#333333';
+  c.textAlign = 'center';
+  c.textBaseline = 'top';
+  c.font = `bold 80px ${dmSans.style.fontFamily}, sans-serif`;
+  c.fillText(eventTitle, 969, 340);
+  if (eventStart && eventEnd) {
+    c.font = `45px ${dmSans.style.fontFamily}, sans-serif`;
+    c.fillText(
+      new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).formatRange(start, end),
+      969,
+      460
+    );
+    c.fillText(
+      new Intl.DateTimeFormat('en-US', { timeStyle: 'short' }).formatRange(
+        start,
+        // Force `end` to be the same date as `start` so it only renders a time range
+        new Date(
+          start.getFullYear(),
+          start.getMonth(),
+          start.getDate(),
+          end.getHours(),
+          end.getMinutes()
+        )
+      ),
+      969,
+      510
+    );
+  }
+  c.font = `500 45px ${dmSans.style.fontFamily}, sans-serif`;
+  c.fillText(eventLocation, 969, 670);
+  c.font = `45px ${dmSans.style.fontFamily}, sans-serif`;
+  c.textAlign = 'left';
+  c.fillStyle = 'white';
+  c.fillText(eventLink || 'acmucsd.com', 756, 810);
+}
 
 interface IProps {
   editing?: boolean;
@@ -87,17 +139,62 @@ const EventDetailsForm = (props: IProps) => {
   const coverUrl = useObjectUrl(cover);
   const eventCover = coverUrl || initialValues.cover;
 
-  const createEvent: SubmitHandler<FillInLater> = formData => {
-    if (!cover) {
-      showToast('Event cover is required.');
-      return;
-    }
-
-    setLoading(true);
+  const createEvent: SubmitHandler<FillInLater> = async formData => {
     const { start: isoStart, end: isoEnd, ...event } = formData;
 
     const start = new Date(isoStart).toISOString();
     const end = new Date(isoEnd).toISOString();
+
+    let eventCover = cover;
+    if (!eventCover) {
+      const backgroundImage = await new Promise<HTMLImageElement | null>(resolve => {
+        const image = new window.Image();
+        image.src = `/assets/event-cover-templates/${
+          event.committee?.toLowerCase() || 'general'
+        }.png`;
+        image.addEventListener('load', () => resolve(image));
+        image.addEventListener('error', () => resolve(null));
+      });
+      if (!backgroundImage) {
+        showToast(
+          'Event cover is required.',
+          'Unable to create temporary cover: failed to load background image.'
+        );
+        return;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = 1920;
+      canvas.height = 1080;
+      const context = canvas.getContext('2d');
+      if (!context) {
+        showToast(
+          'Event cover is required.',
+          'Unable to create temporary cover: failed to create canvas context.'
+        );
+        return;
+      }
+      drawTempCover(
+        context,
+        backgroundImage,
+        event.title,
+        isoStart,
+        isoEnd,
+        event.location,
+        event.eventLink
+      );
+      const blob = await exportCanvas(canvas, config.file.MAX_EVENT_COVER_SIZE_KB * 1024);
+      if (!blob) {
+        showToast('Event cover is required.', 'Unable to create temporary cover: image too large.');
+        return;
+      }
+      eventCover = new File(
+        [blob],
+        blob.type === 'image/png' ? 'temp-cover.png' : 'temp-cover.jpg',
+        { type: blob.type }
+      );
+    }
+
+    setLoading(true);
 
     const AUTH_TOKEN = CookieService.getClientCookie(CookieType.ACCESS_TOKEN);
 
@@ -108,7 +205,7 @@ const EventDetailsForm = (props: IProps) => {
         start,
         end,
       },
-      cover,
+      cover: eventCover,
       onSuccessCallback: event => {
         setLoading(false);
         showToast('Event Created Successfully!', '', [
@@ -199,25 +296,17 @@ const EventDetailsForm = (props: IProps) => {
   ]);
   const context = useRef<CanvasRenderingContext2D | null>(null);
   useEffect(() => {
-    const c = context.current;
-    if (!c) {
-      return;
+    if (context.current) {
+      drawTempCover(
+        context.current,
+        null,
+        eventTitle,
+        eventStart,
+        eventEnd,
+        eventLocation,
+        eventLink
+      );
     }
-    c.clearRect(0, 0, c.canvas.width, c.canvas.height);
-    c.fillStyle = '#333333';
-    c.textAlign = 'center';
-    c.textBaseline = 'top';
-    c.font = `bold 80px ${dmSans.style.fontFamily}, sans-serif`;
-    c.fillText(eventTitle, 969, 340);
-    c.font = `45px ${dmSans.style.fontFamily}, sans-serif`;
-    c.fillText('December 22 - December 24', 969, 460);
-    c.fillText('00:00 AM - 00:00 PM', 969, 510);
-    c.font = `500 45px ${dmSans.style.fontFamily}, sans-serif`;
-    c.fillText(eventLocation, 969, 670);
-    c.font = `45px ${dmSans.style.fontFamily}, sans-serif`;
-    c.textAlign = 'left';
-    c.fillStyle = 'white';
-    c.fillText(eventLink || 'acmucsd.com', 756, 810);
   }, [eventTitle, eventStart, eventEnd, eventLocation, eventLink]);
 
   return (
@@ -362,20 +451,21 @@ const EventDetailsForm = (props: IProps) => {
                 fill
               />
             </div>
-          ) : null}
-          <canvas
-            width={1920}
-            height={1080}
-            className={style.eventAutoCover}
-            style={{
-              backgroundImage: `url("/assets/event-cover-templates/${
-                eventCommittee?.toLowerCase() || 'general'
-              }.png")`,
-            }}
-            ref={canvas => {
-              context.current = canvas?.getContext('2d') ?? null;
-            }}
-          />
+          ) : (
+            <canvas
+              width={1920}
+              height={1080}
+              className={style.eventAutoCover}
+              style={{
+                backgroundImage: `url("/assets/event-cover-templates/${
+                  eventCommittee?.toLowerCase() || 'general'
+                }.png")`,
+              }}
+              ref={canvas => {
+                context.current = canvas?.getContext('2d') ?? null;
+              }}
+            />
+          )}
         </DetailsFormItem>
         <Cropper
           file={selectedCover}
