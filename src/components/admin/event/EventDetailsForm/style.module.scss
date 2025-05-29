@@ -26,6 +26,11 @@
     @media screen and (width <= vars.$breakpoint-md) {
       grid-template-columns: unset;
     }
+
+    .eventAutoCover {
+      background-size: cover;
+      width: 100%;
+    }
   }
 
   .submitButtons {
