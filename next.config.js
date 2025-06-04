@@ -60,6 +60,9 @@ const nextConfig = {
     });
     return config;
   },
+  experimental: {
+    appDocumentPreloading: true,
+  },
 };
 
 module.exports = withPWA(nextConfig);
