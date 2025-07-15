@@ -74,7 +74,7 @@ const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
     <Modal open={open} onClose={onClose}>
       <Confetti
         key={`${refreshConfetti}`}
-        numberOfPieces={1000}
+        numberOfPieces={250}
         initialVelocityY={-10}
         tweenDuration={15000}
         recycle={false}
