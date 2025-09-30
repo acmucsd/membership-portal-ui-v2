@@ -32,7 +32,7 @@
     "axios": "^1.6.0",
     "axios-middleware": "^0.3.1",
     "cookies-next": "^2.1.1",
-    "cypress": "13.6.2",
+    "cypress": "^15.3.0",
     "ics": "^3.7.2",
     "jszip": "^3.10.1",
     "luxon": "^3.3.0",
@@ -76,5 +76,8 @@
     "stylelint-config-sass-guidelines": "^10.0.0",
     "stylelint-order": "^5.0.0",
     "typed-scss-modules": "^7.0.2"
+  },
+  "resolutions": {
+    "minimatch": "10.0.1"
   }
 }
