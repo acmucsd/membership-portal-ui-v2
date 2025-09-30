@@ -32,7 +32,7 @@
     "axios": "^1.6.0",
     "axios-middleware": "^0.3.1",
     "cookies-next": "^2.1.1",
-    "cypress": "^15.3.0",
+    "cypress": "13.6.2",
     "ics": "^3.7.2",
     "jszip": "^3.10.1",
     "luxon": "^3.3.0",
@@ -66,7 +66,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.13.2",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsdoc": "^60.0.0",
+    "eslint-plugin-jsdoc": "^60.5.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
@@ -78,6 +78,6 @@
     "typed-scss-modules": "^7.0.2"
   },
   "resolutions": {
-    "minimatch": "10.0.1"
+    "minimatch": "10.0.3"
   }
 }
