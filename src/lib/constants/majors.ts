@@ -4,6 +4,7 @@ const majors = [
   'Anth (Conc Sociocultural Anth)',
   'Anthropology(Conc in Archaeol)',
   'Anthropology(Conc in Bio Anth)',
+  'Artificial Intelligence',
   'Biochemistry',
   'Biochemistry and Cell Biology',
   'Bioengineering',
