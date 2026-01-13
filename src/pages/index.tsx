@@ -15,6 +15,7 @@ import styles from '@/styles/pages/Home.module.scss';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { VscQuestion } from "react-icons/vsc";
 
 interface HomePageProps {
   user: PrivateProfile;
@@ -141,6 +142,12 @@ const PortalHomePage = ({
         <Typography variant="h2/bold" className={styles.subheading}>
           Event Check-in
         </Typography>
+          <Link href={config.asForm.baseUrl} target="_blank" className={styles.asFormLink}>
+          <VscQuestion className={styles.asFormHelp} />
+          <Typography variant="h5/regular">
+            Need the AS Form?
+          </Typography>
+          </Link>
         <div className={styles.checkinButtons}>
           <input
             type="text"
