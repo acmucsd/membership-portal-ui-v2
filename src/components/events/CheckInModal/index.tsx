@@ -66,7 +66,7 @@ const CheckInModal = ({ open, event, user, onClose }: CheckInModalProps) => {
     }
   }, [open]);
 
-  const asFormURL = useMemo(() => generateASFormURL(event, user), [event, user]);
+  const asFormURL = generateASFormURL(event, user);
 
   if (!event || !user) {
     return null;

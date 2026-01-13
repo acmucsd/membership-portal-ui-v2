@@ -4,6 +4,7 @@ import { UserProgress } from '@/components/profile/UserProgress';
 import { config, showToast } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
+import { generateASFormURL } from '@/lib/managers/ASFormManager';
 import { attendEvent } from '@/lib/managers/EventManager';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PrivateProfile, PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
@@ -83,6 +84,8 @@ const PortalHomePage = ({
     }
   }, [checkInResponse, user]);
 
+  const asFormURL = generateASFormURL(checkinEvent, user);
+
   const today = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -143,12 +146,6 @@ const PortalHomePage = ({
         <Typography variant="h2/bold" className={styles.subheading}>
           Event Check-in
         </Typography>
-          <Link href={config.asForm.baseUrl} target="_blank" className={styles.asFormLink}>
-          <VscQuestion className={styles.asFormHelp} />
-          <Typography variant="h5/regular">
-            Need the AS Form?
-          </Typography>
-          </Link>
         <div className={styles.checkinButtons}>
           <input
             type="text"
@@ -164,6 +161,12 @@ const PortalHomePage = ({
             <CheckMark />
           </button>
         </div>
+        <Link href={asFormURL} target="_blank" className={styles.asFormLink}>
+          <VscQuestion className={styles.asFormHelp} />
+          <Typography variant="h5/regular">
+            Need the AS form?
+          </Typography>
+        </Link>
       </form>
 
       <Link href={config.leaderboardRoute} className={styles.userProgress}>
