@@ -1,6 +1,7 @@
 export type Styles = {
   addFeedback: string;
   ai: string;
+  asForm: string;
   button: string;
   buttonRow: string;
   container: string;

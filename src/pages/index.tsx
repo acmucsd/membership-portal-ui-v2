@@ -93,6 +93,7 @@ const PortalHomePage = ({
     <div className={styles.page}>
       <CheckInModal
         open={checkinModalVisible}
+        user={user}
         event={checkinEvent}
         onClose={() => {
           setCheckinModalVisible(false);
