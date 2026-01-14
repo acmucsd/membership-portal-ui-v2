@@ -62,7 +62,7 @@
 
       &.asForm {
         background-color: var(--theme-gold);
-        color: var(--theme-background); 
+        color: var(--theme-background);
       }
 
       @media screen and (width <= vars.$breakpoint-md) {

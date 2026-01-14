@@ -1,6 +1,6 @@
 import { Modal, Typography } from '@/components/common';
 import { config } from '@/lib';
-import { generateASFormURL } from '@/lib/managers/ASFormManager';
+import generateASFormURL from '@/lib/managers/ASFormManager';
 import { PrivateProfile, PublicEvent } from '@/lib/types/apiResponses';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -110,15 +110,10 @@ const CheckInModal = ({ open, event, user, onClose }: CheckInModalProps) => {
             </Typography>
             <Typography variant="h4/regular" className={style.subheaderText} />
           </div>
-
         </div>
         <div className={style.buttonRow}>
-          <Link
-            href={asFormURL}
-            className={`${style.button} ${style.asForm}`}
-            target="_blank"
-          >
-            <Typography variant="h4/bold">AS Form</Typography>
+          <Link href={asFormURL} className={`${style.button} ${style.asForm}`} target="_blank">
+            <Typography variant="h4/bold">AS form</Typography>
           </Link>
           <Link
             href={`${config.eventsRoute}/${event.uuid}`}

@@ -4,7 +4,7 @@ import { UserProgress } from '@/components/profile/UserProgress';
 import { config, showToast } from '@/lib';
 import { EventAPI, UserAPI } from '@/lib/api';
 import withAccessType, { GetServerSidePropsWithAuth } from '@/lib/hoc/withAccessType';
-import { generateASFormURL } from '@/lib/managers/ASFormManager';
+import generateASFormURL from '@/lib/managers/ASFormManager';
 import { attendEvent } from '@/lib/managers/EventManager';
 import { CookieService, PermissionService } from '@/lib/services';
 import type { PrivateProfile, PublicAttendance, PublicEvent } from '@/lib/types/apiResponses';
@@ -16,7 +16,7 @@ import styles from '@/styles/pages/Home.module.scss';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { VscQuestion } from "react-icons/vsc";
+import { VscQuestion } from 'react-icons/vsc';
 
 interface HomePageProps {
   user: PrivateProfile;
@@ -163,9 +163,7 @@ const PortalHomePage = ({
         </div>
         <Link href={asFormURL} target="_blank" className={styles.asFormLink}>
           <VscQuestion className={styles.asFormHelp} />
-          <Typography variant="h5/regular">
-            Need the AS form?
-          </Typography>
+          <Typography variant="h5/regular">Need the AS form?</Typography>
         </Link>
       </form>
 

@@ -138,8 +138,8 @@ const config = {
   },
   tempLocalOnboardingKey: 'onboarding',
   asForm: {
-    // production form
-    /*baseUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdTyROOr_WZGOgpNyfJL2QQFxIDj9FJxSxk2T0orOKu4VvQlQ/viewform',
+    baseUrl:
+      'https://docs.google.com/forms/d/e/1FAIpQLSdTyROOr_WZGOgpNyfJL2QQFxIDj9FJxSxk2T0orOKu4VvQlQ/viewform',
     fields: {
       emailAddress: 'emailAddress',
       eventName: 'entry.219446721',
@@ -147,20 +147,8 @@ const config = {
       memberAffiliation: 'entry.1851239463',
       heardFrom: 'entry.153208156',
       foodItems: 'entry.570464428',
-    }
-    */
-
-    // testing form
-    baseUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeynxXHzxuCTlnrdQS1-AM89n8UElE2DmSoV1tSTQy6RrWT1g/viewform',
-    fields: {
-      emailAddress: 'emailAddress',
-      eventName: 'entry.366340186',
-      graduationYear: 'entry.333238999',
-      memberAffiliation: 'entry.1548765706',
-      heardFrom: 'entry.547230417',
-      foodItems: 'entry.962217527',
-    }
-  }
+    },
+  },
 };
 
 export default config;

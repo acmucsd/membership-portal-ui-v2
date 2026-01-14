@@ -249,20 +249,20 @@
     }
 
     .asFormLink {
+      align-items: center;
       color: var(--theme-primary-2);
       display: inline-flex;
-      align-items: center;
       gap: 0.5rem;
 
       .asFormHelp {
-          display: inline-block;
-          font-size: 1.5rem;
-          line-height: 1;
-          height: auto;
-          width: auto;
-          flex: 0 0 auto;
-          margin-left: 0;
-          margin-right: 0;
+        display: inline-block;
+        flex: 0 0 auto;
+        font-size: 1.5rem;
+        height: auto;
+        line-height: 1;
+        margin-left: 0;
+        margin-right: 0;
+        width: auto;
       }
     }
   }
