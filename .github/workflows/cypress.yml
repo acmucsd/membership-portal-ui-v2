@@ -4,6 +4,10 @@ jobs:
   cypress-run:
     runs-on: ubuntu-22.04
     steps:
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 22.20.0
       - name: Checkout
         uses: actions/checkout@v4
       # Install npm dependencies, cache them correctly
