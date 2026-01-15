@@ -60,6 +60,11 @@
         color: var(--theme-background);
       }
 
+      &.asForm {
+        background-color: var(--theme-gold);
+        color: var(--theme-background);
+      }
+
       @media screen and (width <= vars.$breakpoint-md) {
         padding: 0.5rem;
 

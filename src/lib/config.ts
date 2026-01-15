@@ -137,6 +137,18 @@ const config = {
     MAX_RESUME_SIZE_KB: isDevelopment ? 256 : 2048,
   },
   tempLocalOnboardingKey: 'onboarding',
+  asForm: {
+    baseUrl:
+      'https://docs.google.com/forms/d/e/1FAIpQLSdTyROOr_WZGOgpNyfJL2QQFxIDj9FJxSxk2T0orOKu4VvQlQ/viewform',
+    fields: {
+      emailAddress: 'emailAddress',
+      eventName: 'entry.219446721',
+      graduationYear: 'entry.1687560837',
+      memberAffiliation: 'entry.1851239463',
+      heardFrom: 'entry.153208156',
+      foodItems: 'entry.570464428',
+    },
+  },
 };
 
 export default config;

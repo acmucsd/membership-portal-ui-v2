@@ -1,6 +1,7 @@
 import { Modal, Typography } from '@/components/common';
 import { config } from '@/lib';
-import { PublicEvent } from '@/lib/types/apiResponses';
+import generateASFormURL from '@/lib/managers/ASFormManager';
+import { PrivateProfile, PublicEvent } from '@/lib/types/apiResponses';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
@@ -10,6 +11,7 @@ import style from './style.module.scss';
 interface CheckInModalProps {
   open: boolean;
   event?: PublicEvent;
+  user?: PrivateProfile;
   onClose: () => void;
 }
 
@@ -50,7 +52,7 @@ const drawDiamond = (ctx: CanvasRenderingContext2D) => {
   ctx.fill();
 };
 
-const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
+const CheckInModal = ({ open, event, user, onClose }: CheckInModalProps) => {
   const headerText = useMemo(
     () => CHECKIN_TITLES[Math.floor(Math.random() * CHECKIN_TITLES.length)],
     []
@@ -64,7 +66,9 @@ const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
     }
   }, [open]);
 
-  if (!event) {
+  const asFormURL = generateASFormURL(event, user);
+
+  if (!event || !user) {
     return null;
   }
 
@@ -108,11 +112,14 @@ const CheckInModal = ({ open, event, onClose }: CheckInModalProps) => {
           </div>
         </div>
         <div className={style.buttonRow}>
+          <Link href={asFormURL} className={`${style.button} ${style.asForm}`} target="_blank">
+            <Typography variant="h4/bold">AS form</Typography>
+          </Link>
           <Link
             href={`${config.eventsRoute}/${event.uuid}`}
             className={`${style.button} ${style.addFeedback}`}
           >
-            <Typography variant="h4/bold">Add Feedback</Typography>
+            <Typography variant="h4/bold">Feedback</Typography>
           </Link>
           <button type="submit" className={style.button}>
             <Typography variant="h4/bold">Close</Typography>

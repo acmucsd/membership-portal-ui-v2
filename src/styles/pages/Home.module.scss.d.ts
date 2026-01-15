@@ -1,5 +1,7 @@
 export type Styles = {
   appear: string;
+  asFormHelp: string;
+  asFormLink: string;
   cardAppear: string;
   checkin: string;
   checkinButtons: string;
