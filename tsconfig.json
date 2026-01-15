@@ -34,6 +34,7 @@
     "noEmit": true,
     "isolatedModules": true,
     "incremental": true,
+    "types": ["node", "react", "cypress"],
     "baseUrl": ".",
     "paths": {
       "@/public/*": [
