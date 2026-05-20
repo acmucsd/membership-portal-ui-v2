@@ -41,7 +41,7 @@ const nextConfig = {
       'acmucsd.s3.us-west-1.amazonaws.com', // deprecated
       // This one's for Sumeet Bansal       // deprecated
       'acmucsd.s3-us-west-1.amazonaws.com', // deprecated
-      
+
       'acmucsd-membership-portal.s3.us-west-1.amazonaws.com', // new actual s3
       'acmucsd-membership-portal-testing.s3.us-west-1.amazonaws.com', // new testing s3
       // The dev backend test data uses image URLs outside the allowlist
