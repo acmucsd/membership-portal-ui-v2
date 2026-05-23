@@ -1,19 +1,12 @@
 import Modal from '@/components/common/Modal';
 import { showToast } from '@/lib';
-import { useObjectUrl } from '@/lib/utils';
+import { exportCanvas, useObjectUrl } from '@/lib/utils';
 import Image from 'next/image';
 import { PointerEvent, useCallback, useRef, useState } from 'react';
 import styles from './style.module.scss';
 
 /** Height of the preview square. */
 const HEIGHT = 200;
-
-/** Promisified version of `HTMLCanvasElement.toBlob` */
-function toBlob(canvas: HTMLCanvasElement, type?: string, quality?: number): Promise<Blob | null> {
-  return new Promise(resolve => {
-    canvas.toBlob(resolve, type, quality);
-  });
-}
 
 type DragState = {
   pointerId: number;
@@ -189,19 +182,9 @@ const Cropper = ({
               fileHeight * aspectRatio,
               fileHeight
             );
-            const blob = await toBlob(canvas);
-            if (blob && blob.size <= maxSize) {
+            const blob = await exportCanvas(canvas, maxSize);
+            if (blob) {
               onCrop(blob);
-              return;
-            }
-            // Try compressing as JPG with various qualities, in parallel due to
-            // eslint(no-await-in-loop)
-            const blobs = await Promise.all(
-              [1, 0.9, 0.7, 0.4, 0].map(quality => toBlob(canvas, 'image/jpeg', quality))
-            );
-            const firstSmallEnough = blobs.find(blob => blob && blob.size <= maxSize);
-            if (firstSmallEnough) {
-              onCrop(firstSmallEnough);
             } else {
               showToast(
                 'Your image has too much detail and cannot be compressed.',
