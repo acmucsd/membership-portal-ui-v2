@@ -1,0 +1,34 @@
+{
+  "error": null,
+  "user": {
+    "uuid": "8315405c-98a9-4f0f-9e8d-6b4871820e24",
+    "handle": "geovany",
+    "email": "acm_standard@ucsd.edu",
+    "firstName": "John",
+    "lastName": "Doe",
+    "profilePicture": null,
+    "accessType": "ADMIN",
+    "state": "PASSWORD_RESET",
+    "graduationYear": 2026,
+    "major": "Computer Engineering",
+    "bio": "I am a testing account.",
+    "points": 10,
+    "credits": 1000,
+    "isAttendancePublic": true,
+    "resumes": [
+      {
+        "uuid": "9b36daaa-7c91-42d4-97cc-cf2ecb58903f",
+        "isResumeVisible": true,
+        "url": "https://acmucsd-membership-portal.s3.us-west-1.amazonaws.com/portal/resumes/8315405c-98a9-4f0f-9e8d-6b4871820e24/Faris%20Ashai%20Resume.pdf",
+        "lastUpdated": "2023-03-10T23:29:58.568Z"
+      }
+    ],
+    "userSocialMedia": [
+      {
+        "uuid": "6ef96ada-738b-4560-9838-0379cc114ac4",
+        "type": "LINKEDIN",
+        "url": "https://linkedin.com/in/asdf"
+      }
+    ]
+  }
+}

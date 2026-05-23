@@ -1,0 +1,47 @@
+{
+  "error": null,
+  "user": {
+    "uuid": "043fa366-d893-4e54-a6c9-ae8c40df6f0f",
+    "handle": "acmucsd",
+    "email": "acm@ucsd.edu",
+    "firstName": "Barthomelow",
+    "lastName": "Admin",
+    "profilePicture": "https://acmucsd-membership-portal.s3.us-west-1.amazonaws.com/portal/profiles/043fa366-d893-4e54-a6c9-ae8c40df6f0f",
+    "accessType": "ADMIN",
+    "state": "PASSWORD_RESET",
+    "graduationYear": 2029,
+    "major": "Business Psychology",
+    "bio": "I am ACM Admin 💪\nHello\nI have a really long bio!  \nI have a really long bio!  \nI have a really long bio!  \nI have a really long bio!  \nI have a really long bio!  yoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+    "points": 100833,
+    "credits": 3127242,
+    "isAttendancePublic": false,
+    "resumes": [],
+    "userSocialMedia": [
+      {
+        "uuid": "02865e2c-649a-4e67-901d-f93982e11f8c",
+        "type": "EMAIL",
+        "url": "a@a.com"
+      },
+      {
+        "uuid": "50e96105-1185-4fc9-8c67-41bdb5d535d3",
+        "type": "DEVPOST",
+        "url": "https://devpost.com/sadf"
+      },
+      {
+        "uuid": "a7774068-03f7-4cc1-ac9c-73213dcf69b3",
+        "type": "FACEBOOK",
+        "url": "https://facebook.com/sdf"
+      },
+      {
+        "uuid": "35166c85-b1cf-4499-a58c-ba25624a5685",
+        "type": "TWITTER",
+        "url": "https://twitter.com/asdfs"
+      },
+      {
+        "uuid": "bb02c4fe-1969-4ea5-a481-4552c50c2096",
+        "type": "PORTFOLIO",
+        "url": "https://hi.comasdfs"
+      }
+    ]
+  }
+}
