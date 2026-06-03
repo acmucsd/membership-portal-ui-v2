@@ -6,7 +6,7 @@ import { UUID } from '@/lib/types';
 import { PublicOrderItem, PublicOrderWithItems } from '@/lib/types/apiResponses';
 import { OrderStatus } from '@/lib/types/enums';
 import { getOrderItemQuantities, itemToString, reportError } from '@/lib/utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './style.module.scss';
 
 interface PickupOrderProps {
@@ -49,6 +49,10 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
   const handleUnfulfillOrder = async (items: PublicOrderItem[]) => {
     await handleUpdateFulfillment(false, items);
   };
+
+  useEffect(() => {
+    setSelected(new Set());
+  }, [canFulfill]);
 
   return (
     <tr className={styles.row}>
