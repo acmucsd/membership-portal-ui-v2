@@ -100,7 +100,12 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
           })}
         </ul>
         {canFulfill ? (
-          <Button size="small" onClick={()=>{handleFulfillOrder(order.items.filter(item => selected.has(item.uuid)))}}>
+          <Button
+            size="small"
+            onClick={() => {
+              handleFulfillOrder(order.items.filter(item => selected.has(item.uuid)));
+            }}
+          >
             Fulfill {selected.size} item{selected.size === 1 ? '' : 's'}
           </Button>
         ) : null}
@@ -118,7 +123,6 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
           open={openEditOrderModal}
           token={token}
           order={order}
-          itemQuantities={itemQuantities}
           onOrderUpdate={onOrderUpdate}
           handleFulfillOrder={handleFulfillOrder}
           handleUnfulfillOrder={handleUnfulfillOrder}

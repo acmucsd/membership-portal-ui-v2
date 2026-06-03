@@ -36,6 +36,7 @@ import type {
   GetOneMerchOrderResponse,
   GetOrderPickupEventResponse,
   GetOrderPickupEventsResponse,
+  OrderSwapItemResponse,
   PlaceMerchOrderResponse,
   PublicMerchCollection,
   PublicMerchCollectionPhoto,
@@ -491,17 +492,17 @@ export const unfulfillOrderPickup = async (
 export const orderSwapItem = async (
   token: string,
   orderItemUuid: UUID,
-  newOptionUuid: UUID,
+  newOptionUuid: UUID
 ): Promise<PublicOrderWithItems> => {
   const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/item/swap`;
-  const requestBody: OrderSwapItemRequest = {orderItemUuid, newOptionUuid}
+  const requestBody: OrderSwapItemRequest = { orderItemUuid, newOptionUuid };
   const response = await axios.post<OrderSwapItemResponse>(requestUrl, requestBody, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
   return response.data.order;
-}
+};
 
 export const rescheduleOrderPickup = async (
   token: string,

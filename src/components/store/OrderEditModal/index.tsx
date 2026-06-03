@@ -1,7 +1,12 @@
 import { Button, Dropdown, Modal, Typography } from '@/components/common';
-import { getItem } from '@/lib/api/StoreAPI';
-import { PublicMerchItemOption, PublicOrderItem, PublicOrderWithItems } from '@/lib/types/apiResponses';
-import { OrderItemQuantity, reportError } from '@/lib/utils';
+import { getItem, orderSwapItem } from '@/lib/api/StoreAPI';
+import { UUID } from '@/lib/types';
+import {
+  PublicMerchItemOption,
+  PublicOrderItem,
+  PublicOrderWithItems,
+} from '@/lib/types/apiResponses';
+import { reportError } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import styles from './style.module.scss';
 
@@ -11,9 +16,8 @@ interface OrderEditModalProps {
   token: string;
   order: PublicOrderWithItems;
   handleFulfillOrder: (items: PublicOrderItem[]) => Promise<void>;
-  handleUnfulfillOrder: (items: PublicOrderItem[])=> Promise<void>;
+  handleUnfulfillOrder: (items: PublicOrderItem[]) => Promise<void>;
   onOrderUpdate: (orders: PublicOrderWithItems) => void;
-  itemQuantities: OrderItemQuantity[];
 }
 
 export const OrderEditModal = ({
@@ -22,15 +26,18 @@ export const OrderEditModal = ({
   onOrderUpdate,
   token,
   order,
-  itemQuantities,
   handleFulfillOrder,
-  handleUnfulfillOrder
+  handleUnfulfillOrder,
 }: OrderEditModalProps) => {
   const [orderOptions, setOrderOptions] = useState<Record<string, PublicMerchItemOption[]>>({});
-  const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>(
-    {}
-  );
-
+  const updateItemVariant = async (item: UUID, newVariant: UUID) => {
+    try {
+      const newOrder = await orderSwapItem(token, item, newVariant);
+      onOrderUpdate(newOrder);
+    } catch (error: unknown) {
+      reportError(`Failed to swap order`, error);
+    }
+  };
   // TODO: Find a better way that doesn't involve querying every time the modal opens
   useEffect(() => {
     const fetchItems = async () => {
@@ -50,7 +57,6 @@ export const OrderEditModal = ({
     };
     fetchItems().catch(e => reportError('Failed to fetch items', e));
   }, [order, token]);
-
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -76,20 +82,22 @@ export const OrderEditModal = ({
             {order.items.map(item => (
               <tr key={item.uuid}>
                 <td>
-                  <Typography variant="h5/medium">{item.option.item.itemName ?? item.uuid}</Typography>
+                  <Typography variant="h5/medium">
+                    {item.option.item.itemName ?? item.uuid}
+                  </Typography>
                 </td>
 
                 <td className={styles.actionColumn}>
                   <div className={styles.buttonContainer}>
-                    {item.fulfilled ?
-                      (<Button onClick={()=>handleUnfulfillOrder([item])} destructive>
+                    {item.fulfilled ? (
+                      <Button onClick={() => handleUnfulfillOrder([item])} destructive>
                         <Typography variant="h5/bold">Unfulfill</Typography>
-                      </Button>)
-                      :
-                      (<Button onClick={()=>handleFulfillOrder([item])} >
+                      </Button>
+                    ) : (
+                      <Button onClick={() => handleFulfillOrder([item])}>
                         <Typography variant="h5/bold">Fulfill</Typography>
-                      </Button>)
-                    }
+                      </Button>
+                    )}
                   </div>
                 </td>
 
@@ -99,11 +107,13 @@ export const OrderEditModal = ({
                     ariaLabel="Change variant of order"
                     readOnly={item.fulfilled}
                     options={(orderOptions[item.option.item.uuid] ?? []).map(variant => ({
-                      value: variant.metadata?.value ?? '',
+                      value: variant.uuid,
                       label: variant.metadata?.value ?? '',
                     }))}
-                    value={selectedVariants[item.uuid] ?? ''}
-                    onChange={()=>{}}
+                    value={item.option.uuid}
+                    onChange={optionUuid => {
+                      updateItemVariant(item.uuid, optionUuid);
+                    }}
                   />
                 </td>
               </tr>

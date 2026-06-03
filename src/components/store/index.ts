@@ -19,4 +19,3 @@ export { default as PickupEventPicker } from './PickupEventPicker';
 export { default as StoreConfirmModal } from './StoreConfirmModal';
 export { default as StoreEditButton } from './StoreEditButton';
 export { default as Navbar } from './StoreNavbar';
-
