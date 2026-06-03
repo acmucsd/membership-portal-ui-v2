@@ -45,6 +45,7 @@ import type {
   PublicOrder,
   PublicOrderPickupEvent,
   PublicOrderWithItems,
+  UnfulfillMerchOrderResponse,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
 
@@ -462,6 +463,22 @@ export const fulfillOrderPickup = async (
   const requestBody: FulfillMerchOrderRequest = { items };
 
   const response = await axios.post<FulfillMerchOrderResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.order;
+};
+
+export const unfulfillOrderPickup = async (
+  token: string,
+  order: UUID,
+  items: OrderItemFulfillmentUpdate[]
+): Promise<PublicOrder> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${order}/unfulfill`;
+  const requestBody: FulfillMerchOrderRequest = { items };
+  const response = await axios.post<UnfulfillMerchOrderResponse>(requestUrl, requestBody, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

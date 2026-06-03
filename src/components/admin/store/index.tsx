@@ -6,3 +6,4 @@ export { default as PickupEventCard } from './PickupEventCard';
 export { default as PickupOrder } from './PickupOrder';
 export { default as PickupOrdersPrepareDisplay } from './PickupOrdersPrepareDisplay';
 export { PickupEventStatus };
+

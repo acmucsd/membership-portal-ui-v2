@@ -1,0 +1,23 @@
+.container {
+    padding: 12px;
+    width: 720px;
+    .header {
+        border-bottom: 1px solid #ccc;
+    }
+    .actionButtons {
+        display: flex;
+        gap: 5px;
+    }
+    .table {
+        .actionColumn {
+            text-align: center;
+            width: 256px;
+        }
+        .buttonContainer {
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            display: flex;
+        }
+    }
+}

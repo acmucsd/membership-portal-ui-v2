@@ -96,6 +96,9 @@ const PickupOrdersPrepareDisplay = ({
               <th>
                 <Typography variant="h4/bold">Items</Typography>
               </th>
+              <th>
+                <Typography variant="h4/bold">Admin</Typography>
+              </th>
             </tr>
           </thead>
           <tbody>
