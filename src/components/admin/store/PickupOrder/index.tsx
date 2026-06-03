@@ -1,5 +1,6 @@
+import { OrderEditModal } from '@/components/admin/store/OrderEditModal';
 import { Button, Typography } from '@/components/common';
-import { OrderEditModal, OrderStatusIndicator } from '@/components/store';
+import { OrderStatusIndicator } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import { UUID } from '@/lib/types';
 import { PublicOrderItem, PublicOrderWithItems } from '@/lib/types/apiResponses';
