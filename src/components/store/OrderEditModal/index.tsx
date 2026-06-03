@@ -81,7 +81,7 @@ export const OrderEditModal = ({
 
                 <td className={styles.actionColumn}>
                   <div className={styles.buttonContainer}>
-                    {!item.fulfilled?
+                    {item.fulfilled ?
                       (<Button onClick={()=>handleUnfulfillOrder([item])} destructive>
                         <Typography variant="h5/bold">Unfulfill</Typography>
                       </Button>)
@@ -97,12 +97,13 @@ export const OrderEditModal = ({
                   <Dropdown
                     name="variants"
                     ariaLabel="Change variant of order"
+                    readOnly={item.fulfilled}
                     options={(orderOptions[item.option.item.uuid] ?? []).map(variant => ({
                       value: variant.metadata?.value ?? '',
                       label: variant.metadata?.value ?? '',
                     }))}
                     value={selectedVariants[item.uuid] ?? ''}
-                    onChange={newValue => setSelectedVariants(prev => ({ ...prev, [item.option.item.uuid]: newValue }))}
+                    onChange={()=>{}}
                   />
                 </td>
               </tr>

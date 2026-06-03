@@ -367,6 +367,9 @@ export interface FulfillMerchOrderResponse extends ApiResponse {
 export interface UnfulfillMerchOrderResponse extends ApiResponse {
   order: PublicOrder;
 }
+export interface OrderSwapItemResponse extends ApiResponse {
+  order: PublicOrderWithItems;
+}
 // USER
 
 export interface PublicActivity {

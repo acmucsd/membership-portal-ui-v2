@@ -42,7 +42,7 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
   };
 
   const handleUnfulfillOrder = async (items: PublicOrderItem[]) => {
-    await handleUpdateFulfillment(false, order.items);
+    await handleUpdateFulfillment(false, items);
   };
 
   return (

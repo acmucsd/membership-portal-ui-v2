@@ -264,6 +264,11 @@ export interface FulfillMerchOrderRequest {
   items: OrderItemFulfillmentUpdate[];
 }
 
+export interface OrderSwapItemRequest {
+  orderItemUuid: UUID;
+  newOptionUuid: UUID;
+}
+
 export interface RescheduleOrderPickupRequest {
   pickupEvent: UUID;
 }
