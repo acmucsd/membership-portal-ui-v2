@@ -469,7 +469,6 @@ export const fulfillOrderPickup = async (
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log(response.data.order);
 
   return response.data.order;
 };
