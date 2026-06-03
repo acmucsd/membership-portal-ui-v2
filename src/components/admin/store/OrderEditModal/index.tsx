@@ -15,6 +15,7 @@ interface OrderEditModalProps {
   onClose: () => void;
   token: string;
   order: PublicOrderWithItems;
+  fulfilling: boolean; // prevent simultaneous fulfullment updats
   handleFulfillOrder: (items: PublicOrderItem[]) => Promise<void>;
   handleUnfulfillOrder: (items: PublicOrderItem[]) => Promise<void>;
   onOrderUpdate: (orders: PublicOrderWithItems) => void;
@@ -26,6 +27,7 @@ export const OrderEditModal = ({
   onOrderUpdate,
   token,
   order,
+  fulfilling,
   handleFulfillOrder,
   handleUnfulfillOrder,
 }: OrderEditModalProps) => {
@@ -94,11 +96,15 @@ export const OrderEditModal = ({
                 <td className={styles.actionColumn}>
                   <div className={styles.buttonContainer}>
                     {item.fulfilled ? (
-                      <Button onClick={() => handleUnfulfillOrder([item])} destructive>
+                      <Button
+                        onClick={() => handleUnfulfillOrder([item])}
+                        disabled={fulfilling}
+                        destructive
+                      >
                         <Typography variant="h5/bold">Unfulfill</Typography>
                       </Button>
                     ) : (
-                      <Button onClick={() => handleFulfillOrder([item])}>
+                      <Button onClick={() => handleFulfillOrder([item])} disabled={fulfilling}>
                         <Typography variant="h5/bold">Fulfill</Typography>
                       </Button>
                     )}

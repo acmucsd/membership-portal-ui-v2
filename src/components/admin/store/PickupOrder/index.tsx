@@ -20,8 +20,10 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
   const itemQuantities = getOrderItemQuantities(order.items);
   const [selected, setSelected] = useState(new Set<UUID>());
   const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
+  const [fulfilling, setFulfilling] = useState(false);
 
   const handleUpdateFulfillment = async (fulfilled: boolean, items: PublicOrderItem[]) => {
+    setFulfilling(true);
     try {
       const newOrder = await (fulfilled
         ? StoreAPI.fulfillOrderPickup(token, order.uuid, items)
@@ -35,6 +37,8 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
       });
     } catch (error: unknown) {
       reportError(`Failed to ${fulfilled ? 'fulfill' : 'unfulfill'} order`, error);
+    } finally {
+      setFulfilling(false);
     }
   };
 
@@ -124,6 +128,7 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
           open={openEditOrderModal}
           token={token}
           order={order}
+          fulfilling={fulfilling}
           onOrderUpdate={onOrderUpdate}
           handleFulfillOrder={handleFulfillOrder}
           handleUnfulfillOrder={handleUnfulfillOrder}
