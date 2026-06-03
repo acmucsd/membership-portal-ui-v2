@@ -12,7 +12,7 @@ For details on our underlying API, see
 
 First, verify you have the correct versions of the necessary package managers.
 
-- node v.18.10.0 (You can check your version by running `node -v`). Installation
+- node v.22.22.0 (You can check your version by running `node -v`). Installation
   [here](https://nodejs.org/en/download/)
 - yarn v1.22.19 (You can check your version by running `yarn -v`). Installation
   [here](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)

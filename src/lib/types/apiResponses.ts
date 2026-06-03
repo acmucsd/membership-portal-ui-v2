@@ -364,7 +364,12 @@ export interface GetCartResponse extends ApiResponse {
 export interface FulfillMerchOrderResponse extends ApiResponse {
   order: PublicOrder;
 }
-
+export interface UnfulfillMerchOrderResponse extends ApiResponse {
+  order: PublicOrder;
+}
+export interface OrderSwapItemResponse extends ApiResponse {
+  order: PublicOrderWithItems;
+}
 // USER
 
 export interface PublicActivity {

@@ -1,11 +1,12 @@
+import { OrderEditModal } from '@/components/admin/store/OrderEditModal';
 import { Button, Typography } from '@/components/common';
 import { OrderStatusIndicator } from '@/components/store';
 import { StoreAPI } from '@/lib/api';
 import { UUID } from '@/lib/types';
-import { PublicOrderWithItems } from '@/lib/types/apiResponses';
+import { PublicOrderItem, PublicOrderWithItems } from '@/lib/types/apiResponses';
 import { OrderStatus } from '@/lib/types/enums';
 import { getOrderItemQuantities, itemToString, reportError } from '@/lib/utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './style.module.scss';
 
 interface PickupOrderProps {
@@ -18,22 +19,40 @@ interface PickupOrderProps {
 const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderProps) => {
   const itemQuantities = getOrderItemQuantities(order.items);
   const [selected, setSelected] = useState(new Set<UUID>());
+  const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
+  const [fulfilling, setFulfilling] = useState(false);
 
-  const handleFulfillOrder = async () => {
+  const handleUpdateFulfillment = async (fulfilled: boolean, items: PublicOrderItem[]) => {
+    setFulfilling(true);
     try {
-      const items = order.items.filter(item => selected.has(item.uuid));
-      const newOrder = await StoreAPI.fulfillOrderPickup(token, order.uuid, items);
+      const newOrder = await (fulfilled
+        ? StoreAPI.fulfillOrderPickup(token, order.uuid, items)
+        : StoreAPI.unfulfillOrderPickup(token, order.uuid, items));
       const itemUuids = items.map(item => item.uuid);
       onOrderUpdate({
         ...newOrder,
         items: order.items.map(item =>
-          itemUuids.includes(item.uuid) ? { ...item, fulfilled: true } : item
+          itemUuids.includes(item.uuid) ? { ...item, fulfilled } : item
         ),
       });
     } catch (error: unknown) {
-      reportError('Failed to fulfill order', error);
+      reportError(`Failed to ${fulfilled ? 'fulfill' : 'unfulfill'} order`, error);
+    } finally {
+      setFulfilling(false);
     }
   };
+
+  const handleFulfillOrder = async (items: PublicOrderItem[]) => {
+    await handleUpdateFulfillment(true, items);
+  };
+
+  const handleUnfulfillOrder = async (items: PublicOrderItem[]) => {
+    await handleUpdateFulfillment(false, items);
+  };
+
+  useEffect(() => {
+    setSelected(new Set());
+  }, [canFulfill]);
 
   return (
     <tr className={styles.row}>
@@ -90,10 +109,37 @@ const PickupOrder = ({ token, canFulfill, order, onOrderUpdate }: PickupOrderPro
           })}
         </ul>
         {canFulfill ? (
-          <Button size="small" onClick={handleFulfillOrder}>
+          <Button
+            size="small"
+            onClick={() => {
+              handleFulfillOrder(order.items.filter(item => selected.has(item.uuid)));
+            }}
+          >
             Fulfill {selected.size} item{selected.size === 1 ? '' : 's'}
           </Button>
         ) : null}
+      </td>
+      <td>
+        <Button
+          size="small"
+          onClick={() => {
+            setOpenEditOrderModal(true);
+          }}
+        >
+          Edit Order
+        </Button>
+        <OrderEditModal
+          open={openEditOrderModal}
+          token={token}
+          order={order}
+          fulfilling={fulfilling}
+          onOrderUpdate={onOrderUpdate}
+          handleFulfillOrder={handleFulfillOrder}
+          handleUnfulfillOrder={handleUnfulfillOrder}
+          onClose={() => {
+            setOpenEditOrderModal(false);
+          }}
+        />
       </td>
     </tr>
   );

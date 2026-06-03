@@ -13,6 +13,7 @@ import {
   MerchItemEdit,
   MerchItemOption,
   OrderItemFulfillmentUpdate,
+  OrderSwapItemRequest,
   PlaceMerchOrderRequest,
   RescheduleOrderPickupRequest,
 } from '@/lib/types/apiRequests';
@@ -35,6 +36,7 @@ import type {
   GetOneMerchOrderResponse,
   GetOrderPickupEventResponse,
   GetOrderPickupEventsResponse,
+  OrderSwapItemResponse,
   PlaceMerchOrderResponse,
   PublicMerchCollection,
   PublicMerchCollectionPhoto,
@@ -45,6 +47,7 @@ import type {
   PublicOrder,
   PublicOrderPickupEvent,
   PublicOrderWithItems,
+  UnfulfillMerchOrderResponse,
 } from '@/lib/types/apiResponses';
 import axios from 'axios';
 
@@ -467,6 +470,38 @@ export const fulfillOrderPickup = async (
     },
   });
 
+  return response.data.order;
+};
+
+export const unfulfillOrderPickup = async (
+  token: string,
+  order: UUID,
+  items: OrderItemFulfillmentUpdate[]
+): Promise<PublicOrder> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${order}/unfulfill`;
+  const requestBody: FulfillMerchOrderRequest = { items };
+  const response = await axios.post<UnfulfillMerchOrderResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data.order;
+};
+
+export const orderSwapItem = async (
+  token: string,
+  order: UUID,
+  orderItemUuid: UUID,
+  newOptionUuid: UUID
+): Promise<PublicOrderWithItems> => {
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${order}/swap`;
+  const requestBody: OrderSwapItemRequest = { orderItemUuid, newOptionUuid };
+  const response = await axios.post<OrderSwapItemResponse>(requestUrl, requestBody, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data.order;
 };
 
