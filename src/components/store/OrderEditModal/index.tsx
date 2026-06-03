@@ -7,7 +7,7 @@ import {
   PublicOrderWithItems,
 } from '@/lib/types/apiResponses';
 import { reportError } from '@/lib/utils';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styles from './style.module.scss';
 
 interface OrderEditModalProps {
@@ -29,10 +29,14 @@ export const OrderEditModal = ({
   handleFulfillOrder,
   handleUnfulfillOrder,
 }: OrderEditModalProps) => {
+  const sorted = useMemo(
+    () => [...order.items].sort((a, b) => a.uuid.localeCompare(b.uuid)),
+    [order.items]
+  );
   const [orderOptions, setOrderOptions] = useState<Record<string, PublicMerchItemOption[]>>({});
-  const updateItemVariant = async (item: UUID, newVariant: UUID) => {
+  const updateItemVariant = async (order: UUID, item: UUID, newVariant: UUID) => {
     try {
-      const newOrder = await orderSwapItem(token, item, newVariant);
+      const newOrder = await orderSwapItem(token, order, item, newVariant);
       onOrderUpdate(newOrder);
     } catch (error: unknown) {
       reportError(`Failed to swap order`, error);
@@ -79,7 +83,7 @@ export const OrderEditModal = ({
             </tr>
           </thead>
           <tbody>
-            {order.items.map(item => (
+            {sorted.map(item => (
               <tr key={item.uuid}>
                 <td>
                   <Typography variant="h5/medium">
@@ -112,7 +116,7 @@ export const OrderEditModal = ({
                     }))}
                     value={item.option.uuid}
                     onChange={optionUuid => {
-                      updateItemVariant(item.uuid, optionUuid);
+                      updateItemVariant(order.uuid, item.uuid, optionUuid);
                     }}
                   />
                 </td>

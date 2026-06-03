@@ -491,10 +491,11 @@ export const unfulfillOrderPickup = async (
 
 export const orderSwapItem = async (
   token: string,
+  order: UUID,
   orderItemUuid: UUID,
   newOptionUuid: UUID
 ): Promise<PublicOrderWithItems> => {
-  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/item/swap`;
+  const requestUrl = `${config.api.baseUrl}${config.api.endpoints.store.order}/${order}/swap`;
   const requestBody: OrderSwapItemRequest = { orderItemUuid, newOptionUuid };
   const response = await axios.post<OrderSwapItemResponse>(requestUrl, requestBody, {
     headers: {
