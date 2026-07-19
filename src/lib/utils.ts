@@ -488,3 +488,36 @@ export function seededRandom(a: number, b: number, c: number, d: number): () => 
 export function getFileName(url: string, defaultName: string): string {
   return decodeURIComponent(url.split('/').at(-1) ?? defaultName);
 }
+
+/** Promisified version of `HTMLCanvasElement.toBlob` */
+function toBlob(canvas: HTMLCanvasElement, type?: string, quality?: number): Promise<Blob | null> {
+  return new Promise(resolve => {
+    canvas.toBlob(resolve, type, quality);
+  });
+}
+
+/**
+ * @param canvas - HTML `<canvas>` element containing the image to export.
+ * @param maxSize - Maximum number of bytes (i.e. not kilobytes) of the image.
+ * Defaults to no limit.
+ *
+ * This will first try to produce a PNG image followed by JPG images of
+ * decreasing quality until the threshold is met. If a JPG image of 0 quality is
+ * still too large, the promise rejects with an error.
+ */
+export async function exportCanvas(canvas: HTMLCanvasElement, maxSize = Infinity): Promise<Blob> {
+  const blob = await toBlob(canvas);
+  if (blob && blob.size <= maxSize) {
+    return blob;
+  }
+  // Try compressing as JPG with various qualities, in parallel due to
+  // eslint(no-await-in-loop)
+  const blobs = await Promise.all(
+    [1, 0.9, 0.7, 0.4, 0].map(quality => toBlob(canvas, 'image/jpeg', quality))
+  );
+  const firstSmallEnough = blobs.find(blob => blob && blob.size <= maxSize);
+  if (firstSmallEnough) {
+    return firstSmallEnough;
+  }
+  throw new RangeError('Unable to export canvas smaller than the provided size limit.');
+}

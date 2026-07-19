@@ -6,12 +6,10 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { SEO } from '@/components/common';
 import { PageLayout } from '@/components/layout';
+import dmSans from '@/lib/constants/fontFamily';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
-import { DM_Sans as DMSans } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
-
-const dmSans = DMSans({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 export default function MyApp({ Component, pageProps, router }: AppProps) {
   let { title } = pageProps;
