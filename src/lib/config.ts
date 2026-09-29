@@ -138,8 +138,7 @@ const config = {
   },
   tempLocalOnboardingKey: 'onboarding',
   asForm: {
-    baseUrl:
-      'https://docs.google.com/forms/d/e/1FAIpQLSdTyROOr_WZGOgpNyfJL2QQFxIDj9FJxSxk2T0orOKu4VvQlQ/viewform',
+    baseUrl: process.env.NEXT_PUBLIC_AS_ATTENDANCE_FORM_URL,
     fields: {
       emailAddress: 'emailAddress',
       eventName: 'entry.219446721',
