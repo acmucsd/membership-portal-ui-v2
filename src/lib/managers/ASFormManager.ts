@@ -1,6 +1,13 @@
 import { config } from '@/lib';
 import { PrivateProfile, PublicEvent } from '@/lib/types/apiResponses';
 
+const GRADUATION_YEAR_OPTIONS: Record<number, string> = {
+  2027: "Class of '27",
+  2028: "Class of '28",
+  2029: "Class of '29",
+  2030: "Class of '30",
+};
+
 const generateASFormURL = (
   event: PublicEvent | undefined,
   user: PrivateProfile | undefined
@@ -28,10 +35,18 @@ const generateASFormURL = (
     params.append(config.asForm.fields.emailAddress, user.email);
 
     // What is your academic year?
-    params.append(
-      config.asForm.fields.graduationYear,
-      `Class of '${user.graduationYear.toString().slice(-2)}`
-    );
+    const graduationYear = GRADUATION_YEAR_OPTIONS[user.graduationYear];
+
+    if (graduationYear) {
+      params.append(config.asForm.fields.graduationYear, graduationYear);
+    } else {
+      const generatedGraduationYear = `Class of '${user.graduationYear.toString().slice(-2)}`;
+      params.append(config.asForm.fields.graduationYear, '__other_option__');
+      params.append(
+        `${config.asForm.fields.graduationYear}.other_option_response`,
+        generatedGraduationYear
+      );
+    }
 
     // What is your affiliation with the hosting organization(s)?
     // TODO: Get a list of board member emails so we can put Officer instead of Member, for now just tell board members to change it manually
