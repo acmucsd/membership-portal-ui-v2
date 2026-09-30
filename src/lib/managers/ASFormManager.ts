@@ -2,7 +2,7 @@ import { config } from '@/lib';
 import { PrivateProfile, PublicEvent } from '@/lib/types/apiResponses';
 
 const GRADUATION_YEAR_OPTIONS: Record<number, string> = {
-  2027: "Class of '27",
+  2027: 'Class of ‘27',
   2028: "Class of '28",
   2029: "Class of '29",
   2030: "Class of '30",
