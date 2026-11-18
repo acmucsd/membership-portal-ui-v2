@@ -292,7 +292,14 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
 
           <label htmlFor="orderDeadline">Order Deadline</label>
           <DetailsFormItem error={errors.orderDeadline?.message}>
-            <input type="datetime-local" id="orderDeadline" {...register('orderDeadline')} />
+            <input
+              type="datetime-local"
+              id="orderDeadline"
+              aria-required={mode === 'create'}
+              {...register('orderDeadline', {
+                required: mode === 'create' ? 'Pick an order deadline date.' : false,
+              })}
+            />
           </DetailsFormItem>
 
           <label htmlFor="description">Description</label>
