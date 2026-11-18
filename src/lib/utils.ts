@@ -488,3 +488,18 @@ export function seededRandom(a: number, b: number, c: number, d: number): () => 
 export function getFileName(url: string, defaultName: string): string {
   return decodeURIComponent(url.split('/').at(-1) ?? defaultName);
 }
+
+/**
+ *
+ * @param event date of event
+ * @returns saved deadline in milliseconds
+ */
+export const getPickupOrderDeadlineMs = (event: PublicOrderPickupEvent): number => {
+  if (event.orderDeadline != null) {
+    return new Date(event.orderDeadline).getTime();
+  }
+
+  const deadline = new Date(event.start);
+  deadline.setDate(deadline.getDate() - 2);
+  return deadline.getTime();
+};

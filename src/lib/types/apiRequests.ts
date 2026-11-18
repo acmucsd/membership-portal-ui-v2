@@ -369,6 +369,7 @@ export interface OrderPickupEvent {
   title: string;
   start: Date;
   end: Date;
+  orderDeadline?: Date | null;
   description: string;
   orderLimit: number;
   linkedEventUuid?: UUID | null;
