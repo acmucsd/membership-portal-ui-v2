@@ -24,7 +24,11 @@ interface PickupEventDetailsPageProps {
   token: string;
 }
 
-const PickupEventDetailsPage = ({ pickupEvent, orderDeadline, token }: PickupEventDetailsPageProps) => {
+const PickupEventDetailsPage = ({
+  pickupEvent,
+  orderDeadline,
+  token,
+}: PickupEventDetailsPageProps) => {
   const {
     uuid,
     status,
