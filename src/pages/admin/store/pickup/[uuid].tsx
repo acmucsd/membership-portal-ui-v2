@@ -12,7 +12,7 @@ import useConfirm from '@/lib/hooks/useConfirm';
 import { PermissionService } from '@/lib/services';
 import { PublicOrderPickupEvent } from '@/lib/types/apiResponses';
 import { OrderPickupEventStatus } from '@/lib/types/enums';
-import { formatEventDate } from '@/lib/utils';
+import { formatDate, formatEventDate, getPickupOrderDeadlineMs } from '@/lib/utils';
 import styles from '@/styles/pages/StorePickupEventDetailsPage.module.scss';
 import Link from 'next/link';
 import router from 'next/router';
@@ -20,10 +20,11 @@ import { useMemo, useState } from 'react';
 
 interface PickupEventDetailsPageProps {
   pickupEvent: PublicOrderPickupEvent;
+  orderDeadline: string;
   token: string;
 }
 
-const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPageProps) => {
+const PickupEventDetailsPage = ({ pickupEvent, orderDeadline, token }: PickupEventDetailsPageProps) => {
   const {
     uuid,
     status,
@@ -99,6 +100,12 @@ const PickupEventDetailsPage = ({ pickupEvent, token }: PickupEventDetailsPagePr
             <Typography variant="h4/regular" suppressHydrationWarning>
               {formatEventDate(start, end, true)}
             </Typography>
+            <Typography variant="h4/regular">
+              Order Deadline:{' '}
+              <time dateTime={orderDeadline} suppressHydrationWarning>
+                {formatDate(orderDeadline, true)}
+              </time>
+            </Typography>
             <Typography variant="h4/regular">{`Max Orders: ${orderLimit}`}</Typography>
             <Typography variant="h4/regular" className={styles.description}>
               {description}
@@ -134,8 +141,9 @@ const getServerSidePropsFunc: GetServerSidePropsWithAuth = async ({ params, auth
         const bName = b.user.lastName + b.user.firstName;
         return aName.localeCompare(bName);
       });
+    const orderDeadline = new Date(getPickupOrderDeadlineMs(pickupEvent)).toISOString();
     return {
-      props: { title: pickupEvent.title, pickupEvent, token },
+      props: { title: pickupEvent.title, pickupEvent, orderDeadline, token },
     };
   } catch (e) {
     return { notFound: true };
