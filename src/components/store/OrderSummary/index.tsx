@@ -10,6 +10,7 @@ import {
   capitalize,
   getDefaultOrderItemPhoto,
   getOrderItemQuantities,
+  getPickupOrderDeadlineMs,
 } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,17 +19,14 @@ import styles from './style.module.scss';
 
 const isOrderActionable = (status: OrderStatus, pickupEvent: PublicOrderPickupEvent): boolean => {
   if (status === OrderStatus.CANCELLED || status === OrderStatus.FULFILLED) {
-    // If the order is cancelled by the user or fulfilled, no further action can be taken.
     return false;
   }
-  // If there's less than two days before the pickup event, merch distributors are already
-  // preparing the order. Thus, the order can't be rescheduled/cancelled at this time.
-  const now = new Date();
-  const eventStart = new Date(pickupEvent.start);
-  eventStart.setDate(eventStart.getDate() - 2);
-  if (status === OrderStatus.PLACED && now > eventStart) {
+
+  // The deadline locks placed orders. Members can still reschedule a missed pickup.
+  if (status === OrderStatus.PLACED && Date.now() > getPickupOrderDeadlineMs(pickupEvent)) {
     return false;
   }
+
   return true;
 };
 

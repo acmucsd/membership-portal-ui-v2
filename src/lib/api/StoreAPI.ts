@@ -49,6 +49,7 @@ import type {
   PublicOrderWithItems,
   UnfulfillMerchOrderResponse,
 } from '@/lib/types/apiResponses';
+import { getPickupOrderDeadlineMs } from '@/lib/utils';
 import axios from 'axios';
 
 /**
@@ -415,14 +416,8 @@ export const getValidFutureOrderPickupEvents = async (
       .filter(
         event => !(event.orders && event.orderLimit && event.orders.length > event.orderLimit)
       )
-      // filter out events that have a start time less than 2 days from now
-      .filter(event => {
-        const startTime = new Date(event.start);
-        const now = Date.now();
-        const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
-        const twoDaysFromNow = new Date(now + twoDaysInMs);
-        return startTime >= twoDaysFromNow;
-      })
+      // filter out events that have a start time less than the deadline
+      .filter(event => Date.now() <= getPickupOrderDeadlineMs(event))
   );
 };
 
