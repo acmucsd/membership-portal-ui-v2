@@ -68,6 +68,9 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
     title: defaultData.title ?? '',
     start: DateTime.fromISO(defaultData?.start ?? '').toFormat("yyyy-MM-dd'T'HH:mm"),
     end: DateTime.fromISO(defaultData?.end ?? '').toFormat("yyyy-MM-dd'T'HH:mm"),
+    orderDeadline: defaultData.orderDeadline
+      ? DateTime.fromISO(defaultData.orderDeadline).toFormat("yyyy-MM-dd'T'HH:mm")
+      : '',
     description: defaultData.description ?? '',
     orderLimit: defaultData.orderLimit ?? 0,
     linkedEventUuid: defaultData.linkedEvent?.uuid ?? null,
@@ -92,6 +95,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       title,
       start: isoStart,
       end: isoEnd,
+      orderDeadline: isoDeadline,
       linkedEventUuid,
       description,
       orderLimit: rawOrderLimit,
@@ -104,6 +108,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
         title,
         start,
         end,
+        orderDeadline: isoDeadline ? new Date(isoDeadline).toISOString() : null,
         description,
         orderLimit,
         linkedEventUuid: linkedEventUuid || null,
@@ -133,6 +138,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
       title,
       start: isoStart,
       end: isoEnd,
+      orderDeadline: isoDeadline,
       linkedEventUuid,
       description,
       orderLimit: rawOrderLimit,
@@ -146,6 +152,7 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
           title,
           start,
           end,
+          orderDeadline: isoDeadline ? new Date(isoDeadline).toISOString() : null,
           description,
           orderLimit,
           linkedEventUuid: linkedEventUuid || null,
@@ -281,6 +288,11 @@ const AdminPickupEventForm = ({ mode, defaultData = {}, token, upcomingEvents }:
                 required: 'Required',
               })}
             />
+          </DetailsFormItem>
+
+          <label htmlFor="orderDeadline">Order Deadline</label>
+          <DetailsFormItem error={errors.orderDeadline?.message}>
+            <input type="datetime-local" id="orderDeadline" {...register('orderDeadline')} />
           </DetailsFormItem>
 
           <label htmlFor="description">Description</label>
