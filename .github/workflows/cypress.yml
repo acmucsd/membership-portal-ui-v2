@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: 22.20.0
       - name: Checkout
@@ -18,5 +18,5 @@ jobs:
           NEXT_PUBLIC_ACM_API_URL: https://testing.api.acmucsd.com/api/v2
         with:
           start: yarn dev:start
-          wait-on: 'http://localhost:3000'
+          wait-on: 'http://127.0.0.1:3000'
           install-command: yarn install
