@@ -18,5 +18,6 @@ jobs:
           NEXT_PUBLIC_ACM_API_URL: https://testing.api.acmucsd.com/api/v2
         with:
           start: yarn dev:start
-          wait-on: 'http://127.0.0.1:3000'
+          wait-on: 'http://localhost:3000/login'
+          wait-on-timeout: 180
           install-command: yarn install
